@@ -2,7 +2,7 @@
 - [Linear interpolation](https://en.wikipedia.org/wiki/Linear_interpolation)
 
 
-Entities:
+### Entities
 - Static entities:
   - PowerUp:
     - Thunderbolt: Fulmini colpiscono periodicamente tutti i nemici. 
@@ -23,11 +23,11 @@ Entities:
     - Hedgehog Spines: Riflette una parte di danno al tuo aguzzino.
     - Cat Claw: Aumenta la velocità d'attacco.
     - Slime Piece: Il danno d'attacco aumenta di 8, ma dopo la morte i nemici generano piccoli slime.
-    - Gold arrow: Aumenta il danno delle frecce di 2.
+    - Gold Arrow: Aumenta il danno delle frecce di 2.
     - Milk: +2 HP
     - Carrot: +1 HP
-    - Piece of Soul: +5 scudi.
-  - Strutture:
+    - Piece of Bone: +5 scudi.
+  - Environment:
     - Ground
     - Walls
     - Stairs
@@ -39,13 +39,13 @@ Entities:
       - Spiked floor: Dal pavimento spuntano periodicamente dei chiodi, infliggendo danno a chiunque si trovi sopra.
       - Trapdoor: Pezzo di legno sospeso nel vuoto, cade dopo un po' che ci stai sopra.
       - Totem: Spara periodicamente una freccia.
-      - Icy floor: Scivoli per tutta la durata del pavimento ghiacciato.
+      - Icy Floor: Scivoli per tutta la durata del pavimento ghiacciato.
 - Dynamic entities:
-  - Strutture:
+  - Environment:
     - Trap:
       - Circular saw blade: Una lama circolare che segue un percorso definito tagliando tutto ciò che incontra.
   - Player:
-    - Kinght: 10 HP, 2 SP, velocità: lenta, danno 5-7
+    - Knight: 10 HP, 2 SP, velocità: lenta, danno 5-7
     - Archer: 8 HP, 0 SP, velocità: media, danno 2-4
     - Ninja: 5 HP, 0 SP, velocità: alta, danno 3-5
   - Enemy:
@@ -53,7 +53,7 @@ Entities:
     - Zombie: segue il player.
     - Wizard: si allinea nella riga del player per poi sparare una palla di fuoco che viaggio in linea retta.
     - Skeleton: segue il player, grazie al suo schudo resiste al primo attacco (non perde vita).
-    - Slime grande: segue il player, alla morte genera due slime più piccole nelle caselle confinanti, se disponibili.
-    - Slime piccoli: si muovono nella direzione del player se il player si trova vicino ad un tot di blocchi.
+    - Big Slime: segue il player, alla morte genera due slime più piccoli nelle caselle confinanti, se disponibili.
+    - Slime: si muovono nella direzione del player se il player si trova vicino ad un tot di blocchi.
     - Frog: Grazie alla sua lingua è in grado di colpire il player da un blocco di distanza.
 
