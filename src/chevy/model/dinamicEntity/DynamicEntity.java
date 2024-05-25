@@ -13,8 +13,5 @@ public abstract class DynamicEntity extends Entity {
     }
 
     public void move(Directions direction) {
-
     }
 }
-
-

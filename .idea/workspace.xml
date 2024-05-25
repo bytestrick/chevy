@@ -16,6 +16,531 @@
       <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/traps/Traps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/traps/Traps.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/traps/TrapsTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/traps/TrapsTypes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/traps/Void.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/traps/Void.java" afterDir="false" />
+    <list default="true" id="4793edbe-f132-4c46-8319-2e0ec4b3a04a" name="Changes" comment="Inizializzazione del progetto">
+      <change afterPath="$PROJECT_DIR$/src/chevy/control/KeyboardListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/chevy/control/MenuController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/chevy/view/Menu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Destructible Objects Sprite Sheet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/GroundWall/FreeLicense.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/GroundWall/Set 1.1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/GroundWall/Set 1.2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/GroundWall/Set 1.3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/GroundWall/Set 1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/GroundWall/Set 3.5.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/GroundWall/Structure.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/ALL Spritesheet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/ALL.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffCrystal/AttackCrystal.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffCrystal/AttackCrystal1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffCrystal/AttackCrystal2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffCrystal/AttackCrystal3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffCrystal/AttackCrystal4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffCrystal/AttackCrystal5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffCrystal/AttackCrystal6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffMighty/AttackMighty.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffMighty/AttackMighty1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffMighty/AttackMighty2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffMighty/AttackMighty3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffMighty/AttackMighty4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffMighty/AttackMighty5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffMighty/AttackMighty6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffWood/AttackWood.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffWood/AttackWood1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffWood/AttackWood2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffWood/AttackWood3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffWood/AttackWood4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffWood/AttackWood5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Attack/StaffWood/AttackWood6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffCrystal/ChargeCrystal.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffCrystal/ChargeCrystal1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffCrystal/ChargeCrystal2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffCrystal/ChargeCrystal3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffCrystal/ChargeCrystal4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffCrystal/ChargeCrystal5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffCrystal/ChargeCrystal6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffMighty/ChargeMighty.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffMighty/ChargeMighty1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffMighty/ChargeMighty2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffMighty/ChargeMighty3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffMighty/ChargeMighty4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffMighty/ChargeMighty5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffMighty/ChargeMighty6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffWood/ChargeWood.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffWood/ChargeWood1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffWood/ChargeWood2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffWood/ChargeWood3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffWood/ChargeWood4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffWood/ChargeWood5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackCharge/StaffWood/ChargeWood6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/AttackExample.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/CHANGELOG.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Crouch/Crouch.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Crouch/Crouch1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Crouch/Crouch2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Crouch/Crouch3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Crouch/Crouch4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Crouch/Crouch5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Crouch/Crouch6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Dead/Dead.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Decomposing/Decomposing.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Decomposing/Decomposing1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Decomposing/Decomposing2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Decomposing/Decomposing3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Decomposing/Decomposing4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Decomposing/Decomposing5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Decomposing/Decomposing6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Demo.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Dying/Dying.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Dying/Dying1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Dying/Dying2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Dying/Dying3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Dying/Dying4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Dying/Dying5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Dying/Dying6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Falling/Falling.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Falling/Falling1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Falling/Falling2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Falling/Falling3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Falling/Falling4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Falling/Falling5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Falling/Falling6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Hit/Hit.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Hit/Hit1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Hit/Hit2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Hit/Hit3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Idle/Idle.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Idle/Idle1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Idle/Idle2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Idle/Idle3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Idle/Idle4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Idle/Idle5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Idle/Idle6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/READ ME.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Rising - Jumping/Rising.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Rising - Jumping/Rising1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Rising - Jumping/Rising2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Rising - Jumping/Rising3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Rising - Jumping/Rising4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Rising - Jumping/Rising5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Rising - Jumping/Rising6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Role/Role.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Role/Role1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Role/Role2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Role/Role3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Role/Role4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Role/Role5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Run/Run.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Run/Run1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Run/Run2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Run/Run3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Run/Run4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Run/Run5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Run/Run6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Stomping/Stomping.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Stomping/Stomping1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Stomping/Stomping2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Stomping/Stomping3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Stomping/Stomping4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Stomping/Stomping5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/Stomping/Stomping6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/_Faces/face_angry.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/_Faces/face_empty.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/_Faces/face_happy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/_Faces/face_normal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/_Staffs/staff_crystal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/_Staffs/staff_mighty.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Little Mage/_Staffs/staff_wood.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Silver.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/ToxicFrog.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/22.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/23.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/24.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/25.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/26.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/27.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/28.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/29.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/30.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/31.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/32.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/33.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/34.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/35.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/36.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/37.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/38.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/39.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/40.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/41.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/42.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/43.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/44.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/45.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/46.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/47.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Close/9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/copper/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/copper/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/copper/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/copper/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/copper/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/copper/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/copper/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/copper/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/gold/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/gold/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/gold/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/gold/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/gold/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/gold/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/gold/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/gold/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/silver/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/silver/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/silver/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/silver/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/silver/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/silver/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/silver/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/1/silver/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/copper/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/copper/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/copper/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/copper/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/copper/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/copper/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/copper/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/copper/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/gold/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/gold/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/gold/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/gold/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/gold/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/gold/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/gold/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/gold/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/silver/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/silver/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/silver/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/silver/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/silver/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/silver/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/silver/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Lock/2/silver/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/22.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/23.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/24.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/25.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/26.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/27.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/28.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/29.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/30.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/31.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/32.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/33.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/34.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/35.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/36.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/37.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/38.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/39.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/40.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/41.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/42.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/43.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/44.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/45.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/46.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/47.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Open/9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Static/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Static/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Static/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Static/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Static/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Static/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Static/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Static/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/22.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/23.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/copper/9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/22.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/23.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/gold/9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/22.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/23.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/1/silver/9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/22.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/23.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/copper/9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/22.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/23.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/gold/9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/22.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/23.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Chest/Unlock/2/silver/9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Key/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Key/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Key/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Key/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Key/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Key/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Lock/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Lock/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Lock/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Lock/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Lock/4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Lock/5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Lock/6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Png/Lock/7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/Read Me.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Lock/1/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Lock/1/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Lock/1/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Lock/2/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Lock/2/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Lock/2/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Open &amp; Close.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/SpriteSheet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Static.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Unlock/1/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Unlock/1/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Unlock/1/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Unlock/2/0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Unlock/2/1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Treasure Chest/SpriteSheet/Unlock/2/2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Vampire Bat/VampireBat.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/Vampire Bat/VampireBat.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/attack_boost.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/attack_speed_boost.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/critical_boost.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/defense_boost.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/element_boost.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/enemy_spawn_down.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/exp_boost.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/ghost_form_(physical_damage_immunity).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/glow.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/knockback_boost.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/knockback_resistance.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/lucky_boost.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/magic_amplification.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/negative_status_resistance.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/regeneration.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Buffs/swiftness.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/attack_down.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/bleeding.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/blinded.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/confused.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/cursed_(disarmed+silenced).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/defense_down.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/disarmed.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/frozen.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/hungry.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/on_fire_(burning).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/paralyzed.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/poisoned.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/silenced.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/sleeping.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/slowed.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Debuffs/stunned.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/blinding_light_spell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/counterspell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/divine_protection_spell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/fire_spell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/fire_spell_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/fortify_spell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/frenzy_spell_(critical_booster).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/healing_spell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/ice_spell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/lightning_spell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/mana_replenish.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/poison_dagger.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/summoning_spell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/teleportation_spell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/thorn_vine_spell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/Spells/water_spell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/[VerArc Stash] Basic_Skills_and_Buffs/spritesheet.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/books.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/dungeon-pack-free_version.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/rpg icon collection v1.2.1.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/skill_icons_by_quintino_pixels.rar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/slime/bouncing.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/slime/dying.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/slime/hit.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/slime/idle.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/DynamicEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/DynamicEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/player/Player.java" afterDir="false" />
+>>>>>>> 1c096b3 (Bozza delle classi iniziali)
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,16 +551,32 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+<<<<<<< HEAD
         <option value="Enum" />
+||||||| parent of 1c096b3 (Bozza delle classi iniziali)
+=======
+>>>>>>> 1c096b3 (Bozza delle classi iniziali)
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Mario D'Andrea &lt;goffredo2004@gmail.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+<<<<<<< HEAD
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+||||||| parent of 1c096b3 (Bozza delle classi iniziali)
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 2
+}]]></component>
+=======
+>>>>>>> 1c096b3 (Bozza delle classi iniziali)
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -50,6 +591,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+<<<<<<< HEAD
     &quot;Application.Main.executor&quot;: &quot;Run&quot;,
     &quot;Application.chevy.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -57,12 +599,33 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/mario/Documents/notes/uni/uid/progetti/Pacman&quot;,
+||||||| parent of 1c096b3 (Bozza delle classi iniziali)
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.Main.executor": "Run",
+    "Application.chevy.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/mario/Documents/notes/uni/uid/progetti/Pacman",
+    "settings.editor.selected.configurable": "vcs.Git"
+=======
+    &quot;Application.Game.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.chevy.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/mario/Downloads/PlatformerTutorial&quot;,
+>>>>>>> 1c096b3 (Bozza delle classi iniziali)
     &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;
   }
 }</component>
   <component name="RunManager">
-    <configuration name="chevy" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="chevy.Main" />
+    <configuration name="Game" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="chevy.Game" />
       <module name="chevy" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -78,6 +641,15 @@
       <option name="presentableId" value="Default" />
       <updated>1716389829584</updated>
     </task>
+    <task id="LOCAL-00001" summary="Inizializzazione del progetto">
+      <option name="closed" value="true" />
+      <created>1716394490988</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716394490988</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -110,5 +682,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Inizializzazione del progetto" />
+    <option name="LAST_COMMIT_MESSAGE" value="Inizializzazione del progetto" />
   </component>
 </project>
