@@ -5,5 +5,6 @@ public enum EnvironmentTypes {
     WALL,
     STAIR,
     BARRIER,
+    TRAP,
     CHEST;
 }

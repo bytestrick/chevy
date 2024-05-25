@@ -1,4 +1,4 @@
-package chevy.model.staticEntity.traps;
+package chevy.model.staticEntity.environment.traps;
 
 public enum TrapsTypes {
     SLUDGE,
