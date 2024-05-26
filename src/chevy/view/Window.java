@@ -11,7 +11,7 @@ public class Window extends JFrame {
 
     public Window() {
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/res/Silver.ttf"))).deriveFont(48f);
+            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/res/assets/Silver.ttf"))).deriveFont(48f);
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
             setFont(font);
         } catch (FontFormatException | IOException e) {
