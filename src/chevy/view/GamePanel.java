@@ -18,7 +18,7 @@ public class GamePanel extends JPanel {
 
     public GamePanel(Game game) {
         setBackground(Color.DARK_GRAY);
-        slime = loadSprite("/res/slime/idle.png");
+        slime = loadSprite("/res/assets/slime/idle.png");
         this.game = game;
 
         addKeyListener(new KeyboardListener(game));

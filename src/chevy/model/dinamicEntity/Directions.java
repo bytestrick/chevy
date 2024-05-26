@@ -18,4 +18,12 @@ public enum Directions {
     public Vector2<Integer> getVector2() {
         return direction;
     }
+
+    public Integer x() {
+        return direction.x();
+    }
+
+    public Integer y() {
+        return direction.y();
+    }
 }

@@ -8,8 +8,8 @@ public abstract class DynamicEntity extends Entity {
         super(initVelocity);
     }
 
-    public void changeVelocity(Vector2<Integer> velocity) {
-        getVelocity().changePosition(velocity);
+    protected void changeVelocity(Vector2<Integer> velocity) {
+        velocity.changePosition(velocity);
     }
 
     public void move(Directions direction) {
