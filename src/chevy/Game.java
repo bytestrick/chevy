@@ -1,7 +1,7 @@
 package chevy;
 
-import chevy.model.dinamicEntity.player.Archer;
-import chevy.model.dinamicEntity.player.Player;
+import chevy.model.entity.dinamicEntity.player.Archer;
+import chevy.model.entity.dinamicEntity.player.Player;
 import chevy.utilz.Vector2;
 import chevy.view.GamePanel;
 import chevy.view.Window;

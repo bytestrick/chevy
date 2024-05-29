@@ -1,7 +1,7 @@
 package chevy.control;
 
 import chevy.Game;
-import chevy.model.dinamicEntity.Directions;
+import chevy.model.entity.dinamicEntity.Directions;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

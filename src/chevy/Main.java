@@ -1,6 +1,6 @@
 package chevy;
 
-import chevy.model.world.ChamberManager;
+import chevy.model.chamber.ChamberManager;
 
 public class Main {
     public static void main(String[] args) {
