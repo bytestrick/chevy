@@ -24,10 +24,10 @@ public abstract class Entity {
 
     public int getCol() { return position.second(); }
 
-    public boolean getCrossable() { return crossable; }
+    public boolean isCrossable() { return crossable; }
 
     @Override
     public String toString() {
-        return "Entity";
+        return "ENTITY";
     }
 }
