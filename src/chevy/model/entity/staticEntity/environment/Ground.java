@@ -9,6 +9,7 @@ public class Ground extends Environment {
     public Ground(Vector2<Integer> initVelocity, GroundTypes type) {
         super(initVelocity, EnvironmentTypes.GROUND);
         this.type = type;
+        this.crossable = true;
     }
 
 

@@ -8,10 +8,10 @@ import chevy.utilz.Vector2;
 public abstract class PowerUp extends Entity {
     private final PowerUpTypes type;
 
-
     public PowerUp(Vector2<Integer> initVelocity, PowerUpTypes type) {
         super(initVelocity, StaticEntityTypes.POWER_UP);
         this.type = type;
+        this.crossable = true;
     }
 
     @Override

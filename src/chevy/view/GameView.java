@@ -1,28 +1,27 @@
-package chevy;
+package chevy.view;
 
+import chevy.model.chamber.ChamberManager;
 import chevy.model.entity.dinamicEntity.player.Archer;
 import chevy.model.entity.dinamicEntity.player.Player;
 import chevy.utilz.Vector2;
-import chevy.view.GamePanel;
-import chevy.view.Window;
 
 import java.awt.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class Game {
+public class GameView {
     private static final int FPS = 120;
     private final Window window;
+    private final GamePanel gamePanel;
     public Player player;
 
     // TODO: mostra FPS a schermo in modo condizionale
 
-    private Game() {
+    public GameView() {
         System.out.println("Starting");
         window = new Window();
-        //window.add(new Menu(window));
-        GamePanel gamePanel = new GamePanel(this);
-
+        // window.add(new Menu(window));
+        gamePanel = new GamePanel(this);
         window.add(gamePanel);
 
         player = new Archer(new Vector2<>(5, 4));
@@ -33,7 +32,11 @@ public class Game {
         }, 0, TimeUnit.SECONDS.toNanos(1) / FPS, TimeUnit.NANOSECONDS);
     }
 
-    public static void main(String[] args) {
-        new Game();
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
+
+    //    public static void main(String[] args) {
+//        new GameView();
+//    }
 }

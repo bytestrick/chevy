@@ -1,17 +1,17 @@
 package chevy.model.entity;
 
-import chevy.model.entity.EntityTypes;
 import chevy.model.entity.staticEntity.StaticEntityTypes;
 import chevy.utilz.Vector2;
 
 
 public abstract class Entity {
     private final StaticEntityTypes type;
-    protected final Vector2<Integer> velocity;
+    protected final Vector2<Integer> position;
+    protected boolean crossable = false;
 
 
     public Entity(Vector2<Integer> initVelocity, StaticEntityTypes type) {
-        this.velocity = initVelocity;
+        this.position = initVelocity;
         this.type = type;
     }
 
@@ -20,6 +20,11 @@ public abstract class Entity {
 
     public EntityTypes getGenericType() { return null; }
 
+    public int getRow() { return position.first(); }
+
+    public int getCol() { return position.second(); }
+
+    public boolean getCrossable() { return crossable; }
 
     @Override
     public String toString() {

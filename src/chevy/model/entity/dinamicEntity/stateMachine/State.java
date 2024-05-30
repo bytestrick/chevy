@@ -3,23 +3,34 @@ package chevy.model.entity.dinamicEntity.stateMachine;
 import java.util.*;
 
 public class State {
-    private final String state;
-    private final Dictionary<String, State> linkedStates = new Hashtable<>();
+    private final StateEnum stateEnum;
+    private final boolean selfLoop; // auto arco
+    private final Dictionary<StateEnum, State> linkedStates = new Hashtable<>();
 
-    public State(String state) {
-        this.state = state;
+
+    public State(StateEnum stateEnum) {
+        this.stateEnum = stateEnum;
+        this.selfLoop = false;
     }
 
-    public String getName() {
-        return state;
+    public State(StateEnum stateEnum, boolean selfLoop) {
+        this.stateEnum = stateEnum;
+        this.selfLoop = selfLoop;
+    }
+
+
+    public StateEnum getStateEnum() {
+        return stateEnum;
     }
 
     public void linkState(State state) {
-        linkedStates.put(state.getName(), state);
+        linkedStates.put(state.getStateEnum(), state);
     }
 
-    public State findState(String stateName) {
-        return linkedStates.get(stateName);
+    public State findState(StateEnum stateEnum) {
+        if (selfLoop && Objects.equals(this.stateEnum, stateEnum))
+            return this;
+        return linkedStates.get(stateEnum);
     }
 
     @Override
@@ -29,11 +40,16 @@ public class State {
 
         State state1 = (State) o;
 
-        return Objects.equals(state, state1.state);
+        return Objects.equals(stateEnum, state1.stateEnum);
     }
 
     @Override
     public int hashCode() {
-        return state.hashCode();
+        return stateEnum.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return stateEnum.toString();
     }
 }

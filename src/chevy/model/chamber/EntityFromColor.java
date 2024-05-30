@@ -1,28 +1,29 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
+import chevy.model.entity.dinamicEntity.player.Knight;
 import chevy.model.entity.staticEntity.environment.*;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.utilz.Vector2;
 
 public class EntityFromColor {
     // Wall
-    private static final int WALL_TOP = 248;
-    private static final int WALL_CORNER_INTERIOR_TOP_LEFT = 249;
-    private static final int WALL_CORNER_INTERIOR_TOP_RIGHT = 247;
     private static final int WALL_CORNER_INTERIOR_BOTTOM_LEFT = 255;
+    private static final int WALL_BOTTOM = 254;
+    private static final int WALL_RIGHT = 252;
+    private static final int WALL_LEFT = 250;
+    private static final int WALL_CORNER_INTERIOR_TOP_LEFT = 249;
+    private static final int WALL_TOP = 248;
+    private static final int WALL_CORNER_INTERIOR_TOP_RIGHT = 247;
     private static final int WALL_CORNER_INTERIOR_BOTTOM_RIGHT = 253;
     // private static final int WALL_TOP_TORCH = ;
     // private static final int WALL_TOP_HOLE = ;
     // private static final int WALL_TOP_HOLE_2 = ;
     // private static final int WALL_TOP_BROKEN = ;
-    private static final int WALL_BOTTOM = 254;
-    private static final int WALL_LEFT = 250;
-    private static final int WALL_RIGHT = 252;
-    private static final int WALL_CORNER_EXTERNAL_BOTTOM_LEFT = 244;
-    private static final int WALL_CORNER_EXTERNAL_BOTTOM_RIGHT = 243;
     private static final int WALL_CORNER_EXTERNAL_TOP_LEFT = 246;
     private static final int WALL_CORNER_EXTERNAL_TOP_RIGHT = 245;
+    private static final int WALL_CORNER_EXTERNAL_BOTTOM_LEFT = 244;
+    private static final int WALL_CORNER_EXTERNAL_BOTTOM_RIGHT = 243;
 
     // Ground
     private static final int GROUND_TOP = 241;
@@ -48,10 +49,13 @@ public class EntityFromColor {
     // Traps
     private static final int TRAP_VOID = 251;
 
+    // Players
+    private static final int KNIGHT = 1;
+
 
     public static Entity get(int r, int row, int col) {
         return switch (r) {
-            // Default wall
+            // Wall
             case WALL_TOP -> new Wall(new Vector2<>(row, col), WallTypes.TOP);
             case WALL_CORNER_INTERIOR_TOP_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_TOP_LEFT);
             case WALL_CORNER_INTERIOR_TOP_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_TOP_RIGHT);
@@ -65,7 +69,7 @@ public class EntityFromColor {
             case WALL_CORNER_EXTERNAL_TOP_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_EXTERNAL_TOP_LEFT);
             case WALL_CORNER_EXTERNAL_TOP_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_EXTERNAL_TOP_RIGHT);
 
-            // Default ground
+            // Ground
             case GROUND_TOP -> new Ground(new Vector2<>(row, col), GroundTypes.TOP);
             case GROUND_INTERIOR_CORNER_TOP_LEFT -> new Ground(new Vector2<>(row, col), GroundTypes.INTERIOR_CORNER_TOP_LEFT);
             case GROUND_INTERIOR_CORNER_TOP_RIGHT -> new Ground(new Vector2<>(row, col), GroundTypes.INTERIOR_CORNER_TOP_RIGHT);
@@ -88,6 +92,9 @@ public class EntityFromColor {
 
             // Traps
             case TRAP_VOID -> new Void(new Vector2<>(row, col));
+
+            // Player
+            case KNIGHT -> new Knight(new Vector2<>(row, col));
 
             // ---
             default -> null;

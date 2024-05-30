@@ -8,7 +8,6 @@ import chevy.utilz.Vector2;
 
 public abstract class Player extends DynamicEntity {
     private final PlayerTypes type;
-    protected final StateMachine stateMachine = new StateMachine();
 
 
     public Player(Vector2<Integer> initVelocity, PlayerTypes type) {
