@@ -5,17 +5,18 @@ public class StateMachine {
 
     public StateMachine() {}
 
-    public boolean changeState(State state) {
+    public boolean changeState(StateEnum state) {
         if (currentState == null) {
             System.out.println("Non è presente uno stato iniziale");
             return false;
         }
 
-        State nextState = currentState.findState(state.getName());
-        if (nextState != null)
+        State nextState = currentState.findState(state);
+        if (nextState != null) {
             currentState = nextState;
-
-        return currentState != null;
+            return true;
+        }
+        return false;
     }
 
     public void setInitialState(State startState) { this.currentState = startState; }

@@ -5,101 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="606c689a-13ec-4fc2-80da-676ff82b4358" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/chamber/Chamber.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/Entity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/PlayerTypes.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/Barrier.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/Chest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/Environment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/Ground.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/Stair.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/Wall.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/traps/IcyFloor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/traps/Sludge.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/traps/SpikedFloor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/traps/Totem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/traps/Trapdoor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/traps/Traps.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/traps/Void.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chevy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/chevy.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/view/GameView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chevy/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chevy/control/KeyboardListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/control/KeyboardListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/Directions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/Directions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/DynamicEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/DynamicEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/enemy/Bat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Bat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/enemy/BigSlime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/BigSlime.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/enemy/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Enemy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/enemy/EnemyTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/EnemyTypes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/enemy/Frog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Frog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/enemy/Skeleton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Skeleton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/enemy/Slime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Slime.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/enemy/Wizard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Wizard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/enemy/Zombie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Zombie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/player/Archer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Archer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/player/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Knight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/player/Ninja.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Ninja.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/dinamicEntity/player/PlayerTypes.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/DynamicEntityTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/DynamicEntityTypes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/stateMachine/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/State.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/stateMachine/StateMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/StateMachine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/Entity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/Barrier.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/Chest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/Environment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/EnvironmentTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/EnvironmentTypes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/Ground.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/OrientationTypes.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/Stair.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/Wall.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/traps/IcyFloor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/traps/Sludge.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/traps/SpikedFloor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/traps/Totem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/traps/Trapdoor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/traps/Traps.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/traps/TrapsTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/traps/TrapsTypes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/environment/traps/Void.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/Agility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/Agility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/AngelRing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/AngelRing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/BrokenArrows.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/BrokenArrows.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/Carrot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/Carrot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/CatClaw.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/CatClaw.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/CoinOfGreed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/CoinOfGreed.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/ColdHeart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/ColdHeart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/GodSIce.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/GodSIce.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/GoldArrow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/GoldArrow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/GorgonSPoison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/GorgonSPoison.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/HedgehogSpines.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/HedgehogSpines.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/HolyShield.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/HolyShield.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/HotHeart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/HotHeart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/Ignition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/Ignition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/LongSword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/LongSword.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/Milk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/Milk.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/PieceOfBone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/PieceOfBone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/PowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/PowerUp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/PowerUpTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/PowerUpTypes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/SlimePiece.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/SlimePiece.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/StoneBoots.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/StoneBoots.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/SwiftBoots.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/SwiftBoots.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/Thunderbolt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/Thunderbolt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/staticEntity/powerUp/VampireFangs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/VampireFangs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/world/Chamber.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/world/ChamberManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/chamber/ChamberManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/world/ColorToEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/chamber/EntityFromColor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/world/LoadChamber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/chamber/LoadChamber.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/settings/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/settings/Settings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/chamber/Chamber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/chamber/Chamber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/chamber/ChamberManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/chamber/ChamberManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/chamber/EntityFromColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/chamber/EntityFromColor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/chamber/LoadChamber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/chamber/LoadChamber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/chamber/TileFromEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/Directions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/DirectionsModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/DynamicEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/DynamicEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Enemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Knight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/State.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/StateMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/StateMachine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/Ground.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/environment/Ground.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/PowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/staticEntity/powerUp/PowerUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/settings/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/settings/WindowSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/utilz/Vector2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/utilz/Vector2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/view/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/view/GamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chevy/view/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/view/Window.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/res/assets/GroundWall/FreeLicense.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/res/assets/GroundWall/Set 1.1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/res/assets/GroundWall/Set 1.2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/res/assets/GroundWall/Set 1.3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/res/assets/GroundWall/Set 1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/res/assets/GroundWall/Set 3.5.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/res/assets/GroundWall/Structure.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/res/chambers/chamber1/layer0.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/res/chambers/chamber1/layer0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/res/chambers/chamber1/layer0.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/res/chambers/chamber0/layer0.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,8 +41,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="package-info" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
         <option value="Enum" />
       </list>
     </option>
@@ -165,7 +96,7 @@
   </component>
   <component name="RunManager" selected="Application.Main run">
     <configuration name="Game run" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="chevy.Game" />
+      <option name="MAIN_CLASS_NAME" value="chevy.view.GameView" />
       <module name="chevy" />
       <method v="2">
         <option name="Make" enabled="true" />

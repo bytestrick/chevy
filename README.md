@@ -1,4 +1,4 @@
-- [Assets store](https://itch.io/game-assets)
+- [Assets store](https://itch.io/gameView-assets)
 - [Linear interpolation](https://en.wikipedia.org/wiki/Linear_interpolation)
 
 

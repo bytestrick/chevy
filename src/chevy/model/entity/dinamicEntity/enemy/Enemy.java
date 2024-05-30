@@ -14,12 +14,8 @@ public abstract class Enemy extends DynamicEntity {
 
 
     @Override
-    public EntityTypes getGenericType() {
-        return super.getSpecificType();
-    }
+    public EntityTypes getSpecificType() { return type; }
 
     @Override
-    public EntityTypes getSpecificType() {
-        return type;
-    }
+    public EntityTypes getGenericType() { return super.getSpecificType(); }
 }

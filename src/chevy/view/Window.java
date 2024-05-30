@@ -1,14 +1,16 @@
 package chevy.view;
 
-import chevy.settings.Settings;
+import chevy.control.KeyboardListener;
+import chevy.settings.WindowSettings;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.Objects;
 
 public class Window extends JFrame {
-    public static final Dimension size = new Dimension(Settings.WINDOW_WIDTH, Settings.WINDOW_HEIGHT);
+    public static final Dimension size = new Dimension(WindowSettings.WINDOW_WIDTH, WindowSettings.WINDOW_HEIGHT);
     public Font font;
 
     public Window() {
@@ -19,18 +21,19 @@ public class Window extends JFrame {
         } catch (FontFormatException | IOException e) {
             throw new RuntimeException(e);
         }
+
         setTitle("Chevy");
-        setLocationRelativeTo(null);
-        setResizable(true);
+        setResizable(false);
         setSize(size);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setFocusable(true);
-        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((screen.width - size.width) / 2, (screen.height - size.height) / 2);
+//        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+//        setLocation((screen.width - size.width) / 2, (screen.height - size.height) / 2);
         setVisible(true);
         requestFocus();
 
-        Settings.SIZE_TOP_BAR = getInsets().top;
+        WindowSettings.SIZE_TOP_BAR = getInsets().top;
         System.out.println(getSize());
     }
 }
