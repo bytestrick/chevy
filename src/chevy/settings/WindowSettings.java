@@ -10,7 +10,7 @@ public class WindowSettings {
     private static final float WINDOW_SCALE = 0.8f; // da 0 a 1
 
 
-//    Questo approccio mantiene l'aspectratio deciso in precedenza.
+//    Questo approccio mantiene l'aspect-ratio impostato.
     private static final int ASPECT_RATIO_W = 4;
     private static final int ASPECT_RATIO_H = 3;
     private static final int MAX_WINDOW_SIZE = Math.round(Math.min(MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT) * WINDOW_SCALE);

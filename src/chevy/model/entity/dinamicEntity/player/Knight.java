@@ -13,6 +13,11 @@ public class Knight extends Player {
 
     public Knight(Vector2<Integer> initVelocity) {
         super(initVelocity, PlayerTypes.KNIGHT);
+        this.health = 10;
+        this.shield = 2;
+        this.maxDamage = 7;
+        this.minDamage = 5;
+
         stateMachine.setInitialState(idle);
         initStateMachine();
     }
@@ -20,6 +25,8 @@ public class Knight extends Player {
 
     private void initStateMachine() {
         idle.linkState(move);
+        idle.linkState(attack);
         move.linkState(idle);
+        attack.linkState(idle);
     }
 }

@@ -1,6 +1,7 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
+import chevy.model.entity.dinamicEntity.enemy.Bat;
 import chevy.model.entity.dinamicEntity.player.Knight;
 import chevy.model.entity.staticEntity.environment.*;
 import chevy.model.entity.staticEntity.environment.traps.Void;
@@ -16,10 +17,10 @@ public class EntityFromColor {
     private static final int WALL_TOP = 248;
     private static final int WALL_CORNER_INTERIOR_TOP_RIGHT = 247;
     private static final int WALL_CORNER_INTERIOR_BOTTOM_RIGHT = 253;
-    // private static final int WALL_TOP_TORCH = ;
-    // private static final int WALL_TOP_HOLE = ;
-    // private static final int WALL_TOP_HOLE_2 = ;
-    // private static final int WALL_TOP_BROKEN = ;
+//     private static final int WALL_TOP_TORCH = ;
+//     private static final int WALL_TOP_HOLE = ;
+//     private static final int WALL_TOP_HOLE_2 = ;
+//     private static final int WALL_TOP_BROKEN = ;
     private static final int WALL_CORNER_EXTERNAL_TOP_LEFT = 246;
     private static final int WALL_CORNER_EXTERNAL_TOP_RIGHT = 245;
     private static final int WALL_CORNER_EXTERNAL_BOTTOM_LEFT = 244;
@@ -51,6 +52,17 @@ public class EntityFromColor {
 
     // Players
     private static final int KNIGHT = 1;
+    private static final int ARCHER = 2;
+    private static final int NINJA = 3;
+
+    // Enemy
+    private static final int BAT = 150;
+    private static final int ZOMBIE = 149;
+    private static final int SLIME = 148;
+    private static final int BIG_SLIME = 147;
+    private static final int FROG = 146;
+    private static final int WIZARD = 145;
+    private static final int SKELETON = 144;
 
 
     public static Entity get(int r, int row, int col) {
@@ -95,6 +107,9 @@ public class EntityFromColor {
 
             // Player
             case KNIGHT -> new Knight(new Vector2<>(row, col));
+
+            // Enemy
+            case BAT -> new Bat(new Vector2<>(row, col));
 
             // ---
             default -> null;

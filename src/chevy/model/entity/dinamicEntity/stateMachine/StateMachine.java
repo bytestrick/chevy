@@ -11,13 +11,23 @@ public class StateMachine {
             return false;
         }
 
+        System.out.print(currentState.toString());
+
         State nextState = currentState.findState(state);
         if (nextState != null) {
             currentState = nextState;
+
+            System.out.println(" -> " + nextState);
+
             return true;
         }
+
+        System.out.println();
+
         return false;
     }
+
+    public State getCurrentState() { return currentState; }
 
     public void setInitialState(State startState) { this.currentState = startState; }
 }

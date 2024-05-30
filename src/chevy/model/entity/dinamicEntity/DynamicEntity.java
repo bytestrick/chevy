@@ -40,6 +40,6 @@ public abstract class DynamicEntity extends Entity {
 
     @Override
     public String toString() {
-        return "Dynamic Entity";
+        return "DYNAMIC ENTITY";
     }
 }

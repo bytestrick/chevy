@@ -43,23 +43,17 @@ public class Chamber {
                 && vector2.second() >= 0 && vector2.second() < nCol;
     }
 
-    private boolean canCross(Vector2<Integer> vector2) {
+    public boolean canCross(Vector2<Integer> vector2) {
         return validatePosition(vector2) &&
-                getEntityOnTop(vector2).getCrossable();
+                getEntityOnTop(vector2).isCrossable();
     }
 
-    public void movePlayer(DirectionsModel direction) {
-        Vector2<Integer> nextVelocity = new Vector2<>(
-                player.getRow() + direction.col(),
-                player.getCol() + direction.row()
-        );
-        if (canCross(nextVelocity)) {
+    public void movePlayer(Vector2<Integer> nextPosition) {
             removeEntityOnTop(player);
-            player.changePosition(nextVelocity);
+            player.changePosition(nextPosition);
             addEntityOnTop(player);
-        }
-        show();
     }
+
 
     // ------------
 
@@ -78,6 +72,7 @@ public class Chamber {
     public boolean isInitialized() { return init; }
 
     public void show() {
+        System.out.println();
         for (List<List<Entity>> r : chamber) {
             for (List<Entity> c : r) {
                 Entity onTop = getEntityOnTop(c);
@@ -89,6 +84,7 @@ public class Chamber {
             }
             System.out.println(" |");
         }
+        System.out.println();
     }
 
     public void setPlayer(Player player) { this.player = player; }
