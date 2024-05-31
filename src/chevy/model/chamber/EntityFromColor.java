@@ -1,8 +1,10 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.enemy.Bat;
-import chevy.model.entity.dinamicEntity.player.Knight;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Archer;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
 import chevy.model.entity.staticEntity.environment.*;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.utilz.Vector2;
@@ -64,6 +66,9 @@ public class EntityFromColor {
     private static final int WIZARD = 145;
     private static final int SKELETON = 144;
 
+    //
+    private static final int NULL = 0;
+
 
     public static Entity get(int r, int row, int col) {
         return switch (r) {
@@ -107,11 +112,20 @@ public class EntityFromColor {
 
             // Player
             case KNIGHT -> new Knight(new Vector2<>(row, col));
+            case ARCHER -> new Archer(new Vector2<>(row, col));
+            case NINJA -> new Ninja(new Vector2<>(row, col));
 
             // Enemy
             case BAT -> new Bat(new Vector2<>(row, col));
+            case ZOMBIE -> new Zombie(new Vector2<>(row, col));
+            case SLIME -> new Slime(new Vector2<>(row, col));
+            case BIG_SLIME -> new BigSlime(new Vector2<>(row, col));
+            case FROG -> new Frog(new Vector2<>(row, col));
+            case WIZARD -> new Wizard(new Vector2<>(row, col));
+            case SKELETON -> new Skeleton(new Vector2<>(row, col));
 
             // ---
+            case NULL -> null;
             default -> null;
         };
     }

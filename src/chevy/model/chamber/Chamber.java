@@ -1,8 +1,8 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.player.Player;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.utilz.Vector2;
 
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ public class Chamber {
     private int nCol;
     private boolean init = false;
     private Player player;
+    private List<Enemy> enemies = new ArrayList<>();
 
 
     public Chamber() {}
@@ -36,14 +37,14 @@ public class Chamber {
 
     // ----------
 
-    private boolean validatePosition(Vector2<Integer> vector2) {
+    private synchronized boolean validatePosition(Vector2<Integer> vector2) {
         if (!init)
             return false;
         return vector2.first() >= 0 && vector2.first() < nRow
                 && vector2.second() >= 0 && vector2.second() < nCol;
     }
 
-    public boolean canCross(Vector2<Integer> vector2) {
+    public synchronized boolean canCross(Vector2<Integer> vector2) {
         return validatePosition(vector2) &&
                 getEntityOnTop(vector2).isCrossable();
     }
@@ -57,17 +58,17 @@ public class Chamber {
 
     // ------------
 
-    public void removeEntityOnTop(Entity entity) { chamber.get(entity.getRow()).get(entity.getCol()).removeLast(); }
+    public synchronized void removeEntityOnTop(Entity entity) { chamber.get(entity.getRow()).get(entity.getCol()).removeLast(); }
 
-    public void addEntityOnTop(Entity entity) { chamber.get(entity.getRow()).get(entity.getCol()).add(entity); }
+    public synchronized void addEntityOnTop(Entity entity) { chamber.get(entity.getRow()).get(entity.getCol()).add(entity); }
 
-    public Entity getEntityOnTop(int row, int col) { return chamber.get(row).get(col).getLast(); }
+    public synchronized Entity getEntityOnTop(int row, int col) { return chamber.get(row).get(col).getLast(); }
 
-    public Entity getEntityOnTop(List<Entity> entities) { return entities.getLast(); }
+    public synchronized  Entity getEntityOnTop(List<Entity> entities) { return entities.getLast(); }
 
-    public Entity getEntityOnTop(Vector2<Integer> vector2) { return chamber.get(vector2.first()).get(vector2.second()).getLast(); }
+    public synchronized Entity getEntityOnTop(Vector2<Integer> vector2) { return chamber.get(vector2.first()).get(vector2.second()).getLast(); }
 
-    public List<List<List<Entity>>> getChamber() { return Collections.unmodifiableList(chamber); }
+    public synchronized List<List<List<Entity>>> getChamber() { return Collections.unmodifiableList(chamber); }
 
     public boolean isInitialized() { return init; }
 
@@ -88,6 +89,8 @@ public class Chamber {
     }
 
     public void setPlayer(Player player) { this.player = player; }
-
     public Player getPlayer() { return this.player; }
+
+    public void addEnemy(Enemy enemy) { this.enemies.add(enemy); }
+    public List<Enemy> getEnemy() { return this.enemies; }
 }

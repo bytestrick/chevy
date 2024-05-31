@@ -7,7 +7,7 @@ public class WindowSettings {
 
     private static final int MAX_WINDOW_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
     private static final int MAX_WINDOW_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
-    private static final float WINDOW_SCALE = 0.8f; // da 0 a 1
+    private static final float WINDOW_SCALE = 0.1f; // da 0 a 1
 
 
 //    Questo approccio mantiene l'aspect-ratio impostato.
@@ -24,6 +24,4 @@ public class WindowSettings {
 //    Questo approccio mantiene l'aspect-ratio dello schermo
 //    public static final int WINDOW_HEIGHT = Math.round(MAX_WINDOW_EIGHT * WINDOW_SCALE);
 //    public static final int WINDOW_WIDTH = Math.round(MAX_WINDOW_WIDTH * WINDOW_SCALE);
-
-
 }

@@ -1,8 +1,7 @@
 package chevy.view;
 
-import chevy.model.chamber.ChamberManager;
-import chevy.model.entity.dinamicEntity.player.Archer;
-import chevy.model.entity.dinamicEntity.player.Player;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Archer;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.utilz.Vector2;
 
 import java.awt.*;
