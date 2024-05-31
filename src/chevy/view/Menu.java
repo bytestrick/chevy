@@ -1,35 +1,27 @@
 package chevy.view;
 
-import javax.swing.*;
-import java.awt.*;
+import chevy.control.MenuController;
 
-public class Menu extends JPanel {
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+
+public class Menu {
+    public JPanel root;
+    private JButton play;
+    private JButton playerCycleNext;
+    private JButton playerCyclePrev;
+    private JPanel playerImage;
+    private JLabel character;
+
     public Menu(Window window) {
-        setBackground(Color.RED);
-        setAlignmentX(CENTER_ALIGNMENT);
-        setAlignmentY(CENTER_ALIGNMENT);
+        JButton[] buttons = new JButton[]{play, playerCycleNext, playerCyclePrev};
 
+        character.setFont(Window.font.deriveFont(30f));
+        play.setFont(Window.font.deriveFont(Font.BOLD, 50f));
 
-        setSize(Window.size);
-
-        BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
-        setLayout(boxLayout);
-
-        JComponent characterSelector = new JPanel();
-        add(characterSelector);
-
-
-
-        // Selettore del tipo di giocatore, ...
-        characterSelector.add(new JLabel("Archer"));
-        characterSelector.add(new JButton(">"));
-        characterSelector.add(new JButton("<"));
-
-
-
-        JButton button = new JButton("Gioca");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setAlignmentY(Component.CENTER_ALIGNMENT);
-        add(button);
+        new MenuController(window, play, playerCycleNext, playerCyclePrev);
     }
 }

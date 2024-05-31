@@ -1,36 +1,30 @@
 package chevy.view;
 
 import chevy.Game;
-import chevy.control.KeyboardListener;
+import chevy.control.GameController;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Random;
 
 public class GamePanel extends JPanel {
-    private static final Random random = new Random();
+    private final Game game;
+    private final Window window;
     private BufferedImage slime;
-    private Game game;
 
-    public GamePanel(Game game) {
-        setBackground(Color.DARK_GRAY);
-        slime = loadSprite("/res/slime/idle.png");
+    public GamePanel(Game game, Window window) {
         this.game = game;
+        this.window = window;
+        slime = loadSprite("/res/slime/idle.png");
 
-        addKeyListener(new KeyboardListener(game));
-    }
+        setBackground(Color.DARK_GRAY);
+        setSize(Window.size);
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect(0, 0, Window.size.width, Window.size.height);
-
-        g.drawImage(slime, 0, 0, null);
+        window.addKeyListener(new GameController(game, window));
     }
 
     // Da spostare in un posto più opportuno
@@ -42,5 +36,14 @@ public class GamePanel extends JPanel {
             throw new RuntimeException(e.getMessage());
         }
         return img;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(0, 0, Window.size.width, Window.size.height);
+
+        g.drawImage(slime, 0, 0, null);
     }
 }
