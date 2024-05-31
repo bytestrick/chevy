@@ -1,4 +1,4 @@
-package chevy.model.entity.dinamicEntity.player;
+package chevy.model.entity.dinamicEntity.liveEntity.player;
 
 import chevy.model.entity.EntityTypes;
 

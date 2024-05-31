@@ -1,4 +1,4 @@
-package chevy.model.entity.dinamicEntity.enemy;
+package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
 import chevy.model.entity.EntityTypes;
 

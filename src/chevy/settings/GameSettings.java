@@ -2,12 +2,12 @@ package chevy.settings;
 
 public class GameSettings {
     public static final int FPS = 60;
-    public static final long FRAME_TARGET_TIME = 1000 / FPS; // quanto deve durare un frame per avere gli FPS desiderati
-
 
 
     public static final int TILE_SIZE = 16;
     public static final int SCALE = 1;
+
+    // Da sistemare, non funziona
 //    private static int N_TILE_PER_HEIGHT = 4;
 //    private static int N_TILE_PER_WIDTH = 4;
 //    private static final int SCALE_H = WindowSettings.WINDOW_HEIGHT / TILE_SIZE * N_TILE_PER_HEIGHT;

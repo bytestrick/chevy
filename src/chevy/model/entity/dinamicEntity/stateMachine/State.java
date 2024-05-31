@@ -3,35 +3,36 @@ package chevy.model.entity.dinamicEntity.stateMachine;
 import java.util.*;
 
 public class State {
-    private final StateEnum stateEnum;
+    private final EnumState enumState;
     private final boolean selfLoop; // auto arco
-    private final Dictionary<StateEnum, State> linkedStates = new Hashtable<>();
+    private final Dictionary<EnumState, State> linkedStates = new Hashtable<>();
 
 
-    public State(StateEnum stateEnum) {
-        this.stateEnum = stateEnum;
+    public State(EnumState enumState) {
+        this.enumState = enumState;
         this.selfLoop = false;
     }
 
-    public State(StateEnum stateEnum, boolean selfLoop) {
-        this.stateEnum = stateEnum;
+    public State(EnumState enumState, boolean selfLoop) {
+        this.enumState = enumState;
         this.selfLoop = selfLoop;
     }
 
 
-    public StateEnum getStateEnum() {
-        return stateEnum;
+    public EnumState getStateEnum() {
+        return enumState;
     }
 
     public void linkState(State state) {
         linkedStates.put(state.getStateEnum(), state);
     }
 
-    public State findState(StateEnum stateEnum) {
-        if (selfLoop && Objects.equals(this.stateEnum, stateEnum))
+    public State findState(EnumState enumState) {
+        if (selfLoop && Objects.equals(this.enumState, enumState))
             return this;
-        return linkedStates.get(stateEnum);
+        return linkedStates.get(enumState);
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -40,16 +41,16 @@ public class State {
 
         State state1 = (State) o;
 
-        return Objects.equals(stateEnum, state1.stateEnum);
+        return Objects.equals(enumState, state1.enumState);
     }
 
     @Override
     public int hashCode() {
-        return stateEnum.hashCode();
+        return enumState.hashCode();
     }
 
     @Override
     public String toString() {
-        return stateEnum.toString();
+        return enumState.toString();
     }
 }

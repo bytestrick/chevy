@@ -1,6 +1,6 @@
 package chevy.model.entity.dinamicEntity.stateMachine;
 
-public enum KnightStates implements StateEnum {
+public enum PlayerStates implements EnumState {
     IDLE,
     ATTACK,
     MOVE,

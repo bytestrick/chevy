@@ -2,8 +2,7 @@ package chevy.model.entity.dinamicEntity;
 
 import chevy.model.entity.Entity;
 import chevy.model.entity.EntityTypes;
-import chevy.model.entity.dinamicEntity.stateMachine.State;
-import chevy.model.entity.dinamicEntity.stateMachine.StateEnum;
+import chevy.model.entity.dinamicEntity.stateMachine.EnumState;
 import chevy.model.entity.dinamicEntity.stateMachine.StateMachine;
 import chevy.model.entity.staticEntity.StaticEntityTypes;
 import chevy.utilz.Vector2;
@@ -13,8 +12,8 @@ public abstract class DynamicEntity extends Entity {
     protected final StateMachine stateMachine = new StateMachine();
 
 
-    public DynamicEntity(Vector2<Integer> initVelocity, DynamicEntityTypes type) {
-        super(initVelocity, StaticEntityTypes.DYNAMIC);
+    public DynamicEntity(Vector2<Integer> initPosition, DynamicEntityTypes type) {
+        super(initPosition, StaticEntityTypes.DYNAMIC);
         this.type = type;
     }
 
@@ -23,7 +22,7 @@ public abstract class DynamicEntity extends Entity {
         this.position.change(velocity);
     }
 
-    public boolean changeState(StateEnum state) {
+    public boolean changeState(EnumState state) {
         return stateMachine.changeState(state);
     }
 

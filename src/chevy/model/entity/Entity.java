@@ -10,8 +10,8 @@ public abstract class Entity {
     protected boolean crossable = false;
 
 
-    public Entity(Vector2<Integer> initVelocity, StaticEntityTypes type) {
-        this.position = initVelocity;
+    public Entity(Vector2<Integer> initPosition, StaticEntityTypes type) {
+        this.position = initPosition;
         this.type = type;
     }
 

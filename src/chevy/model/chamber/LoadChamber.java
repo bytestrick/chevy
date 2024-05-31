@@ -1,7 +1,8 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.player.Player;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -48,6 +49,9 @@ public class LoadChamber {
                         chamber.addEntityOnTop(entity);
                         if (entity instanceof Player player)
                             chamber.setPlayer(player);
+                        else if (entity instanceof Enemy enemy) {
+                            chamber.addEnemy(enemy);
+                        }
                     }
                 }
             }

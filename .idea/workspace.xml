@@ -6,17 +6,36 @@
   <component name="ChangeListManager">
     <list default="true" id="606c689a-13ec-4fc2-80da-676ff82b4358" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chevy/control/ChamberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/control/ChamberController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chevy/model/chamber/Chamber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/chamber/Chamber.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chevy/model/chamber/EntityFromColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/chamber/EntityFromColor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/chamber/LoadChamber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/chamber/LoadChamber.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/Entity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/DynamicEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/DynamicEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Bat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Bat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Enemy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Knight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/DynamicEntityTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/DynamicEntityTypes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Bat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/enemy/Bat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/BigSlime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/enemy/BigSlime.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/enemy/Enemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/EnemyTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/enemy/EnemyTypes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Frog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/enemy/Frog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Skeleton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/enemy/Skeleton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Slime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/enemy/Slime.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Wizard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/enemy/Wizard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/enemy/Zombie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/enemy/Zombie.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Archer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/player/Archer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/player/Knight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Ninja.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/player/Ninja.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/player/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/player/PlayerTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/liveEntity/player/PlayerTypes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/KnightStates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/PlayerStates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/State.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/StateEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/EnumState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/StateMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/model/entity/dinamicEntity/stateMachine/StateMachine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/settings/GameSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/settings/GameSettings.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chevy/settings/WindowSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/settings/WindowSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/view/GameView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chevy/view/GameView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chevy/view/chamber/TileFromEntity.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/res/chambers/chamber0/layer1.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/res/chambers/chamber0/layer1.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,9 +47,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="package-info" />
-        <option value="Class" />
         <option value="Interface" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -54,25 +73,25 @@
     <option name="sortByType" value="true" />
     <option name="sortKey" value="BY_TYPE" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Game run.executor": "Run",
-    "Application.Game.executor": "Run",
-    "Application.Main run.executor": "Run",
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/carli/Documents/IntelliJ IDEA/Animation",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.17987533",
-    "settings.editor.selected.configurable": "preferences.sourceCode.Java",
-    "settings.editor.splitter.proportion": "0.15673982"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Game run.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Game.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main run.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/carli/Documents/IntelliJ IDEA/Animation&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.17987533&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Java&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.15673982&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/res/assets" />
