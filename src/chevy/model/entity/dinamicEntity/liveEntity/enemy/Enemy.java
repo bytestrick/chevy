@@ -9,11 +9,18 @@ import chevy.utilz.Vector2;
 
 public abstract class Enemy extends LiveEntity {
     private final EnemyTypes type;
+    protected int updatePerSecond;
 
 
     public Enemy(Vector2<Integer> initPosition, EnemyTypes type) {
         super(initPosition, LiveEntityTypes.ENEMY);
         this.type = type;
+        this.updatePerSecond = 3;
+    }
+
+
+    public int getUpdatePerSecond() {
+        return updatePerSecond;
     }
 
 

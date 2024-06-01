@@ -15,7 +15,7 @@ public class ZombieController {
     }
 
 
-    public void playerInteraction(PlayerStates action) {
+    public void playerInteraction(PlayerStates action, int value) {
         if (zombie == null)
             return;
         // ---
@@ -23,9 +23,11 @@ public class ZombieController {
         switch (action) {
             case ATTACK -> {
                 if (zombie.changeState(ZombieStates.HIT))
-                    zombie.changeHealth(-5);
-                if (!zombie.isAlive() && zombie.changeState(ZombieStates.DEAD))
+                    zombie.changeHealth(-1 * value);
+                if (!zombie.isAlive() && zombie.changeState(ZombieStates.DEAD)) {
+                    chamber.removeEnemyFormEnemies(zombie);
                     chamber.removeEntityOnTop(zombie);
+                }
                 else
                     zombie.changeState(ZombieStates.IDLE);
             }
@@ -34,6 +36,10 @@ public class ZombieController {
 
         // ---
         zombie = null;
+    }
+
+    public void enemyUpdate(EnemyUpdateController enemyUpdateController) {
+
     }
 
     public void setZombie(Zombie zombie) {

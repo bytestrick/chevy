@@ -1,6 +1,6 @@
 package chevy.model.entity.dinamicEntity.stateMachine;
 
-public enum BatStates implements EnumState {
+public enum SlimeStates implements EnumState {
     MOVE,
     ATTACK,
     HIT,

@@ -20,4 +20,9 @@ public class Vector2<T extends Number> {
 
     public T first() { return this.a; }
     public T second() { return this.b; }
+
+    @Override
+    public String toString() {
+        return "Vector2(" + a + ", " + b + ")";
+    }
 }

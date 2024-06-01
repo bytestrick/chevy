@@ -14,6 +14,7 @@ public abstract class LiveEntity extends DynamicEntity {
     protected int shield;
     protected int maxDamage;
     protected int minDamage;
+    protected boolean flying;
     private boolean alive;
 
 
@@ -21,18 +22,20 @@ public abstract class LiveEntity extends DynamicEntity {
         super(initPosition, DynamicEntityTypes.LIVE_ENTITY);
         this.type = type;
         this.alive = true;
+        this.flying = false;
     }
 
 
     public void changeHealth(int value) {
-        this.health += value;
+        System.out.print("vita " + this + ": " + health);
 
+        this.health += value;
         if (health <= 0) {
             alive = false;
             this.health = 0;
         }
 
-        System.out.println("vita " + this.toString() + ": " + health);
+        System.out.println(" -> " + health);
     }
 
     public void changeShield(int value) {
@@ -44,8 +47,12 @@ public abstract class LiveEntity extends DynamicEntity {
         return random.nextInt(minDamage, maxDamage);
     }
 
-    public boolean isAlive() {;
+    public boolean isAlive() {
         return alive;
+    }
+
+    public boolean isFlying() {
+        return flying;
     }
 
     public EnumState getCurrentEumState() {
