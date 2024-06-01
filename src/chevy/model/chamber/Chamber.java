@@ -2,11 +2,14 @@ package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.utilz.Utilz;
 import chevy.utilz.Vector2;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Chamber {
@@ -15,7 +18,7 @@ public class Chamber {
     private int nCol;
     private boolean init = false;
     private Player player;
-    private List<Enemy> enemies = new ArrayList<>();
+    private final List<Enemy> enemies = new LinkedList<>();
 
 
     public Chamber() {}
@@ -55,8 +58,33 @@ public class Chamber {
             addEntityOnTop(player);
     }
 
+    public synchronized void spawnSlimeAroundEntity(Entity entity, int nSlime) {
+        int f = (int) System.currentTimeMillis(); // fattore che randomizza la posizione
+
+        for (int i = 0; i < 3 && nSlime > 0; ++i)
+            for (int j = 0; j < 3 && nSlime > 0; ++j) {
+                int randomI = Utilz.wrap(f + i, -1 , 1);
+                int randomJ = Utilz.wrap(f + j, -1 , 1);
+
+                if (randomI != 0 || randomJ != 0) {
+                    Vector2<Integer> spawnPosition = new Vector2<>(
+                            entity.getRow() + randomI,
+                            entity.getCol() + randomJ
+                    );
+                    if (canCross(spawnPosition)) {
+                        addEntityOnTop(new Slime(spawnPosition));
+                        --nSlime;
+                        System.out.println(spawnPosition);
+                    }
+                }
+            }
+
+    }
 
     // ------------
+    public synchronized void removeEnemyFormEnemies(Enemy enemy) {
+        enemies.remove(enemy);
+    }
 
     public synchronized void removeEntityOnTop(Entity entity) { chamber.get(entity.getRow()).get(entity.getCol()).removeLast(); }
 
@@ -77,14 +105,19 @@ public class Chamber {
         for (List<List<Entity>> r : chamber) {
             for (List<Entity> c : r) {
                 Entity onTop = getEntityOnTop(c);
-                if (onTop != null)
-                    System.out.print(" | " + onTop);
+                if (onTop != null) {
+                    String a = onTop.toString();
+                    System.out.print(" | " + a.charAt(0) + a.charAt(1));
+                }
                 else {
                     System.out.print(" | NULL");
                 }
             }
             System.out.println(" |");
         }
+        System.out.println();
+
+        System.out.println("Nemici rimanenti: " + enemies);
         System.out.println();
     }
 
