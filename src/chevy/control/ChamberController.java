@@ -1,26 +1,27 @@
 package chevy.control;
 
 import chevy.control.enemyController.EnemyController;
+import chevy.control.enemyController.EnemyUpdateController;
 import chevy.model.chamber.Chamber;
 
 import java.awt.event.KeyEvent;
 
 public class ChamberController {
-    private Chamber chamber;
-
-    private PlayerController playerController;
-    private EnemyController enemyController;
+    private final Chamber chamber;
+    private final PlayerController playerController;
+    private final EnemyController enemyController;
 
 
     public ChamberController(Chamber chamber) {
         this.chamber = chamber;
-        this.enemyController = new EnemyController(chamber);
-        this.playerController = new PlayerController(chamber, enemyController);
+        this.playerController = new PlayerController(chamber, null);
+        this.enemyController = new EnemyController(chamber, playerController);
+        playerController.setEnemyController(enemyController);
+        new EnemyUpdateController(enemyController, chamber.getEnemies());
     }
 
 
     public void keyPressed(KeyEvent keyEvent) {
         playerController.keyPressed(keyEvent);
-        chamber.show();
     }
 }

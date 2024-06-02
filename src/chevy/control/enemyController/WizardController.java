@@ -1,7 +1,6 @@
 package chevy.control.enemyController;
 
 import chevy.model.chamber.Chamber;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wizard;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 
@@ -18,7 +17,7 @@ public class WizardController {
 
     }
 
-    public void enemyUpdate(EnemyUpdateController enemyUpdateController) {
+    public void enemyUpdate() {
 
     }
 

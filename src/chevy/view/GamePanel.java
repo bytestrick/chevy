@@ -1,25 +1,29 @@
 package chevy.view;
 
-import chevy.control.KeyboardListener;
+import chevy.model.chamber.Chamber;
+import chevy.model.entity.Entity;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.EnemyTypes;
+import chevy.model.entity.dinamicEntity.liveEntity.player.PlayerTypes;
+import chevy.model.entity.staticEntity.environment.EnvironmentTypes;
+import chevy.model.entity.staticEntity.environment.WallTypes;
+import chevy.service.Render;
+import chevy.settings.GameSettings;
 
-import javax.imageio.ImageIO;
+import java.util.List;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
-import java.util.Random;
 
-public class GamePanel extends JPanel {
-    private static final Random random = new Random();
-    private BufferedImage slime;
-    private GameView gameView;
 
-    public GamePanel(GameView gameView) {
-        setBackground(Color.DARK_GRAY);
-        slime = loadSprite("/res/assets/slime/idle.png");
-        this.gameView = gameView;
+public class GamePanel extends JPanel implements Render {
+    private Chamber chamber;
+
+    public GamePanel() {}
+
+
+    public void setChamber(Chamber chamber) {
+        this.chamber = chamber;
     }
 
     public void addKeyBoardListener(KeyListener keyboardListener) {
@@ -30,20 +34,37 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-//        g.setColor(Color.DARK_GRAY);
-//        g.fillRect(0, 0, Window.size.width, Window.size.height);
-//
-//        g.drawImage(slime, 0, 0, null);
+
+        if (chamber == null)
+            return;
+
+
+        for (List<List<Entity>> r : chamber.getChamber()) {
+            for (List<Entity> c : r) {
+                Entity onTop = chamber.getEntityOnTop(c);
+                if (onTop != null) {
+                    boolean draw = true;
+                    switch (onTop.getSpecificType()) {
+                        case PlayerTypes.KNIGHT -> g.setColor(Color.RED);
+                        case EnemyTypes.BAT -> g.setColor(Color.magenta);
+                        case WallTypes.TOP -> g.setColor(Color.BLACK);
+                        case WallTypes.LEFT -> g.setColor(Color.BLACK);
+                        case WallTypes.RIGHT -> g.setColor(Color.BLACK);
+                        case WallTypes.BOTTOM -> g.setColor(Color.BLACK);
+                        default -> draw = false;
+                    }
+
+                    if (draw) {
+                        g.fillRect(onTop.getCol() * GameSettings.SCALE, onTop.getRow() * GameSettings.SCALE, GameSettings.SCALE, GameSettings.SCALE);
+                    }
+
+                }
+            }
+        }
     }
 
-    // Da spostare in un posto più opportuno
-    public static BufferedImage loadSprite(String resPath) {
-        BufferedImage img;
-        try {
-            img = ImageIO.read(Objects.requireNonNull(GamePanel.class.getResourceAsStream(resPath)));
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-        return img;
+    @Override
+    public void render() {
+        repaint();
     }
 }

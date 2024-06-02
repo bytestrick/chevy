@@ -8,7 +8,7 @@ public class StateMachine {
     public StateMachine() {}
 
 
-    public boolean changeState(EnumState state) {
+    public synchronized boolean changeState(EnumState state) {
         if (currentState == null) {
             System.out.println("Non è presente uno stato iniziale");
             return false;
@@ -30,7 +30,7 @@ public class StateMachine {
         return false;
     }
 
-    public State getCurrentState() { return currentState; }
+    public synchronized State getCurrentState() { return currentState; }
 
     public void setInitialState(State startState) { this.currentState = startState; }
 

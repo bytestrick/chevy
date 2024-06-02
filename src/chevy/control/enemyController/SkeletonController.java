@@ -2,7 +2,6 @@ package chevy.control.enemyController;
 
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
-import chevy.model.entity.dinamicEntity.stateMachine.BatStates;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 import chevy.model.entity.dinamicEntity.stateMachine.SkeletonStates;
 
@@ -46,7 +45,7 @@ public class SkeletonController {
         skeleton = null;
     }
 
-    public void enemyUpdate(EnemyUpdateController enemyUpdateController) {
+    public void enemyUpdate() {
 
     }
 

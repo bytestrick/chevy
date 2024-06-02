@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChamberManager {
-    List<Chamber> chambers = new ArrayList<>();
     private static ChamberManager instance = null;
-    private static int currentNChamber = 0;
+    List<Chamber> chambers;
+    private int currentNChamber;
 
 
-    private ChamberManager() {}
+    private ChamberManager() {
+        this.chambers = new ArrayList<>();
+        this.currentNChamber = 0;
+    }
 
 
     public static ChamberManager getInstance() {
@@ -19,10 +22,12 @@ public class ChamberManager {
     }
 
     private boolean createChamber(int n) {
+        if (n < chambers.size())
+            return true;
+
         boolean loaded = false;
         Chamber chamber = new Chamber();
         loaded = LoadChamber.loadChamber(n, chamber);
-        chamber.show();
         chambers.add(chamber);
         return loaded;
     }

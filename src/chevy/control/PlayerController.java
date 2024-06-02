@@ -1,11 +1,13 @@
 package chevy.control;
 
 import chevy.control.enemyController.EnemyController;
+import chevy.control.enemyController.InteractionType;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dinamicEntity.stateMachine.BatStates;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 import chevy.utilz.Vector2;
 
@@ -33,27 +35,39 @@ public class PlayerController {
         };
 
         if (direction != null) {
-            Vector2<Integer> currentPosition = new Vector2<>(
-                    player.getRow(),
-                    player.getCol()
-            );
-            Vector2<Integer> nextPosition = new Vector2<>(
-                    currentPosition.first() + direction.col(),
-                    currentPosition.second() + direction.row()
-            );
-            Entity entityNextCell = chamber.getEntityOnTop(nextPosition);
+            Entity entityNextCell = chamber.getNearEntity(player, direction);
 
-            if (chamber.canCross(nextPosition) && player.changeState(PlayerStates.MOVE)) {
-                chamber.movePlayer(nextPosition);
-                System.out.println("Il " + player.toString() + " si è mosso");
-            }
-            else if (entityNextCell instanceof Enemy enemy)
+            if (entityNextCell instanceof Enemy enemy) {
                 if (player.changeState(PlayerStates.ATTACK)) {
-                    enemyController.playerInteraction(enemy, (PlayerStates) player.getCurrentEumState(), player.getDamage());
-                    System.out.println("Il player ha attaccato");
+                    enemyController.handleInteraction(InteractionType.PLAYER, player, enemy);
                 }
+            }
+            else if (chamber.canCross(player, direction) && player.changeState(PlayerStates.MOVE)) {
+                chamber.moveDynamicEntity(player, direction);
+            }
+            else
+                player.changeState(PlayerStates.IDLE);
         }
+        else
+            player.changeState(PlayerStates.IDLE);
+    }
 
-        player.changeState(PlayerStates.IDLE);
+    public void enemyInteraction(Enemy enemy) {
+        switch (enemy.getCurrentEumState()) {
+            case BatStates.ATTACK -> {
+                if (player.changeState(PlayerStates.HIT))
+                    player.changeHealth(-1 * enemy.getDamage());
+                if (!player.isAlive() && player.changeState(PlayerStates.DEAD))
+                    chamber.removeEntityOnTop(player);
+                else
+                    player.changeState(PlayerStates.IDLE);
+            }
+            default -> {}
+        }
+    }
+
+    public void setEnemyController(EnemyController enemyController) {
+        if (this.enemyController == null)
+            this.enemyController = enemyController;
     }
 }

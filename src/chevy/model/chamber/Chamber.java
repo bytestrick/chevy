@@ -1,16 +1,17 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
+import chevy.model.entity.dinamicEntity.DirectionsModel;
+import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.settings.GameSettings;
+import chevy.settings.WindowSettings;
 import chevy.utilz.Utilz;
 import chevy.utilz.Vector2;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Chamber {
     private List<List<List<Entity>>> chamber;
@@ -27,6 +28,8 @@ public class Chamber {
     public void initWorld(int nRow, int nCol) {
         this.nRow = nRow;
         this.nCol = nCol;
+        GameSettings.nTileH = nRow;
+        GameSettings.nTileW = nCol;
 
         chamber = new ArrayList<>(nRow);
         for (int i = 0; i < nRow; ++i) {
@@ -40,22 +43,59 @@ public class Chamber {
 
     // ----------
 
-    private synchronized boolean validatePosition(Vector2<Integer> vector2) {
+    private boolean validatePosition(Vector2<Integer> vector2) {
         if (!init)
             return false;
         return vector2.first() >= 0 && vector2.first() < nRow
                 && vector2.second() >= 0 && vector2.second() < nCol;
     }
 
-    public synchronized boolean canCross(Vector2<Integer> vector2) {
+    public boolean canCross(DynamicEntity dynamicEntity, DirectionsModel direction) {
+        Vector2<Integer> vector2 = new Vector2<>(
+                dynamicEntity.getRow() + direction.row(),
+                dynamicEntity.getCol() + direction.col()
+        );
+
         return validatePosition(vector2) &&
                 getEntityOnTop(vector2).isCrossable();
     }
 
-    public void movePlayer(Vector2<Integer> nextPosition) {
-            removeEntityOnTop(player);
-            player.changePosition(nextPosition);
-            addEntityOnTop(player);
+    public Entity getNearEntity(DynamicEntity dynamicEntity, DirectionsModel direction) {
+        Vector2<Integer> vector2 = new Vector2<>(
+                dynamicEntity.getRow() + direction.row(),
+                dynamicEntity.getCol() + direction.col()
+        );
+        if (validatePosition(vector2))
+            return getEntityOnTop(vector2);
+        return null;
+    }
+
+    private boolean canSpawn(Vector2<Integer> vector2) {
+        return validatePosition(vector2) &&
+                getEntityOnTop(vector2).isCrossable();
+    }
+
+    public DirectionsModel getHitDirectionPlayer(Entity entity) {
+        for (DirectionsModel direction : DirectionsModel.values()) {
+            Vector2<Integer> checkPosition = new Vector2<>(
+                    entity.getRow() + direction.row(),
+                    entity.getCol() + direction.col()
+            );
+        if (validatePosition(checkPosition) && getEntityOnTop(checkPosition) instanceof Player)
+            return direction;
+        }
+        return null;
+    }
+
+    public void moveDynamicEntity(DynamicEntity dynamicEntity, DirectionsModel direction) {
+        Vector2<Integer> nextPosition = new Vector2<>(
+                dynamicEntity.getRow() + direction.row(),
+                dynamicEntity.getCol() + direction.col()
+        );
+
+        removeEntityOnTop(dynamicEntity);
+        dynamicEntity.changePosition(nextPosition);
+        addEntityOnTop(dynamicEntity);
     }
 
     public synchronized void spawnSlimeAroundEntity(Entity entity, int nSlime) {
@@ -71,10 +111,11 @@ public class Chamber {
                             entity.getRow() + randomI,
                             entity.getCol() + randomJ
                     );
-                    if (canCross(spawnPosition)) {
-                        addEntityOnTop(new Slime(spawnPosition));
+                    if (canSpawn(spawnPosition)) {
+                        Slime slime = new Slime(spawnPosition);
+                        addEnemyInEnemies(slime);
+                        addEntityOnTop(slime);
                         --nSlime;
-                        System.out.println(spawnPosition);
                     }
                 }
             }
@@ -84,6 +125,10 @@ public class Chamber {
     // ------------
     public synchronized void removeEnemyFormEnemies(Enemy enemy) {
         enemies.remove(enemy);
+    }
+
+    public synchronized void addEnemyInEnemies(Enemy enemy) {
+        enemies.addLast(enemy);
     }
 
     public synchronized void removeEntityOnTop(Entity entity) { chamber.get(entity.getRow()).get(entity.getCol()).removeLast(); }
@@ -125,5 +170,5 @@ public class Chamber {
     public Player getPlayer() { return this.player; }
 
     public void addEnemy(Enemy enemy) { this.enemies.add(enemy); }
-    public List<Enemy> getEnemy() { return this.enemies; }
+    public List<Enemy> getEnemies() { return this.enemies; }
 }

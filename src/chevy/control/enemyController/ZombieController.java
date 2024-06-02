@@ -38,7 +38,7 @@ public class ZombieController {
         zombie = null;
     }
 
-    public void enemyUpdate(EnemyUpdateController enemyUpdateController) {
+    public void enemyUpdate() {
 
     }
 

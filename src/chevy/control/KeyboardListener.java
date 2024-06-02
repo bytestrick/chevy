@@ -9,16 +9,16 @@ import java.awt.event.KeyListener;
 
 public class KeyboardListener implements KeyListener {
     private final GameView gameView;
-    private final GameModel gameModel;
     private ChamberController chamberController;
 
-    public KeyboardListener(GameModel gameModel, GameView gameView) {
-        this.gameModel = gameModel;
+
+    public KeyboardListener(GameView gameView) {
         this.gameView = gameView;
 
         // connesione delgli eventi da tastiera al GamePanel
         gameView.getGamePanel().addKeyBoardListener(this);
     }
+
 
     @Override
     public void keyTyped(KeyEvent keyEvent) {

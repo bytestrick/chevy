@@ -26,7 +26,7 @@ public abstract class LiveEntity extends DynamicEntity {
     }
 
 
-    public void changeHealth(int value) {
+    public synchronized void changeHealth(int value) {
         System.out.print("vita " + this + ": " + health);
 
         this.health += value;
@@ -38,24 +38,24 @@ public abstract class LiveEntity extends DynamicEntity {
         System.out.println(" -> " + health);
     }
 
-    public void changeShield(int value) {
+    public synchronized void changeShield(int value) {
         this.shield += value;
     }
 
-    public int getDamage() {
+    public synchronized int getDamage() {
         Random random = new Random();
-        return random.nextInt(minDamage, maxDamage);
+        return random.nextInt(minDamage, maxDamage + 1);
     }
 
-    public boolean isAlive() {
+    public synchronized boolean isAlive() {
         return alive;
     }
 
-    public boolean isFlying() {
+    public synchronized boolean isFlying() {
         return flying;
     }
 
-    public EnumState getCurrentEumState() {
+    public synchronized EnumState getCurrentEumState() {
         return stateMachine.getCurrentState().getStateEnum();
     }
 
