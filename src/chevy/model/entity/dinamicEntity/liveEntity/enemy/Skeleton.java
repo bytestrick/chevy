@@ -45,7 +45,7 @@ public class Skeleton extends Enemy {
     }
 
     @Override
-    public void changeHealth(int value) {
+    public synchronized void changeHealth(int value) {
         if (invincible) {
             invincible = false;
             System.out.println("Lo SKELETON ha perso la sua invicibilità");

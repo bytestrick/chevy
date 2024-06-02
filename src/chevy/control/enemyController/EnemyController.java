@@ -1,12 +1,16 @@
 package chevy.control.enemyController;
 
+import chevy.control.ChamberController;
+import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
+import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 
-import java.util.List;
 
 public class EnemyController {
+    private final PlayerController playerController;
     private final BatController batController;
     private final ZombieController zombieController;
     private final SlimeController slimeController;
@@ -14,89 +18,106 @@ public class EnemyController {
     private final SkeletonController skeletonController;
     private final FrogController frogController;
     private final WizardController wizardController;
-    private final List<Enemy> enemies;
 
 
-    public EnemyController(Chamber chamber) {
-        this.batController = new BatController(chamber);
+    public EnemyController(Chamber chamber, PlayerController playerController) {
+        this.playerController = playerController;
+
+        this.batController = new BatController(chamber, playerController);
         this.zombieController = new ZombieController(chamber);
         this.slimeController = new SlimeController(chamber);
         this.bigSlimeController = new BigSlimeController(chamber);
         this.skeletonController = new SkeletonController(chamber);
         this.frogController = new FrogController(chamber);
         this.wizardController = new WizardController(chamber);
-
-        this.enemies = chamber.getEnemy();
-        for (Enemy enemy : enemies)
-            new EnemyUpdateController(this, enemy);
     }
 
 
-    public void playerInteraction(Enemy enemy, PlayerStates action, int value) {
+    // subject interagisce con object
+    public synchronized void handleInteraction(InteractionType interaction, DynamicEntity subject, DynamicEntity object) {
+        switch (interaction) {
+            case PLAYER -> playerInteraction((Player) subject, (Enemy) object);
+            case UPDATE -> updateEnemy((Enemy) subject);
+        }
+    }
+
+    private void playerInteraction(Player player, Enemy enemy) {
         switch (enemy.getSpecificType()) {
-            case EnemyTypes.BAT -> {
-                batController.setBat((Bat) enemy);
-                batController.playerInteraction(action, value);
-            }
-            case EnemyTypes.ZOMBIE -> {
-                zombieController.setZombie((Zombie) enemy);
-                zombieController.playerInteraction(action, value);
-            }
-            case EnemyTypes.SKELETON -> {
-                skeletonController.setSkeleton((Skeleton) enemy);
-                skeletonController.playerInteraction(action, value);
-            }
-            case EnemyTypes.SLIME -> {
-                slimeController.setSlime((Slime) enemy);
-                slimeController.playerInteraction(action, value);
-            }
-            case EnemyTypes.WIZARD -> {
-                wizardController.setWizard((Wizard) enemy);
-                wizardController.playerInteraction(action, value);
-            }
-            case EnemyTypes.BIG_SLIME -> {
-                bigSlimeController.setBigSlime((BigSlime) enemy);
-                bigSlimeController.playerInteraction(action, value);
-            }
-            case EnemyTypes.FROG -> {
-                frogController.setFrog((Frog) enemy);
-                frogController.playerInteraction(action, value);
-            }
+            case EnemyTypes.BAT -> batController.playerInteraction(player, (Bat) enemy);
             default -> {}
         }
     }
 
-    public synchronized void enemyUpdate(EnemyUpdateController enemyUpdateController, Enemy enemy) {
+    private void updateEnemy(Enemy enemy) {
         switch (enemy.getSpecificType()) {
-            case EnemyTypes.BAT -> {
-                batController.setBat((Bat) enemy);
-                batController.enemyUpdate(enemyUpdateController);
-            }
-            case EnemyTypes.ZOMBIE -> {
-                zombieController.setZombie((Zombie) enemy);
-                zombieController.enemyUpdate(enemyUpdateController);
-            }
-            case EnemyTypes.SKELETON -> {
-                skeletonController.setSkeleton((Skeleton) enemy);
-                skeletonController.enemyUpdate(enemyUpdateController);
-            }
-            case EnemyTypes.SLIME -> {
-                slimeController.setSlime((Slime) enemy);
-                slimeController.enemyUpdate(enemyUpdateController);
-            }
-            case EnemyTypes.WIZARD -> {
-                wizardController.setWizard((Wizard) enemy);
-                wizardController.enemyUpdate(enemyUpdateController);
-            }
-            case EnemyTypes.BIG_SLIME -> {
-                bigSlimeController.setBigSlime((BigSlime) enemy);
-                bigSlimeController.enemyUpdate(enemyUpdateController);
-            }
-            case EnemyTypes.FROG -> {
-                frogController.setFrog((Frog) enemy);
-                frogController.enemyUpdate(enemyUpdateController);
-            }
+            case EnemyTypes.BAT -> batController.update((Bat) enemy);
             default -> {}
         }
     }
+
+//    private void playerInteraction(Enemy enemy, PlayerStates playerAction, int value) {
+//        switch (enemy.getSpecificType()) {
+//            case EnemyTypes.BAT -> {
+//                batController.playerInteraction((Bat) enemy, playerAction, value);
+//            }
+//            case EnemyTypes.ZOMBIE -> {
+//                zombieController.setZombie((Zombie) enemy);
+//                zombieController.playerInteraction(playerAction, value);
+//            }
+//            case EnemyTypes.SKELETON -> {
+//                skeletonController.setSkeleton((Skeleton) enemy);
+//                skeletonController.playerInteraction(playerAction, value);
+//            }
+//            case EnemyTypes.SLIME -> {
+//                slimeController.setSlime((Slime) enemy);
+//                slimeController.playerInteraction(playerAction, value);
+//            }
+//            case EnemyTypes.WIZARD -> {
+//                wizardController.setWizard((Wizard) enemy);
+//                wizardController.playerInteraction(playerAction, value);
+//            }
+//            case EnemyTypes.BIG_SLIME -> {
+//                bigSlimeController.setBigSlime((BigSlime) enemy);
+//                bigSlimeController.playerInteraction(playerAction, value);
+//            }
+//            case EnemyTypes.FROG -> {
+//                frogController.setFrog((Frog) enemy);
+//                frogController.playerInteraction(playerAction, value);
+//            }
+//            default -> {}
+//        }
+//    }
+
+//    private void enemyUpdate(Enemy enemy) {
+//        switch (enemy.getSpecificType()) {
+//            case EnemyTypes.BAT -> {
+////                batController.enemyUpdate((Bat) enemy);
+//            }
+//            case EnemyTypes.ZOMBIE -> {
+//                zombieController.setZombie((Zombie) enemy);
+//                zombieController.enemyUpdate();
+//            }
+//            case EnemyTypes.SKELETON -> {
+//                skeletonController.setSkeleton((Skeleton) enemy);
+//                skeletonController.enemyUpdate();
+//            }
+//            case EnemyTypes.SLIME -> {
+//                slimeController.setSlime((Slime) enemy);
+//                slimeController.enemyUpdate();
+//            }
+//            case EnemyTypes.WIZARD -> {
+//                wizardController.setWizard((Wizard) enemy);
+//                wizardController.enemyUpdate();
+//            }
+//            case EnemyTypes.BIG_SLIME -> {
+//                bigSlimeController.setBigSlime((BigSlime) enemy);
+//                bigSlimeController.enemyUpdate();
+//            }
+//            case EnemyTypes.FROG -> {
+//                frogController.setFrog((Frog) enemy);
+//                frogController.enemyUpdate();
+//            }
+//            default -> {}
+//        }
+//    }
 }

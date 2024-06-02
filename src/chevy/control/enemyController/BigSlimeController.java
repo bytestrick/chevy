@@ -2,8 +2,6 @@ package chevy.control.enemyController;
 
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
-import chevy.model.entity.dinamicEntity.stateMachine.BatStates;
 import chevy.model.entity.dinamicEntity.stateMachine.BigSlimeStates;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 
@@ -27,9 +25,9 @@ public class BigSlimeController {
                 if (bigSlime.changeState(BigSlimeStates.HIT))
                     bigSlime.changeHealth(-1 * value);
                 if (!bigSlime.isAlive() && bigSlime.changeState(BigSlimeStates.DEAD)) {
+                    chamber.spawnSlimeAroundEntity(bigSlime, 2);
                     chamber.removeEnemyFormEnemies(bigSlime);
                     chamber.removeEntityOnTop(bigSlime);
-                    chamber.spawnSlimeAroundEntity(bigSlime, 2);
                 }
                 else
                     bigSlime.changeState(BigSlimeStates.IDLE);
@@ -41,7 +39,7 @@ public class BigSlimeController {
         bigSlime = null;
     }
 
-    public void enemyUpdate(EnemyUpdateController enemyUpdateController) {
+    public void enemyUpdate() {
 
     }
 

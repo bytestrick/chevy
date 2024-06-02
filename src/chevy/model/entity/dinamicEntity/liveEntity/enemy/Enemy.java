@@ -1,26 +1,38 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.EntityTypes;
-import chevy.model.entity.dinamicEntity.DynamicEntityTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntityTypes;
 import chevy.utilz.Vector2;
 
 public abstract class Enemy extends LiveEntity {
     private final EnemyTypes type;
-    protected int updatePerSecond;
+    protected int updateEverySecond;
+    private int nUpdate;
 
 
     public Enemy(Vector2<Integer> initPosition, EnemyTypes type) {
         super(initPosition, LiveEntityTypes.ENEMY);
         this.type = type;
-        this.updatePerSecond = 3;
+        this.updateEverySecond = 2;
+        this.nUpdate = 0;
     }
 
 
-    public int getUpdatePerSecond() {
-        return updatePerSecond;
+    public int getUpdateEverySecond() {
+        return updateEverySecond;
+    }
+
+    public int getCurrentNUpdate() {
+        return nUpdate;
+    }
+
+    public void incrementNUpdate() {
+        ++nUpdate;
+    }
+
+    public void resetNUpdate() {
+        nUpdate = 0;
     }
 
 

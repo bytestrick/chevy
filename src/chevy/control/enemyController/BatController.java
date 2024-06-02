@@ -1,29 +1,31 @@
 package chevy.control.enemyController;
 
+import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
+import chevy.model.entity.Entity;
+import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Bat;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.stateMachine.BatStates;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
+import chevy.service.Update;
 
-public class BatController {
+public class BatController  {
     private final Chamber chamber;
-    private Bat bat;
+    private final PlayerController playerController;
 
-    public BatController(Chamber chamber) {
+
+    public BatController(Chamber chamber, PlayerController playerController) {
         this.chamber = chamber;
+        this.playerController = playerController;
     }
 
 
-    public void playerInteraction(PlayerStates action, int value) {
-        if (bat == null)
-            return;
-        // ---
-
-        switch (action) {
-            case ATTACK -> {
+    public void playerInteraction(Player player, Bat bat) {
+        switch (player.getCurrentEumState()) {
+            case PlayerStates.ATTACK -> {
                 if (bat.changeState(BatStates.HIT))
-                    bat.changeHealth(-1 * value);
+                    bat.changeHealth(-1 * player.getDamage());
                 if (!bat.isAlive() && bat.changeState(BatStates.DEAD)) {
                     chamber.removeEnemyFormEnemies(bat);
                     chamber.removeEntityOnTop(bat);
@@ -33,25 +35,23 @@ public class BatController {
             }
             default -> System.out.println("Il BatController non gestisce questa azione");
         }
-
-        // ---
-        bat = null;
     }
 
-    public void enemyUpdate(EnemyUpdateController enemyUpdateController) {
-        if (bat == null)
-            return;
-        if (!bat.isAlive()) {
-            enemyUpdateController.stop();
-            return;
+    public void update(Bat bat) {
+        DirectionsModel direction = chamber.getHitDirectionPlayer(bat);
+        if (direction == null) {
+            direction = DirectionsModel.getRandom();
+            if (chamber.canCross(bat, direction) && bat.changeState(BatStates.MOVE)) {
+                chamber.moveDynamicEntity(bat, direction);
+            }
+        }
+        else {
+            Entity entity = chamber.getNearEntity(bat, chamber.getHitDirectionPlayer(bat));
+            if (entity instanceof Player && bat.changeState(BatStates.ATTACK)) {
+                playerController.enemyInteraction(bat);
+            }
         }
 
-        System.out.println("Sono stato aggiornato");
-
-        bat = null;
-    }
-
-    public void setBat(Bat bat) {
-        this.bat = bat;
+        bat.changeState(BatStates.IDLE);
     }
 }

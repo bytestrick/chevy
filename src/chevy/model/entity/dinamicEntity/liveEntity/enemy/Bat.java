@@ -29,6 +29,7 @@ public class Bat extends Enemy {
         idle.linkState(attack);
         idle.linkState(hit);
         move.linkState(idle);
+        move.linkState(hit);
         attack.linkState(idle);
         hit.linkState(idle);
         hit.linkState(dead);

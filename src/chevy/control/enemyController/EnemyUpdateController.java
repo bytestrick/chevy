@@ -1,36 +1,38 @@
 package chevy.control.enemyController;
 
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
+import chevy.service.Update;
+import chevy.service.UpdateManager;
+import chevy.settings.GameSettings;
 
-public class EnemyUpdateController implements Runnable {
-    private final int updatePerSecond;
+import java.util.List;
+
+public class EnemyUpdateController implements Update {
     private final EnemyController enemyController;
-    private final Enemy enemy;
-    private boolean running = true;
+    private final List<Enemy> enemies;
 
 
-    public EnemyUpdateController(EnemyController enemyController, Enemy enemy) {
+    public EnemyUpdateController(EnemyController enemyController, List<Enemy> enemies) {
         this.enemyController = enemyController;
-        this.updatePerSecond = enemy.getUpdatePerSecond();
-        this.enemy = enemy;
+        this.enemies = enemies;
 
-        Thread th = new Thread(this);
-        th.start();
+        UpdateManager.addToUpdate(this);
     }
 
-    public void stop() {
-        running = false;
+
+    @Override
+    public void update(double delta) {
+        for (Enemy enemy : enemies) {
+            enemy.incrementNUpdate();
+            if (enemy.getUpdateEverySecond() * GameSettings.FPS == enemy.getCurrentNUpdate()) {
+                enemy.resetNUpdate();
+                enemyController.handleInteraction(InteractionType.UPDATE, enemy, null);
+            }
+        }
     }
 
     @Override
-    public void run() {
-        while (running) {
-            enemyController.enemyUpdate(this, enemy);
-            try {
-                Thread.sleep(updatePerSecond * 1000L);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    public boolean isEnd() {
+        return enemies.isEmpty();
     }
 }
