@@ -1,28 +1,39 @@
 package chevy.utilz;
 
 public class Vector2<T extends Number> {
-    T a;
-    T b;
+    public T first;
+    public T second;
 
-    public Vector2(T a, T b) {
-        this.a = a;
-        this.b = b;
+    public Vector2(T first, T second) {
+        this.first = first;
+        this.second = second;
     }
-
-    public void changeFirst(T a) { this.a = a; }
-
-    public void changeSecond(T b) { this.b = b; }
 
     public void change(Vector2<T> vector2) {
-        this.a = vector2.first();
-        this.b = vector2.second();
+        this.first = vector2.first;
+        this.second = vector2.second;
     }
-
-    public T first() { return this.a; }
-    public T second() { return this.b; }
 
     @Override
     public String toString() {
-        return "Vector2(" + a + ", " + b + ")";
+        return "Vector2(" + first + ", " + second + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vector2<?> vector2 = (Vector2<?>) o;
+
+        if (!first.equals(vector2.first)) return false;
+        return second.equals(vector2.second);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = first.hashCode();
+        result = 31 * result + second.hashCode();
+        return result;
     }
 }

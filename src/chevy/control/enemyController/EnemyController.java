@@ -25,7 +25,7 @@ public class EnemyController {
 
         this.batController = new BatController(chamber, playerController);
         this.zombieController = new ZombieController(chamber);
-        this.slimeController = new SlimeController(chamber);
+        this.slimeController = new SlimeController(chamber, playerController);
         this.bigSlimeController = new BigSlimeController(chamber);
         this.skeletonController = new SkeletonController(chamber);
         this.frogController = new FrogController(chamber);
@@ -44,6 +44,7 @@ public class EnemyController {
     private void playerInteraction(Player player, Enemy enemy) {
         switch (enemy.getSpecificType()) {
             case EnemyTypes.BAT -> batController.playerInteraction(player, (Bat) enemy);
+            case EnemyTypes.SLIME -> slimeController.playerInteraction(player, (Slime) enemy);
             default -> {}
         }
     }
@@ -51,15 +52,13 @@ public class EnemyController {
     private void updateEnemy(Enemy enemy) {
         switch (enemy.getSpecificType()) {
             case EnemyTypes.BAT -> batController.update((Bat) enemy);
+            case EnemyTypes.SLIME -> slimeController.update((Slime) enemy);
             default -> {}
         }
     }
 
 //    private void playerInteraction(Enemy enemy, PlayerStates playerAction, int value) {
 //        switch (enemy.getSpecificType()) {
-//            case EnemyTypes.BAT -> {
-//                batController.playerInteraction((Bat) enemy, playerAction, value);
-//            }
 //            case EnemyTypes.ZOMBIE -> {
 //                zombieController.setZombie((Zombie) enemy);
 //                zombieController.playerInteraction(playerAction, value);
@@ -67,10 +66,6 @@ public class EnemyController {
 //            case EnemyTypes.SKELETON -> {
 //                skeletonController.setSkeleton((Skeleton) enemy);
 //                skeletonController.playerInteraction(playerAction, value);
-//            }
-//            case EnemyTypes.SLIME -> {
-//                slimeController.setSlime((Slime) enemy);
-//                slimeController.playerInteraction(playerAction, value);
 //            }
 //            case EnemyTypes.WIZARD -> {
 //                wizardController.setWizard((Wizard) enemy);
@@ -90,9 +85,6 @@ public class EnemyController {
 
 //    private void enemyUpdate(Enemy enemy) {
 //        switch (enemy.getSpecificType()) {
-//            case EnemyTypes.BAT -> {
-////                batController.enemyUpdate((Bat) enemy);
-//            }
 //            case EnemyTypes.ZOMBIE -> {
 //                zombieController.setZombie((Zombie) enemy);
 //                zombieController.enemyUpdate();
