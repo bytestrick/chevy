@@ -28,10 +28,10 @@ public enum DirectionsModel {
     }
 
     public Integer col() {
-        return direction.second();
+        return direction.second;
     }
 
     public Integer row() {
-        return direction.first();
+        return direction.first;
     }
 }

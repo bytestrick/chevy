@@ -46,8 +46,8 @@ public class Chamber {
     private boolean validatePosition(Vector2<Integer> vector2) {
         if (!init)
             return false;
-        return vector2.first() >= 0 && vector2.first() < nRow
-                && vector2.second() >= 0 && vector2.second() < nCol;
+        return vector2.first >= 0 && vector2.first < nRow
+                && vector2.second >= 0 && vector2.second < nCol;
     }
 
     public boolean canCross(DynamicEntity dynamicEntity, DirectionsModel direction) {
@@ -139,7 +139,7 @@ public class Chamber {
 
     public synchronized  Entity getEntityOnTop(List<Entity> entities) { return entities.getLast(); }
 
-    public synchronized Entity getEntityOnTop(Vector2<Integer> vector2) { return chamber.get(vector2.first()).get(vector2.second()).getLast(); }
+    public synchronized Entity getEntityOnTop(Vector2<Integer> vector2) { return chamber.get(vector2.first).get(vector2.second).getLast(); }
 
     public synchronized List<List<List<Entity>>> getChamber() { return Collections.unmodifiableList(chamber); }
 

@@ -20,9 +20,9 @@ public abstract class Entity {
 
     public EntityTypes getGenericType() { return null; }
 
-    public int getRow() { return position.first(); }
+    public int getRow() { return position.first; }
 
-    public int getCol() { return position.second(); }
+    public int getCol() { return position.second; }
 
     public boolean isCrossable() { return crossable; }
 
