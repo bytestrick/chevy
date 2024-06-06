@@ -21,6 +21,8 @@ public class ChamberManager {
         return instance;
     }
 
+    // ---
+
     private boolean createChamber(int n) {
         if (n < chambers.size())
             return true;

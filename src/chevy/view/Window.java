@@ -14,32 +14,46 @@ import java.util.Objects;
 
 public class Window extends JFrame {
     public static final Dimension size = new Dimension(WindowSettings.WINDOW_WIDTH, WindowSettings.WINDOW_HEIGHT);
+    private final GamePanel gamePanel;
 
-    public Window() {
+
+    public Window(boolean resizable) {
         setTitle("Chevy");
-        setResizable(false);
+
+        setResizable(resizable);
+        if (resizable)
+            makeResponsive();
+
         setSize(size);
         setLocationRelativeTo(null);
         setBackground(Color.DARK_GRAY);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        gamePanel = new GamePanel();
+        add(gamePanel);
+
         setVisible(true);
         WindowSettings.SIZE_TOP_BAR = getInsets().top;
         requestFocus();
 
         System.out.println(size);
+    }
 
+    private void makeResponsive() {
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent componentEvent) {
+                WindowSettings.WINDOW_HEIGHT = getHeight();
+                WindowSettings.WINDOW_WIDTH = getWidth();
 
-        // Rende la finestra responsive
-//        this.addComponentListener(new ComponentAdapter() {
-//            public void componentResized(ComponentEvent componentEvent) {
-//                WindowSettings.WINDOW_HEIGHT = getHeight();
-//                WindowSettings.WINDOW_WIDTH = getWidth();
-//
-//                GameSettings.SCALE_H = (float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR) / GameSettings.nTileH;
-//                GameSettings.SCALE_W = (float) WindowSettings.WINDOW_WIDTH / GameSettings.nTileW;
-//
-//                GameSettings.SCALE = (int) Math.min(GameSettings.SCALE_H, GameSettings.SCALE_W);
-//            }
-//        });
+                GameSettings.SCALE_H = (float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR) / GameSettings.nTileH;
+                GameSettings.SCALE_W = (float) WindowSettings.WINDOW_WIDTH / GameSettings.nTileW;
+
+                GameSettings.SCALE = (int) Math.min(GameSettings.SCALE_H, GameSettings.SCALE_W);
+            }
+        });
+    }
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
 }

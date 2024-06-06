@@ -7,6 +7,8 @@ import chevy.model.entity.dinamicEntity.stateMachine.StateMachine;
 import chevy.model.entity.staticEntity.StaticEntityTypes;
 import chevy.utilz.Vector2;
 
+import javax.management.modelmbean.ModelMBean;
+
 public abstract class DynamicEntity extends Entity {
     private final DynamicEntityTypes type;
     protected final StateMachine stateMachine = new StateMachine();

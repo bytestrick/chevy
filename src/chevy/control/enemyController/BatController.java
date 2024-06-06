@@ -8,7 +8,6 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Bat;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.stateMachine.BatStates;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
-import chevy.service.Update;
 
 public class BatController  {
     private final Chamber chamber;
@@ -21,7 +20,7 @@ public class BatController  {
     }
 
 
-    public void playerInteraction(Player player, Bat bat) {
+    public void playerInInteraction(Player player, Bat bat) {
         switch (player.getCurrentEumState()) {
             case PlayerStates.ATTACK -> {
                 if (bat.changeState(BatStates.HIT))

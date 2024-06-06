@@ -15,7 +15,7 @@ public class ZombieController {
     }
 
 
-    public void playerInteraction(PlayerStates action, int value) {
+    public void playerInInteraction(PlayerStates action, int value) {
         if (zombie == null)
             return;
         // ---

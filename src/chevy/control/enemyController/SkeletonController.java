@@ -14,7 +14,7 @@ public class SkeletonController {
         this.chamber = chamber;
     }
 
-    public void playerInteraction(PlayerStates action, int value) {
+    public void playerInInteraction(PlayerStates action, int value) {
         if (skeleton == null)
             return;
         // ---
