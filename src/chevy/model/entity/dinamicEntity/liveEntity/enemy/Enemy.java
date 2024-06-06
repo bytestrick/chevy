@@ -14,7 +14,7 @@ public abstract class Enemy extends LiveEntity {
     public Enemy(Vector2<Integer> initPosition, EnemyTypes type) {
         super(initPosition, LiveEntityTypes.ENEMY);
         this.type = type;
-        this.updateEverySecond = 2;
+        this.updateEverySecond = 3;
         this.nUpdate = 0;
     }
 

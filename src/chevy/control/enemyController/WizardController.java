@@ -13,7 +13,7 @@ public class WizardController {
         this.chamber = chamber;
     }
 
-    public void playerInteraction(PlayerStates action, int value) {
+    public void playerInInteraction(PlayerStates action, int value) {
 
     }
 

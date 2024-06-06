@@ -1,6 +1,7 @@
 package chevy.control.enemyController;
 
 public enum InteractionType {
+    PLAYER_IN,
     PLAYER,
-    UPDATE
+    PLAYER_OUT, UPDATE
 }

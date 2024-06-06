@@ -1,4 +1,4 @@
-package chevy.model.PathFinding;
+package chevy.model.pathFinding;
 
 import chevy.utilz.Vector2;
 

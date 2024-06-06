@@ -3,8 +3,6 @@ package chevy.control;
 import chevy.model.GameModel;
 import chevy.view.GameView;
 
-import java.awt.event.KeyListener;
-
 public class GameController {
     private final GameModel gameModel;
     private final GameView gameView;
@@ -17,7 +15,7 @@ public class GameController {
         this.gameView = gameView;
         this.keyboardListener = new KeyboardListener(gameView);
 
-        this.gameView.getGamePanel().setChamber(gameModel.getCurrentChamber());
+        this.gameView.getWindow().getGamePanel().setChamber(this.gameModel.getCurrentChamber());
         initChamberController();
     }
 

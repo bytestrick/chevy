@@ -1,12 +1,10 @@
 package chevy.control.enemyController;
 
-import chevy.control.ChamberController;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 
 
 public class EnemyController {
@@ -36,15 +34,16 @@ public class EnemyController {
     // subject interagisce con object
     public synchronized void handleInteraction(InteractionType interaction, DynamicEntity subject, DynamicEntity object) {
         switch (interaction) {
-            case PLAYER -> playerInteraction((Player) subject, (Enemy) object);
+            case PLAYER_IN -> playerInInteraction((Player) subject, (Enemy) object);
             case UPDATE -> updateEnemy((Enemy) subject);
         }
     }
 
-    private void playerInteraction(Player player, Enemy enemy) {
+    private void playerInInteraction(Player player, Enemy enemy) {
         switch (enemy.getSpecificType()) {
-            case EnemyTypes.BAT -> batController.playerInteraction(player, (Bat) enemy);
-            case EnemyTypes.SLIME -> slimeController.playerInteraction(player, (Slime) enemy);
+            case EnemyTypes.BAT -> batController.playerInInteraction(player, (Bat) enemy);
+            case EnemyTypes.SLIME -> slimeController.playerInInteraction(player, (Slime) enemy);
+            case EnemyTypes.BIG_SLIME -> bigSlimeController.playerInInteraction(player, (BigSlime) enemy);
             default -> {}
         }
     }

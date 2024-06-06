@@ -12,8 +12,6 @@ public abstract class LiveEntity extends DynamicEntity {
     private final LiveEntityTypes type;
     protected int health;
     protected int shield;
-    protected int maxDamage;
-    protected int minDamage;
     protected boolean flying;
     private boolean alive;
 
@@ -40,11 +38,6 @@ public abstract class LiveEntity extends DynamicEntity {
 
     public synchronized void changeShield(int value) {
         this.shield += value;
-    }
-
-    public synchronized int getDamage() {
-        Random random = new Random();
-        return random.nextInt(minDamage, maxDamage + 1);
     }
 
     public synchronized boolean isAlive() {

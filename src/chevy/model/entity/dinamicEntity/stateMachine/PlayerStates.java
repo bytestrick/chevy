@@ -4,5 +4,7 @@ public enum PlayerStates implements EnumState {
     IDLE,
     ATTACK,
     MOVE,
-    DEAD, HIT
+    DEAD,
+    HIT,
+    SLUDGE, FALL, GLIDE
 }

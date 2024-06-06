@@ -1,4 +1,4 @@
-package chevy.model.PathFinding;
+package chevy.model.pathFinding;
 
 /**
  * Contiene informazioni sul nodo (row, col)

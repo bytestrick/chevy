@@ -12,11 +12,12 @@ public abstract class Traps extends Environment {
     public Traps(Vector2<Integer> initVelocity, TrapsTypes type) {
         super(initVelocity, EnvironmentTypes.TRAP);
         this.type = type;
+        this.crossable = true;
     }
 
 
     @Override
-    public TrapsTypes getSpecificType() {
+    public EntityTypes getSpecificType() {
         return type;
     }
 
