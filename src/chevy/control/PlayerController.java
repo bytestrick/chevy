@@ -67,7 +67,12 @@ public class PlayerController {
                     }
                     trapsController.handleInteraction(InteractionType.PLAYER_IN, player, (Traps) entityNextCell);
                 }
-                default -> {}
+                default -> {
+                    if (chamber.canCross(player, direction) && player.changeState(PlayerStates.MOVE)) {
+                        chamber.moveDynamicEntity(player, direction);
+                        player.changeState(PlayerStates.IDLE);
+                    }
+                }
             }
 
         // gestione dello scivolamento
@@ -82,18 +87,11 @@ public class PlayerController {
             }
             player.changeState(PlayerStates.IDLE);
         }
-        else if (chamber.canCross(player, direction) && player.changeState(PlayerStates.MOVE)) {
-            chamber.moveDynamicEntity(player, direction);
-            player.changeState(PlayerStates.IDLE);
-        }
 
         if (player.getCurrentEumState() == PlayerStates.FALL) {
                 chamber.moveDynamicEntity(player, direction.getOpposite());
                 player.changeState(PlayerStates.IDLE);
         }
-
-        player.changeState(PlayerStates.IDLE);
-
 
         // Player out
         if (entityCurrentCell != null)

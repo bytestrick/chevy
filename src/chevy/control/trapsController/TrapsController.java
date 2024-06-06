@@ -44,6 +44,7 @@ public class TrapsController {
             case TrapsTypes.SLUDGE -> sludgeController.playerInInteraction(player, (Sludge) traps);
             case TrapsTypes.ICY_FLOOR -> icyFloorController.playerInInteraction(player);
             case TrapsTypes.VOID -> voidController.playerInInteraction(player, (Void) traps);
+            case TrapsTypes.TRAPDOOR -> trapdoorController.playerInInteraction(player);
             default -> {}
         }
     }

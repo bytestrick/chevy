@@ -46,5 +46,6 @@ public class Knight extends Player {
         glide.linkState(fall);
         sludge.linkState(idle);
         fall.linkState(idle);
+        fall.linkState(dead);
     }
 }

@@ -11,6 +11,8 @@ public class VoidController {
     public void playerInInteraction(Player player, Void v) {
         if (player.changeState(PlayerStates.FALL)) {
             player.changeHealth(-1 * v.getDamage());
+            if (!player.isAlive())
+                player.changeState(PlayerStates.DEAD);
         }
     }
 }
