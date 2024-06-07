@@ -28,6 +28,10 @@ public abstract class DynamicEntity extends Entity {
         return stateMachine.changeState(state);
     }
 
+    public boolean changeToPreviousState() {
+        return stateMachine.changeToPreviousState();
+    }
+
 
     @Override
     public EntityTypes getSpecificType() {

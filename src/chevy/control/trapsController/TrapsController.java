@@ -13,6 +13,8 @@ public class TrapsController {
     private final IcyFloorController icyFloorController;
     private final VoidController voidController;
     private final TrapdoorController trapdoorController;
+    private final SpikedFloorController spikedFloorController;
+    private final TotemController totemController;
 
 
     public TrapsController(Chamber chamber) {
@@ -20,15 +22,17 @@ public class TrapsController {
         this.icyFloorController = new IcyFloorController();
         this.voidController = new VoidController();
         this.trapdoorController = new TrapdoorController(chamber);
+        this.spikedFloorController = new SpikedFloorController(chamber);
+        this.totemController = new TotemController(chamber);
     }
 
 
-    public synchronized void handleInteraction(InteractionType interaction, DynamicEntity subject, Entity object) {
+    public synchronized void handleInteraction(InteractionType interaction, Entity subject, Entity object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, (Traps) object);
             case PLAYER_OUT -> playerOutInteraction((Player) subject, (Traps) object);
             case PLAYER -> playerInteraction((Player) subject, (Traps) object);
-            case UPDATE -> updateTraps((Traps) object);
+            case UPDATE -> updateTraps((Traps) subject);
         }
     }
 
@@ -45,6 +49,7 @@ public class TrapsController {
             case TrapsTypes.ICY_FLOOR -> icyFloorController.playerInInteraction(player);
             case TrapsTypes.VOID -> voidController.playerInInteraction(player, (Void) traps);
             case TrapsTypes.TRAPDOOR -> trapdoorController.playerInInteraction(player);
+            case TrapsTypes.SPIKED_FLOOR -> spikedFloorController.playerInInteraction(player);
             default -> {}
         }
     }
@@ -57,7 +62,11 @@ public class TrapsController {
         }
     }
 
-    private void updateTraps(Traps traps) {
-
+    private void updateTraps(Traps trap) {
+        switch (trap.getSpecificType()) {
+            case TrapsTypes.SPIKED_FLOOR -> spikedFloorController.update((SpikedFloor) trap);
+            case TrapsTypes.TOTEM -> totemController.update((Totem) trap);
+            default -> {}
+        }
     }
 }

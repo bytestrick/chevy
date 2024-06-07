@@ -21,7 +21,7 @@ public class SludgeController {
     public void playerInteraction(Player player, Sludge sludge) {
         if (sludge.getNMoveToUnlock() <= 0) {
             player.changeState(PlayerStates.IDLE);
-            chamber.removeEntityOnTop(sludge);
+            chamber.findAndRemoveEntity(sludge);
             return;
         }
 
