@@ -2,6 +2,7 @@ package chevy.model.entity.dinamicEntity.stateMachine;
 
 public class StateMachine {
     private State currentState;
+    private State previousState;
     private String stateMachineName; // solo per capire di chi è la stampa
 
 
@@ -18,6 +19,7 @@ public class StateMachine {
 
         State nextState = currentState.findState(state);
         if (nextState != null) {
+            previousState = currentState;
             currentState = nextState;
 
             System.out.println(" -> " + nextState);
@@ -28,6 +30,10 @@ public class StateMachine {
         System.out.println();
 
         return false;
+    }
+
+    public synchronized boolean changeToPreviousState() {
+        return changeState(previousState.getStateEnum());
     }
 
     public synchronized State getCurrentState() { return currentState; }

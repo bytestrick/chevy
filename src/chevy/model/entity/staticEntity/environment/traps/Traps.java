@@ -9,6 +9,7 @@ public abstract class Traps extends Environment {
     private final TrapsTypes type;
 
 
+
     public Traps(Vector2<Integer> initVelocity, TrapsTypes type) {
         super(initVelocity, EnvironmentTypes.TRAP);
         this.type = type;

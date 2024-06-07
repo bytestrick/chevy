@@ -9,6 +9,7 @@ import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntityTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 import chevy.model.entity.staticEntity.environment.EnvironmentTypes;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
@@ -39,8 +40,25 @@ public class PlayerController {
         };
 
         if (direction != null) {
-            keyBoardInteraction(direction);
+            handleInteraction(InteractionType.KEYBOARD, direction, null);
         }
+    }
+
+    public synchronized void handleInteraction(InteractionType interaction, Object subject, Entity object) {
+        switch (interaction) {
+            case KEYBOARD -> keyBoardInteraction((DirectionsModel) subject);
+            case ENEMY -> enemyInteraction((Enemy) subject);
+            case PROJECTILE -> projectileInteraction((Projectile) subject);
+        }
+    }
+
+    private void projectileInteraction(Projectile projectile) {
+        if (player.changeState(PlayerStates.HIT))
+            player.changeHealth(-1 * projectile.getDamage());
+        if (!player.isAlive() && player.changeState(PlayerStates.DEAD))
+            chamber.removeEntityOnTop(player);
+        else
+            player.changeState(PlayerStates.IDLE);
     }
 
     private void keyBoardInteraction(DirectionsModel direction) {
@@ -109,6 +127,7 @@ public class PlayerController {
         else
             player.changeState(PlayerStates.IDLE);
     }
+
 
     public void setEnemyController(EnemyController enemyController) {
         if (this.enemyController == null)

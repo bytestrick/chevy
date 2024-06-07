@@ -13,13 +13,33 @@ public abstract class Entity {
     protected int minDamage;
     protected final Vector2<Integer> position;
     protected boolean crossable = false;
+    protected int updateEverySecond;
+    private int nUpdate;
 
 
     public Entity(Vector2<Integer> initPosition, StaticEntityTypes type) {
         this.position = initPosition;
         this.type = type;
+        this.updateEverySecond = 3;
+        this.nUpdate = 0;
     }
 
+
+    public int getUpdateEverySecond() {
+        return updateEverySecond;
+    }
+
+    public int getCurrentNUpdate() {
+        return nUpdate;
+    }
+
+    public void incrementNUpdate() {
+        ++nUpdate;
+    }
+
+    public void resetNUpdate() {
+        nUpdate = 0;
+    }
 
     public synchronized int getDamage() {
         Random random = new Random();

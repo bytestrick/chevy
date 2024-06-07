@@ -6,6 +6,7 @@ import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Traps;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.settings.GameSettings;
@@ -21,6 +22,8 @@ public class Chamber {
     private boolean init = false;
     private Player player;
     private final List<Enemy> enemies = new LinkedList<>();
+    private final List<Traps> traps = new LinkedList<>();
+    private final List<Projectile> projectiles = new LinkedList<>();
 
 
     public Chamber() {}
@@ -34,9 +37,9 @@ public class Chamber {
 
         chamber = new ArrayList<>(nRow);
         for (int i = 0; i < nRow; ++i) {
-            List<List<Entity>> row = new ArrayList<>(nCol);
+            List<List<Entity>> row = new LinkedList<>();
             for (int j = 0; j < nCol; ++j)
-                row.add(new ArrayList<>());
+                row.add(new LinkedList<>());
             chamber.add(row);
         }
         init = true;
@@ -58,7 +61,16 @@ public class Chamber {
                 && col >= 0 && col < nCols;
     }
 
-    public boolean canCross(DynamicEntity dynamicEntity, DirectionsModel direction) {
+    public boolean validatePosition(Entity entity, DirectionsModel direction) {
+        Vector2<Integer> vector2 = new Vector2<>(
+                entity.getRow() + direction.row(),
+                entity.getCol() + direction.col()
+        );
+
+        return validatePosition(vector2);
+    }
+
+    public synchronized boolean canCross(DynamicEntity dynamicEntity, DirectionsModel direction) {
         Vector2<Integer> vector2 = new Vector2<>(
                 dynamicEntity.getRow() + direction.row(),
                 dynamicEntity.getCol() + direction.col()
@@ -83,7 +95,7 @@ public class Chamber {
                 getEntityOnTop(vector2).isCrossable();
     }
 
-    public Entity getNearEntity(DynamicEntity dynamicEntity, DirectionsModel direction) {
+    public synchronized Entity getNearEntity(DynamicEntity dynamicEntity, DirectionsModel direction) {
         Vector2<Integer> vector2 = new Vector2<>(
                 dynamicEntity.getRow() + direction.row(),
                 dynamicEntity.getCol() + direction.col()
@@ -93,14 +105,14 @@ public class Chamber {
         return null;
     }
 
-    private boolean canSpawn(Vector2<Integer> vector2) {
+    private synchronized boolean canSpawn(Vector2<Integer> vector2) {
         Entity onTop = getEntityOnTop(vector2);
         return validatePosition(vector2) &&
                 onTop.isCrossable() &&
                 !(onTop instanceof Void);
     }
 
-    public DirectionsModel getHitDirectionPlayer(Entity entity) {
+    public synchronized DirectionsModel getHitDirectionPlayer(Entity entity) {
         for (DirectionsModel direction : DirectionsModel.values()) {
             Vector2<Integer> checkPosition = new Vector2<>(
                     entity.getRow() + direction.row(),
@@ -112,24 +124,37 @@ public class Chamber {
         return null;
     }
 
-    public void moveDynamicEntity(DynamicEntity dynamicEntity, DirectionsModel direction) {
+    public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity, DirectionsModel direction) {
         Vector2<Integer> nextPosition = new Vector2<>(
                 dynamicEntity.getRow() + direction.row(),
                 dynamicEntity.getCol() + direction.col()
         );
 
-        removeEntityOnTop(dynamicEntity);
+        findAndRemoveEntity(dynamicEntity);
         dynamicEntity.changePosition(nextPosition);
         addEntityOnTop(dynamicEntity);
     }
 
-    public void moveDynamicEntity(DynamicEntity dynamicEntity, Vector2<Integer> nextPosition) {
+    public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity, Vector2<Integer> nextPosition) {
         DirectionsModel direction = DirectionsModel.directionToPosition(
                 new Vector2<>(dynamicEntity.getRow(), dynamicEntity.getCol()),
                 nextPosition
         );
         if (direction != null)
             moveDynamicEntity(dynamicEntity, direction);
+    }
+
+    public synchronized boolean findAndRemoveEntity(Entity entity) {
+        List<Entity> entities = chamber.get(entity.getRow()).get(entity.getCol());
+        ListIterator<Entity> it = entities.listIterator(entities.size());
+        while (it.hasPrevious()) {
+            Entity entity2 = it.previous();
+            if (entity.equals(entity2)) {
+                it.remove();
+                return true;
+            }
+        }
+        return false;
     }
 
     public synchronized void spawnSlimeAroundEntity(Entity entity, int nSlime) {
@@ -190,6 +215,10 @@ public class Chamber {
 
     public synchronized Entity getEntityOnTop(Vector2<Integer> vector2) { return chamber.get(vector2.first).get(vector2.second).getLast(); }
 
+    public synchronized Entity getEntityOnTop(Entity entity) {
+        return getEntityOnTop(new Vector2<>(entity.getRow(), entity.getCol()));
+    }
+
     public synchronized Entity getEntityBelowTheTop(Entity entity) {
         List<Entity> entities = chamber.get(entity.getRow()).get(entity.getCol());
         return entities.get(entities.size() - 2);
@@ -223,7 +252,6 @@ public class Chamber {
     public int getNRows() {
         return nRows;
     }
-
     public int getNCols() {
         return nCols;
     }
@@ -233,4 +261,11 @@ public class Chamber {
 
     public void addEnemy(Enemy enemy) { this.enemies.add(enemy); }
     public List<Enemy> getEnemies() { return this.enemies; }
+
+    public void addTraps(Traps trap) { traps.add(trap); }
+    public List<Traps> getTraps() { return traps; }
+
+    public void addProjectile(Projectile projectile) { projectiles.add(projectile); }
+    public List<Projectile> getProjectiles() { return projectiles; }
+    public void removeFromProjectiles(Projectile projectile) { projectiles.remove(projectile); }
 }

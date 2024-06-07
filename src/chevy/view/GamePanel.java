@@ -4,6 +4,7 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.EnemyTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.player.PlayerTypes;
+import chevy.model.entity.dinamicEntity.projectile.ProjectileTypes;
 import chevy.model.entity.staticEntity.environment.EnvironmentTypes;
 import chevy.model.entity.staticEntity.environment.WallTypes;
 import chevy.model.entity.staticEntity.environment.traps.TrapsTypes;
@@ -56,14 +57,16 @@ public class GamePanel extends JPanel implements Render {
                             case TrapsTypes.VOID -> g.setColor(Color.BLACK);
                             case TrapsTypes.ICY_FLOOR -> g.setColor(Color.CYAN);
                             case TrapsTypes.SLUDGE -> g.setColor(Color.BLUE);
-                            case TrapsTypes.TRAPDOOR -> g.setColor(Color.lightGray);
+                            case TrapsTypes.TRAPDOOR -> g.setColor(Color.LIGHT_GRAY);
+                            case TrapsTypes.SPIKED_FLOOR -> g.setColor(Color.GRAY);
+                            case TrapsTypes.TOTEM -> g.setColor(Color.ORANGE);
+                            case ProjectileTypes.ARROW -> g.setColor(Color.WHITE);
                             default -> draw = false;
                         }
 
                         if (draw) {
                             g.fillRect(onTop.getCol() * GameSettings.SCALE, onTop.getRow() * GameSettings.SCALE, GameSettings.SCALE, GameSettings.SCALE);
                         }
-
                         draw = true;
 
                         switch (onTop.getGenericType()) {
