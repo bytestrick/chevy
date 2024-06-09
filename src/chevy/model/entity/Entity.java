@@ -17,16 +17,32 @@ public abstract class Entity {
     protected boolean crossable;
     protected float updateEverySecond;
     private int nUpdate;
+    protected int layer;
+    private boolean toDraw;
 
 
     public Entity(Vector2<Integer> initPosition, StaticEntityTypes type) {
         this.position = initPosition;
         this.type = type;
+
+        this.updateEverySecond = 0;
         this.nUpdate = 0;
+
         this.crossable = false;
         this.safeToCross = true;
+
+        this.layer = 0;
+        this.toDraw = true;
     }
 
+
+    public boolean isToDraw() {
+        return toDraw;
+    }
+
+    public void setToDraw(boolean toDraw) {
+        this.toDraw = toDraw;
+    }
 
     public float getUpdateEverySecond() {
         return updateEverySecond;
@@ -64,6 +80,10 @@ public abstract class Entity {
             return safeToCross;
 
         return false;
+    }
+
+    public int getLayer() {
+        return Math.abs(this.layer);
     }
 
     @Override
