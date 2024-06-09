@@ -7,6 +7,7 @@ import chevy.utilz.Vector2;
 
 public abstract class Traps extends Environment {
     private final TrapsTypes type;
+    protected boolean canHitFlingEntity;
 
 
 
@@ -14,6 +15,7 @@ public abstract class Traps extends Environment {
         super(initVelocity, EnvironmentTypes.TRAP);
         this.type = type;
         this.crossable = true;
+        this.canHitFlingEntity = false;
     }
 
 

@@ -1,9 +1,9 @@
 package chevy.control.trapsController;
 
-import chevy.control.enemyController.InteractionType;
+import chevy.control.InteractionType;
+import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.*;
 import chevy.model.entity.staticEntity.environment.traps.Void;
@@ -17,10 +17,10 @@ public class TrapsController {
     private final TotemController totemController;
 
 
-    public TrapsController(Chamber chamber) {
+    public TrapsController(Chamber chamber, PlayerController playerController) {
         this.sludgeController = new SludgeController(chamber);
-        this.icyFloorController = new IcyFloorController();
-        this.voidController = new VoidController();
+        this.icyFloorController = new IcyFloorController(playerController);
+        this.voidController = new VoidController(playerController);
         this.trapdoorController = new TrapdoorController(chamber);
         this.spikedFloorController = new SpikedFloorController(chamber);
         this.totemController = new TotemController(chamber);
@@ -46,7 +46,7 @@ public class TrapsController {
     private void playerInInteraction(Player player, Traps traps) {
         switch (traps.getSpecificType()) {
             case TrapsTypes.SLUDGE -> sludgeController.playerInInteraction(player, (Sludge) traps);
-            case TrapsTypes.ICY_FLOOR -> icyFloorController.playerInInteraction(player);
+            case TrapsTypes.ICY_FLOOR -> icyFloorController.playerInInteraction(player, (IcyFloor) traps);
             case TrapsTypes.VOID -> voidController.playerInInteraction(player, (Void) traps);
             case TrapsTypes.TRAPDOOR -> trapdoorController.playerInInteraction(player);
             case TrapsTypes.SPIKED_FLOOR -> spikedFloorController.playerInInteraction(player);
@@ -57,7 +57,6 @@ public class TrapsController {
     private void playerInteraction(Player player, Traps traps) {
         switch (traps.getSpecificType()) {
             case TrapsTypes.SLUDGE -> sludgeController.playerInteraction(player, (Sludge) traps);
-            case TrapsTypes.ICY_FLOOR -> icyFloorController.playerInInteraction(player);
             default -> {}
         }
     }

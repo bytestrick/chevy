@@ -2,11 +2,11 @@ package chevy.control.projectileController;
 
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
-import chevy.control.enemyController.InteractionType;
+import chevy.control.InteractionType;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntityTypes;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 
 public class ArrowController {
@@ -22,41 +22,29 @@ public class ArrowController {
     }
 
 
-    private boolean checkCollision(Projectile projectile) {
-        Entity[] currentEntity = {
-                chamber.getEntityBelowTheTop(projectile),
-                chamber.getEntityOnTop(projectile)
-        };
-        int cont = 0;
-
-        for (Entity c : currentEntity) {
-            switch (c.getGenericType()) {
-                case LiveEntityTypes.PLAYER ->
-                    playerController.handleInteraction(InteractionType.PROJECTILE, projectile, (Player) c);
-                case LiveEntityTypes.ENEMY -> {
-                }
-                default -> ++cont;
-            }
-        }
-        return cont != currentEntity.length;
+    public void playerInInteraction(Projectile projectile) {
+        chamber.findAndRemoveEntity(projectile);
+        playerController.handleInteraction(InteractionType.PROJECTILE, projectile);
+        projectile.setCollide(true);
     }
 
-
     public void update(Projectile projectile) {
-        boolean remove = checkCollision(projectile);
+        Entity nextEntity = chamber.getNearEntityOnTop(projectile, projectile.getDirection());
 
-        if (!remove && chamber.canCross(projectile, projectile.getDirection())) {
+        switch (nextEntity.getGenericType()) {
+            case LiveEntityTypes.PLAYER ->
+                    playerController.handleInteraction(InteractionType.PROJECTILE, projectile);
+            case LiveEntityTypes.ENEMY ->
+                    enemyController.handleInteraction(InteractionType.PROJECTILE, projectile, (Enemy) nextEntity);
+            default -> {}
+        }
+
+        if (nextEntity.isCrossable()) {
             chamber.moveDynamicEntity(projectile, projectile.getDirection());
         }
-        else if (!remove) {
-            chamber.moveDynamicEntity(projectile, projectile.getDirection());
-            checkCollision(projectile);
-            remove = true;
-        }
-
-        if (remove) {
+        else {
             chamber.findAndRemoveEntity(projectile);
-            chamber.removeFromProjectiles(projectile);
+            projectile.setCollide(true);
         }
     }
 }

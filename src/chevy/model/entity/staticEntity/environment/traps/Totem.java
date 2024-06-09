@@ -12,6 +12,7 @@ public class Totem extends Traps {
         this.directionShot = directionShot;
         this.crossable = false;
         this.updateEverySecond = 10;
+        this.canHitFlingEntity = true;
     }
 
 

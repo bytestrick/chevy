@@ -38,6 +38,8 @@ public class StateMachine {
 
     public synchronized State getCurrentState() { return currentState; }
 
+    public synchronized State getPreviousState() { return previousState; }
+
     public void setInitialState(State startState) { this.currentState = startState; }
 
     // solo per la stampa

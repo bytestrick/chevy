@@ -2,15 +2,12 @@ package chevy.control.projectileController;
 
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
-import chevy.control.enemyController.InteractionType;
-import chevy.control.trapsController.*;
+import chevy.control.InteractionType;
 import chevy.model.chamber.Chamber;
-import chevy.model.entity.Entity;
+import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.dinamicEntity.projectile.ProjectileTypes;
-import chevy.model.entity.staticEntity.environment.traps.*;
-import chevy.model.entity.staticEntity.environment.traps.Void;
 
 public class ProjectileController {
     private final ArrowController arrowController;
@@ -21,9 +18,24 @@ public class ProjectileController {
     }
 
 
-    public synchronized void updateProjectile(Projectile projectile) {
+    public void handleInteraction(InteractionType interaction, DynamicEntity subject, DynamicEntity object) {
+        switch (interaction) {
+            case PLAYER_IN -> playerInInteraction((Player) subject, (Projectile) object);
+            case UPDATE -> updateProjectile((Projectile) subject);
+        }
+    }
+
+    private void playerInInteraction(Player player, Projectile projectile) {
         switch (projectile.getSpecificType()) {
-            case ProjectileTypes.ARROW -> arrowController.update(projectile);
+            case ProjectileTypes.ARROW -> arrowController.playerInInteraction(projectile);
+            case ProjectileTypes.FIRE_BALL -> {}
+            default -> {}
+        }
+    }
+
+    public synchronized void updateProjectile(Projectile projectilePair) {
+        switch (projectilePair.getSpecificType()) {
+            case ProjectileTypes.ARROW -> arrowController.update(projectilePair);
             case ProjectileTypes.FIRE_BALL -> {}
             default -> {}
         }

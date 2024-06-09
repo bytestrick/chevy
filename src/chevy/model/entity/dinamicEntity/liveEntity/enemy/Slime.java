@@ -18,8 +18,10 @@ public class Slime extends Enemy {
         this.maxDamage = 2;
         this.minDamage = 1;
 
-        stateMachine.setStateMachineName("Slime");
-        stateMachine.setInitialState(idle);
+        this.updateEverySecond = 1.f;
+
+        this.stateMachine.setStateMachineName("Slime");
+        this.stateMachine.setInitialState(idle);
         initStateMachine();
     }
 
@@ -29,6 +31,7 @@ public class Slime extends Enemy {
         idle.linkState(attack);
         idle.linkState(hit);
         move.linkState(idle);
+        move.linkState(hit);
         attack.linkState(idle);
         hit.linkState(idle);
         hit.linkState(dead);

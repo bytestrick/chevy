@@ -9,12 +9,4 @@ public class Utilz {
             return min + ((value - max - 1) % range);
         return value; // il valore è già nell'intervallo
     }
-
-    public static int normalize(int value) {
-        if (value < 0)
-            return -1;
-        else if (value > 0)
-            return 1;
-        return 0;
-    }
 }

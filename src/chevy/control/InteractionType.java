@@ -1,4 +1,4 @@
-package chevy.control.enemyController;
+package chevy.control;
 
 public enum InteractionType {
     PLAYER_IN,
@@ -6,5 +6,7 @@ public enum InteractionType {
     PLAYER_OUT,
     PROJECTILE,
     UPDATE,
-    KEYBOARD, ENEMY
+    KEYBOARD,
+    TRAP,
+    ENEMY
 }

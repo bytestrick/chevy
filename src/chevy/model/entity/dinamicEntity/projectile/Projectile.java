@@ -9,6 +9,7 @@ import chevy.utilz.Vector2;
 public class Projectile extends DynamicEntity {
     private final ProjectileTypes type;
     private final DirectionsModel direction;
+    private boolean collide;
 
 
     public Projectile(Vector2<Integer> initPosition, ProjectileTypes type, DirectionsModel direction) {
@@ -17,10 +18,20 @@ public class Projectile extends DynamicEntity {
         this.direction = direction;
         this.updateEverySecond = 1;
         this.crossable = true;
+        this.safeToCross = false;
         this.maxDamage = 2;
         this.minDamage = 1;
+        this.collide = false;
     }
 
+
+    public boolean isCollide() {
+        return collide;
+    }
+
+    public void setCollide(boolean collide) {
+        this.collide = collide;
+    }
 
     public DirectionsModel getDirection() {
         return direction;
