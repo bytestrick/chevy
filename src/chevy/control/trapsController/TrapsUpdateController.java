@@ -1,8 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.control.enemyController.EnemyController;
-import chevy.control.enemyController.InteractionType;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
+import chevy.control.InteractionType;
 import chevy.model.entity.staticEntity.environment.traps.Traps;
 import chevy.service.Update;
 import chevy.service.UpdateManager;

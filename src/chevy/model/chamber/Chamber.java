@@ -1,5 +1,6 @@
 package chevy.model.chamber;
 
+import chevy.control.InteractionType;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
@@ -7,8 +8,12 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dinamicEntity.stateMachine.BatStates;
+import chevy.model.entity.dinamicEntity.stateMachine.SlimeStates;
+import chevy.model.entity.dinamicEntity.stateMachine.ZombieStates;
 import chevy.model.entity.staticEntity.environment.traps.Traps;
 import chevy.model.entity.staticEntity.environment.traps.Void;
+import chevy.model.pathFinding.AStar;
 import chevy.settings.GameSettings;
 import chevy.utilz.Utilz;
 import chevy.utilz.Vector2;
@@ -76,8 +81,18 @@ public class Chamber {
                 dynamicEntity.getCol() + direction.col()
         );
 
-        return validatePosition(vector2) &&
-                getEntityOnTop(vector2).isCrossable();
+        return canCross(vector2);
+    }
+
+    public synchronized boolean canCross(Vector2<Integer> vector2) {
+        if (validatePosition(vector2)) {
+            List<Entity> entityList = chamber.get(vector2.first).get(vector2.second);
+            for (Entity entity : entityList)
+                if (!entity.isCrossable()) {
+                    return false;
+                }
+        }
+        return true;
     }
 
     public boolean isSafeToCross(DynamicEntity dynamicEntity, DirectionsModel direction) {
@@ -85,17 +100,15 @@ public class Chamber {
                 dynamicEntity.getRow() + direction.row(),
                 dynamicEntity.getCol() + direction.col()
         );
+        return isSafeToCross(vector2);
+    }
 
+    public boolean isSafeToCross(Vector2<Integer> vector2) {
         Entity onTop = getEntityOnTop(vector2);
-        return onTop instanceof Traps;
+        return canCross(vector2) && onTop.isSafeToCross();
     }
 
-    public boolean canCross(Vector2<Integer> vector2) {
-        return validatePosition(vector2) &&
-                getEntityOnTop(vector2).isCrossable();
-    }
-
-    public synchronized Entity getNearEntity(DynamicEntity dynamicEntity, DirectionsModel direction) {
+    public synchronized Entity getNearEntityOnTop(DynamicEntity dynamicEntity, DirectionsModel direction) {
         Vector2<Integer> vector2 = new Vector2<>(
                 dynamicEntity.getRow() + direction.row(),
                 dynamicEntity.getCol() + direction.col()
@@ -113,14 +126,19 @@ public class Chamber {
     }
 
     public synchronized DirectionsModel getHitDirectionPlayer(Entity entity) {
-        for (DirectionsModel direction : DirectionsModel.values()) {
-            Vector2<Integer> checkPosition = new Vector2<>(
-                    entity.getRow() + direction.row(),
-                    entity.getCol() + direction.col()
-            );
-        if (validatePosition(checkPosition) && getEntityOnTop(checkPosition) instanceof Player)
-            return direction;
-        }
+        return getHitDirectionPlayer(entity, 1);
+    }
+
+    public synchronized DirectionsModel getHitDirectionPlayer(Entity entity, int n) {
+        for (int i = 1; i <= n; ++i)
+            for (DirectionsModel direction : DirectionsModel.values()) {
+                Vector2<Integer> checkPosition = new Vector2<>(
+                        entity.getRow() + direction.row() * i,
+                        entity.getCol() + direction.col() * i
+                );
+                if (validatePosition(checkPosition) && getEntityOnTop(checkPosition) instanceof Player)
+                    return direction;
+            }
         return null;
     }
 
@@ -197,13 +215,65 @@ public class Chamber {
     }
 
     // ------------
-    public synchronized void removeEnemyFormEnemies(Enemy enemy) {
-        enemies.remove(enemy);
+
+    public synchronized boolean moveRandom(Enemy enemy) {
+        DirectionsModel directionMove = DirectionsModel.getRandom();
+        if (isSafeToCross(enemy, directionMove)) {
+            moveDynamicEntity(enemy, directionMove);
+            return true;
+        }
+        return false;
     }
 
-    public synchronized void addEnemyInEnemies(Enemy enemy) {
-        enemies.addLast(enemy);
+    public synchronized boolean moveRandomPlus(Enemy enemy) {
+        DirectionsModel[] directions = DirectionsModel.values();
+        Random random = new Random();
+        int index = random.nextInt(directions.length);
+        for (int i = 0; i <= directions.length; ++i) {
+            if (isSafeToCross(enemy, directions[index])) {
+                moveDynamicEntity(enemy, directions[index]);
+                return true;
+            }
+            else
+                index = Utilz.wrap(index + i, 0, directions.length - 1);
+        }
+        return false;
     }
+
+    public synchronized boolean wanderChase(Enemy enemy, int rangeWander) {
+        // muoviti verso il player se si trova dentro il tuo campo visivo
+        Player player = findPlayerInSquareRange(enemy, rangeWander);
+        if (player != null) {
+            return chase(enemy);
+        }
+        // muoviti in modo casuale
+        return moveRandom(enemy);
+    }
+
+    public synchronized boolean wanderChasePlus(Enemy enemy, int rangeWander) {
+        // muoviti verso il player se si trova dentro il tuo campo visivo
+        Player player = findPlayerInSquareRange(enemy, rangeWander);
+        if (player != null) {
+            return chase(enemy);
+        }
+        // muoviti in modo casuale
+        return moveRandomPlus(enemy);
+    }
+
+    public synchronized boolean chase(Enemy enemy) {
+        AStar aStar = new AStar(this);
+        List<Vector2<Integer>> path = aStar.find(enemy, player);
+        if (path != null) {
+            if (isSafeToCross(path.get(1))) {
+                moveDynamicEntity(enemy, path.get(1));
+                return true;
+            }
+        }
+
+        return moveRandom(enemy);
+    }
+
+    // ------------
 
     public synchronized void removeEntityOnTop(Entity entity) { chamber.get(entity.getRow()).get(entity.getCol()).removeLast(); }
 
@@ -221,7 +291,8 @@ public class Chamber {
 
     public synchronized Entity getEntityBelowTheTop(Entity entity) {
         List<Entity> entities = chamber.get(entity.getRow()).get(entity.getCol());
-        return entities.get(entities.size() - 2);
+        int index = entities.size() - 2;
+        return index >= 0 ? entities.get(index) : null;
     }
 
     public synchronized List<List<List<Entity>>> getChamber() { return Collections.unmodifiableList(chamber); }
@@ -252,20 +323,23 @@ public class Chamber {
     public int getNRows() {
         return nRows;
     }
+
     public int getNCols() {
         return nCols;
     }
-
     public void setPlayer(Player player) { this.player = player; }
+
     public Player getPlayer() { return this.player; }
-
     public void addEnemy(Enemy enemy) { this.enemies.add(enemy); }
+
     public List<Enemy> getEnemies() { return this.enemies; }
-
     public void addTraps(Traps trap) { traps.add(trap); }
-    public List<Traps> getTraps() { return traps; }
 
-    public void addProjectile(Projectile projectile) { projectiles.add(projectile); }
-    public List<Projectile> getProjectiles() { return projectiles; }
-    public void removeFromProjectiles(Projectile projectile) { projectiles.remove(projectile); }
+    public List<Traps> getTraps() { return traps; }
+    public synchronized void addProjectile(Projectile projectile) { projectiles.add(projectile); }
+
+    public synchronized List<Projectile> getProjectiles() { return projectiles; }
+
+    public synchronized void removeEnemyFormEnemies(Enemy enemy) { enemies.remove(enemy); }
+    public synchronized void addEnemyInEnemies(Enemy enemy) { enemies.addLast(enemy); }
 }

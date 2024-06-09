@@ -7,5 +7,7 @@ public class Void extends Traps {
         super(initVelocity, TrapsTypes.VOID);
         this.maxDamage = 1;
         this.minDamage = 1;
+
+        this.safeToCross = false;
     }
 }

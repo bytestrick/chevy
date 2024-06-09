@@ -48,11 +48,6 @@ public abstract class LiveEntity extends DynamicEntity {
         return flying;
     }
 
-    public synchronized EnumState getCurrentEumState() {
-        return stateMachine.getCurrentState().getStateEnum();
-    }
-
-
     @Override
     public EntityTypes getSpecificType() { return type; }
 

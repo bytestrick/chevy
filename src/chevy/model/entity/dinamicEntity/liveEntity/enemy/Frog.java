@@ -19,6 +19,8 @@ public class Frog extends Enemy {
         this.maxDamage = 5;
         this.minDamage = 3;
 
+        this.updateEverySecond = 2.f;
+
         stateMachine.setStateMachineName("Frog");
         stateMachine.setInitialState(idle);
         initStateMachine();

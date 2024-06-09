@@ -53,6 +53,7 @@ public class GamePanel extends JPanel implements Render {
                             case PlayerTypes.KNIGHT -> g.setColor(Color.RED);
                             case EnemyTypes.BAT -> g.setColor(Color.MAGENTA);
                             case EnemyTypes.SLIME -> g.setColor(Color.GREEN);
+                            case EnemyTypes.ZOMBIE -> g.setColor(Color.BLUE);
                             case EnemyTypes.BIG_SLIME -> g.setColor(Color.PINK);
                             case TrapsTypes.VOID -> g.setColor(Color.BLACK);
                             case TrapsTypes.ICY_FLOOR -> g.setColor(Color.CYAN);
@@ -61,6 +62,8 @@ public class GamePanel extends JPanel implements Render {
                             case TrapsTypes.SPIKED_FLOOR -> g.setColor(Color.GRAY);
                             case TrapsTypes.TOTEM -> g.setColor(Color.ORANGE);
                             case ProjectileTypes.ARROW -> g.setColor(Color.WHITE);
+                            case EnemyTypes.SKELETON -> g.setColor(Color.YELLOW);
+                            case EnemyTypes.FROG -> g.setColor(Color.GREEN);
                             default -> draw = false;
                         }
 

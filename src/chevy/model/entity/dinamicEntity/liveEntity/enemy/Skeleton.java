@@ -22,6 +22,8 @@ public class Skeleton extends Enemy {
         this.maxDamage = 4;
         this.minDamage = 1;
 
+        this.updateEverySecond = 1.f;
+
         stateMachine.setStateMachineName("Skeleton");
         stateMachine.setInitialState(idle);
         initStateMachine();

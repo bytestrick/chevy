@@ -19,6 +19,8 @@ public class BigSlime extends Enemy {
         this.maxDamage = 3;
         this.minDamage = 2;
 
+        this.updateEverySecond = 1.f;
+
         stateMachine.setStateMachineName("Big slime");
         stateMachine.setInitialState(idle);
         initStateMachine();

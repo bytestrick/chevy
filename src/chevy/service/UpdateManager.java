@@ -5,22 +5,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class UpdateManager {
-    private static final List<Update> udateAnimationList = new LinkedList<>();
+    private static final List<Update> updateList = new LinkedList<>();
 
 
     public static void addToUpdate(Update u) {
-        udateAnimationList.add(u);
+        updateList.add(u);
     }
 
 
     public static void update(double delta) {
-        updateAnimation(delta);
-    }
-
-
-    private static void updateAnimation(double delta) {
-        // update all
-        Iterator<Update> iterator = udateAnimationList.iterator();
+        Iterator<Update> iterator = updateList.iterator();
         while (iterator.hasNext()) {
             Update current = iterator.next();
             if (!current.isEnd())

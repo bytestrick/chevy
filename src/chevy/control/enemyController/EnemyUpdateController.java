@@ -1,5 +1,6 @@
 package chevy.control.enemyController;
 
+import chevy.control.InteractionType;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.service.Update;
 import chevy.service.UpdateManager;

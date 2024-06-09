@@ -26,8 +26,7 @@ public class AStar {
 
     // Controlla se è possibile passare su quella cella
     private boolean isBlocked(Vector2<Integer> cell) {
-        return !chamber.canCross(cell);
-//        return !isValid(point) || grid[point.first][point.second] == 0;
+        return !chamber.isSafeToCross(cell);
     }
 
     // Contolla se si è raggiunta la posizione obiettivo

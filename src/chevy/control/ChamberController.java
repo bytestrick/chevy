@@ -15,13 +15,14 @@ public class ChamberController {
 
 
     public ChamberController(Chamber chamber) {
-        this.playerController = new PlayerController(chamber, null);
+        this.playerController = new PlayerController(chamber);
         EnemyController enemyController = new EnemyController(chamber, playerController);
-        TrapsController trapsController = new TrapsController(chamber);
+        TrapsController trapsController = new TrapsController(chamber, playerController);
         ProjectileController projectileController = new ProjectileController(chamber, playerController, enemyController);
 
         playerController.setEnemyController(enemyController);
         playerController.setTrapController(trapsController);
+        playerController.setProjectileController(projectileController);
         new EnemyUpdateController(enemyController, chamber.getEnemies());
         new TrapsUpdateController(trapsController, chamber.getTraps());
         new ProjectileUpdateController(projectileController, chamber.getProjectiles());

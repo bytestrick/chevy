@@ -3,6 +3,7 @@ package chevy.model.entity.dinamicEntity;
 import chevy.model.entity.Entity;
 import chevy.model.entity.EntityTypes;
 import chevy.model.entity.dinamicEntity.stateMachine.EnumState;
+import chevy.model.entity.dinamicEntity.stateMachine.State;
 import chevy.model.entity.dinamicEntity.stateMachine.StateMachine;
 import chevy.model.entity.staticEntity.StaticEntityTypes;
 import chevy.utilz.Vector2;
@@ -32,6 +33,16 @@ public abstract class DynamicEntity extends Entity {
         return stateMachine.changeToPreviousState();
     }
 
+    public synchronized EnumState getCurrentEumState() {
+        return stateMachine.getCurrentState().getStateEnum();
+    }
+
+    public synchronized EnumState getPreviousEumState() {
+        State state = stateMachine.getPreviousState();
+        if (state == null)
+            return null;
+        return state.getStateEnum();
+    }
 
     @Override
     public EntityTypes getSpecificType() {

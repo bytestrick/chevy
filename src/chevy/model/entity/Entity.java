@@ -1,5 +1,6 @@
 package chevy.model.entity;
 
+import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 import chevy.model.entity.staticEntity.StaticEntityTypes;
 import chevy.utilz.Vector2;
 
@@ -12,20 +13,22 @@ public abstract class Entity {
     protected int maxDamage;
     protected int minDamage;
     protected final Vector2<Integer> position;
-    protected boolean crossable = false;
-    protected int updateEverySecond;
+    protected boolean safeToCross;
+    protected boolean crossable;
+    protected float updateEverySecond;
     private int nUpdate;
 
 
     public Entity(Vector2<Integer> initPosition, StaticEntityTypes type) {
         this.position = initPosition;
         this.type = type;
-        this.updateEverySecond = 3;
         this.nUpdate = 0;
+        this.crossable = false;
+        this.safeToCross = true;
     }
 
 
-    public int getUpdateEverySecond() {
+    public float getUpdateEverySecond() {
         return updateEverySecond;
     }
 
@@ -55,6 +58,13 @@ public abstract class Entity {
     public final int getCol() { return position.second; }
 
     public boolean isCrossable() { return crossable; }
+
+    public boolean isSafeToCross() {
+        if (crossable)
+            return safeToCross;
+
+        return false;
+    }
 
     @Override
     public String toString() {

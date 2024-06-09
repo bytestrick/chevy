@@ -1,5 +1,6 @@
 package chevy.control.trapsController;
 
+import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;

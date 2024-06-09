@@ -19,6 +19,8 @@ public class Bat extends Enemy {
         this.maxDamage = 2;
         this.minDamage = 1;
 
+        this.updateEverySecond = 0.5f;
+
         stateMachine.setStateMachineName("Bat");
         stateMachine.setInitialState(idle);
         initStateMachine();
