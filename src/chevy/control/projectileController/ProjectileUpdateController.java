@@ -51,9 +51,4 @@ public class ProjectileUpdateController implements Update {
                 it.remove();
         }
     }
-
-    @Override
-    public boolean isEnd() {
-        return false;
-    }
 }

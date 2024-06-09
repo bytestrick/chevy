@@ -12,6 +12,8 @@ public abstract class Enemy extends LiveEntity {
     public Enemy(Vector2<Integer> initPosition, EnemyTypes type) {
         super(initPosition, LiveEntityTypes.ENEMY);
         this.type = type;
+
+        this.layer = 2;
     }
 
 

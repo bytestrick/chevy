@@ -1,6 +1,7 @@
 package chevy.model.chamber;
 
-import chevy.control.InteractionType;
+import chevy.model.chamber.drawOrder.LayerManager;
+import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
@@ -8,9 +9,6 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.stateMachine.BatStates;
-import chevy.model.entity.dinamicEntity.stateMachine.SlimeStates;
-import chevy.model.entity.dinamicEntity.stateMachine.ZombieStates;
 import chevy.model.entity.staticEntity.environment.traps.Traps;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.model.pathFinding.AStar;
@@ -22,6 +20,8 @@ import java.util.*;
 
 public class Chamber {
     private List<List<List<Entity>>> chamber;
+    private LayerManager drawOrderChamber;
+
     private int nRows;
     private int nCols;
     private boolean init = false;
@@ -47,6 +47,8 @@ public class Chamber {
                 row.add(new LinkedList<>());
             chamber.add(row);
         }
+
+        drawOrderChamber = new LayerManager();
         init = true;
     }
 
@@ -169,6 +171,7 @@ public class Chamber {
             Entity entity2 = it.previous();
             if (entity.equals(entity2)) {
                 it.remove();
+                entity2.setToDraw(false);
                 return true;
             }
         }
@@ -275,9 +278,16 @@ public class Chamber {
 
     // ------------
 
-    public synchronized void removeEntityOnTop(Entity entity) { chamber.get(entity.getRow()).get(entity.getCol()).removeLast(); }
+    public synchronized void removeEntityOnTop(Entity entity) {
+        chamber.get(entity.getRow()).get(entity.getCol()).removeLast();
+        entity.setToDraw(false);
+    }
 
-    public synchronized void addEntityOnTop(Entity entity) { chamber.get(entity.getRow()).get(entity.getCol()).addLast(entity); }
+    public synchronized void addEntityOnTop(Entity entity) {
+        chamber.get(entity.getRow()).get(entity.getCol()).addLast(entity);
+        entity.setToDraw(true);
+        drawOrderChamber.add(entity, entity.getLayer());
+    }
 
     public synchronized Entity getEntityOnTop(int row, int col) { return chamber.get(row).get(col).getLast(); }
 
@@ -342,4 +352,11 @@ public class Chamber {
 
     public synchronized void removeEnemyFormEnemies(Enemy enemy) { enemies.remove(enemy); }
     public synchronized void addEnemyInEnemies(Enemy enemy) { enemies.addLast(enemy); }
+
+    // ---
+
+    public void addEntityToDraw(Entity entity, int layer) {
+        drawOrderChamber.add(entity, layer);
+    }
+    public List<Layer> getDrawOrderChamber() { return Collections.unmodifiableList(drawOrderChamber.getDrawOrder()); }
 }

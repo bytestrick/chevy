@@ -17,6 +17,8 @@ public abstract class Player extends LiveEntity {
     public Player(Vector2<Integer> initPosition, PlayerTypes type) {
         super(initPosition, LiveEntityTypes.PLAYER);
         this.type = type;
+
+        this.layer = 2;
     }
 
 
