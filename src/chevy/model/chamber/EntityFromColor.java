@@ -13,22 +13,22 @@ import chevy.utilz.Vector2;
 
 public class EntityFromColor {
     // Wall
-    private static final int WALL_CORNER_INTERIOR_BOTTOM_LEFT = 255;
+    private static final int WALL_INTERIOR_CORNER_BOTTOM_LEFT = 255;
     private static final int WALL_BOTTOM = 254;
     private static final int WALL_RIGHT = 252;
     private static final int WALL_LEFT = 250;
-    private static final int WALL_CORNER_INTERIOR_TOP_LEFT = 249;
+    private static final int WALL_INTERIOR_CORNER_TOP_LEFT = 249;
     private static final int WALL_TOP = 248;
-    private static final int WALL_CORNER_INTERIOR_TOP_RIGHT = 247;
-    private static final int WALL_CORNER_INTERIOR_BOTTOM_RIGHT = 253;
+    private static final int WALL_INTERIOR_CORNER_TOP_RIGHT = 247;
+    private static final int WALL_INTERIOR_CORNER_BOTTOM_RIGHT = 253;
 //     private static final int WALL_TOP_TORCH = ;
 //     private static final int WALL_TOP_HOLE = ;
 //     private static final int WALL_TOP_HOLE_2 = ;
 //     private static final int WALL_TOP_BROKEN = ;
-    private static final int WALL_CORNER_EXTERNAL_TOP_LEFT = 246;
-    private static final int WALL_CORNER_EXTERNAL_TOP_RIGHT = 245;
-    private static final int WALL_CORNER_EXTERNAL_BOTTOM_LEFT = 244;
-    private static final int WALL_CORNER_EXTERNAL_BOTTOM_RIGHT = 243;
+    private static final int WALL_EXTERNAL_CORNER_TOP_LEFT = 246;
+    private static final int WALL_EXTERNAL_CORNER_TOP_RIGHT = 245;
+    private static final int WALL_EXTERNAL_CORNER_BOTTOM_LEFT = 244;
+    private static final int WALL_EXTERNAL_CORNER_BOTTOM_RIGHT = 243;
 
     // Ground
     private static final int GROUND_TOP = 241;
@@ -84,17 +84,17 @@ public class EntityFromColor {
         return switch (r) {
             // Wall
             case WALL_TOP -> new Wall(new Vector2<>(row, col), WallTypes.TOP);
-            case WALL_CORNER_INTERIOR_TOP_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_TOP_LEFT);
-            case WALL_CORNER_INTERIOR_TOP_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_TOP_RIGHT);
-            case WALL_CORNER_INTERIOR_BOTTOM_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_BOTTOM_LEFT);
-            case WALL_CORNER_INTERIOR_BOTTOM_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_BOTTOM_RIGHT);
+            case WALL_INTERIOR_CORNER_TOP_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_TOP_LEFT);
+            case WALL_INTERIOR_CORNER_TOP_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_TOP_RIGHT);
+            case WALL_INTERIOR_CORNER_BOTTOM_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_BOTTOM_LEFT);
+            case WALL_INTERIOR_CORNER_BOTTOM_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_BOTTOM_RIGHT);
             case WALL_BOTTOM -> new Wall(new Vector2<>(row, col), WallTypes.BOTTOM);
             case WALL_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.LEFT);
             case WALL_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.RIGHT);
-            case WALL_CORNER_EXTERNAL_BOTTOM_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_EXTERNAL_BOTTOM_LEFT);
-            case WALL_CORNER_EXTERNAL_BOTTOM_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_EXTERNAL_BOTTOM_RIGHT);
-            case WALL_CORNER_EXTERNAL_TOP_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_EXTERNAL_TOP_LEFT);
-            case WALL_CORNER_EXTERNAL_TOP_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_EXTERNAL_TOP_RIGHT);
+            case WALL_EXTERNAL_CORNER_BOTTOM_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
+            case WALL_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
+            case WALL_EXTERNAL_CORNER_TOP_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.EXTERNAL_CORNER_TOP_LEFT);
+            case WALL_EXTERNAL_CORNER_TOP_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.EXTERNAL_CORNER_TOP_RIGHT);
 
             // Ground
             case GROUND_TOP -> new Ground(new Vector2<>(row, col), GroundTypes.TOP);

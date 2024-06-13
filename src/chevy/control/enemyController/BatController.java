@@ -10,9 +10,6 @@ import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.dinamicEntity.stateMachine.BatStates;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
-import chevy.utilz.Utilz;
-
-import java.util.Random;
 
 public class BatController  {
     private final Chamber chamber;
@@ -56,7 +53,7 @@ public class BatController  {
         if (bat.changeState(BatStates.HIT))
             bat.changeHealth(damage);
         if (!bat.isAlive() && bat.changeState(BatStates.DEAD)) {
-            chamber.removeEnemyFormEnemies(bat);
+            chamber.removeEnemy(bat);
             chamber.removeEntityOnTop(bat);
         }
         else

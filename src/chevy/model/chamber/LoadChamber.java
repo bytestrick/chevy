@@ -50,7 +50,6 @@ public class LoadChamber {
                     if (r != 0) {
                         Entity entity = EntityFromColor.get(r, i, j);
                         chamber.addEntityOnTop(entity);
-                        chamber.addEntityToDraw(entity, entity.getLayer());
                         if (entity instanceof Player player)
                             chamber.setPlayer(player);
                         else if (entity instanceof Enemy enemy) {

@@ -37,8 +37,7 @@ public class Chamber {
     public void initWorld(int nRow, int nCol) {
         this.nRows = nRow;
         this.nCols = nCol;
-        GameSettings.nTileH = nRow;
-        GameSettings.nTileW = nCol;
+        GameSettings.updateValue(nCol, nRow);
 
         chamber = new ArrayList<>(nRow);
         for (int i = 0; i < nRow; ++i) {
@@ -171,7 +170,6 @@ public class Chamber {
             Entity entity2 = it.previous();
             if (entity.equals(entity2)) {
                 it.remove();
-                entity2.setToDraw(false);
                 return true;
             }
         }
@@ -193,7 +191,7 @@ public class Chamber {
                     );
                     if (canSpawn(spawnPosition)) {
                         Slime slime = new Slime(spawnPosition);
-                        addEnemyInEnemies(slime);
+                        addEnemy(slime);
                         addEntityOnTop(slime);
                         --nSlime;
                     }
@@ -280,13 +278,14 @@ public class Chamber {
 
     public synchronized void removeEntityOnTop(Entity entity) {
         chamber.get(entity.getRow()).get(entity.getCol()).removeLast();
-        entity.setToDraw(false);
     }
 
     public synchronized void addEntityOnTop(Entity entity) {
         chamber.get(entity.getRow()).get(entity.getCol()).addLast(entity);
-        entity.setToDraw(true);
-        drawOrderChamber.add(entity, entity.getLayer());
+        if (!entity.isToDraw()) {
+            entity.setToDraw(true);
+            addEntityToDraw(entity, entity.getLayer());
+        }
     }
 
     public synchronized Entity getEntityOnTop(int row, int col) { return chamber.get(row).get(col).getLast(); }
@@ -337,25 +336,27 @@ public class Chamber {
     public int getNCols() {
         return nCols;
     }
+
     public void setPlayer(Player player) { this.player = player; }
-
     public Player getPlayer() { return this.player; }
+
     public void addEnemy(Enemy enemy) { this.enemies.add(enemy); }
-
     public List<Enemy> getEnemies() { return this.enemies; }
+    public synchronized void removeEnemy(Enemy enemy) {
+        enemy.setToDraw(false);
+        enemies.remove(enemy);
+    }
+
     public void addTraps(Traps trap) { traps.add(trap); }
-
     public List<Traps> getTraps() { return traps; }
+
     public synchronized void addProjectile(Projectile projectile) { projectiles.add(projectile); }
-
     public synchronized List<Projectile> getProjectiles() { return projectiles; }
-
-    public synchronized void removeEnemyFormEnemies(Enemy enemy) { enemies.remove(enemy); }
-    public synchronized void addEnemyInEnemies(Enemy enemy) { enemies.addLast(enemy); }
 
     // ---
 
     public void addEntityToDraw(Entity entity, int layer) {
+//        System.out.println("Add to draw: " + entity);
         drawOrderChamber.add(entity, layer);
     }
     public List<Layer> getDrawOrderChamber() { return Collections.unmodifiableList(drawOrderChamber.getDrawOrder()); }

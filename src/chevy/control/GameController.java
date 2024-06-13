@@ -15,7 +15,6 @@ public class GameController {
         this.gameView = gameView;
         this.keyboardListener = new KeyboardListener(gameView);
 
-        //this.gameView.getWindow().getGamePanel().setChamber(this.gameModel.getCurrentChamber());
         this.gameView.getWindow().getGamePanel().getChamberView().setDrawOrderChamber(gameModel.getCurrentChamber().getDrawOrderChamber());
         initChamberController();
     }
