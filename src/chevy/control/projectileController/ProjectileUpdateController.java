@@ -37,7 +37,7 @@ public class ProjectileUpdateController implements Update {
 
     @Override
     public void update(double delta) {
-         addProjectile();
+        addProjectile();
 
         Iterator<Projectile> it = projectiles.iterator();
         while (it.hasNext()) {
@@ -49,6 +49,33 @@ public class ProjectileUpdateController implements Update {
             }
             if (projectile.isCollide())
                 it.remove();
+
         }
     }
+
+
+//        for (Layer layer : drawOrderChamber) {
+//        synchronized (layer) { // Se Layer è condiviso tra più thread
+//            Iterator<Entity> it = layer.getLayer().iterator();
+//            while (it.hasNext()) {
+//                Entity entity = it.next();
+//
+//                if (entity != null) {
+//                    BufferedImage image = EntityToImage.get(entity.getSpecificType());
+//                    if (image != null) {
+//                        g.drawImage(image,
+//                                entity.getCol() * GameSettings.SCALE,
+//                                entity.getRow() * GameSettings.SCALE,
+//                                GameSettings.SCALE,
+//                                GameSettings.SCALE,
+//                                null);
+//
+//                        if (!entity.isToDraw()) {
+//                            it.remove();
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 }

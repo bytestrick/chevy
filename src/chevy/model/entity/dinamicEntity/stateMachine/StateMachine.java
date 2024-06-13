@@ -10,17 +10,20 @@ public class StateMachine {
 
 
     public synchronized boolean changeState(EnumState state) {
-        if (currentState == null) {
-            System.out.println("Non è presente uno stato iniziale");
-            return false;
-        }
+//        if (currentState == null) {
+//            System.out.println("Non è presente uno stato iniziale");
+//            return false;
+//        }
+//        if (!currentState.isFinished())
+//            return false;
 
         System.out.print(stateMachineName + ": " + currentState);
 
-        State nextState = currentState.findState(state);
+        State nextState = currentState.findLinkedState(state);
         if (nextState != null) {
             previousState = currentState;
             currentState = nextState;
+            currentState.startStateTimer();
 
             System.out.println(" -> " + nextState);
 
@@ -31,6 +34,18 @@ public class StateMachine {
 
         return false;
     }
+
+    public synchronized boolean canChange(EnumState state) {
+        if (currentState == null) {
+            System.out.println("Non è presente uno stato iniziale");
+            return false;
+        }
+        if (currentState.findLinkedState(state) == null)
+            return false;
+
+        return currentState.isFinished();
+    }
+
 
     public synchronized boolean changeToPreviousState() {
         return changeState(previousState.getStateEnum());

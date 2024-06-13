@@ -5,9 +5,9 @@ import chevy.model.entity.dinamicEntity.stateMachine.State;
 import chevy.utilz.Vector2;
 
 public class Slime extends Enemy {
-    private final State idle = new State(SlimeStates.IDLE);
-    private final State move = new State(SlimeStates.MOVE);
-    private final State attack = new State(SlimeStates.ATTACK);
+    private final State idle = new State(SlimeStates.IDLE, 2);
+    private final State move = new State(SlimeStates.MOVE, 2);
+    private final State attack = new State(SlimeStates.ATTACK, 2);
     private final State hit = new State(SlimeStates.HIT);
     private final State dead = new State(SlimeStates.DEAD);
 

@@ -6,22 +6,24 @@ import java.util.List;
 
 public class UpdateManager {
     private static final List<Update> updateList = new LinkedList<>();
+    private static final List<Update> toAdd = new LinkedList<>();
 
 
     public static void addToUpdate(Update u) {
-        updateList.add(u);
+        toAdd.add(u);
     }
 
 
     public static void update(double delta) {
+        updateList.addAll(toAdd);
+        toAdd.clear();
+
         Iterator<Update> iterator = updateList.iterator();
         while (iterator.hasNext()) {
             Update current = iterator.next();
-            if (!current.isEnd())
-                current.update(delta);
-            else {
+            current.update(delta);
+            if (current.updateIsEnd())
                 iterator.remove();
-            }
         }
     }
 }

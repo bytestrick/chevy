@@ -3,22 +3,12 @@ package chevy.control.enemyController;
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
-import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Bat;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.stateMachine.BatStates;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 import chevy.model.entity.dinamicEntity.stateMachine.SkeletonStates;
-import chevy.model.entity.dinamicEntity.stateMachine.ZombieStates;
-import chevy.model.pathFinding.AStar;
-import chevy.utilz.Utilz;
-import chevy.utilz.Vector2;
-
-import java.util.List;
-import java.util.Random;
 
 public class SkeletonController {
     private final Chamber chamber;
@@ -62,7 +52,7 @@ public class SkeletonController {
         if (skeleton.changeState(SkeletonStates.HIT))
             skeleton.changeHealth(damage);
         if (!skeleton.isAlive() && skeleton.changeState(SkeletonStates.DEAD)) {
-            chamber.removeEnemyFormEnemies(skeleton);
+            chamber.removeEnemy(skeleton);
             chamber.removeEntityOnTop(skeleton);
         }
         else

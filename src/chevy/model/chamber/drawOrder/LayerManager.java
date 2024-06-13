@@ -10,9 +10,11 @@ import java.util.List;
 public class LayerManager {
     private final List<Layer> drawOrder;
 
+
     public LayerManager() {
         this.drawOrder = new LinkedList<>();
     }
+
 
     private Layer findLayer(int nLayer) {
         Layer newLayer = new Layer(nLayer);
@@ -26,12 +28,12 @@ public class LayerManager {
         return drawOrder.get(index);
     }
 
-    public void add(Entity entity, int nLayer) {
+    public synchronized void add(Entity entity, int nLayer) {
         Layer layer = findLayer(nLayer);
-        layer.getLayer().addLast(entity);
+        layer.add(entity);
     }
 
-    public List<Layer> getDrawOrder() {
+    public synchronized List<Layer> getDrawOrder() {
         return drawOrder;
     }
 }
