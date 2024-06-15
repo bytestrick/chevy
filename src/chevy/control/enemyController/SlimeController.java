@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.InteractionTypes;
 import chevy.control.PlayerController;
 import chevy.model.Timer;
 import chevy.model.entity.Entity;
@@ -9,8 +9,6 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
-import chevy.model.entity.dinamicEntity.stateMachine.SlimeStates;
 
 public class SlimeController {
     private final Chamber chamber;
@@ -27,29 +25,27 @@ public class SlimeController {
 
     public void playerInInteraction(Player player, Slime slime) {
         switch (player.getCurrentEumState()) {
-            case PlayerStates.ATTACK ->
+            case Player.States.ATTACK ->
                 hitSlime(slime, -1 * player.getDamage());
             default -> System.out.println("Lo slimeController non gestisce questa azione");
         }
     }
 
     public void update(Slime slime) {
-        if (slime.canChange(SlimeStates.MOVE)) {
+        if (slime.canChange(Slime.EnumState.MOVE)) {
             DirectionsModel direction = chamber.getHitDirectionPlayer(slime);
             if (direction == null) {
                 if (chamber.moveRandom(slime))
-                    slime.changeState(SlimeStates.MOVE);
+                    slime.changeState(Slime.EnumState.MOVE);
             }
-            else if (slime.canChange(SlimeStates.ATTACK)) {
+            else if (slime.canChange(Slime.EnumState.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(slime, chamber.getHitDirectionPlayer(slime));
-                if (entity instanceof Player && slime.changeState(SlimeStates.ATTACK)) {
-                    playerController.handleInteraction(InteractionType.ENEMY, slime);
+                if (entity instanceof Player && slime.changeState(Slime.EnumState.ATTACK)) {
+                    playerController.handleInteraction(InteractionTypes.ENEMY, slime);
                 }
             }
         }
-        if (slime.canChange(SlimeStates.IDLE)) {
-            slime.changeState(SlimeStates.IDLE);
-        }
+       slime.checkAndChangeState(Slime.EnumState.IDLE);
     }
 
     public void projectileInteraction(Projectile projectile, Slime slime) {
@@ -57,13 +53,13 @@ public class SlimeController {
     }
 
     private void hitSlime(Slime slime, int damage) {
-        if (slime.changeState(SlimeStates.HIT))
+        if (slime.changeState(Slime.EnumState.HIT))
             slime.changeHealth(damage);
-        if (!slime.isAlive() && slime.changeState(SlimeStates.DEAD)) {
+        if (!slime.isAlive() && slime.changeState(Slime.EnumState.DEAD)) {
             chamber.removeEnemy(slime);
             chamber.removeEntityOnTop(slime);
         }
         else
-            slime.changeState(SlimeStates.IDLE);
+            slime.changeState(Slime.EnumState.IDLE);
     }
 }

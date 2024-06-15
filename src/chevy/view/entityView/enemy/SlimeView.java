@@ -1,7 +1,6 @@
 package chevy.view.entityView.enemy;
 
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
-import chevy.model.entity.dinamicEntity.stateMachine.SlimeStates;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.entityView.EntityView;
 
@@ -9,8 +8,6 @@ import java.awt.image.BufferedImage;
 
 public class SlimeView extends EntityView {
     private static final String SLIME_RESOURCES = "/assets/enemy/slime/";
-    private final int FPS_ANIMATION = 12;
-
     private final Slime slime;
 
 
@@ -18,13 +15,33 @@ public class SlimeView extends EntityView {
         super();
         this.slime = slime;
 
-        AnimatedSprite idle = new AnimatedSprite(SlimeStates.IDLE, 6, FPS_ANIMATION, true);
+        int idleFrame = 6;
+        int times = 4; // ripete l'animazione times volte
+        float idleDuration = slime.getState(Slime.EnumState.IDLE).getDuration() / (idleFrame * times);
+        AnimatedSprite idle = new AnimatedSprite(
+                Slime.EnumState.IDLE,
+                idleFrame,
+                idleDuration,
+                true
+        );
         initAnimation(idle, SLIME_RESOURCES + "idle", ".png");
 
-        AnimatedSprite move = new AnimatedSprite(SlimeStates.MOVE, 6, FPS_ANIMATION);
+        // -----
+
+        AnimatedSprite move = new AnimatedSprite(
+                Slime.EnumState.MOVE,
+                6,
+                slime.getState(Slime.EnumState.MOVE).getDuration() / 6f
+        );
         initAnimation(move, SLIME_RESOURCES + "move", ".png");
 
-        AnimatedSprite attackUp = new AnimatedSprite(SlimeStates.ATTACK, 5, FPS_ANIMATION);
+        // -----
+
+        AnimatedSprite attackUp = new AnimatedSprite(
+                Slime.EnumState.ATTACK,
+                5,
+                slime.getState(Slime.EnumState.IDLE).getDuration() / 5f
+        );
         initAnimation(attackUp, SLIME_RESOURCES + "attack/up", ".png");
     }
 
@@ -34,7 +51,7 @@ public class SlimeView extends EntityView {
     public BufferedImage getCurrentFrame() {
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(slime.getCurrentEumState());
         if (currentAnimatedSprite != null) {
-            if (!currentAnimatedSprite.isStart())
+            if (!currentAnimatedSprite.isRunning())
                 currentAnimatedSprite.start();
             return currentAnimatedSprite.getCurrentFrame();
         }

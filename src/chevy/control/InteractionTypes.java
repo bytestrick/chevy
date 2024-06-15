@@ -1,6 +1,6 @@
 package chevy.control;
 
-public enum InteractionType {
+public enum InteractionTypes {
     PLAYER_IN,
     PLAYER,
     PLAYER_OUT,

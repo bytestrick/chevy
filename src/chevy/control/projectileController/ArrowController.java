@@ -2,7 +2,7 @@ package chevy.control.projectileController;
 
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
-import chevy.control.InteractionType;
+import chevy.control.InteractionTypes;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntityTypes;
@@ -24,7 +24,7 @@ public class ArrowController {
 
     public void playerInInteraction(Projectile projectile) {
         chamber.findAndRemoveEntity(projectile);
-        playerController.handleInteraction(InteractionType.PROJECTILE, projectile);
+        playerController.handleInteraction(InteractionTypes.PROJECTILE, projectile);
         projectile.setCollide(true);
     }
 
@@ -33,9 +33,9 @@ public class ArrowController {
 
         switch (nextEntity.getGenericType()) {
             case LiveEntityTypes.PLAYER ->
-                    playerController.handleInteraction(InteractionType.PROJECTILE, projectile);
+                    playerController.handleInteraction(InteractionTypes.PROJECTILE, projectile);
             case LiveEntityTypes.ENEMY ->
-                    enemyController.handleInteraction(InteractionType.PROJECTILE, projectile, (Enemy) nextEntity);
+                    enemyController.handleInteraction(InteractionTypes.PROJECTILE, projectile, (Enemy) nextEntity);
             default -> {}
         }
 

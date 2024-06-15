@@ -1,18 +1,17 @@
 package chevy.model.entity.dinamicEntity.liveEntity.player;
 
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
 import chevy.utilz.Vector2;
 
 public class Knight extends Player {
-    private final State idle = new State(PlayerStates.IDLE);
-    private final State move = new State(PlayerStates.MOVE);
-    private final State attack = new State(PlayerStates.ATTACK);
-    private final State hit = new State(PlayerStates.HIT);
-    private final State dead = new State(PlayerStates.DEAD);
-    private final State glide = new State(PlayerStates.GLIDE);
-    private final State sludge = new State(PlayerStates.SLUDGE);
-    private final State fall = new State(PlayerStates.FALL);
+    private final State idle = new State(States.IDLE);
+    private final State move = new State(States.MOVE);
+    private final State attack = new State(States.ATTACK);
+    private final State hit = new State(States.HIT);
+    private final State dead = new State(States.DEAD);
+    private final State glide = new State(States.GLIDE);
+    private final State sludge = new State(States.SLUDGE);
+    private final State fall = new State(States.FALL);
 
 
     public Knight(Vector2<Integer> initPosition) {

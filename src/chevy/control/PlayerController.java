@@ -11,7 +11,6 @@ import chevy.model.entity.dinamicEntity.liveEntity.LiveEntityTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.Traps;
 import chevy.model.entity.staticEntity.environment.traps.TrapsTypes;
@@ -26,8 +25,8 @@ public class PlayerController {
     private EnemyController enemyController;
     private TrapsController trapsController;
     private ProjectileController projectileController;
+    private DirectionsModel direction;
 
-    DirectionsModel direction;
 
     public PlayerController(Chamber chamber) {
         this.chamber = chamber;
@@ -49,11 +48,11 @@ public class PlayerController {
         };
 
         if (direction != null) {
-            handleInteraction(InteractionType.KEYBOARD, direction);
+            handleInteraction(InteractionTypes.KEYBOARD, direction);
         }
     }
 
-    public synchronized void handleInteraction(InteractionType interaction, Object subject) {
+    public synchronized void handleInteraction(InteractionTypes interaction, Object subject) {
         switch (interaction) {
             case KEYBOARD -> keyBoardInteraction((DirectionsModel) subject);
             case ENEMY -> enemyInteraction((Enemy) subject);
@@ -61,7 +60,6 @@ public class PlayerController {
             case TRAP -> trapInteraction((Traps) subject);
         }
     }
-
 
     private void projectileInteraction(Projectile projectile) {
         hitPlayer(-1 * projectile.getDamage());
@@ -75,17 +73,17 @@ public class PlayerController {
                     chamber.moveDynamicEntity(player, direction.getOpposite());
             }
             case TrapsTypes.ICY_FLOOR -> {
-                while (player.getCurrentEumState() == PlayerStates.GLIDE &&
+                while (player.getCurrentEumState() == Player.States.GLIDE &&
                         chamber.canCross(player, direction) &&
                         chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
                     chamber.moveDynamicEntity(player, direction);
                 }
 
-                player.changeState(PlayerStates.IDLE);
+                player.changeState(Player.States.IDLE);
                 if (chamber.getEntityBelowTheTop(player) instanceof Traps t)
-                    trapsController.handleInteraction(InteractionType.PLAYER_IN, player, t);
+                    trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, t);
                 else if (chamber.getEntityBelowTheTop(player) instanceof Projectile p)
-                    projectileController.handleInteraction(InteractionType.PLAYER_IN, player, p);
+                    projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player, p);
             }
             default -> {}
         }
@@ -98,7 +96,7 @@ public class PlayerController {
         // Player on
         if (entityCurrentCell != null)
             switch (entityCurrentCell.getGenericType()) {
-                case TRAP -> trapsController.handleInteraction(InteractionType.PLAYER, player, (Traps) entityCurrentCell);
+                case TRAP -> trapsController.handleInteraction(InteractionTypes.PLAYER, player, (Traps) entityCurrentCell);
                 default -> {}
             }
 
@@ -106,26 +104,26 @@ public class PlayerController {
         if (entityNextCell != null)
             switch (entityNextCell.getGenericType()) {
                 case LiveEntityTypes.ENEMY -> {
-                    if (player.changeState(PlayerStates.ATTACK))
-                        enemyController.handleInteraction(InteractionType.PLAYER_IN, player, (Enemy) entityNextCell);
-                    player.changeState(PlayerStates.IDLE);
+                    if (player.changeState(Player.States.ATTACK))
+                        enemyController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Enemy) entityNextCell);
+                    player.changeState(Player.States.IDLE);
                 }
                 case TRAP -> {
-                    if (chamber.canCross(player, direction) && player.changeState(PlayerStates.MOVE)) {
+                    if (chamber.canCross(player, direction) && player.changeState(Player.States.MOVE)) {
                         chamber.moveDynamicEntity(player, direction);
-                        trapsController.handleInteraction(InteractionType.PLAYER_IN, player, (Traps) entityNextCell);
+                        trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Traps) entityNextCell);
                     }
                 }
                 case DynamicEntityTypes.PROJECTILE -> {
-                    if (chamber.canCross(player, direction) && player.changeState(PlayerStates.MOVE)) {
+                    if (chamber.canCross(player, direction) && player.changeState(Player.States.MOVE)) {
                         chamber.moveDynamicEntity(player, direction);
-                        projectileController.handleInteraction(InteractionType.PLAYER_IN, player, (Projectile) entityNextCell);
+                        projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Projectile) entityNextCell);
                     }
                 }
                 default -> {
-                    if (chamber.canCross(player, direction) && player.changeState(PlayerStates.MOVE)) {
+                    if (chamber.canCross(player, direction) && player.changeState(Player.States.MOVE)) {
                         chamber.moveDynamicEntity(player, direction);
-                        player.changeState(PlayerStates.IDLE);
+                        player.changeState(Player.States.IDLE);
                     }
                 }
             }
@@ -134,7 +132,7 @@ public class PlayerController {
         // Player out
         if (entityCurrentCell != null)
             switch (entityCurrentCell.getGenericType()) {
-                case TRAP -> trapsController.handleInteraction(InteractionType.PLAYER_OUT, player, (Traps) entityCurrentCell);
+                case TRAP -> trapsController.handleInteraction(InteractionTypes.PLAYER_OUT, player, (Traps) entityCurrentCell);
                 default -> {}
             }
     }
@@ -145,12 +143,12 @@ public class PlayerController {
 
 
     private void hitPlayer(int damage) {
-        if (player.changeState(PlayerStates.HIT))
+        if (player.changeState(Player.States.HIT))
             player.changeHealth(damage);
-        if (!player.isAlive() && player.changeState(PlayerStates.DEAD))
+        if (!player.isAlive() && player.changeState(Player.States.DEAD))
             chamber.removeEntityOnTop(player);
         else
-            player.changeState(PlayerStates.IDLE);
+            player.changeState(Player.States.IDLE);
     }
 
 

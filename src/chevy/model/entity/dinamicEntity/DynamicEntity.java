@@ -1,14 +1,12 @@
 package chevy.model.entity.dinamicEntity;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.EntityTypes;
-import chevy.model.entity.dinamicEntity.stateMachine.EnumState;
+import chevy.model.entity.EntityCommonTypes;
+import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
 import chevy.model.entity.dinamicEntity.stateMachine.StateMachine;
 import chevy.model.entity.staticEntity.StaticEntityTypes;
 import chevy.utilz.Vector2;
-
-import javax.management.modelmbean.ModelMBean;
 
 public abstract class DynamicEntity extends Entity {
     private final DynamicEntityTypes type;
@@ -25,36 +23,45 @@ public abstract class DynamicEntity extends Entity {
         this.position.change(velocity);
     }
 
-    public boolean changeState(EnumState state) {
+    public boolean changeState(CommonEnumStates state) {
         return stateMachine.changeState(state);
     }
 
-    public boolean canChange(EnumState state) {
+    public boolean canChange(CommonEnumStates state) {
         return stateMachine.canChange(state);
+    }
+
+    public boolean checkAndChangeState(CommonEnumStates state) {
+        return stateMachine.checkAndChangeState(state);
     }
 
     public boolean changeToPreviousState() {
         return stateMachine.changeToPreviousState();
     }
 
-    public synchronized EnumState getCurrentEumState() {
+    public synchronized CommonEnumStates getCurrentEumState() {
         return stateMachine.getCurrentState().getStateEnum();
     }
 
-    public synchronized EnumState getPreviousEumState() {
+    public synchronized CommonEnumStates getPreviousEumState() {
         State state = stateMachine.getPreviousState();
         if (state == null)
             return null;
         return state.getStateEnum();
     }
 
+    public State getState(CommonEnumStates commonEnumStates) {
+        return null;
+    }
+
+
     @Override
-    public EntityTypes getSpecificType() {
+    public EntityCommonTypes getSpecificType() {
         return type;
     }
 
     @Override
-    public EntityTypes getGenericType() {
+    public EntityCommonTypes getGenericType() {
         return super.getSpecificType();
     }
 

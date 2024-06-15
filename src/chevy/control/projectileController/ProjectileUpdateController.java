@@ -1,6 +1,6 @@
 package chevy.control.projectileController;
 
-import chevy.control.InteractionType;
+import chevy.control.InteractionTypes;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -45,7 +45,7 @@ public class ProjectileUpdateController implements Update {
             projectile.incrementNUpdate();
             if (projectile.getUpdateEverySecond() * GameSettings.FPS == projectile.getCurrentNUpdate()) {
                 projectile.resetNUpdate();
-                projectileController.handleInteraction(InteractionType.UPDATE, projectile, null);
+                projectileController.handleInteraction(InteractionTypes.UPDATE, projectile, null);
             }
             if (projectile.isCollide())
                 it.remove();

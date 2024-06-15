@@ -1,72 +1,38 @@
 package chevy.view.animation;
 
-import chevy.model.entity.dinamicEntity.stateMachine.EnumState;
-import chevy.model.entity.dinamicEntity.stateMachine.SlimeStates;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
+import chevy.service.Render;
+import chevy.service.RenderManager;
 import chevy.settings.GameSettings;
-import chevy.view.Image;
 
 import java.awt.image.BufferedImage;
 
-public class AnimatedSprite {
-    private final EnumState animationTypes;
+public class AnimatedSprite implements Render {
+    private final CommonEnumStates animationTypes;
     private final BufferedImage[] frames;
     private final int nFrame;
-    private int tick;
     private final float secFrameDuration;
-    private int currentIndexFrame;
+    private int currentIndexFrame = 0;
     private final boolean loop;
-    private boolean isEnd;
-    private boolean isStart;
+    private boolean isRunning = false;
+    private double time = 0d;
 
 
-    public AnimatedSprite(EnumState animationTypes, int nFrame, float secFrameDuration) {
+    public AnimatedSprite(CommonEnumStates animationTypes, int nFrame, float secFrameDuration) {
         this.animationTypes = animationTypes;
         this.nFrame = nFrame;
         this.secFrameDuration = secFrameDuration;
-        this.currentIndexFrame = 0;
-        this.tick = 0;
         this.loop = false;
-        this.isEnd = false;
-        this.isStart = false;
 
         frames = new BufferedImage[nFrame];
     }
 
-    public AnimatedSprite(EnumState animationTypes, int nFrame, int fps) {
-        this.animationTypes = animationTypes;
-        this.nFrame = nFrame;
-        this.secFrameDuration = (float) 1 / fps;
-        this.currentIndexFrame = 0;
-        this.tick = 0;
-        this.loop = false;
-        this.isEnd = false;
-        this.isStart = false;
-
-        frames = new BufferedImage[nFrame];
-    }
-
-    public AnimatedSprite(EnumState animationTypes, int nFrame, int fps, boolean loop) {
-        this.animationTypes = animationTypes;
-        this.nFrame = nFrame;
-        this.secFrameDuration = (float) 1 / fps;
-        this.currentIndexFrame = 0;
-        this.tick = 0;
-        this.loop = loop;
-        this.isEnd = false;
-        this.isStart = false;
-
-        frames = new BufferedImage[nFrame];
-    }
-
-    public AnimatedSprite(EnumState animationTypes, int nFrame, float secFrameDuration, boolean loop) {
+    public AnimatedSprite(CommonEnumStates animationTypes, int nFrame, float secFrameDuration, boolean loop) {
         this.animationTypes = animationTypes;
         this.nFrame = nFrame;
         this.secFrameDuration = secFrameDuration;
-        this.currentIndexFrame = 0;
-        this.tick = 0;
         this.loop = loop;
-        this.isEnd = false;
-        this.isStart = false;
 
         frames = new BufferedImage[nFrame];
     }
@@ -77,56 +43,63 @@ public class AnimatedSprite {
             frames[index] = frame;
     }
 
+
+    // TODO: sistemare l'aggirnaento del l'indice corrente per fare in modo che la funzione ritorni sepre le stesse immaggini ad ogni animaizone
     public BufferedImage getCurrentFrame() {
-        if (isEnd)
+        if (!isRunning) {
+//            System.out.println(nFrame - 1);
             return frames[nFrame - 1];
-        else
-            updateAnimation();
+        }
+//        System.out.println(currentIndexFrame);
         return frames[currentIndexFrame];
     }
 
-    private void updateAnimation() {
-        if (isEnd)
-            return;
-
-        if (tick >= secFrameDuration * GameSettings.FPS) {
-            tick = 0;
-            ++currentIndexFrame;
-
-            if (loop)
-                currentIndexFrame = currentIndexFrame % nFrame;
-            else if (currentIndexFrame >= nFrame - 1) {
-                stop();
-            }
-        }
-        ++tick;
-    }
-
     public void start() {
-//        System.out.println("start " + animationTypes);
-        tick = 0;
+//        System.out.println("Start animation: " + animationTypes);
         currentIndexFrame = 0;
-        isStart = true;
-        isEnd = false;
+        isRunning = true;
+        time = 0d;
+
+        RenderManager.addToRender(this);
     }
 
     public void stop() {
-//        System.out.println("stop " + animationTypes);
-        tick = 0;
-        currentIndexFrame = 0;
-        isEnd = true;
-        isStart = false;
+//        System.out.println("Stop animation: " + animationTypes);
+        isRunning = false;
     }
 
     public int getNFrame() {
         return nFrame;
     }
 
-    public boolean isStart() {
-        return isStart;
+    public boolean isRunning() {
+        return isRunning;
     }
 
-    public EnumState getAnimationTypes() {
+    public CommonEnumStates getAnimationTypes() {
         return animationTypes;
+    }
+
+
+    @Override
+    public void render(double delta) {
+        if (time >= secFrameDuration) {
+            time = 0d;
+            ++currentIndexFrame;
+            if (loop)
+                currentIndexFrame = currentIndexFrame % nFrame;
+            else if (currentIndexFrame >= nFrame - 1) {
+                stop();
+            }
+        }
+        else
+            time += delta;
+    }
+
+    @Override
+    public boolean renderIsEnd() {
+        if (loop)
+            return false;
+        return !isRunning;
     }
 }

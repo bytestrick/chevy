@@ -1,6 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.control.InteractionType;
+import chevy.control.InteractionTypes;
 import chevy.model.entity.staticEntity.environment.traps.Traps;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -25,7 +25,7 @@ public class TrapsUpdateController implements Update {
             trap.incrementNUpdate();
             if (trap.getUpdateEverySecond() * GameSettings.FPS == trap.getCurrentNUpdate()) {
                 trap.resetNUpdate();
-                trapsController.handleInteraction(InteractionType.UPDATE, trap, null);
+                trapsController.handleInteraction(InteractionTypes.UPDATE, trap, null);
             }
         }
     }

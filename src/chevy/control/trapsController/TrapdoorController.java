@@ -2,7 +2,6 @@ package chevy.control.trapsController;
 
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.utilz.Vector2;
@@ -18,7 +17,7 @@ public class TrapdoorController {
 
     public void playerInInteraction(Player player) {
         System.out.println("sdsdsd");
-        player.changeState(PlayerStates.IDLE);
+        player.changeState(Player.States.IDLE);
     }
 
 

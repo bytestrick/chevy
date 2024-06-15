@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.InteractionTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -26,7 +26,7 @@ public class EnemyUpdateController implements Update {
 //            enemy.incrementNUpdate();
 //            if (enemy.getUpdateEverySecond() * GameSettings.FPS == enemy.getCurrentNUpdate()) {
 //                enemy.resetNUpdate();
-                enemyController.handleInteraction(InteractionType.UPDATE, enemy, null);
+                enemyController.handleInteraction(InteractionTypes.UPDATE, enemy, null);
 //            }
         }
     }
