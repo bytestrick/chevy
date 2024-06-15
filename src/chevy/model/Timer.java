@@ -5,45 +5,37 @@ import chevy.service.UpdateManager;
 
 public class Timer implements Update {
     private final double duration;
-    private boolean isEnd;
-    private boolean isStart;
     private double time;
+    private boolean isRunning;
 
 
-    public Timer(double duration) {
-        this.duration = duration;
-        this.isEnd = true;
-        this.isStart = false;
+    public Timer(double secDuration) {
+        this.duration = secDuration;
+        this.isRunning = false;
         this.time = 0d;
     }
 
 
-    public boolean isEnd() {
-        return isEnd;
-    }
-
-    public boolean isStart() {
-        return isStart;
+    public boolean isRunning() {
+        return isRunning;
     }
 
     public void start() {
-        if (!isStart) {
+        if (!isRunning()) {
             time = 0d;
-            isStart = true;
-            isEnd = false;
+            isRunning = true;
             UpdateManager.addToUpdate(this);
         }
     }
 
     public void stop() {
-        isEnd = true;
+        isRunning = false;
     }
 
     @Override
     public void update(double delta) {
         if (time >= duration) {
-            isEnd = true;
-            isStart = false;
+            isRunning = false;
             return;
         }
 
@@ -52,6 +44,6 @@ public class Timer implements Update {
 
     @Override
     public boolean updateIsEnd() {
-        return isEnd;
+        return !isRunning;
     }
 }

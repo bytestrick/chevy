@@ -1,15 +1,22 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
+import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
-import chevy.model.entity.dinamicEntity.stateMachine.WizardStates;
 import chevy.utilz.Vector2;
 
 public class Wizard extends Enemy {
-    private final State idle = new State(WizardStates.IDLE);
-    private final State move = new State(WizardStates.MOVE);
-    private final State shot = new State(WizardStates.SHOT);
-    private final State hit = new State(WizardStates.HIT);
-    private final State dead = new State(WizardStates.DEAD);
+    public enum EnumState implements CommonEnumStates {
+        MOVE,
+        ATTACK,
+        HIT,
+        DEAD,
+        IDLE
+    }
+    private final State idle = new State(EnumState.IDLE);
+    private final State move = new State(EnumState.MOVE);
+    private final State attack = new State(EnumState.ATTACK);
+    private final State hit = new State(EnumState.HIT);
+    private final State dead = new State(EnumState.DEAD);
 
 
     public Wizard(Vector2<Integer> initPosition) {
@@ -25,10 +32,10 @@ public class Wizard extends Enemy {
 
     private void initStateMachine() {
         idle.linkState(move);
-        idle.linkState(shot);
+        idle.linkState(attack);
         idle.linkState(hit);
         move.linkState(idle);
-        shot.linkState(idle);
+        attack.linkState(idle);
         hit.linkState(idle);
         hit.linkState(dead);
     }

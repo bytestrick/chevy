@@ -1,6 +1,6 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntityTypes;
 import chevy.utilz.Vector2;
@@ -19,10 +19,10 @@ public abstract class Enemy extends LiveEntity {
 
 
     @Override
-    public EntityTypes getSpecificType() { return type; }
+    public EntityCommonTypes getSpecificType() { return type; }
 
     @Override
-    public EntityTypes getGenericType() { return super.getSpecificType(); }
+    public EntityCommonTypes getGenericType() { return super.getSpecificType(); }
 
     @Override
     public String toString() {

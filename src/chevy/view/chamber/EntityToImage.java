@@ -1,7 +1,6 @@
 package chevy.view.chamber;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.EntityTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.EnemyTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.PlayerTypes;
@@ -13,12 +12,9 @@ import chevy.view.Image;
 import chevy.view.entityView.EntityView;
 import chevy.view.entityView.enemy.SlimeView;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class EntityToImage {
     private static BufferedImage WALL_TOP = null;
@@ -48,81 +44,81 @@ public class EntityToImage {
             // Wall
             case WallTypes.TOP -> {
                 if (WALL_TOP == null)
-                    WALL_TOP = Image.loadImage("/assets/chamberTiles/wallTiles/top.png");
+                    WALL_TOP = Image.load("/assets/chamberTiles/wallTiles/top.png");
                yield WALL_TOP;
             }
             case WallTypes.BOTTOM -> {
                 if (WALL_BOTTOM == null)
-                    WALL_BOTTOM = Image.loadImage("/assets/chamberTiles/wallTiles/bottom.png");
+                    WALL_BOTTOM = Image.load("/assets/chamberTiles/wallTiles/bottom.png");
                 yield WALL_BOTTOM;
             }
             case WallTypes.LEFT -> {
                 if (WALL_LEFT == null)
-                    WALL_LEFT = Image.loadImage("/assets/chamberTiles/wallTiles/left.png");
+                    WALL_LEFT = Image.load("/assets/chamberTiles/wallTiles/left.png");
                 yield WALL_LEFT;
             }
             case WallTypes.RIGHT -> {
                 if (WALL_RIGHT == null)
-                    WALL_RIGHT = Image.loadImage("/assets/chamberTiles/wallTiles/right.png");
+                    WALL_RIGHT = Image.load("/assets/chamberTiles/wallTiles/right.png");
                 yield WALL_RIGHT;
             }
             case WallTypes.EXTERNAL_CORNER_BOTTOM_LEFT -> {
                 if (WALL_EXTERNAL_CORNER_BOTTOM_LEFT == null)
-                    WALL_EXTERNAL_CORNER_BOTTOM_LEFT = Image.loadImage("/assets/chamberTiles/wallTiles/externalCornerBottomLeft.png");
+                    WALL_EXTERNAL_CORNER_BOTTOM_LEFT = Image.load("/assets/chamberTiles/wallTiles/externalCornerBottomLeft.png");
                 yield WALL_EXTERNAL_CORNER_BOTTOM_LEFT;
             }
             case WallTypes.EXTERNAL_CORNER_BOTTOM_RIGHT -> {
                 if (WALL_EXTERNAL_CORNER_BOTTOM_RIGHT == null)
-                    WALL_EXTERNAL_CORNER_BOTTOM_RIGHT = Image.loadImage("/assets/chamberTiles/wallTiles/externalCornerBottomRight.png");
+                    WALL_EXTERNAL_CORNER_BOTTOM_RIGHT = Image.load("/assets/chamberTiles/wallTiles/externalCornerBottomRight.png");
                 yield WALL_EXTERNAL_CORNER_BOTTOM_RIGHT;
             }
             case WallTypes.EXTERNAL_CORNER_TOP_LEFT -> {
                 if (WALL_EXTERNAL_CORNER_TOP_LEFT == null)
-                    WALL_EXTERNAL_CORNER_TOP_LEFT = Image.loadImage("/assets/chamberTiles/wallTiles/externalCornerTopLeft.png");
+                    WALL_EXTERNAL_CORNER_TOP_LEFT = Image.load("/assets/chamberTiles/wallTiles/externalCornerTopLeft.png");
                 yield WALL_EXTERNAL_CORNER_TOP_LEFT;
             }
             case WallTypes.EXTERNAL_CORNER_TOP_RIGHT -> {
                 if (WALL_EXTERNAL_CORNER_TOP_RIGHT == null)
-                    WALL_EXTERNAL_CORNER_TOP_RIGHT = Image.loadImage("/assets/chamberTiles/wallTiles/externalCornerTopRight.png");
+                    WALL_EXTERNAL_CORNER_TOP_RIGHT = Image.load("/assets/chamberTiles/wallTiles/externalCornerTopRight.png");
                 yield WALL_EXTERNAL_CORNER_TOP_RIGHT;
             }
 
             // Ground
             case GroundTypes.CENTRAL -> {
                 if (GROUND_CENTRAL == null)
-                    GROUND_CENTRAL = Image.loadImage("/assets/chamberTiles/groundTiles/central.png");
+                    GROUND_CENTRAL = Image.load("/assets/chamberTiles/groundTiles/central.png");
                 yield GROUND_CENTRAL;
             }
             case GroundTypes.LEFT -> {
                 if (GROUND_LEFT == null)
-                    GROUND_LEFT = Image.loadImage("/assets/chamberTiles/groundTiles/left.png");
+                    GROUND_LEFT = Image.load("/assets/chamberTiles/groundTiles/left.png");
                 yield GROUND_LEFT;
             }
             case GroundTypes.RIGHT -> {
                 if (GROUND_RIGHT == null)
-                    GROUND_RIGHT = Image.loadImage("/assets/chamberTiles/groundTiles/right.png");
+                    GROUND_RIGHT = Image.load("/assets/chamberTiles/groundTiles/right.png");
                 yield GROUND_RIGHT;
             }
             case GroundTypes.TOP -> {
                 if (GROUND_TOP == null)
-                    GROUND_TOP = Image.loadImage("/assets/chamberTiles/groundTiles/top.png");
+                    GROUND_TOP = Image.load("/assets/chamberTiles/groundTiles/top.png");
                 yield GROUND_TOP;
             }
             case GroundTypes.INTERIOR_CORNER_TOP_LEFT -> {
                 if (GROUND_INTERIOR_CORNER_TOP_LEFT == null)
-                    GROUND_INTERIOR_CORNER_TOP_LEFT = Image.loadImage("/assets/chamberTiles/groundTiles/interiorCornerTopLeft.png");
+                    GROUND_INTERIOR_CORNER_TOP_LEFT = Image.load("/assets/chamberTiles/groundTiles/interiorCornerTopLeft.png");
                 yield GROUND_INTERIOR_CORNER_TOP_LEFT;
             }
             case GroundTypes.INTERIOR_CORNER_TOP_RIGHT -> {
                 if (GROUND_INTERIOR_CORNER_TOP_RIGHT == null)
-                    GROUND_INTERIOR_CORNER_TOP_RIGHT = Image.loadImage("/assets/chamberTiles/groundTiles/interiorCornerTopRight.png");
+                    GROUND_INTERIOR_CORNER_TOP_RIGHT = Image.load("/assets/chamberTiles/groundTiles/interiorCornerTopRight.png");
                 yield GROUND_INTERIOR_CORNER_TOP_RIGHT;
             }
 
             // Trap
             case TrapsTypes.VOID -> {
                 if (TRAP_VOID == null)
-                    TRAP_VOID = Image.loadImage("/assets/chamberTiles/trapTiles/void.png");
+                    TRAP_VOID = Image.load("/assets/chamberTiles/trapTiles/void.png");
                 yield TRAP_VOID;
             }
 
@@ -140,7 +136,7 @@ public class EntityToImage {
 
             case PlayerTypes.KNIGHT -> {
                 if (TRAP_VOID == null)
-                    TRAP_VOID = Image.loadImage("/assets/chamberTiles/trapTiles/void.png");
+                    TRAP_VOID = Image.load("/assets/chamberTiles/trapTiles/void.png");
                 yield TRAP_VOID;
             }
 

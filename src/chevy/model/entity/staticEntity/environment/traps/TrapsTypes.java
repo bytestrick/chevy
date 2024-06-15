@@ -1,8 +1,8 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 
-public enum TrapsTypes implements EntityTypes {
+public enum TrapsTypes implements EntityCommonTypes {
     SLUDGE,
     VOID,
     SPIKED_FLOOR,

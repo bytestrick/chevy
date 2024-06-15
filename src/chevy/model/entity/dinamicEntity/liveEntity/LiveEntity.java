@@ -1,12 +1,9 @@
 package chevy.model.entity.dinamicEntity.liveEntity;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.DynamicEntityTypes;
-import chevy.model.entity.dinamicEntity.stateMachine.EnumState;
 import chevy.utilz.Vector2;
-
-import java.util.Random;
 
 public abstract class LiveEntity extends DynamicEntity {
     private final LiveEntityTypes type;
@@ -49,10 +46,10 @@ public abstract class LiveEntity extends DynamicEntity {
     }
 
     @Override
-    public EntityTypes getSpecificType() { return type; }
+    public EntityCommonTypes getSpecificType() { return type; }
 
     @Override
-    public EntityTypes getGenericType() { return super.getSpecificType(); }
+    public EntityCommonTypes getGenericType() { return super.getSpecificType(); }
 
     @Override
     public String toString() { return type.toString(); }

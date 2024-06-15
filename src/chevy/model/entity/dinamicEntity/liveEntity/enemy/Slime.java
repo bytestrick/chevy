@@ -1,15 +1,22 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.dinamicEntity.stateMachine.SlimeStates;
+import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
 import chevy.utilz.Vector2;
 
 public class Slime extends Enemy {
-    private final State idle = new State(SlimeStates.IDLE, 2);
-    private final State move = new State(SlimeStates.MOVE, 2);
-    private final State attack = new State(SlimeStates.ATTACK, 2);
-    private final State hit = new State(SlimeStates.HIT);
-    private final State dead = new State(SlimeStates.DEAD);
+    public enum EnumState implements CommonEnumStates {
+        MOVE,
+        ATTACK,
+        HIT,
+        DEAD,
+        IDLE
+    }
+    private final State idle = new State(EnumState.IDLE, 1.f);
+    private final State move = new State(EnumState.MOVE, 0.5f);
+    private final State attack = new State(EnumState.ATTACK, 0.49f);
+    private final State hit = new State(EnumState.HIT);
+    private final State dead = new State(EnumState.DEAD);
 
 
     public Slime(Vector2<Integer> initPosition) {
@@ -35,5 +42,18 @@ public class Slime extends Enemy {
         attack.linkState(idle);
         hit.linkState(idle);
         hit.linkState(dead);
+    }
+
+
+    @Override
+    public State getState(CommonEnumStates commonEnumStates) {
+        EnumState slimeState = (EnumState) commonEnumStates;
+        return switch (slimeState) {
+            case MOVE -> move;
+            case ATTACK -> attack;
+            case HIT -> hit;
+            case DEAD -> dead;
+            case IDLE -> idle;
+        };
     }
 }

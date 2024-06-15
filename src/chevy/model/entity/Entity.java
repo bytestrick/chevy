@@ -67,9 +67,9 @@ public abstract class Entity {
         return random.nextInt(minDamage, maxDamage + 1);
     }
 
-    public EntityTypes getSpecificType() { return type; }
+    public EntityCommonTypes getSpecificType() { return type; }
 
-    public EntityTypes getGenericType() { return null; }
+    public EntityCommonTypes getGenericType() { return null; }
 
     public final int getRow() { return position.first; }
 

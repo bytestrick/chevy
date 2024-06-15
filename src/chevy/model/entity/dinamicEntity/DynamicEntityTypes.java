@@ -1,8 +1,8 @@
 package chevy.model.entity.dinamicEntity;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 
-public enum DynamicEntityTypes implements EntityTypes {
+public enum DynamicEntityTypes implements EntityCommonTypes {
     LIVE_ENTITY,
     PROJECTILE;
 }

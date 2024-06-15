@@ -8,12 +8,13 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Image {
-    public static BufferedImage loadImage(String path) {
+    public static BufferedImage load(String path) {
         BufferedImage image = null;
         try {
             image = ImageIO.read(Objects.requireNonNull(EntityToImage.class.getResource(path)));
         }
         catch (IOException e) {
+            System.out.println("Immagine: " + path + " non trovata");
             System.exit(1);
         }
 

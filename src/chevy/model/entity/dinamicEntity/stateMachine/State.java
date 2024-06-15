@@ -5,55 +5,55 @@ import chevy.model.Timer;
 import java.util.*;
 
 public class State {
-    private final EnumState enumState;
+    private final CommonEnumStates commonEnumStates;
     private final boolean selfLoop; // auto arco
     private final float durationState;
-    private final Dictionary<EnumState, State> linkedStates = new Hashtable<>();
+    private final Dictionary<CommonEnumStates, State> linkedStates = new Hashtable<>();
     // ---
     private final Timer stateTimer;
 
 
-    public State(EnumState enumState) {
-        this.enumState = enumState;
+    public State(CommonEnumStates commonEnumStates) {
+        this.commonEnumStates = commonEnumStates;
         this.selfLoop = false;
-        this.durationState = 0;
+        this.durationState = 0.f;
         this.stateTimer = null;
     }
 
-    public State(EnumState enumState, float secDuration) {
-        this.enumState = enumState;
+    public State(CommonEnumStates commonEnumStates, float secDuration) {
+        this.commonEnumStates = commonEnumStates;
         this.selfLoop = false;
         this.durationState = secDuration;
         this.stateTimer = new Timer(durationState);
     }
 
-    public State(EnumState enumState, boolean selfLoop) {
-        this.enumState = enumState;
+    public State(CommonEnumStates commonEnumStates, boolean selfLoop) {
+        this.commonEnumStates = commonEnumStates;
         this.selfLoop = selfLoop;
-        this.durationState = 0;
+        this.durationState = 0.f;
         this.stateTimer = null;
     }
 
-    public State(EnumState enumState, float duration, boolean selfLoop) {
-        this.enumState = enumState;
+    public State(CommonEnumStates commonEnumStates, float duration, boolean selfLoop) {
+        this.commonEnumStates = commonEnumStates;
         this.selfLoop = selfLoop;
         this.durationState = duration;
         this.stateTimer = new Timer(durationState);
     }
 
 
-    public EnumState getStateEnum() {
-        return enumState;
+    public CommonEnumStates getStateEnum() {
+        return commonEnumStates;
     }
 
     public void linkState(State state) {
         linkedStates.put(state.getStateEnum(), state);
     }
 
-    public State findLinkedState(EnumState enumState) {
-        if (selfLoop && Objects.equals(this.enumState, enumState))
+    public State findLinkedState(CommonEnumStates commonEnumStates) {
+        if (selfLoop && Objects.equals(this.commonEnumStates, commonEnumStates))
             return this;
-        return linkedStates.get(enumState);
+        return linkedStates.get(commonEnumStates);
     }
 
     public float getDuration() {
@@ -65,11 +65,11 @@ public class State {
         if (stateTimer == null)
             return true;
 
-       return stateTimer.isEnd();
+       return !stateTimer.isRunning();
     }
 
     public void startStateTimer() {
-        if (stateTimer != null && !stateTimer.isStart())
+        if (stateTimer != null && !stateTimer.isRunning())
             stateTimer.start();
     }
 
@@ -81,16 +81,16 @@ public class State {
 
         State state1 = (State) o;
 
-        return Objects.equals(enumState, state1.enumState);
+        return Objects.equals(commonEnumStates, state1.commonEnumStates);
     }
 
     @Override
     public int hashCode() {
-        return enumState.hashCode();
+        return commonEnumStates.hashCode();
     }
 
     @Override
     public String toString() {
-        return enumState.toString();
+        return commonEnumStates.toString();
     }
 }

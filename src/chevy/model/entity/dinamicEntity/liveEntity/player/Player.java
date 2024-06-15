@@ -1,16 +1,22 @@
 package chevy.model.entity.dinamicEntity.liveEntity.player;
 
-import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.DynamicEntityTypes;
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntityTypes;
+import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.utilz.Vector2;
 
-import java.util.Random;
-
 public abstract class Player extends LiveEntity {
+    public enum States implements CommonEnumStates {
+        IDLE,
+        ATTACK,
+        MOVE,
+        DEAD,
+        HIT,
+        SLUDGE,
+        FALL,
+        GLIDE
+    }
     private final PlayerTypes type;
 
 
@@ -28,7 +34,7 @@ public abstract class Player extends LiveEntity {
     }
 
     @Override
-    public EntityTypes getGenericType() {
+    public EntityCommonTypes getGenericType() {
         return super.getSpecificType();
     }
 

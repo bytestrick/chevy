@@ -38,7 +38,7 @@ public class GameLoop implements Runnable {
 
             UpdateManager.update(delta);
             // render
-            RenderManager.render();
+            RenderManager.render(delta);
             Toolkit.getDefaultToolkit().sync();
         }
     }

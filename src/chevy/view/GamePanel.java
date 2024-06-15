@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Render {
     }
 
     @Override
-    public void render() {
+    public void render(double delta) {
         repaint();
     }
 }

@@ -1,6 +1,6 @@
 package chevy.model.entity.staticEntity.environment;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 import chevy.utilz.Vector2;
 
 public class Wall extends Environment {
@@ -17,7 +17,7 @@ public class Wall extends Environment {
     }
 
     @Override
-    public EntityTypes getGenericType() {
+    public EntityCommonTypes getGenericType() {
         return super.getSpecificType();
     }
 }
