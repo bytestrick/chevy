@@ -1,6 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.control.InteractionType;
+import chevy.control.InteractionTypes;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
@@ -27,7 +27,7 @@ public class TrapsController {
     }
 
 
-    public synchronized void handleInteraction(InteractionType interaction, Entity subject, Entity object) {
+    public synchronized void handleInteraction(InteractionTypes interaction, Entity subject, Entity object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, (Traps) object);
             case PLAYER_OUT -> playerOutInteraction((Player) subject, (Traps) object);

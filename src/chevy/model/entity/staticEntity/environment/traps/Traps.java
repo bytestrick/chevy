@@ -1,6 +1,6 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.EnvironmentTypes;
 import chevy.utilz.Vector2;
@@ -20,12 +20,12 @@ public abstract class Traps extends Environment {
 
 
     @Override
-    public EntityTypes getSpecificType() {
+    public EntityCommonTypes getSpecificType() {
         return type;
     }
 
     @Override
-    public EntityTypes getGenericType() {
+    public EntityCommonTypes getGenericType() {
         return super.getSpecificType();
     }
 

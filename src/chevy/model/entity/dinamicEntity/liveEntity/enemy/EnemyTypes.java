@@ -1,8 +1,8 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 
-public enum EnemyTypes implements EntityTypes {
+public enum EnemyTypes implements EntityCommonTypes {
     BAT,
     ZOMBIE,
     WIZARD,

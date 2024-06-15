@@ -93,10 +93,8 @@ public class AStar {
 
         while (!openList.isEmpty()) {
             Details details = openList.peek();
-            // Add to the closed list
             currentCell.first = details.row;
             currentCell.second = details.col;
-            // Remove from the open list
             openList.poll();
             closedList[currentCell.first][currentCell.second] = true;
 
@@ -113,7 +111,7 @@ public class AStar {
                         if(cellDetails[neighbour.first] == null) {
                             cellDetails[neighbour.first] = new Cell[nCols];
                         }
-                        // crea la cella se non c'è
+                        // crea la cella se non esiste
                         if (cellDetails[neighbour.first][neighbour.second] == null) {
                             cellDetails[neighbour.first][neighbour.second] = new Cell();
                         }

@@ -2,7 +2,7 @@ package chevy.control.enemyController;
 
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wizard;
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 
 public class WizardController {
     private final Chamber chamber;
@@ -13,7 +13,7 @@ public class WizardController {
         this.chamber = chamber;
     }
 
-    public void playerInInteraction(PlayerStates action, int value) {
+    public void playerInInteraction(Player.States action, int value) {
 
     }
 

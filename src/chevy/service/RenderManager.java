@@ -6,19 +6,23 @@ import java.util.List;
 
 public class RenderManager {
     private static final List<Render> renderList = new LinkedList<>();
+    private static final List<Render> toAdd = new LinkedList<>();
 
 
     public static void addToRender(Render r) {
-        renderList.add(r);
+        toAdd.add(r);
     }
 
-    public static void render() {
-        for (Render currentRenderElement : renderList) {
-            currentRenderElement.render();
+    public static void render(double delta) {
+        renderList.addAll(toAdd);
+        toAdd.clear();
+
+        Iterator<Render> it = renderList.iterator();
+        while (it.hasNext()) {
+            Render currentRenderElement = it.next();
+            currentRenderElement.render(delta);
+            if (currentRenderElement.renderIsEnd())
+                it.remove();
         }
-    }
-
-    public static void removeFormRender(Render r) {
-        renderList.remove(r);
     }
 }

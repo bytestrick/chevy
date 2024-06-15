@@ -1,8 +1,8 @@
 package chevy.model.entity.staticEntity.environment;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 
-public enum GroundTypes implements EntityTypes {
+public enum GroundTypes implements EntityCommonTypes {
     TOP,
     INTERIOR_CORNER_TOP_LEFT,
     INTERIOR_CORNER_TOP_RIGHT,

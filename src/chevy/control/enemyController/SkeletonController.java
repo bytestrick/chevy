@@ -1,14 +1,12 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.InteractionTypes;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
-import chevy.model.entity.dinamicEntity.stateMachine.SkeletonStates;
 
 public class SkeletonController {
     private final Chamber chamber;
@@ -23,7 +21,7 @@ public class SkeletonController {
 
     public void playerInInteraction(Player player, Skeleton skeleton) {
         switch (player.getCurrentEumState()) {
-            case PlayerStates.ATTACK ->
+            case Player.States.ATTACK ->
                     hitSkeleton(skeleton, -1 * player.getDamage());
             default -> System.out.println("Lo SkeletonController non gestisce questa azione");
         }
@@ -33,15 +31,15 @@ public class SkeletonController {
         // attacca se hai il player di fianco
         DirectionsModel direction = chamber.getHitDirectionPlayer(skeleton);
         if (direction != null) {
-            if (skeleton.changeState(SkeletonStates.ATTACK)) {
-                playerController.handleInteraction(InteractionType.ENEMY, skeleton);
+            if (skeleton.changeState(Skeleton.EnumState.ATTACK)) {
+                playerController.handleInteraction(InteractionTypes.ENEMY, skeleton);
             }
         }
         // altrimenti muoviti:
-        else if (skeleton.changeState(SkeletonStates.MOVE)) {
+        else if (skeleton.changeState(Skeleton.EnumState.MOVE)) {
            chamber.chase(skeleton);
         }
-        skeleton.changeState(SkeletonStates.IDLE);
+        skeleton.changeState(Skeleton.EnumState.IDLE);
     }
 
     public void projectileInteraction(Projectile projectile, Skeleton skeleton) {
@@ -49,13 +47,13 @@ public class SkeletonController {
     }
 
     private void hitSkeleton(Skeleton skeleton, int damage) {
-        if (skeleton.changeState(SkeletonStates.HIT))
+        if (skeleton.changeState(Skeleton.EnumState.HIT))
             skeleton.changeHealth(damage);
-        if (!skeleton.isAlive() && skeleton.changeState(SkeletonStates.DEAD)) {
+        if (!skeleton.isAlive() && skeleton.changeState(Skeleton.EnumState.DEAD)) {
             chamber.removeEnemy(skeleton);
             chamber.removeEntityOnTop(skeleton);
         }
         else
-            skeleton.changeState(SkeletonStates.IDLE);
+            skeleton.changeState(Skeleton.EnumState.IDLE);
     }
 }

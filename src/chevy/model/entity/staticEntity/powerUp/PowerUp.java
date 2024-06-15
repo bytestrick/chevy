@@ -2,7 +2,7 @@ package chevy.model.entity.staticEntity.powerUp;
 
 import chevy.model.entity.Entity;
 import chevy.model.entity.staticEntity.StaticEntityTypes;
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 import chevy.utilz.Vector2;
 
 public abstract class PowerUp extends Entity {
@@ -15,7 +15,7 @@ public abstract class PowerUp extends Entity {
     }
 
     @Override
-    public EntityTypes getSpecificType() {
+    public EntityCommonTypes getSpecificType() {
         return type;
     }
 

@@ -2,7 +2,7 @@ package chevy.model.entity.staticEntity.environment;
 
 import chevy.model.entity.Entity;
 import chevy.model.entity.staticEntity.StaticEntityTypes;
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 import chevy.utilz.Vector2;
 
 public abstract class Environment extends Entity {
@@ -18,12 +18,12 @@ public abstract class Environment extends Entity {
 
 
     @Override
-    public EntityTypes getSpecificType() {
+    public EntityCommonTypes getSpecificType() {
         return type;
     }
 
     @Override
-    public EntityTypes getGenericType() {
+    public EntityCommonTypes getGenericType() {
         return super.getSpecificType();
     }
 

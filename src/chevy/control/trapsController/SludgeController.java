@@ -1,9 +1,7 @@
 package chevy.control.trapsController;
 
-import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 import chevy.model.entity.staticEntity.environment.traps.Sludge;
 
 public class SludgeController {
@@ -16,12 +14,12 @@ public class SludgeController {
 
 
     public void playerInInteraction(Player player, Sludge sludge) {
-        player.changeState(PlayerStates.SLUDGE);
+        player.changeState(Player.States.SLUDGE);
     }
 
     public void playerInteraction(Player player, Sludge sludge) {
         if (sludge.getNMoveToUnlock() <= 0) {
-            player.changeState(PlayerStates.IDLE);
+            player.changeState(Player.States.IDLE);
             chamber.findAndRemoveEntity(sludge);
             return;
         }

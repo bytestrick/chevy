@@ -1,8 +1,8 @@
 package chevy.model.entity.dinamicEntity.liveEntity;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 
-public enum LiveEntityTypes implements EntityTypes {
+public enum LiveEntityTypes implements EntityCommonTypes {
     PLAYER,
     ENEMY;
 }

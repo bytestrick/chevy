@@ -1,3 +1,3 @@
 package chevy.model.entity.dinamicEntity.stateMachine;
 
-public interface EnumState {}
+public interface CommonEnumStates {}

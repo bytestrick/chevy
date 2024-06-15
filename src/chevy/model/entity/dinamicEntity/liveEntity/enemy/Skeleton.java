@@ -1,18 +1,25 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.dinamicEntity.stateMachine.SkeletonStates;
+import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
 import chevy.utilz.Vector2;
 
 public class Skeleton extends Enemy {
+    public enum EnumState implements CommonEnumStates {
+        MOVE,
+        ATTACK,
+        HIT,
+        DEAD,
+        IDLE,
+        INVINCIBILITY
+    }
     private boolean invincible = true;
-
-    private final State idle = new State(SkeletonStates.IDLE);
-    private final State move = new State(SkeletonStates.MOVE);
-    private final State attack = new State(SkeletonStates.ATTACK);
-    private final State hit = new State(SkeletonStates.HIT);
-    private final State dead = new State(SkeletonStates.DEAD);
-    private final State invincibility = new State(SkeletonStates.INVINCIBILITY);
+    private final State idle = new State(EnumState.IDLE);
+    private final State move = new State(EnumState.MOVE);
+    private final State attack = new State(EnumState.ATTACK);
+    private final State hit = new State(EnumState.HIT);
+    private final State dead = new State(EnumState.DEAD);
+    private final State invincibility = new State(EnumState.INVINCIBILITY);
 
 
     public Skeleton(Vector2<Integer> initPosition) {
