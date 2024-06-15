@@ -1,14 +1,12 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.InteractionTypes;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Frog;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.stateMachine.FrogStates;
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 
 public class FrogController {
     private final Chamber chamber;
@@ -22,7 +20,7 @@ public class FrogController {
 
     public void playerInInteraction(Player player, Frog frog) {
         switch (player.getCurrentEumState()) {
-            case PlayerStates.ATTACK ->
+            case Player.States.ATTACK ->
                     hitFrog(frog, -1 * player.getDamage());
             default -> System.out.println("Il BatController non gestisce questa azione");
         }
@@ -36,24 +34,24 @@ public class FrogController {
             // attacca se hai il player di fianco
             DirectionsModel direction = chamber.getHitDirectionPlayer(frog, 2);
             if (direction != null) {
-                if (frog.changeState(FrogStates.ATTACK))
-                    playerController.handleInteraction(InteractionType.ENEMY, frog);
+                if (frog.changeState(Frog.EnumState.ATTACK))
+                    playerController.handleInteraction(InteractionTypes.ENEMY, frog);
             }
             // altrimenti muoviti:
-            else if (frog.changeState(FrogStates.MOVE)) {
+            else if (frog.changeState(Frog.EnumState.MOVE)) {
                 chamber.chase(frog);
             }
-        frog.changeState(FrogStates.IDLE);
+        frog.changeState(Frog.EnumState.IDLE);
     }
 
     private void hitFrog(Frog frog, int damage) {
-        if (frog.changeState(FrogStates.HIT))
+        if (frog.changeState(Frog.EnumState.HIT))
             frog.changeHealth(damage);
-        if (!frog.isAlive() && frog.changeState(FrogStates.DEAD)) {
+        if (!frog.isAlive() && frog.changeState(Frog.EnumState.DEAD)) {
             chamber.removeEnemy(frog);
             chamber.removeEntityOnTop(frog);
         }
         else
-            frog.changeState(FrogStates.IDLE);
+            frog.changeState(Frog.EnumState.IDLE);
     }
 }

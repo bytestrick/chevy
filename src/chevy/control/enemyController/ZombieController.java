@@ -1,14 +1,12 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.InteractionTypes;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
-import chevy.model.entity.dinamicEntity.stateMachine.ZombieStates;
 
 public class ZombieController {
     private final Chamber chamber;
@@ -23,7 +21,7 @@ public class ZombieController {
 
     public void playerInInteraction(Player player, Zombie zombie) {
         switch (player.getCurrentEumState()) {
-            case PlayerStates.ATTACK ->
+            case Player.States.ATTACK ->
                     hitZombie(zombie, -1 * player.getDamage());
             default -> System.out.println("Lo ZombieController non gestisce questa azione");
         }
@@ -33,15 +31,15 @@ public class ZombieController {
         // attacca se hai il player di fianco
         DirectionsModel direction = chamber.getHitDirectionPlayer(zombie);
         if (direction != null) {
-            if (zombie.changeState(ZombieStates.ATTACK)) {
-                playerController.handleInteraction(InteractionType.ENEMY, zombie);
+            if (zombie.changeState(Zombie.EnumState.ATTACK)) {
+                playerController.handleInteraction(InteractionTypes.ENEMY, zombie);
             }
         }
         // altrimenti muoviti
-        else if (zombie.changeState(ZombieStates.MOVE))
+        else if (zombie.changeState(Zombie.EnumState.MOVE))
             chamber.wanderChase(zombie, 5);
 
-        zombie.changeState(ZombieStates.IDLE);
+        zombie.changeState(Zombie.EnumState.IDLE);
     }
 
     public void projectileInteraction(Projectile projectile, Zombie zombie) {
@@ -49,13 +47,13 @@ public class ZombieController {
     }
 
     private void hitZombie(Zombie zombie, int damage) {
-        if (zombie.changeState(ZombieStates.HIT))
+        if (zombie.changeState(Zombie.EnumState.HIT))
             zombie.changeHealth(damage);
-        if (!zombie.isAlive() && zombie.changeState(ZombieStates.DEAD)) {
+        if (!zombie.isAlive() && zombie.changeState(Zombie.EnumState.DEAD)) {
             chamber.removeEnemy(zombie);
             chamber.removeEntityOnTop(zombie);
         }
         else
-            zombie.changeState(ZombieStates.IDLE);
+            zombie.changeState(Zombie.EnumState.IDLE);
     }
 }

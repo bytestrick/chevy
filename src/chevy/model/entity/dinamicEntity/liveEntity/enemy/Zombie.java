@@ -1,16 +1,22 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.dinamicEntity.stateMachine.BatStates;
+import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
-import chevy.model.entity.dinamicEntity.stateMachine.ZombieStates;
 import chevy.utilz.Vector2;
 
 public class Zombie extends Enemy {
-    private final State idle = new State(ZombieStates.IDLE);
-    private final State move = new State(ZombieStates.MOVE);
-    private final State attack = new State(ZombieStates.ATTACK);
-    private final State hit = new State(ZombieStates.HIT);
-    private final State dead = new State(ZombieStates.DEAD);
+    public enum EnumState implements CommonEnumStates {
+        MOVE,
+        ATTACK,
+        HIT,
+        DEAD,
+        IDLE
+    }
+    private final State idle = new State(EnumState.IDLE);
+    private final State move = new State(EnumState.MOVE);
+    private final State attack = new State(EnumState.ATTACK);
+    private final State hit = new State(EnumState.HIT);
+    private final State dead = new State(EnumState.DEAD);
 
 
     public Zombie(Vector2<Integer> initPosition) {

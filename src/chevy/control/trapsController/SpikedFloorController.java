@@ -2,15 +2,11 @@ package chevy.control.trapsController;
 
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.EntityTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.EnemyTypes;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.stateMachine.BatStates;
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
-import chevy.model.entity.dinamicEntity.stateMachine.ZombieStates;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
-import chevy.utilz.Vector2;
 
 public class SpikedFloorController {
     private final Chamber chamber;
@@ -21,7 +17,7 @@ public class SpikedFloorController {
 
 
     public void playerInInteraction(Player player) {
-        player.changeState(PlayerStates.IDLE);
+        player.changeState(Player.States.IDLE);
     }
 
 
@@ -33,13 +29,13 @@ public class SpikedFloorController {
             boolean mayBeAttacked = false;
             if (entity instanceof LiveEntity liveEntity) {
                 if (liveEntity instanceof Player) {
-                    if (liveEntity.changeState(PlayerStates.HIT))
+                    if (liveEntity.changeState(Player.States.HIT))
                         mayBeAttacked = true;
                 }
                 else
                     switch (liveEntity.getSpecificType()) {
                         case EnemyTypes.ZOMBIE -> {
-                            if (liveEntity.changeState(ZombieStates.HIT))
+                            if (liveEntity.changeState(Zombie.EnumState.HIT))
                                 mayBeAttacked = true;
                         }
                         default -> {}

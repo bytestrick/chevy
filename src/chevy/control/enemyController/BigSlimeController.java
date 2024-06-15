@@ -1,14 +1,12 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.InteractionTypes;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.stateMachine.BigSlimeStates;
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 
 public class BigSlimeController {
     private final Chamber chamber;
@@ -23,7 +21,7 @@ public class BigSlimeController {
 
     public void playerInInteraction(Player player, BigSlime bigSlime) {
         switch (player.getCurrentEumState()) {
-            case PlayerStates.ATTACK -> {
+            case Player.States.ATTACK -> {
                 hitBigSlime(bigSlime, -1 * player.getDamage());
             }
             default -> System.out.println("Il BigSlimeController non gestisce questa azione");
@@ -34,15 +32,15 @@ public class BigSlimeController {
         // attacca se hai il player di fianco
         DirectionsModel direction = chamber.getHitDirectionPlayer(bigSlime);
         if (direction != null) {
-            if (bigSlime.changeState(BigSlimeStates.ATTACK)) {
-                playerController.handleInteraction(InteractionType.ENEMY, bigSlime);
+            if (bigSlime.changeState(BigSlime.EnumState.ATTACK)) {
+                playerController.handleInteraction(InteractionTypes.ENEMY, bigSlime);
             }
         }
         // altrimenti muoviti
-        else if (bigSlime.changeState(BigSlimeStates.MOVE))
+        else if (bigSlime.changeState(BigSlime.EnumState.MOVE))
                 chamber.wanderChase(bigSlime, 3);
 
-        bigSlime.changeState(BigSlimeStates.IDLE);
+        bigSlime.changeState(BigSlime.EnumState.IDLE);
     }
 
     public void projectileInteraction(Projectile projectile, BigSlime bigSlime) {
@@ -50,14 +48,14 @@ public class BigSlimeController {
     }
 
     private void hitBigSlime(BigSlime bigSlime, int damage) {
-        if (bigSlime.changeState(BigSlimeStates.HIT))
+        if (bigSlime.changeState(BigSlime.EnumState.HIT))
             bigSlime.changeHealth(damage);
-        if (!bigSlime.isAlive() && bigSlime.changeState(BigSlimeStates.DEAD)) {
+        if (!bigSlime.isAlive() && bigSlime.changeState(BigSlime.EnumState.DEAD)) {
             chamber.spawnSlimeAroundEntity(bigSlime, 2);
             chamber.removeEnemy(bigSlime);
             chamber.removeEntityOnTop(bigSlime);
         }
         else
-            bigSlime.changeState(BigSlimeStates.IDLE);
+            bigSlime.changeState(BigSlime.EnumState.IDLE);
     }
 }

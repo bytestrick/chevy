@@ -5,24 +5,24 @@
 ### Entities
 - Static entities:
   - PowerUp:
-    - Thunderbolt: Fulmini colpiscono periodicamente tutti row nemici. 
-    - Holy Shield: Riduce row danni in arrivo dopo essere stati colpiti.
+    - Thunderbolt: Fulmini colpiscono periodicamente tutti i nemici. 
+    - Holy Shield: Riduce i danni in arrivo dopo essere stati colpiti.
     - Vampire Fangs: chance di recuperare 1HP durante un attacco.
     - Angel Ring: il giocatore viene rianimato quando muore per cause diverse dalla caduta.
     - Swift Boots: Incrementa la velocità di movimento.
     - Long Sword: Incrementa il danno da spada di 5.
-    - God's Ice: Conegela periodicamente row nemici.
-    - Ignition: Gli attacchi hanno la possibilità di incendiare row nemici.
+    - God's Ice: Conegela periodicamente i nemici.
+    - Ignition: Gli attacchi hanno la possibilità di incendiare i nemici.
     - Coin of Greed: I nemici rilasciano più monete.
     - Hot Heart: Incrementa gli HP al massimo.
     - Cold Heart: Incrementa lo scudo di 3.
-    - Gorgon's Poison: Elimini row nemici con un colpo, ma gli HP decrementano ad 1 permanentemente.
+    - Gorgon's Poison: Elimini i nemici con un colpo, ma gli HP decrementano ad 1 permanentemente.
     - Stone Boots: Le trappole chiodate non hanno effetto.
     - Broken Arrows: Le freccie non ti infliggono danno.
     - Agility: Possibilità di evitare un attacco.
     - Hedgehog Spines: Riflette una parte di danno al tuo aguzzino.
     - Cat Claw: Aumenta la velocità d'attacco.
-    - Slime Piece: Il danno d'attacco aumenta di 8, ma dopo la morte row nemici generano piccoli slime.
+    - Slime Piece: Il danno d'attacco aumenta di 8, ma dopo la morte i nemici generano piccoli slime.
     - Gold Arrow: Aumenta il danno delle frecce di 2.
     - Milk: +2 HP
     - Carrot: +1 HP

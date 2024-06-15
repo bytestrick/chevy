@@ -1,16 +1,22 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.dinamicEntity.stateMachine.BigSlimeStates;
+import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
-import chevy.model.entity.dinamicEntity.stateMachine.ZombieStates;
 import chevy.utilz.Vector2;
 
 public class BigSlime extends Enemy {
-    private final State idle = new State(BigSlimeStates.IDLE);
-    private final State move = new State(BigSlimeStates.MOVE);
-    private final State attack = new State(BigSlimeStates.ATTACK);
-    private final State hit = new State(BigSlimeStates.HIT);
-    private final State dead = new State(BigSlimeStates.DEAD);
+    public enum EnumState implements CommonEnumStates {
+        MOVE,
+        ATTACK,
+        HIT,
+        DEAD,
+        IDLE
+    }
+    private final State idle = new State(EnumState.IDLE);
+    private final State move = new State(EnumState.MOVE);
+    private final State attack = new State(EnumState.ATTACK);
+    private final State hit = new State(EnumState.HIT);
+    private final State dead = new State(EnumState.DEAD);
 
 
     public BigSlime(Vector2<Integer> initPosition) {

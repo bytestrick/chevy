@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.InteractionTypes;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
@@ -34,7 +34,7 @@ public class EnemyController {
 
 
     // subject interagisce con object
-    public synchronized void handleInteraction(InteractionType interaction, DynamicEntity subject, DynamicEntity object) {
+    public synchronized void handleInteraction(InteractionTypes interaction, DynamicEntity subject, DynamicEntity object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, (Enemy) object);
             case UPDATE -> updateEnemy((Enemy) subject);

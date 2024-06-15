@@ -1,6 +1,6 @@
 package chevy.model.entity.dinamicEntity.projectile;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.DynamicEntityTypes;
@@ -43,12 +43,12 @@ public class Projectile extends DynamicEntity {
     }
 
     @Override
-    public EntityTypes getSpecificType() {
+    public EntityCommonTypes getSpecificType() {
         return type;
     }
 
     @Override
-    public EntityTypes getGenericType() {
+    public EntityCommonTypes getGenericType() {
         return super.getSpecificType();
     }
 

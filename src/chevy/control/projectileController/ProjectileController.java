@@ -2,7 +2,7 @@ package chevy.control.projectileController;
 
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
-import chevy.control.InteractionType;
+import chevy.control.InteractionTypes;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
@@ -18,7 +18,7 @@ public class ProjectileController {
     }
 
 
-    public void handleInteraction(InteractionType interaction, DynamicEntity subject, DynamicEntity object) {
+    public void handleInteraction(InteractionTypes interaction, DynamicEntity subject, DynamicEntity object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, (Projectile) object);
             case UPDATE -> updateProjectile((Projectile) subject);

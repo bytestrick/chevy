@@ -1,6 +1,6 @@
 package chevy.model.entity.staticEntity.environment;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 import chevy.utilz.Vector2;
 
 public class Ground extends Environment {
@@ -22,7 +22,7 @@ public class Ground extends Environment {
     }
 
     @Override
-    public EntityTypes getGenericType() {
+    public EntityCommonTypes getGenericType() {
         return super.getSpecificType();
     }
 }

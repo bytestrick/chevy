@@ -1,10 +1,10 @@
 package chevy.model.entity.staticEntity.powerUp;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 
 import java.util.Random;
 
-public enum PowerUpTypes implements EntityTypes {
+public enum PowerUpTypes implements EntityCommonTypes {
     THUNDERBOLT,
     HOLY_SHIELD,
     VAMPIRE_FANGS,

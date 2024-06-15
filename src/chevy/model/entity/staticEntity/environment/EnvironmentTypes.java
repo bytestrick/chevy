@@ -1,8 +1,8 @@
 package chevy.model.entity.staticEntity.environment;
 
-import chevy.model.entity.EntityTypes;
+import chevy.model.entity.EntityCommonTypes;
 
-public enum EnvironmentTypes implements EntityTypes {
+public enum EnvironmentTypes implements EntityCommonTypes {
     GROUND,
     WALL,
     STAIR,
