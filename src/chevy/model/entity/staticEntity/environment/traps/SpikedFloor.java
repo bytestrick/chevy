@@ -7,7 +7,7 @@ public class SpikedFloor extends Trap {
 
 
     public SpikedFloor(Vector2<Integer> initVelocity) {
-        super(initVelocity, TrapsTypes.SPIKED_FLOOR);
+        super(initVelocity, Type.SPIKED_FLOOR);
         this.active = false;
         this.safeToCross = true;
         this.maxDamage = 2;

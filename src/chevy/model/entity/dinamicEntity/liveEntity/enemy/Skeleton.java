@@ -23,7 +23,7 @@ public class Skeleton extends Enemy {
 
 
     public Skeleton(Vector2<Integer> initPosition) {
-        super(initPosition, EnemyTypes.SKELETON);
+        super(initPosition, Type.SKELETON);
 
         this.health = 5;
         this.maxDamage = 4;

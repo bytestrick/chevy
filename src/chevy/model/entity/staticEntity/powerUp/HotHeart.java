@@ -4,6 +4,6 @@ import chevy.utilz.Vector2;
 
 public class HotHeart extends PowerUp {
     public HotHeart(Vector2<Integer> initVelocity) {
-        super(initVelocity, PowerUpTypes.HOT_HEART);
+        super(initVelocity, Type.HOT_HEART);
     }
 }

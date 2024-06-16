@@ -83,39 +83,39 @@ public class EntityFromColor {
     public static Entity get(int r, int row, int col) {
         return switch (r) {
             // Wall
-            case WALL_TOP -> new Wall(new Vector2<>(row, col), WallTypes.TOP);
-            case WALL_INTERIOR_CORNER_TOP_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_TOP_LEFT);
-            case WALL_INTERIOR_CORNER_TOP_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_TOP_RIGHT);
-            case WALL_INTERIOR_CORNER_BOTTOM_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_BOTTOM_LEFT);
-            case WALL_INTERIOR_CORNER_BOTTOM_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.CORNER_INTERIOR_BOTTOM_RIGHT);
-            case WALL_BOTTOM -> new Wall(new Vector2<>(row, col), WallTypes.BOTTOM);
-            case WALL_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.LEFT);
-            case WALL_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.RIGHT);
-            case WALL_EXTERNAL_CORNER_BOTTOM_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
-            case WALL_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
-            case WALL_EXTERNAL_CORNER_TOP_LEFT -> new Wall(new Vector2<>(row, col), WallTypes.EXTERNAL_CORNER_TOP_LEFT);
-            case WALL_EXTERNAL_CORNER_TOP_RIGHT -> new Wall(new Vector2<>(row, col), WallTypes.EXTERNAL_CORNER_TOP_RIGHT);
+            case WALL_TOP -> new Wall(new Vector2<>(row, col), Wall.WallTypes.TOP);
+            case WALL_INTERIOR_CORNER_TOP_LEFT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.CORNER_INTERIOR_TOP_LEFT);
+            case WALL_INTERIOR_CORNER_TOP_RIGHT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.CORNER_INTERIOR_TOP_RIGHT);
+            case WALL_INTERIOR_CORNER_BOTTOM_LEFT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.CORNER_INTERIOR_BOTTOM_LEFT);
+            case WALL_INTERIOR_CORNER_BOTTOM_RIGHT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.CORNER_INTERIOR_BOTTOM_RIGHT);
+            case WALL_BOTTOM -> new Wall(new Vector2<>(row, col), Wall.WallTypes.BOTTOM);
+            case WALL_LEFT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.LEFT);
+            case WALL_RIGHT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.RIGHT);
+            case WALL_EXTERNAL_CORNER_BOTTOM_LEFT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
+            case WALL_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
+            case WALL_EXTERNAL_CORNER_TOP_LEFT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.EXTERNAL_CORNER_TOP_LEFT);
+            case WALL_EXTERNAL_CORNER_TOP_RIGHT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.EXTERNAL_CORNER_TOP_RIGHT);
 
             // Ground
-            case GROUND_TOP -> new Ground(new Vector2<>(row, col), GroundTypes.TOP);
-            case GROUND_INTERIOR_CORNER_TOP_LEFT -> new Ground(new Vector2<>(row, col), GroundTypes.INTERIOR_CORNER_TOP_LEFT);
-            case GROUND_INTERIOR_CORNER_TOP_RIGHT -> new Ground(new Vector2<>(row, col), GroundTypes.INTERIOR_CORNER_TOP_RIGHT);
-            case GROUND_LEFT -> new Ground(new Vector2<>(row, col), GroundTypes.LEFT);
-            case GROUND_CENTRAL -> new Ground(new Vector2<>(row, col), GroundTypes.CENTRAL);
-            case GROUND_CENTRAL_PATTERNED -> new Ground(new Vector2<>(row, col), GroundTypes.CENTRAL_PATTERNED);
-            case GROUND_CENTRAL_PATTERNED_2 -> new Ground(new Vector2<>(row, col), GroundTypes.CENTRAL_PATTERNED_2);
-            case GROUND_CENTRAL_BROKEN -> new Ground(new Vector2<>(row, col), GroundTypes.CENTRAL_BROKEN);
-            case GROUND_CENTRAL_BROKEN_2 -> new Ground(new Vector2<>(row, col), GroundTypes.CENTRAL_BROKEN_2);
-            case GROUND_CENTRAL_BROKEN_3 -> new Ground(new Vector2<>(row, col), GroundTypes.CENTRAL_BROKEN_3);
-            case GROUND_RIGHT -> new Ground(new Vector2<>(row, col), GroundTypes.RIGHT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT -> new Ground(new Vector2<>(row, col), GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Ground(new Vector2<>(row, col), GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM -> new Ground(new Vector2<>(row, col), GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT -> new Ground(new Vector2<>(row, col), GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT -> new Ground(new Vector2<>(row, col), GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM -> new Ground(new Vector2<>(row, col), GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM);
-            case GROUND_EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT -> new Ground(new Vector2<>(row, col), GroundTypes.EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT);
-            case GROUND_EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT -> new Ground(new Vector2<>(row, col), GroundTypes.EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT);
+            case GROUND_TOP -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.TOP);
+            case GROUND_INTERIOR_CORNER_TOP_LEFT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.INTERIOR_CORNER_TOP_LEFT);
+            case GROUND_INTERIOR_CORNER_TOP_RIGHT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.INTERIOR_CORNER_TOP_RIGHT);
+            case GROUND_LEFT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.LEFT);
+            case GROUND_CENTRAL -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.CENTRAL);
+            case GROUND_CENTRAL_PATTERNED -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.CENTRAL_PATTERNED);
+            case GROUND_CENTRAL_PATTERNED_2 -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.CENTRAL_PATTERNED_2);
+            case GROUND_CENTRAL_BROKEN -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.CENTRAL_BROKEN);
+            case GROUND_CENTRAL_BROKEN_2 -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.CENTRAL_BROKEN_2);
+            case GROUND_CENTRAL_BROKEN_3 -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.CENTRAL_BROKEN_3);
+            case GROUND_RIGHT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.RIGHT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM);
+            case GROUND_EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT);
+            case GROUND_EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT);
 
             // Trap
             case VOID -> new Void(new Vector2<>(row, col));

@@ -4,6 +4,6 @@ import chevy.utilz.Vector2;
 
 public class Stair extends Environment {
     public Stair(Vector2<Integer> initVelocity) {
-        super(initVelocity, EnvironmentTypes.STAIR);
+        super(initVelocity, Type.STAIR);
     }
 }

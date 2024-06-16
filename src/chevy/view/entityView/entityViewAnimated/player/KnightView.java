@@ -38,14 +38,14 @@ public class KnightView extends EntityViewAnimated {
             moveInterpolationX = new Interpolate(currentPosition.first,
                     knight.getCol(),
                     knight.getState(Player.EnumState.MOVE).getDuration(),
-                    InterpolationTypes.EASE_IN_OUT_SINE);
+                    InterpolationTypes.EASE_OUT_SINE);
             moveInterpolationX.start();
         }
         if (moveInterpolationY == null) {
             moveInterpolationY = new Interpolate(currentPosition.second,
                     knight.getRow(),
                     knight.getState(Player.EnumState.MOVE).getDuration(),
-                    InterpolationTypes.EASE_IN_OUT_SINE);
+                    InterpolationTypes.EASE_OUT_SINE);
             moveInterpolationY.start();
         }
 

@@ -20,7 +20,7 @@ public class Frog extends Enemy {
 
 
     public Frog(Vector2<Integer> initPosition) {
-        super(initPosition, EnemyTypes.FROG);
+        super(initPosition, Type.FROG);
         this.health = 10;
         this.maxDamage = 5;
         this.minDamage = 3;

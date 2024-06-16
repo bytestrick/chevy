@@ -20,7 +20,7 @@ public class Bat extends Enemy {
 
 
     public Bat(Vector2<Integer> initPosition) {
-        super(initPosition, EnemyTypes.BAT);
+        super(initPosition, Type.BAT);
         this.flying = true;
         this.health = 3;
         this.maxDamage = 2;

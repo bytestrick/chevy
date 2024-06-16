@@ -3,7 +3,7 @@ package chevy.control.trapsController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.EnemyTypes;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
@@ -34,7 +34,7 @@ public class SpikedFloorController {
                 }
                 else
                     switch (liveEntity.getSpecificType()) {
-                        case EnemyTypes.ZOMBIE -> {
+                        case Enemy.Type.ZOMBIE -> {
                             if (liveEntity.changeState(Zombie.EnumState.HIT))
                                 mayBeAttacked = true;
                         }
