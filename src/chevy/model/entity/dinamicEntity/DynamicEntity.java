@@ -39,8 +39,12 @@ public abstract class DynamicEntity extends Entity {
         return stateMachine.changeToPreviousState();
     }
 
-    public synchronized CommonEnumStates getCurrentEumState() {
+    public CommonEnumStates getCurrentEumState() {
         return stateMachine.getCurrentState().getStateEnum();
+    }
+
+    public CommonEnumStates getPreviousEnumState() {
+        return stateMachine.getPreviousState().getStateEnum();
     }
 
     public synchronized CommonEnumStates getPreviousEumState() {
@@ -51,6 +55,7 @@ public abstract class DynamicEntity extends Entity {
     }
 
     public State getState(CommonEnumStates commonEnumStates) {
+        System.out.println("ATTENZIONE: La funzione getState deve essere ridefinita opportunamente nelle classi figlie");
         return null;
     }
 

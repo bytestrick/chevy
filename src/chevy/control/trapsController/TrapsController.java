@@ -29,39 +29,39 @@ public class TrapsController {
 
     public synchronized void handleInteraction(InteractionTypes interaction, Entity subject, Entity object) {
         switch (interaction) {
-            case PLAYER_IN -> playerInInteraction((Player) subject, (Traps) object);
-            case PLAYER_OUT -> playerOutInteraction((Player) subject, (Traps) object);
-            case PLAYER -> playerInteraction((Player) subject, (Traps) object);
-            case UPDATE -> updateTraps((Traps) subject);
+            case PLAYER_IN -> playerInInteraction((Player) subject, (Trap) object);
+            case PLAYER_OUT -> playerOutInteraction((Player) subject, (Trap) object);
+            case PLAYER -> playerInteraction((Player) subject, (Trap) object);
+            case UPDATE -> updateTraps((Trap) subject);
         }
     }
 
-    private void playerOutInteraction(Player player, Traps traps) {
-        switch (traps.getSpecificType()) {
-            case TrapsTypes.TRAPDOOR -> trapdoorController.playerOutInteraction((Trapdoor) traps);
+    private void playerOutInteraction(Player player, Trap trap) {
+        switch (trap.getSpecificType()) {
+            case TrapsTypes.TRAPDOOR -> trapdoorController.playerOutInteraction((Trapdoor) trap);
             default -> {}
         }
     }
 
-    private void playerInInteraction(Player player, Traps traps) {
-        switch (traps.getSpecificType()) {
-            case TrapsTypes.SLUDGE -> sludgeController.playerInInteraction(player, (Sludge) traps);
-            case TrapsTypes.ICY_FLOOR -> icyFloorController.playerInInteraction(player, (IcyFloor) traps);
-            case TrapsTypes.VOID -> voidController.playerInInteraction(player, (Void) traps);
+    private void playerInInteraction(Player player, Trap trap) {
+        switch (trap.getSpecificType()) {
+            case TrapsTypes.SLUDGE -> sludgeController.playerInInteraction(player, (Sludge) trap);
+            case TrapsTypes.ICY_FLOOR -> icyFloorController.playerInInteraction(player, (IcyFloor) trap);
+            case TrapsTypes.VOID -> voidController.playerInInteraction(player, (Void) trap);
             case TrapsTypes.TRAPDOOR -> trapdoorController.playerInInteraction(player);
             case TrapsTypes.SPIKED_FLOOR -> spikedFloorController.playerInInteraction(player);
             default -> {}
         }
     }
 
-    private void playerInteraction(Player player, Traps traps) {
-        switch (traps.getSpecificType()) {
-            case TrapsTypes.SLUDGE -> sludgeController.playerInteraction(player, (Sludge) traps);
+    private void playerInteraction(Player player, Trap trap) {
+        switch (trap.getSpecificType()) {
+            case TrapsTypes.SLUDGE -> sludgeController.playerInteraction(player, (Sludge) trap);
             default -> {}
         }
     }
 
-    private void updateTraps(Traps trap) {
+    private void updateTraps(Trap trap) {
         switch (trap.getSpecificType()) {
             case TrapsTypes.SPIKED_FLOOR -> spikedFloorController.update((SpikedFloor) trap);
             case TrapsTypes.TOTEM -> totemController.update((Totem) trap);

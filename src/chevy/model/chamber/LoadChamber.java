@@ -5,7 +5,7 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
-import chevy.model.entity.staticEntity.environment.traps.Traps;
+import chevy.model.entity.staticEntity.environment.traps.Trap;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -55,7 +55,7 @@ public class LoadChamber {
                         else if (entity instanceof Enemy enemy) {
                             chamber.addEnemy(enemy);
                         }
-                        else if (entity instanceof Traps trap) {
+                        else if (entity instanceof Trap trap) {
                             if (trap instanceof SpikedFloor || trap instanceof Totem)
                                 chamber.addTraps(trap);
                         }

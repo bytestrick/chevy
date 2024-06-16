@@ -25,7 +25,7 @@ public class SlimeController {
 
     public void playerInInteraction(Player player, Slime slime) {
         switch (player.getCurrentEumState()) {
-            case Player.States.ATTACK ->
+            case Player.EnumState.ATTACK ->
                 hitSlime(slime, -1 * player.getDamage());
             default -> System.out.println("Lo slimeController non gestisce questa azione");
         }

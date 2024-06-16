@@ -15,7 +15,7 @@ public class IcyFloorController {
 
 
     public void playerInInteraction(Player player, IcyFloor icyFloor) {
-       if (player.changeState(Player.States.GLIDE)) {
+       if (player.changeState(Player.EnumState.GLIDE)) {
            playerController.handleInteraction(InteractionTypes.TRAP, icyFloor);
        }
     }
