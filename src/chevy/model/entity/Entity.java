@@ -1,6 +1,5 @@
 package chevy.model.entity;
 
-import chevy.model.entity.staticEntity.StaticEntityTypes;
 import chevy.utilz.Vector2;
 
 import java.util.Random;
@@ -9,21 +8,23 @@ import java.util.UUID;
 
 public abstract class Entity {
     private final UUID ID = UUID.randomUUID();
-    private final StaticEntityTypes type;
+    protected final Vector2<Integer> position;
     protected int maxDamage;
     protected int minDamage;
-    protected final Vector2<Integer> position;
     protected boolean safeToCross;
     protected boolean crossable;
-
     protected float updateEverySecond;
     private int tick;
-
     protected int layer;
     private boolean toDraw;
+    public enum Type implements EntityCommonEnumTypes {
+        DYNAMIC,
+        ENVIRONMENT,
+        POWER_UP
+    }
+    private final Type type;
 
-
-    public Entity(Vector2<Integer> initPosition, StaticEntityTypes type) {
+    public Entity(Vector2<Integer> initPosition, Type type) {
         this.position = initPosition;
         this.type = type;
 
@@ -67,9 +68,9 @@ public abstract class Entity {
         return random.nextInt(minDamage, maxDamage + 1);
     }
 
-    public EntityCommonTypes getSpecificType() { return type; }
+    public EntityCommonEnumTypes getSpecificType() { return type; }
 
-    public EntityCommonTypes getGenericType() { return null; }
+    public EntityCommonEnumTypes getGenericType() { return null; }
 
     public final int getRow() { return position.first; }
 

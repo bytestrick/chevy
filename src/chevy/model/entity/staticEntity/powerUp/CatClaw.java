@@ -4,6 +4,6 @@ import chevy.utilz.Vector2;
 
 public class CatClaw extends PowerUp {
     public CatClaw(Vector2<Integer> initVelocity) {
-        super(initVelocity, PowerUpTypes.CAT_CLAW);
+        super(initVelocity, Type.CAT_CLAW);
     }
 }

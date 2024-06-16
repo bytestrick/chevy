@@ -4,6 +4,6 @@ import chevy.utilz.Vector2;
 
 public class AngelRing extends PowerUp {
     public AngelRing(Vector2<Integer> initVelocity) {
-        super(initVelocity, PowerUpTypes.ANGEL_RING);
+        super(initVelocity, Type.ANGEL_RING);
     }
 }

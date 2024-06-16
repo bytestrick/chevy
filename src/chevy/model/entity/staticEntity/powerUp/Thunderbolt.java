@@ -6,6 +6,6 @@ public class Thunderbolt extends PowerUp {
     private float cooldown;
 
     public Thunderbolt(Vector2<Integer> initVelocity) {
-        super(initVelocity, PowerUpTypes.THUNDERBOLT);
+        super(initVelocity, Type.THUNDERBOLT);
     }
 }

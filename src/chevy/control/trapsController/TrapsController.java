@@ -38,33 +38,33 @@ public class TrapsController {
 
     private void playerOutInteraction(Player player, Trap trap) {
         switch (trap.getSpecificType()) {
-            case TrapsTypes.TRAPDOOR -> trapdoorController.playerOutInteraction((Trapdoor) trap);
+            case Trap.Type.TRAPDOOR -> trapdoorController.playerOutInteraction((Trapdoor) trap);
             default -> {}
         }
     }
 
     private void playerInInteraction(Player player, Trap trap) {
         switch (trap.getSpecificType()) {
-            case TrapsTypes.SLUDGE -> sludgeController.playerInInteraction(player, (Sludge) trap);
-            case TrapsTypes.ICY_FLOOR -> icyFloorController.playerInInteraction(player, (IcyFloor) trap);
-            case TrapsTypes.VOID -> voidController.playerInInteraction(player, (Void) trap);
-            case TrapsTypes.TRAPDOOR -> trapdoorController.playerInInteraction(player);
-            case TrapsTypes.SPIKED_FLOOR -> spikedFloorController.playerInInteraction(player);
+            case Trap.Type.SLUDGE -> sludgeController.playerInInteraction(player, (Sludge) trap);
+            case Trap.Type.ICY_FLOOR -> icyFloorController.playerInInteraction(player, (IcyFloor) trap);
+            case Trap.Type.VOID -> voidController.playerInInteraction(player, (Void) trap);
+            case Trap.Type.TRAPDOOR -> trapdoorController.playerInInteraction(player);
+            case Trap.Type.SPIKED_FLOOR -> spikedFloorController.playerInInteraction(player);
             default -> {}
         }
     }
 
     private void playerInteraction(Player player, Trap trap) {
         switch (trap.getSpecificType()) {
-            case TrapsTypes.SLUDGE -> sludgeController.playerInteraction(player, (Sludge) trap);
+            case Trap.Type.SLUDGE -> sludgeController.playerInteraction(player, (Sludge) trap);
             default -> {}
         }
     }
 
     private void updateTraps(Trap trap) {
         switch (trap.getSpecificType()) {
-            case TrapsTypes.SPIKED_FLOOR -> spikedFloorController.update((SpikedFloor) trap);
-            case TrapsTypes.TOTEM -> totemController.update((Totem) trap);
+            case Trap.Type.SPIKED_FLOOR -> spikedFloorController.update((SpikedFloor) trap);
+            case Trap.Type.TOTEM -> totemController.update((Totem) trap);
             default -> {}
         }
     }

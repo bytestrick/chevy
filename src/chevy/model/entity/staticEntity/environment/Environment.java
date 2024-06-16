@@ -1,16 +1,23 @@
 package chevy.model.entity.staticEntity.environment;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.staticEntity.StaticEntityTypes;
-import chevy.model.entity.EntityCommonTypes;
+import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.utilz.Vector2;
 
 public abstract class Environment extends Entity {
-    private final EnvironmentTypes type;
+    public enum Type implements EntityCommonEnumTypes {
+        GROUND,
+        WALL,
+        STAIR,
+        BARRIER,
+        TRAP,
+        CHEST
+    }
+    private final Type type;
 
 
-    public Environment(Vector2<Integer> initVelocity, EnvironmentTypes type) {
-        super(initVelocity, StaticEntityTypes.ENVIRONMENT);
+    public Environment(Vector2<Integer> initVelocity, Type type) {
+        super(initVelocity, Entity.Type.ENVIRONMENT);
         this.type = type;
 
         this.layer = 1;
@@ -18,12 +25,12 @@ public abstract class Environment extends Entity {
 
 
     @Override
-    public EntityCommonTypes getSpecificType() {
+    public EntityCommonEnumTypes getSpecificType() {
         return type;
     }
 
     @Override
-    public EntityCommonTypes getGenericType() {
+    public EntityCommonEnumTypes getGenericType() {
         return super.getSpecificType();
     }
 

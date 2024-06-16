@@ -1,9 +1,6 @@
 package chevy.view.entityView;
 
 import chevy.model.entity.staticEntity.environment.Ground;
-import chevy.model.entity.staticEntity.environment.GroundTypes;
-import chevy.model.entity.staticEntity.environment.Wall;
-import chevy.settings.GameSettings;
 import chevy.utilz.Vector2;
 import chevy.view.Image;
 
@@ -29,32 +26,32 @@ public class GroundView extends EntityView {
     @Override
     public BufferedImage getCurrentFrame() {
         return switch (ground.getSpecificType()) {
-            case GroundTypes.CENTRAL -> {
+            case CENTRAL -> {
                 if (GROUND_CENTRAL == null)
                     GROUND_CENTRAL = Image.load(COMMON_PATH + "central.png");
                 yield GROUND_CENTRAL;
             }
-            case GroundTypes.LEFT -> {
+            case LEFT -> {
                 if (GROUND_LEFT == null)
                     GROUND_LEFT = Image.load(COMMON_PATH + "left.png");
                 yield GROUND_LEFT;
             }
-            case GroundTypes.RIGHT -> {
+            case RIGHT -> {
                 if (GROUND_RIGHT == null)
                     GROUND_RIGHT = Image.load(COMMON_PATH + "right.png");
                 yield GROUND_RIGHT;
             }
-            case GroundTypes.TOP -> {
+            case TOP -> {
                 if (GROUND_TOP == null)
                     GROUND_TOP = Image.load(COMMON_PATH + "top.png");
                 yield GROUND_TOP;
             }
-            case GroundTypes.INTERIOR_CORNER_TOP_LEFT -> {
+            case INTERIOR_CORNER_TOP_LEFT -> {
                 if (GROUND_INTERIOR_CORNER_TOP_LEFT == null)
                     GROUND_INTERIOR_CORNER_TOP_LEFT = Image.load(COMMON_PATH + "interiorCornerTopLeft.png");
                 yield GROUND_INTERIOR_CORNER_TOP_LEFT;
             }
-            case GroundTypes.INTERIOR_CORNER_TOP_RIGHT -> {
+            case INTERIOR_CORNER_TOP_RIGHT -> {
                 if (GROUND_INTERIOR_CORNER_TOP_RIGHT == null)
                     GROUND_INTERIOR_CORNER_TOP_RIGHT = Image.load(COMMON_PATH + "interiorCornerTopRight.png");
                 yield GROUND_INTERIOR_CORNER_TOP_RIGHT;

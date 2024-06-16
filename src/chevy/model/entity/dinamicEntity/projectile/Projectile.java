@@ -1,19 +1,22 @@
 package chevy.model.entity.dinamicEntity.projectile;
 
-import chevy.model.entity.EntityCommonTypes;
+import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.DynamicEntityTypes;
 import chevy.utilz.Vector2;
 
 public class Projectile extends DynamicEntity {
-    private final ProjectileTypes type;
     private final DirectionsModel direction;
     private boolean collide;
+    public enum Type implements EntityCommonEnumTypes {
+        ARROW,
+        FIRE_BALL;
+    }
+    private final Type type;
 
 
-    public Projectile(Vector2<Integer> initPosition, ProjectileTypes type, DirectionsModel direction) {
-        super(initPosition, DynamicEntityTypes.PROJECTILE);
+    public Projectile(Vector2<Integer> initPosition, Type type, DirectionsModel direction) {
+        super(initPosition, DynamicEntity.Type.PROJECTILE);
         this.type = type;
         this.direction = direction;
 
@@ -43,12 +46,12 @@ public class Projectile extends DynamicEntity {
     }
 
     @Override
-    public EntityCommonTypes getSpecificType() {
+    public EntityCommonEnumTypes getSpecificType() {
         return type;
     }
 
     @Override
-    public EntityCommonTypes getGenericType() {
+    public EntityCommonEnumTypes getGenericType() {
         return super.getSpecificType();
     }
 

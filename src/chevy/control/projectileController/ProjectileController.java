@@ -7,7 +7,6 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.projectile.ProjectileTypes;
 
 public class ProjectileController {
     private final ArrowController arrowController;
@@ -27,16 +26,16 @@ public class ProjectileController {
 
     private void playerInInteraction(Player player, Projectile projectile) {
         switch (projectile.getSpecificType()) {
-            case ProjectileTypes.ARROW -> arrowController.playerInInteraction(projectile);
-            case ProjectileTypes.FIRE_BALL -> {}
+            case Projectile.Type.ARROW -> arrowController.playerInInteraction(projectile);
+            case Projectile.Type.FIRE_BALL -> {}
             default -> {}
         }
     }
 
     public synchronized void updateProjectile(Projectile projectilePair) {
         switch (projectilePair.getSpecificType()) {
-            case ProjectileTypes.ARROW -> arrowController.update(projectilePair);
-            case ProjectileTypes.FIRE_BALL -> {}
+            case Projectile.Type.ARROW -> arrowController.update(projectilePair);
+            case Projectile.Type.FIRE_BALL -> {}
             default -> {}
         }
     }
