@@ -2,7 +2,7 @@ package chevy.model.entity.staticEntity.environment.traps;
 
 import chevy.utilz.Vector2;
 
-public class Sludge extends Traps {
+public class Sludge extends Trap {
     private int nMoveToUnlock;
 
 

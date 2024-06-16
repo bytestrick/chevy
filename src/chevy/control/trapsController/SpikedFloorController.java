@@ -17,7 +17,7 @@ public class SpikedFloorController {
 
 
     public void playerInInteraction(Player player) {
-        player.changeState(Player.States.IDLE);
+        player.changeState(Player.EnumState.IDLE);
     }
 
 
@@ -29,7 +29,7 @@ public class SpikedFloorController {
             boolean mayBeAttacked = false;
             if (entity instanceof LiveEntity liveEntity) {
                 if (liveEntity instanceof Player) {
-                    if (liveEntity.changeState(Player.States.HIT))
+                    if (liveEntity.changeState(Player.EnumState.HIT))
                         mayBeAttacked = true;
                 }
                 else

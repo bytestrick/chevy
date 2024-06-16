@@ -13,7 +13,7 @@ public class WizardController {
         this.chamber = chamber;
     }
 
-    public void playerInInteraction(Player.States action, int value) {
+    public void playerInInteraction(Player.EnumState action, int value) {
 
     }
 

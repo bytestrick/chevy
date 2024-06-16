@@ -21,7 +21,7 @@ public class BigSlimeController {
 
     public void playerInInteraction(Player player, BigSlime bigSlime) {
         switch (player.getCurrentEumState()) {
-            case Player.States.ATTACK -> {
+            case Player.EnumState.ATTACK -> {
                 hitBigSlime(bigSlime, -1 * player.getDamage());
             }
             default -> System.out.println("Il BigSlimeController non gestisce questa azione");

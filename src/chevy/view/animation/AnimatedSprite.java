@@ -47,7 +47,6 @@ public class AnimatedSprite implements Render {
         if (currentIndexFrame >= nFrame) {
             return frames[nFrame - 1];
         }
-        System.out.println(currentIndexFrame);
         return frames[currentIndexFrame];
     }
 

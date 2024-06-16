@@ -2,11 +2,12 @@ package chevy.view.chamber;
 
 import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.settings.GameSettings;
+import chevy.utilz.Vector2;
+import chevy.view.entityView.EntityView;
+import chevy.view.entityView.entityViewAnimated.enemy.SlimeView;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,19 +28,33 @@ public class ChamberView {
                 Entity entity = it.next();
 
                 if (entity != null) {
-                    BufferedImage image = EntityToImage.get(entity);
-                    if (image != null) {
-                        g.drawImage(image,
-                                entity.getCol() * GameSettings.scale + GameSettings.offsetW,
-                                entity.getRow() * GameSettings.scale + GameSettings.offsetH,
+                    EntityView entityViewSpecific = EntityToEntityView.getSpecific(entity);
+
+                    if (entityViewSpecific != null) {
+                        Vector2<Double> position = entityViewSpecific.getCurrentPosition();
+                        g.drawImage(entityViewSpecific.getCurrentFrame(),
+                                (int) (position.first * GameSettings.scale + GameSettings.offsetW),
+                                (int) (position.second * GameSettings.scale + GameSettings.offsetH),
                                 GameSettings.scale,
                                 GameSettings.scale,
                                 null);
-
-                        if (!entity.isToDraw()) {
-                            System.out.println("Remove to draw: " + entity);
-                            it.remove();
+                    }
+                    else {
+                        EntityView entityViewGeneric = EntityToEntityView.getGeneric(entity);
+                        if (entityViewGeneric != null) {
+                            Vector2<Double> position = entityViewGeneric.getCurrentPosition();
+                            g.drawImage(entityViewGeneric.getCurrentFrame(),
+                                    (int) (position.first * GameSettings.scale + GameSettings.offsetW),
+                                    (int) (position.second * GameSettings.scale + GameSettings.offsetH),
+                                    GameSettings.scale,
+                                    GameSettings.scale,
+                                    null);
                         }
+                    }
+
+                    if (!entity.isToDraw()) {
+                        System.out.println("Remove to draw: " + entity);
+                        it.remove();
                     }
                 }
             }
