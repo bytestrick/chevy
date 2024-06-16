@@ -43,14 +43,11 @@ public class AnimatedSprite implements Render {
             frames[index] = frame;
     }
 
-
-    // TODO: sistemare l'aggirnaento del l'indice corrente per fare in modo che la funzione ritorni sepre le stesse immaggini ad ogni animaizone
     public BufferedImage getCurrentFrame() {
-        if (!isRunning) {
-//            System.out.println(nFrame - 1);
+        if (currentIndexFrame >= nFrame) {
             return frames[nFrame - 1];
         }
-//        System.out.println(currentIndexFrame);
+        System.out.println(currentIndexFrame);
         return frames[currentIndexFrame];
     }
 
