@@ -1,16 +1,24 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.EntityCommonTypes;
+import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.LiveEntityTypes;
 import chevy.utilz.Vector2;
 
 public abstract class Enemy extends LiveEntity {
-    private final EnemyTypes type;
+    public enum Type implements EntityCommonEnumTypes {
+        BAT,
+        ZOMBIE,
+        WIZARD,
+        SKELETON,
+        SLIME,
+        BIG_SLIME,
+        FROG;
+    }
+    private final Type type;
 
 
-    public Enemy(Vector2<Integer> initPosition, EnemyTypes type) {
-        super(initPosition, LiveEntityTypes.ENEMY);
+    public Enemy(Vector2<Integer> initPosition, Type type) {
+        super(initPosition, LiveEntity.Type.ENEMY);
         this.type = type;
 
         this.layer = 2;
@@ -19,10 +27,10 @@ public abstract class Enemy extends LiveEntity {
 
 
     @Override
-    public EntityCommonTypes getSpecificType() { return type; }
+    public EntityCommonEnumTypes getSpecificType() { return type; }
 
     @Override
-    public EntityCommonTypes getGenericType() { return super.getSpecificType(); }
+    public EntityCommonEnumTypes getGenericType() { return super.getSpecificType(); }
 
     @Override
     public String toString() {

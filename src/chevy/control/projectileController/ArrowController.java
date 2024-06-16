@@ -5,7 +5,7 @@ import chevy.control.enemyController.EnemyController;
 import chevy.control.InteractionTypes;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.liveEntity.LiveEntityTypes;
+import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 
@@ -32,9 +32,9 @@ public class ArrowController {
         Entity nextEntity = chamber.getNearEntityOnTop(projectile, projectile.getDirection());
 
         switch (nextEntity.getGenericType()) {
-            case LiveEntityTypes.PLAYER ->
+            case LiveEntity.Type.PLAYER ->
                     playerController.handleInteraction(InteractionTypes.PROJECTILE, projectile);
-            case LiveEntityTypes.ENEMY ->
+            case LiveEntity.Type.ENEMY ->
                     enemyController.handleInteraction(InteractionTypes.PROJECTILE, projectile, (Enemy) nextEntity);
             default -> {}
         }

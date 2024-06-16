@@ -6,20 +6,21 @@ import chevy.control.trapsController.TrapsController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.DynamicEntityTypes;
-import chevy.model.entity.dinamicEntity.liveEntity.LiveEntityTypes;
+import chevy.model.entity.dinamicEntity.DynamicEntity;
+import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
-import chevy.model.entity.staticEntity.environment.traps.TrapsTypes;
+import chevy.service.Update;
+import chevy.service.UpdateManager;
 
 import java.awt.event.KeyEvent;
 
-import static chevy.model.entity.staticEntity.environment.EnvironmentTypes.TRAP;
+import static chevy.model.entity.staticEntity.environment.Environment.Type.TRAP;
 
-public class PlayerController {
+public class PlayerController implements Update {
     private Chamber chamber;
     private Player player;
     private EnemyController enemyController;
@@ -35,6 +36,8 @@ public class PlayerController {
         this.trapsController = null;
         this.projectileController = null;
         this.direction = null;
+
+        UpdateManager.addToUpdate(this);
     }
 
 
@@ -67,12 +70,12 @@ public class PlayerController {
 
     private void trapInteraction(Trap trap) {
         switch (trap.getSpecificType()) {
-            case TrapsTypes.VOID -> {
+            case Trap.Type.VOID -> {
                 hitPlayer(-1 * trap.getDamage());
                 if (player.isAlive() && chamber.canCross(player, direction.getOpposite()))
                     chamber.moveDynamicEntity(player, direction.getOpposite());
             }
-            case TrapsTypes.ICY_FLOOR -> {
+            case Trap.Type.ICY_FLOOR -> {
                 while (player.getCurrentEumState() == Player.EnumState.GLIDE &&
                         chamber.canCross(player, direction) &&
                         chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
@@ -103,7 +106,7 @@ public class PlayerController {
         // Player in
         if (entityNextCell != null)
             switch (entityNextCell.getGenericType()) {
-                case LiveEntityTypes.ENEMY -> {
+                case LiveEntity.Type.ENEMY -> {
                     if (player.checkAndChangeState(Player.EnumState.ATTACK))
                         enemyController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Enemy) entityNextCell);
                     player.checkAndChangeState(Player.EnumState.IDLE);
@@ -114,7 +117,7 @@ public class PlayerController {
                         trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Trap) entityNextCell);
                     }
                 }
-                case DynamicEntityTypes.PROJECTILE -> {
+                case DynamicEntity.Type.PROJECTILE -> {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.EnumState.MOVE)) {
                         chamber.moveDynamicEntity(player, direction);
                         projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Projectile) entityNextCell);
@@ -123,7 +126,6 @@ public class PlayerController {
                 default -> {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.EnumState.MOVE)) {
                         chamber.moveDynamicEntity(player, direction);
-                        player.changeState(Player.EnumState.IDLE);
                     }
                 }
             }
@@ -165,5 +167,10 @@ public class PlayerController {
     public void setProjectileController(ProjectileController projectileController) {
         if (this.projectileController == null)
             this.projectileController = projectileController;
+    }
+
+    @Override
+    public void update(double delta) {
+        player.checkAndChangeState(Player.EnumState.IDLE);
     }
 }

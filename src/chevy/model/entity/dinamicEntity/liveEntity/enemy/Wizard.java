@@ -20,7 +20,7 @@ public class Wizard extends Enemy {
 
 
     public Wizard(Vector2<Integer> initPosition) {
-        super(initPosition, EnemyTypes.WIZARD);
+        super(initPosition, Type.WIZARD);
 
         this.health = 8;
 

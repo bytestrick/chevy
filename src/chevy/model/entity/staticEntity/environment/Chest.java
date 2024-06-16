@@ -4,6 +4,6 @@ import chevy.utilz.Vector2;
 
 public class Chest extends Environment {
     public Chest(Vector2<Integer> initVelocity) {
-        super(initVelocity, EnvironmentTypes.CHEST);
+        super(initVelocity, Type.CHEST);
     }
 }
