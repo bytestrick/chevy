@@ -4,10 +4,11 @@ import chevy.model.entity.EntityCommonTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntityTypes;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
+import chevy.model.entity.dinamicEntity.stateMachine.State;
 import chevy.utilz.Vector2;
 
 public abstract class Player extends LiveEntity {
-    public enum States implements CommonEnumStates {
+    public enum EnumState implements CommonEnumStates {
         IDLE,
         ATTACK,
         MOVE,
@@ -18,6 +19,7 @@ public abstract class Player extends LiveEntity {
         GLIDE
     }
     private final PlayerTypes type;
+    protected float speed = 0.2f;
 
 
     public Player(Vector2<Integer> initPosition, PlayerTypes type) {

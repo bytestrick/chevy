@@ -21,7 +21,7 @@ public class ZombieController {
 
     public void playerInInteraction(Player player, Zombie zombie) {
         switch (player.getCurrentEumState()) {
-            case Player.States.ATTACK ->
+            case Player.EnumState.ATTACK ->
                     hitZombie(zombie, -1 * player.getDamage());
             default -> System.out.println("Lo ZombieController non gestisce questa azione");
         }

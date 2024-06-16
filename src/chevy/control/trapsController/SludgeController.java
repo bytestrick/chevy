@@ -14,12 +14,12 @@ public class SludgeController {
 
 
     public void playerInInteraction(Player player, Sludge sludge) {
-        player.changeState(Player.States.SLUDGE);
+        player.changeState(Player.EnumState.SLUDGE);
     }
 
     public void playerInteraction(Player player, Sludge sludge) {
         if (sludge.getNMoveToUnlock() <= 0) {
-            player.changeState(Player.States.IDLE);
+            player.changeState(Player.EnumState.IDLE);
             chamber.findAndRemoveEntity(sludge);
             return;
         }

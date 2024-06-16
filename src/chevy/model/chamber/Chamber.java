@@ -9,7 +9,7 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.staticEntity.environment.traps.Traps;
+import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.model.pathFinding.AStar;
 import chevy.settings.GameSettings;
@@ -27,7 +27,7 @@ public class Chamber {
     private boolean init = false;
     private Player player;
     private final List<Enemy> enemies = new LinkedList<>();
-    private final List<Traps> traps = new LinkedList<>();
+    private final List<Trap> traps = new LinkedList<>();
     private final List<Projectile> projectiles = new LinkedList<>();
 
 
@@ -347,8 +347,8 @@ public class Chamber {
         enemies.remove(enemy);
     }
 
-    public void addTraps(Traps trap) { traps.add(trap); }
-    public List<Traps> getTraps() { return traps; }
+    public void addTraps(Trap trap) { traps.add(trap); }
+    public List<Trap> getTraps() { return traps; }
 
     public synchronized void addProjectile(Projectile projectile) { projectiles.add(projectile); }
     public synchronized List<Projectile> getProjectiles() { return projectiles; }

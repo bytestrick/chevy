@@ -12,7 +12,7 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
-import chevy.model.entity.staticEntity.environment.traps.Traps;
+import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.TrapsTypes;
 
 import java.awt.event.KeyEvent;
@@ -57,7 +57,7 @@ public class PlayerController {
             case KEYBOARD -> keyBoardInteraction((DirectionsModel) subject);
             case ENEMY -> enemyInteraction((Enemy) subject);
             case PROJECTILE -> projectileInteraction((Projectile) subject);
-            case TRAP -> trapInteraction((Traps) subject);
+            case TRAP -> trapInteraction((Trap) subject);
         }
     }
 
@@ -65,7 +65,7 @@ public class PlayerController {
         hitPlayer(-1 * projectile.getDamage());
     }
 
-    private void trapInteraction(Traps trap) {
+    private void trapInteraction(Trap trap) {
         switch (trap.getSpecificType()) {
             case TrapsTypes.VOID -> {
                 hitPlayer(-1 * trap.getDamage());
@@ -73,14 +73,14 @@ public class PlayerController {
                     chamber.moveDynamicEntity(player, direction.getOpposite());
             }
             case TrapsTypes.ICY_FLOOR -> {
-                while (player.getCurrentEumState() == Player.States.GLIDE &&
+                while (player.getCurrentEumState() == Player.EnumState.GLIDE &&
                         chamber.canCross(player, direction) &&
                         chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
                     chamber.moveDynamicEntity(player, direction);
                 }
 
-                player.changeState(Player.States.IDLE);
-                if (chamber.getEntityBelowTheTop(player) instanceof Traps t)
+                player.checkAndChangeState(Player.EnumState.IDLE);
+                if (chamber.getEntityBelowTheTop(player) instanceof Trap t)
                     trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, t);
                 else if (chamber.getEntityBelowTheTop(player) instanceof Projectile p)
                     projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player, p);
@@ -96,7 +96,7 @@ public class PlayerController {
         // Player on
         if (entityCurrentCell != null)
             switch (entityCurrentCell.getGenericType()) {
-                case TRAP -> trapsController.handleInteraction(InteractionTypes.PLAYER, player, (Traps) entityCurrentCell);
+                case TRAP -> trapsController.handleInteraction(InteractionTypes.PLAYER, player, (Trap) entityCurrentCell);
                 default -> {}
             }
 
@@ -104,26 +104,26 @@ public class PlayerController {
         if (entityNextCell != null)
             switch (entityNextCell.getGenericType()) {
                 case LiveEntityTypes.ENEMY -> {
-                    if (player.changeState(Player.States.ATTACK))
+                    if (player.checkAndChangeState(Player.EnumState.ATTACK))
                         enemyController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Enemy) entityNextCell);
-                    player.changeState(Player.States.IDLE);
+                    player.checkAndChangeState(Player.EnumState.IDLE);
                 }
                 case TRAP -> {
-                    if (chamber.canCross(player, direction) && player.changeState(Player.States.MOVE)) {
+                    if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.EnumState.MOVE)) {
                         chamber.moveDynamicEntity(player, direction);
-                        trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Traps) entityNextCell);
+                        trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Trap) entityNextCell);
                     }
                 }
                 case DynamicEntityTypes.PROJECTILE -> {
-                    if (chamber.canCross(player, direction) && player.changeState(Player.States.MOVE)) {
+                    if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.EnumState.MOVE)) {
                         chamber.moveDynamicEntity(player, direction);
                         projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Projectile) entityNextCell);
                     }
                 }
                 default -> {
-                    if (chamber.canCross(player, direction) && player.changeState(Player.States.MOVE)) {
+                    if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.EnumState.MOVE)) {
                         chamber.moveDynamicEntity(player, direction);
-                        player.changeState(Player.States.IDLE);
+                        player.changeState(Player.EnumState.IDLE);
                     }
                 }
             }
@@ -132,7 +132,7 @@ public class PlayerController {
         // Player out
         if (entityCurrentCell != null)
             switch (entityCurrentCell.getGenericType()) {
-                case TRAP -> trapsController.handleInteraction(InteractionTypes.PLAYER_OUT, player, (Traps) entityCurrentCell);
+                case TRAP -> trapsController.handleInteraction(InteractionTypes.PLAYER_OUT, player, (Trap) entityCurrentCell);
                 default -> {}
             }
     }
@@ -143,12 +143,12 @@ public class PlayerController {
 
 
     private void hitPlayer(int damage) {
-        if (player.changeState(Player.States.HIT))
+        if (player.changeState(Player.EnumState.HIT))
             player.changeHealth(damage);
-        if (!player.isAlive() && player.changeState(Player.States.DEAD))
+        if (!player.isAlive() && player.changeState(Player.EnumState.DEAD))
             chamber.removeEntityOnTop(player);
         else
-            player.changeState(Player.States.IDLE);
+            player.changeState(Player.EnumState.IDLE);
     }
 
 
