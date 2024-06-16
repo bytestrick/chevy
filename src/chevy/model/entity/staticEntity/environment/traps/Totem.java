@@ -8,7 +8,7 @@ public class Totem extends Trap {
 
 
     public Totem(Vector2<Integer> initVelocity, DirectionsModel directionShot) {
-        super(initVelocity, TrapsTypes.TOTEM);
+        super(initVelocity, Type.TOTEM);
         this.directionShot = directionShot;
         this.crossable = false;
         this.updateEverySecond = 10;

@@ -1,8 +1,6 @@
 package chevy.view.entityView;
 
 import chevy.model.entity.staticEntity.environment.traps.Trap;
-import chevy.model.entity.staticEntity.environment.traps.TrapsTypes;
-import chevy.settings.GameSettings;
 import chevy.utilz.Vector2;
 import chevy.view.Image;
 
@@ -22,7 +20,7 @@ public class TrapView extends EntityView {
     @Override
     public BufferedImage getCurrentFrame() {
         return switch (trap.getSpecificType()) {
-            case TrapsTypes.VOID -> {
+            case Trap.Type.VOID -> {
                 if (TRAP_VOID == null)
                     TRAP_VOID = Image.load(COMMON_PATH + "void.png");
                 yield TRAP_VOID;

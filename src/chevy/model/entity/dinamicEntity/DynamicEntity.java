@@ -1,20 +1,23 @@
 package chevy.model.entity.dinamicEntity;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.EntityCommonTypes;
+import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
 import chevy.model.entity.dinamicEntity.stateMachine.StateMachine;
-import chevy.model.entity.staticEntity.StaticEntityTypes;
 import chevy.utilz.Vector2;
 
 public abstract class DynamicEntity extends Entity {
-    private final DynamicEntityTypes type;
     protected final StateMachine stateMachine = new StateMachine();
+    public enum Type implements EntityCommonEnumTypes {
+        LIVE_ENTITY,
+        PROJECTILE;
+    }
+    private final Type type;
 
 
-    public DynamicEntity(Vector2<Integer> initPosition, DynamicEntityTypes type) {
-        super(initPosition, StaticEntityTypes.DYNAMIC);
+    public DynamicEntity(Vector2<Integer> initPosition, Type type) {
+        super(initPosition, Entity.Type.DYNAMIC);
         this.type = type;
     }
 
@@ -61,12 +64,12 @@ public abstract class DynamicEntity extends Entity {
 
 
     @Override
-    public EntityCommonTypes getSpecificType() {
+    public EntityCommonEnumTypes getSpecificType() {
         return type;
     }
 
     @Override
-    public EntityCommonTypes getGenericType() {
+    public EntityCommonEnumTypes getGenericType() {
         return super.getSpecificType();
     }
 

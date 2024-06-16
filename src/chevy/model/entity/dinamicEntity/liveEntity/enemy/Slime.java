@@ -20,7 +20,7 @@ public class Slime extends Enemy {
 
 
     public Slime(Vector2<Integer> initPosition) {
-        super(initPosition, EnemyTypes.SLIME);
+        super(initPosition, Type.SLIME);
         this.health = 3;
         this.maxDamage = 2;
         this.minDamage = 1;

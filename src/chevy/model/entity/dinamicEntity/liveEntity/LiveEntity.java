@@ -1,20 +1,23 @@
 package chevy.model.entity.dinamicEntity.liveEntity;
 
-import chevy.model.entity.EntityCommonTypes;
+import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.DynamicEntityTypes;
 import chevy.utilz.Vector2;
 
 public abstract class LiveEntity extends DynamicEntity {
-    private final LiveEntityTypes type;
     protected int health;
     protected int shield;
-    protected boolean flying;
     private boolean alive;
+    protected boolean flying;
+    public enum Type implements EntityCommonEnumTypes {
+        PLAYER,
+        ENEMY
+    }
+    private final Type type;
 
 
-    public LiveEntity(Vector2<Integer> initPosition, LiveEntityTypes type) {
-        super(initPosition, DynamicEntityTypes.LIVE_ENTITY);
+    public LiveEntity(Vector2<Integer> initPosition, Type type) {
+        super(initPosition, DynamicEntity.Type.LIVE_ENTITY);
         this.type = type;
         this.alive = true;
         this.flying = false;
@@ -46,10 +49,10 @@ public abstract class LiveEntity extends DynamicEntity {
     }
 
     @Override
-    public EntityCommonTypes getSpecificType() { return type; }
+    public EntityCommonEnumTypes getSpecificType() { return type; }
 
     @Override
-    public EntityCommonTypes getGenericType() { return super.getSpecificType(); }
+    public EntityCommonEnumTypes getGenericType() { return super.getSpecificType(); }
 
     @Override
     public String toString() { return type.toString(); }

@@ -5,7 +5,7 @@ import chevy.model.entity.dinamicEntity.stateMachine.State;
 import chevy.utilz.Vector2;
 
 public class Knight extends Player {
-    private final State idle = new State(EnumState.IDLE, speed);
+    private final State idle = new State(EnumState.IDLE);
     private final State move = new State(EnumState.MOVE, speed);
     private final State attack = new State(EnumState.ATTACK);
     private final State hit = new State(EnumState.HIT);
@@ -16,7 +16,7 @@ public class Knight extends Player {
 
 
     public Knight(Vector2<Integer> initPosition) {
-        super(initPosition, PlayerTypes.KNIGHT);
+        super(initPosition, Type.KNIGHT);
         this.health = 10;
         this.shield = 2;
         this.maxDamage = 7;

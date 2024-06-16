@@ -7,12 +7,12 @@ public class Sludge extends Trap {
 
 
     public Sludge(Vector2<Integer> initVelocity) {
-        super(initVelocity, TrapsTypes.SLUDGE);
+        super(initVelocity, Type.SLUDGE);
         this.nMoveToUnlock = 1;
     }
 
     public Sludge(Vector2<Integer> initVelocity, int nMoveToUnlock) {
-        super(initVelocity, TrapsTypes.SLUDGE);
+        super(initVelocity, Type.SLUDGE);
         this.crossable = true;
         this.nMoveToUnlock = nMoveToUnlock;
     }

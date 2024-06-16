@@ -1,11 +1,11 @@
 package chevy.view.chamber;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.EnemyTypes;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
-import chevy.model.entity.dinamicEntity.liveEntity.player.PlayerTypes;
-import chevy.model.entity.staticEntity.environment.EnvironmentTypes;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.Ground;
 import chevy.model.entity.staticEntity.environment.Wall;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -25,7 +25,7 @@ public class EntityToEntityView {
 
     public static EntityView getSpecific(Entity entity) {
         return switch (entity.getSpecificType()) {
-            case EnemyTypes.SLIME -> {
+            case Enemy.Type.SLIME -> {
                 SlimeView slimeView = null;
                 if (!entityView.containsKey(entity)) {
                     slimeView = new SlimeView((Slime) entity);
@@ -36,7 +36,7 @@ public class EntityToEntityView {
 
                 yield slimeView;
             }
-            case PlayerTypes.KNIGHT -> {
+            case Player.Type.KNIGHT -> {
                 KnightView knightView = null;
                 if (!entityView.containsKey(entity)) {
                     knightView = new KnightView((Knight) entity);
@@ -53,7 +53,7 @@ public class EntityToEntityView {
 
     public static EntityView getGeneric(Entity entity) {
         return switch (entity.getGenericType()) {
-            case EnvironmentTypes.WALL -> {
+            case Environment.Type.WALL -> {
                 WallView wallView = null;
                 if (!entityView.containsKey(entity)) {
                     wallView = new WallView((Wall) entity);
@@ -64,7 +64,7 @@ public class EntityToEntityView {
 
                 yield wallView;
             }
-            case EnvironmentTypes.GROUND -> {
+            case Environment.Type.GROUND -> {
                 GroundView groundView = null;
                 if (!entityView.containsKey(entity)) {
                     groundView = new GroundView((Ground) entity);
@@ -75,7 +75,7 @@ public class EntityToEntityView {
 
                 yield groundView;
             }
-            case EnvironmentTypes.TRAP -> {
+            case Environment.Type.TRAP -> {
                 TrapView trapView = null;
                 if (!entityView.containsKey(entity)) {
                     trapView = new TrapView((Trap) entity);
