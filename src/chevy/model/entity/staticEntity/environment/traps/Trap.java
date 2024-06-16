@@ -5,13 +5,13 @@ import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.EnvironmentTypes;
 import chevy.utilz.Vector2;
 
-public abstract class Traps extends Environment {
+public abstract class Trap extends Environment {
     private final TrapsTypes type;
     protected boolean canHitFlingEntity;
 
 
 
-    public Traps(Vector2<Integer> initVelocity, TrapsTypes type) {
+    public Trap(Vector2<Integer> initVelocity, TrapsTypes type) {
         super(initVelocity, EnvironmentTypes.TRAP);
         this.type = type;
         this.crossable = true;

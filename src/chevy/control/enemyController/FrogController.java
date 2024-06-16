@@ -20,7 +20,7 @@ public class FrogController {
 
     public void playerInInteraction(Player player, Frog frog) {
         switch (player.getCurrentEumState()) {
-            case Player.States.ATTACK ->
+            case Player.EnumState.ATTACK ->
                     hitFrog(frog, -1 * player.getDamage());
             default -> System.out.println("Il BatController non gestisce questa azione");
         }

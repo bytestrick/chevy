@@ -22,7 +22,7 @@ public class BatController  {
 
     public void playerInInteraction(Player player, Bat bat) {
         switch (player.getCurrentEumState()) {
-            case Player.States.ATTACK ->
+            case Player.EnumState.ATTACK ->
                 hitBat(bat, -1 * player.getDamage());
             default -> System.out.println("Il BatController non gestisce questa azione");
         }

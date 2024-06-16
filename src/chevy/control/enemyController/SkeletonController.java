@@ -21,7 +21,7 @@ public class SkeletonController {
 
     public void playerInInteraction(Player player, Skeleton skeleton) {
         switch (player.getCurrentEumState()) {
-            case Player.States.ATTACK ->
+            case Player.EnumState.ATTACK ->
                     hitSkeleton(skeleton, -1 * player.getDamage());
             default -> System.out.println("Lo SkeletonController non gestisce questa azione");
         }

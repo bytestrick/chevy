@@ -15,7 +15,7 @@ public class VoidController {
 
 
     public void playerInInteraction(Player player, Void v) {
-        if (player.changeState(Player.States.FALL))
+        if (player.changeState(Player.EnumState.FALL))
             playerController.handleInteraction(InteractionTypes.TRAP, v);
     }
 }

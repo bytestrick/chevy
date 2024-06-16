@@ -51,7 +51,7 @@ public class EntityFromColor {
     private static final int GROUND_EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT = 237;
     private static final int GROUND_EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT = 236;
 
-    // Traps
+    // Trap
     private static final int VOID = 251;
     private static final int ICY_FLOOR = 223;
     private static final int SLUDGE = 222;
@@ -117,7 +117,7 @@ public class EntityFromColor {
             case GROUND_EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT -> new Ground(new Vector2<>(row, col), GroundTypes.EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT);
             case GROUND_EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT -> new Ground(new Vector2<>(row, col), GroundTypes.EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT);
 
-            // Traps
+            // Trap
             case VOID -> new Void(new Vector2<>(row, col));
             case ICY_FLOOR -> new IcyFloor(new Vector2<>(row, col));
             case SLUDGE -> new Sludge(new Vector2<>(row, col));
