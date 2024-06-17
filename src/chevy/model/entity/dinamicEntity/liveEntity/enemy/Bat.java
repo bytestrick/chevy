@@ -14,9 +14,12 @@ public class Bat extends Enemy {
 
     public Bat(Vector2<Integer> initPosition) {
         super(initPosition, EnemyTypes.BAT);
+        this.flying = true;
         this.health = 3;
         this.maxDamage = 2;
         this.minDamage = 1;
+
+        this.updateEverySecond = 0.5f;
 
         stateMachine.setStateMachineName("Bat");
         stateMachine.setInitialState(idle);
@@ -28,7 +31,9 @@ public class Bat extends Enemy {
         idle.linkState(attack);
         idle.linkState(hit);
         move.linkState(idle);
+        move.linkState(hit);
         attack.linkState(idle);
+        attack.linkState(hit);
         hit.linkState(idle);
         hit.linkState(dead);
     }

@@ -19,6 +19,8 @@ public class Zombie extends Enemy {
         this.maxDamage = 3;
         this.minDamage = 2;
 
+        this.updateEverySecond = 1.f;
+
         stateMachine.setStateMachineName("Zombie");
         stateMachine.setInitialState(idle);
         initStateMachine();
@@ -30,6 +32,7 @@ public class Zombie extends Enemy {
         idle.linkState(attack);
         idle.linkState(hit);
         move.linkState(idle);
+        move.linkState(hit);
         attack.linkState(idle);
         hit.linkState(idle);
         hit.linkState(dead);

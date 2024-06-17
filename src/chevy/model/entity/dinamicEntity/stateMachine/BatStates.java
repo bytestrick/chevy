@@ -5,5 +5,5 @@ public enum BatStates implements EnumState {
     ATTACK,
     HIT,
     DEAD,
-    IDLE;
+    IDLE
 }

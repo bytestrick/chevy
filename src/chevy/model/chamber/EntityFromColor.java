@@ -1,11 +1,13 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
+import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Archer;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
 import chevy.model.entity.staticEntity.environment.*;
+import chevy.model.entity.staticEntity.environment.traps.*;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.utilz.Vector2;
 
@@ -50,7 +52,15 @@ public class EntityFromColor {
     private static final int GROUND_EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT = 236;
 
     // Traps
-    private static final int TRAP_VOID = 251;
+    private static final int VOID = 251;
+    private static final int ICY_FLOOR = 223;
+    private static final int SLUDGE = 222;
+    private static final int TRAPDOOR = 221;
+    private static final int SPIKED_FLOOR = 220;
+    private static final int TOTEM_UP = 143;
+    private static final int TOTEM_RIGHT = 142;
+    private static final int TOTEM_DOWN = 141;
+    private static final int TOTEM_LEFT = 140;
 
     // Players
     private static final int KNIGHT = 1;
@@ -108,7 +118,15 @@ public class EntityFromColor {
             case GROUND_EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT -> new Ground(new Vector2<>(row, col), GroundTypes.EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT);
 
             // Traps
-            case TRAP_VOID -> new Void(new Vector2<>(row, col));
+            case VOID -> new Void(new Vector2<>(row, col));
+            case ICY_FLOOR -> new IcyFloor(new Vector2<>(row, col));
+            case SLUDGE -> new Sludge(new Vector2<>(row, col));
+            case TRAPDOOR -> new Trapdoor(new Vector2<>(row, col));
+            case SPIKED_FLOOR -> new SpikedFloor(new Vector2<>(row, col));
+            case TOTEM_UP -> new Totem(new Vector2<>(row, col), DirectionsModel.UP);
+            case TOTEM_RIGHT -> new Totem(new Vector2<>(row, col), DirectionsModel.RIGHT);
+            case TOTEM_DOWN -> new Totem(new Vector2<>(row, col), DirectionsModel.DOWN);
+            case TOTEM_LEFT -> new Totem(new Vector2<>(row, col), DirectionsModel.LEFT);
 
             // Player
             case KNIGHT -> new Knight(new Vector2<>(row, col));
