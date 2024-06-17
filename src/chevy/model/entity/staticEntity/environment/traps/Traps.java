@@ -7,16 +7,20 @@ import chevy.utilz.Vector2;
 
 public abstract class Traps extends Environment {
     private final TrapsTypes type;
+    protected boolean canHitFlingEntity;
+
 
 
     public Traps(Vector2<Integer> initVelocity, TrapsTypes type) {
         super(initVelocity, EnvironmentTypes.TRAP);
         this.type = type;
+        this.crossable = true;
+        this.canHitFlingEntity = false;
     }
 
 
     @Override
-    public TrapsTypes getSpecificType() {
+    public EntityTypes getSpecificType() {
         return type;
     }
 

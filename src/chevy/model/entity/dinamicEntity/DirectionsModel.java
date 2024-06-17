@@ -1,6 +1,9 @@
 package chevy.model.entity.dinamicEntity;
 
+import chevy.utilz.Utilz;
 import chevy.utilz.Vector2;
+
+import java.util.Random;
 
 public enum DirectionsModel {
     DOWN(new Vector2<>(1, 0)),
@@ -19,11 +22,41 @@ public enum DirectionsModel {
         return direction;
     }
 
+    public static DirectionsModel getRandom() {
+        Random random = new Random();
+        DirectionsModel[] directionsModels = values();
+        return directionsModels[random.nextInt(directionsModels.length)];
+    }
+
+    public static DirectionsModel directionToPosition(Vector2<Integer> a, Vector2<Integer> b) {
+        int i = b.first - a.first;
+        int j = b.second - a.second;
+
+        if (i == 1 && j == 0)
+            return DOWN;
+        else if (i == -1 && j == 0)
+            return UP;
+        else if (i == 0 && j == 1)
+            return RIGHT;
+        else if (i == 0 && j == -1)
+            return LEFT;
+        return null;
+    }
+
+    public DirectionsModel getOpposite() {
+        return switch (this) {
+            case UP -> DOWN;
+            case DOWN -> UP;
+            case LEFT -> RIGHT;
+            case RIGHT -> LEFT;
+        };
+    }
+
     public Integer col() {
-        return direction.first();
+        return direction.second;
     }
 
     public Integer row() {
-        return direction.second();
+        return direction.first;
     }
 }

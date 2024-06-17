@@ -1,39 +1,59 @@
 package chevy.view;
 
 import chevy.control.KeyboardListener;
+import chevy.settings.GameSettings;
 import chevy.settings.WindowSettings;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.Objects;
 
 public class Window extends JFrame {
     public static final Dimension size = new Dimension(WindowSettings.WINDOW_WIDTH, WindowSettings.WINDOW_HEIGHT);
-    public Font font;
+    private final GamePanel gamePanel;
 
-    public Window() {
-        try {
-            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/res/assets/Silver.ttf"))).deriveFont(48f);
-            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
-            setFont(font);
-        } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
-        }
 
+    public Window(boolean resizable) {
         setTitle("Chevy");
-        setResizable(false);
+
+        setResizable(resizable);
+        if (resizable)
+            makeResponsive();
+
         setSize(size);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setFocusable(true);
-//        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-//        setLocation((screen.width - size.width) / 2, (screen.height - size.height) / 2);
+        setBackground(Color.DARK_GRAY);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        gamePanel = new GamePanel();
+        add(gamePanel);
+
         setVisible(true);
+        WindowSettings.SIZE_TOP_BAR = getInsets().top;
         requestFocus();
 
-        WindowSettings.SIZE_TOP_BAR = getInsets().top;
-        System.out.println(getSize());
+        System.out.println(size);
+    }
+
+    private void makeResponsive() {
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent componentEvent) {
+                WindowSettings.WINDOW_HEIGHT = getHeight();
+                WindowSettings.WINDOW_WIDTH = getWidth();
+
+                GameSettings.SCALE_H = (float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR) / GameSettings.nTileH;
+                GameSettings.SCALE_W = (float) WindowSettings.WINDOW_WIDTH / GameSettings.nTileW;
+
+                GameSettings.SCALE = (int) Math.min(GameSettings.SCALE_H, GameSettings.SCALE_W);
+            }
+        });
+    }
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
 }

@@ -1,5 +1,6 @@
 package chevy.model.entity.dinamicEntity.liveEntity.player;
 
+import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.DynamicEntityTypes;
 import chevy.model.entity.EntityTypes;
