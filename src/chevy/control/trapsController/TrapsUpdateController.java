@@ -31,7 +31,7 @@ public class TrapsUpdateController implements Update {
     }
 
     @Override
-    public boolean isEnd() {
+    public boolean updateIsEnd() {
         return traps.isEmpty();
     }
 }

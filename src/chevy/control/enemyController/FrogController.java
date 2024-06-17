@@ -4,15 +4,11 @@ import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Bat;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Frog;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.stateMachine.BatStates;
 import chevy.model.entity.dinamicEntity.stateMachine.FrogStates;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
-import chevy.model.entity.dinamicEntity.stateMachine.SkeletonStates;
 
 public class FrogController {
     private final Chamber chamber;
@@ -54,7 +50,7 @@ public class FrogController {
         if (frog.changeState(FrogStates.HIT))
             frog.changeHealth(damage);
         if (!frog.isAlive() && frog.changeState(FrogStates.DEAD)) {
-            chamber.removeEnemyFormEnemies(frog);
+            chamber.removeEnemy(frog);
             chamber.removeEntityOnTop(frog);
         }
         else

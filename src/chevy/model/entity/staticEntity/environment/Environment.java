@@ -12,6 +12,8 @@ public abstract class Environment extends Entity {
     public Environment(Vector2<Integer> initVelocity, EnvironmentTypes type) {
         super(initVelocity, StaticEntityTypes.ENVIRONMENT);
         this.type = type;
+
+        this.layer = 1;
     }
 
 

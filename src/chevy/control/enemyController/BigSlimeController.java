@@ -9,10 +9,6 @@ import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.dinamicEntity.stateMachine.BigSlimeStates;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
-import chevy.model.pathFinding.AStar;
-import chevy.utilz.Vector2;
-
-import java.util.List;
 
 public class BigSlimeController {
     private final Chamber chamber;
@@ -58,7 +54,7 @@ public class BigSlimeController {
             bigSlime.changeHealth(damage);
         if (!bigSlime.isAlive() && bigSlime.changeState(BigSlimeStates.DEAD)) {
             chamber.spawnSlimeAroundEntity(bigSlime, 2);
-            chamber.removeEnemyFormEnemies(bigSlime);
+            chamber.removeEnemy(bigSlime);
             chamber.removeEntityOnTop(bigSlime);
         }
         else
