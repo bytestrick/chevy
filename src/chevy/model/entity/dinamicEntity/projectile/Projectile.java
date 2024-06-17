@@ -16,12 +16,17 @@ public class Projectile extends DynamicEntity {
         super(initPosition, DynamicEntityTypes.PROJECTILE);
         this.type = type;
         this.direction = direction;
+
         this.updateEverySecond = 1;
+
         this.crossable = true;
         this.safeToCross = false;
+
         this.maxDamage = 2;
         this.minDamage = 1;
         this.collide = false;
+
+        this.layer = 1;
     }
 
 

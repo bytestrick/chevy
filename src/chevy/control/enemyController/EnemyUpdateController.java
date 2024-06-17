@@ -4,7 +4,6 @@ import chevy.control.InteractionType;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
-import chevy.settings.GameSettings;
 
 import java.util.List;
 
@@ -24,16 +23,16 @@ public class EnemyUpdateController implements Update {
     @Override
     public void update(double delta) {
         for (Enemy enemy : enemies) {
-            enemy.incrementNUpdate();
-            if (enemy.getUpdateEverySecond() * GameSettings.FPS == enemy.getCurrentNUpdate()) {
-                enemy.resetNUpdate();
+//            enemy.incrementNUpdate();
+//            if (enemy.getUpdateEverySecond() * GameSettings.FPS == enemy.getCurrentNUpdate()) {
+//                enemy.resetNUpdate();
                 enemyController.handleInteraction(InteractionType.UPDATE, enemy, null);
-            }
+//            }
         }
     }
 
     @Override
-    public boolean isEnd() {
+    public boolean updateIsEnd() {
         return enemies.isEmpty();
     }
 }

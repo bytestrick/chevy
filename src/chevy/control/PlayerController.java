@@ -15,7 +15,6 @@ import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.Traps;
 import chevy.model.entity.staticEntity.environment.traps.TrapsTypes;
-import chevy.model.entity.staticEntity.environment.traps.Void;
 
 import java.awt.event.KeyEvent;
 

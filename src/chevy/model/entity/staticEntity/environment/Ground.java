@@ -11,6 +11,8 @@ public class Ground extends Environment {
         super(initVelocity, EnvironmentTypes.GROUND);
         this.type = type;
         this.crossable = true;
+
+        this.layer = 0;
     }
 
 

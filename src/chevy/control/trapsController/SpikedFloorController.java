@@ -29,10 +29,7 @@ public class SpikedFloorController {
         spikedFloor.toggleStateActive();
 
         if (spikedFloor.isActive()) {
-            Entity entity = chamber.getEntityOnTop(new Vector2<>(
-                    spikedFloor.getRow(),
-                    spikedFloor.getCol()
-            ));
+            Entity entity = chamber.getEntityOnTop(spikedFloor);
             boolean mayBeAttacked = false;
             if (entity instanceof LiveEntity liveEntity) {
                 if (liveEntity instanceof Player) {

@@ -7,13 +7,8 @@ import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.stateMachine.BigSlimeStates;
 import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 import chevy.model.entity.dinamicEntity.stateMachine.ZombieStates;
-import chevy.model.pathFinding.AStar;
-import chevy.utilz.Vector2;
-
-import java.util.List;
 
 public class ZombieController {
     private final Chamber chamber;
@@ -57,7 +52,7 @@ public class ZombieController {
         if (zombie.changeState(ZombieStates.HIT))
             zombie.changeHealth(damage);
         if (!zombie.isAlive() && zombie.changeState(ZombieStates.DEAD)) {
-            chamber.removeEnemyFormEnemies(zombie);
+            chamber.removeEnemy(zombie);
             chamber.removeEntityOnTop(zombie);
         }
         else

@@ -1,47 +1,65 @@
 package chevy.model.entity;
 
-import chevy.model.entity.dinamicEntity.stateMachine.PlayerStates;
 import chevy.model.entity.staticEntity.StaticEntityTypes;
 import chevy.utilz.Vector2;
 
-import java.util.Objects;
 import java.util.Random;
+import java.util.UUID;
 
 
 public abstract class Entity {
+    private final UUID ID = UUID.randomUUID();
     private final StaticEntityTypes type;
     protected int maxDamage;
     protected int minDamage;
     protected final Vector2<Integer> position;
     protected boolean safeToCross;
     protected boolean crossable;
+
     protected float updateEverySecond;
-    private int nUpdate;
+    private int tick;
+
+    protected int layer;
+    private boolean toDraw;
 
 
     public Entity(Vector2<Integer> initPosition, StaticEntityTypes type) {
         this.position = initPosition;
         this.type = type;
-        this.nUpdate = 0;
+
+        this.updateEverySecond = 0;
+        this.tick = 0;
+
         this.crossable = false;
         this.safeToCross = true;
+
+        this.layer = 0;
+        this.toDraw = false;
     }
 
+
+    public boolean isToDraw() {
+        return toDraw;
+    }
+
+    public void setToDraw(boolean toDraw) {
+        this.toDraw = toDraw;
+    }
 
     public float getUpdateEverySecond() {
         return updateEverySecond;
     }
 
     public int getCurrentNUpdate() {
-        return nUpdate;
+        return tick;
     }
 
     public void incrementNUpdate() {
-        ++nUpdate;
+        ++tick;
     }
 
     public void resetNUpdate() {
-        nUpdate = 0;
+        tick = 0;
     }
 
     public synchronized int getDamage() {
@@ -66,6 +84,10 @@ public abstract class Entity {
         return false;
     }
 
+    public int getLayer() {
+        return Math.abs(this.layer);
+    }
+
     @Override
     public String toString() {
         return "ENTITY";
@@ -78,16 +100,11 @@ public abstract class Entity {
 
         Entity entity = (Entity) o;
 
-        if (crossable != entity.crossable) return false;
-        if (type != entity.type) return false;
-        return Objects.equals(position, entity.position);
+        return ID.equals(entity.ID);
     }
 
     @Override
     public int hashCode() {
-        int result = type != null ? type.hashCode() : 0;
-        result = 31 * result + (position != null ? position.hashCode() : 0);
-        result = 31 * result + (crossable ? 1 : 0);
-        return result;
+        return ID.hashCode();
     }
 }

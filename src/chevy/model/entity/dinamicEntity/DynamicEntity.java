@@ -29,6 +29,10 @@ public abstract class DynamicEntity extends Entity {
         return stateMachine.changeState(state);
     }
 
+    public boolean canChange(EnumState state) {
+        return stateMachine.canChange(state);
+    }
+
     public boolean changeToPreviousState() {
         return stateMachine.changeToPreviousState();
     }

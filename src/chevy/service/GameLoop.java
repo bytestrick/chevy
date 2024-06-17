@@ -34,7 +34,7 @@ public class GameLoop implements Runnable {
             final double delta = (System.currentTimeMillis() - lastTime) / 1000.0d; // conversione in secondi
             lastTime = System.currentTimeMillis();
 
-            // System.out.print("\r delta:  " + delta);
+//             System.out.print("\r delta:  " + delta + "\t");
 
             UpdateManager.update(delta);
             // render
