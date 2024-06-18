@@ -2,9 +2,11 @@ package chevy.view.chamber;
 
 import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.entity.Entity;
+import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.settings.GameSettings;
 import chevy.utilz.Vector2;
 import chevy.view.entityView.EntityView;
+import chevy.view.entityView.entityViewAnimated.EntityViewAnimated;
 import chevy.view.entityView.entityViewAnimated.enemy.SlimeView;
 
 import java.awt.*;
@@ -29,7 +31,6 @@ public class ChamberView {
 
                 if (entity != null) {
                     EntityView entityViewSpecific = EntityToEntityView.getSpecific(entity);
-
                     if (entityViewSpecific != null) {
                         Vector2<Double> position = entityViewSpecific.getCurrentPosition();
                         g.drawImage(entityViewSpecific.getCurrentFrame(),
