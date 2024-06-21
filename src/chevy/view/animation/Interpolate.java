@@ -31,6 +31,11 @@ public class Interpolate implements Render {
         RenderManager.addToRender(this);
     }
 
+    public void restart() {
+        time = 0d;
+        isRunning = true;
+    }
+
     public void stop() {
         isRunning = false;
     }
