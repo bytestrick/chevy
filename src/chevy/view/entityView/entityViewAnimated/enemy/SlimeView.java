@@ -1,6 +1,7 @@
 package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.settings.GameSettings;
 import chevy.utilz.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -16,6 +17,8 @@ public class SlimeView extends EntityViewAnimated {
     private final Vector2<Double> currentPosition;
     private Interpolate moveInterpolationX = null;
     private Interpolate moveInterpolationY = null;
+    private CommonEnumStates previousState = null;
+
 
     public SlimeView(Slime slime) {
         super();
@@ -78,20 +81,18 @@ public class SlimeView extends EntityViewAnimated {
 
     @Override
     public Vector2<Double> getCurrentPosition() {
-        if (moveInterpolationX == null) {
-            moveInterpolationX = new Interpolate(currentPosition.first,
-                    slime.getCol(),
-                    slime.getState(Slime.EnumState.MOVE).getDuration(),
-                    InterpolationTypes.EASE_OUT_SINE);
-            moveInterpolationX.start();
-        }
-        if (moveInterpolationY == null) {
-            moveInterpolationY = new Interpolate(currentPosition.second,
-                    slime.getRow(),
-                    slime.getState(Slime.EnumState.MOVE).getDuration(),
-                    InterpolationTypes.EASE_OUT_SINE);
-            moveInterpolationY.start();
-        }
+        moveInterpolationX = createInterpolation(moveInterpolationX,
+                currentPosition.first,
+                slime.getCol(),
+                slime.getState(Slime.EnumState.MOVE).getDuration(),
+                InterpolationTypes.EASE_OUT_SINE
+        );
+        moveInterpolationY = createInterpolation(moveInterpolationY,
+                currentPosition.second,
+                slime.getRow(),
+                slime.getState(Slime.EnumState.MOVE).getDuration(),
+                InterpolationTypes.EASE_OUT_SINE
+        );
 
         if (moveInterpolationX != null) {
             currentPosition.changeFirst(moveInterpolationX.getValue());
@@ -105,5 +106,19 @@ public class SlimeView extends EntityViewAnimated {
         }
 
         return currentPosition;
+    }
+
+    private Interpolate createInterpolation(Interpolate interpolate, double start, double end, float duration, InterpolationTypes interpolationTypes) {
+        if (interpolate == null) {
+            interpolate = new Interpolate(start, end, duration, interpolationTypes);
+            interpolate.start();
+        }
+        else if (slime.getCurrentEumState() != previousState) {
+            previousState = slime.getCurrentEumState();
+            interpolate.stop();
+            interpolate = new Interpolate(start, end, duration, interpolationTypes);
+            interpolate.start();
+        }
+        return interpolate;
     }
 }
