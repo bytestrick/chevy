@@ -3,6 +3,7 @@ package chevy.view.entityView.entityViewAnimated.player;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.utilz.Vector2;
 import chevy.view.Image;
 import chevy.view.animation.Interpolate;
@@ -14,8 +15,9 @@ import java.awt.image.BufferedImage;
 public class KnightView extends EntityViewAnimated {
     private final Knight knight;
     private final Vector2<Double> currentPosition;
-    private Interpolate moveInterpolationX = null;
-    private Interpolate moveInterpolationY = null;
+    private final Interpolate moveInterpolationX;
+    private final Interpolate moveInterpolationY;
+    private CommonEnumStates previousEnumState = null;
 
 
     public KnightView(Knight knight) {
@@ -23,6 +25,16 @@ public class KnightView extends EntityViewAnimated {
         this.currentPosition = new Vector2<>(
                 (double) knight.getCol(),
                 (double) knight.getRow()
+        );
+        moveInterpolationX = new Interpolate(currentPosition.first,
+                knight.getCol(),
+                knight.getState(knight.getCurrentEumState()).getDuration(),
+                InterpolationTypes.EASE_OUT_SINE
+        );
+        moveInterpolationY = new Interpolate(currentPosition.second,
+                knight.getRow(),
+                knight.getState(knight.getCurrentEumState()).getDuration(),
+                InterpolationTypes.EASE_OUT_SINE
         );
     }
 
@@ -34,32 +46,36 @@ public class KnightView extends EntityViewAnimated {
 
     @Override
     public Vector2<Double> getCurrentPosition() {
-        if (moveInterpolationX == null) {
-            moveInterpolationX = new Interpolate(currentPosition.first,
-                    knight.getCol(),
-                    knight.getState(Player.EnumState.MOVE).getDuration(),
-                    InterpolationTypes.EASE_OUT_SINE);
-            moveInterpolationX.start();
-        }
-        if (moveInterpolationY == null) {
-            moveInterpolationY = new Interpolate(currentPosition.second,
-                    knight.getRow(),
-                    knight.getState(Player.EnumState.MOVE).getDuration(),
-                    InterpolationTypes.EASE_OUT_SINE);
-            moveInterpolationY.start();
-        }
+        CommonEnumStates currentEnumState = knight.getCurrentEumState();
+        if (currentEnumState != previousEnumState) {
+            float duration = knight.getState(knight.getCurrentEumState()).getDuration();
 
-        if (moveInterpolationX != null) {
-            currentPosition.changeFirst(moveInterpolationX.getValue());
-            if (!moveInterpolationX.isRunning())
-                moveInterpolationX = null;
-        }
-        if (moveInterpolationY != null) {
-            currentPosition.changeSecond(moveInterpolationY.getValue());
-            if (!moveInterpolationY.isRunning())
-                moveInterpolationY = null;
-        }
+            moveInterpolationX.changeStart(currentPosition.first);
+            moveInterpolationX.changeEnd(knight.getCol());
+            moveInterpolationX.changeDuration(duration);
 
+            moveInterpolationY.changeStart(currentPosition.second);
+            moveInterpolationY.changeEnd(knight.getRow());
+            moveInterpolationY.changeDuration(duration);
+
+            if (!moveInterpolationX.isRunning()) {
+                moveInterpolationX.restart();
+            }
+            if (!moveInterpolationY.isRunning()) {
+                moveInterpolationY.restart();
+            }
+
+            previousEnumState = currentEnumState;
+        }
+        currentPosition.changeFirst(moveInterpolationX.getValue());
+        currentPosition.changeSecond(moveInterpolationY.getValue());
         return currentPosition;
+    }
+
+    @Override
+    public void wasRemoved() {
+        moveInterpolationX.delete();
+        moveInterpolationY.delete();
+        deleteAnimations();
     }
 }

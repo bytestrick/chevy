@@ -11,11 +11,10 @@ public class Image {
         try {
             image = ImageIO.read(Objects.requireNonNull(Image.class.getResource(path)));
         }
-        catch (IOException e) {
-            System.out.println("Immagine: " + path + " non trovata");
+        catch (IOException | NullPointerException e) {
+            System.out.println("Imagine: " + path + " non trovata");
             System.exit(1);
         }
-
         return image;
     }
 }

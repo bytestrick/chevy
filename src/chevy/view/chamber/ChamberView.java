@@ -5,7 +5,7 @@ import chevy.model.entity.Entity;
 import chevy.settings.GameSettings;
 import chevy.utilz.Vector2;
 import chevy.view.entityView.EntityView;
-import chevy.view.entityView.entityViewAnimated.enemy.SlimeView;
+import chevy.view.entityView.entityViewAnimated.EntityViewAnimated;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -53,8 +53,10 @@ public class ChamberView {
                     }
 
                     if (!entity.isToDraw()) {
-                        System.out.println("Remove to draw: " + entity);
+                        System.out.println("Rimosso dal ridisegno: " + entity);
                         it.remove();
+                        if (entityViewSpecific instanceof EntityViewAnimated entityViewAnimated)
+                            entityViewAnimated.wasRemoved();
                     }
                 }
             }

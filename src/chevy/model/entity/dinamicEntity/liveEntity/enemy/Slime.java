@@ -12,11 +12,11 @@ public class Slime extends Enemy {
         DEAD,
         IDLE
     }
-    private final State idle = new State(EnumState.IDLE, 1.f);
+    private final State idle = new State(EnumState.IDLE, 1.f, true);
     private final State move = new State(EnumState.MOVE, 0.5f);
-    private final State attack = new State(EnumState.ATTACK, 0.49f);
-    private final State hit = new State(EnumState.HIT);
-    private final State dead = new State(EnumState.DEAD);
+    private final State attack = new State(EnumState.ATTACK, 0.5f);
+    private final State hit = new State(EnumState.HIT, 0.2f);
+    private final State dead = new State(EnumState.DEAD, 0.2f);
 
 
     public Slime(Vector2<Integer> initPosition) {
@@ -40,6 +40,7 @@ public class Slime extends Enemy {
         move.linkState(idle);
 //        move.linkState(hit);
         attack.linkState(idle);
+        attack.linkState(hit);
         hit.linkState(idle);
         hit.linkState(dead);
     }

@@ -39,6 +39,7 @@ public class EnemyController {
             case PLAYER_IN -> playerInInteraction((Player) subject, (Enemy) object);
             case UPDATE -> updateEnemy((Enemy) subject);
             case PROJECTILE -> projectileInteraction((Projectile) subject, (Enemy) object);
+            default -> {}
         }
     }
 
