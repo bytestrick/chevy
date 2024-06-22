@@ -34,12 +34,13 @@ public class Timer implements Update {
 
     @Override
     public void update(double delta) {
-        if (time >= duration) {
-            isRunning = false;
-            return;
-        }
+        if (isRunning) {
+            time += delta;
 
-        time += delta;
+            if (time >= duration) {
+                isRunning = false;
+            }
+        }
     }
 
     @Override

@@ -16,6 +16,7 @@ public class AnimatedSprite implements Render {
     private int currentIndexFrame = 0;
     private final boolean loop;
     private boolean isRunning = false;
+    private boolean delete = false;
     private double time = 0d;
 
 
@@ -51,7 +52,7 @@ public class AnimatedSprite implements Render {
     }
 
     public void start() {
-//        System.out.println("Start animation: " + animationTypes);
+//        System.out.println("Inizio animazione: " + animationTypes);
         currentIndexFrame = 0;
         isRunning = true;
         time = 0d;
@@ -60,7 +61,7 @@ public class AnimatedSprite implements Render {
     }
 
     public void stop() {
-//        System.out.println("Stop animation: " + animationTypes);
+//        System.out.println("Fine animazione: " + animationTypes);
         isRunning = false;
     }
 
@@ -76,26 +77,33 @@ public class AnimatedSprite implements Render {
         return animationTypes;
     }
 
+    public void delete() {
+        delete = true;
+    }
+
 
     @Override
     public void render(double delta) {
-        if (time >= secFrameDuration) {
-            time = 0d;
-            ++currentIndexFrame;
-            if (loop)
-                currentIndexFrame = currentIndexFrame % nFrame;
-            else if (currentIndexFrame >= nFrame - 1) {
-                stop();
+        if (isRunning) {
+            if (time >= secFrameDuration) {
+                time = 0d;
+                ++currentIndexFrame;
+                if (loop) {
+                    currentIndexFrame = currentIndexFrame % nFrame;
+                }
+                else if (currentIndexFrame > nFrame - 1) {
+                    stop();
+                }
             }
+            else
+                time += delta;
         }
-        else
-            time += delta;
     }
 
     @Override
     public boolean renderIsEnd() {
         if (loop)
-            return false;
-        return !isRunning;
+            return delete;
+        return !isRunning || delete;
     }
 }

@@ -4,6 +4,7 @@ import chevy.control.InteractionTypes;
 import chevy.control.PlayerController;
 import chevy.model.Timer;
 import chevy.model.entity.Entity;
+import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
@@ -13,8 +14,6 @@ import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 public class SlimeController {
     private final Chamber chamber;
     private final PlayerController playerController;
-
-    private final Timer moveTimer = new Timer(2);
 
 
     public SlimeController(Chamber chamber, PlayerController playerController) {
@@ -32,11 +31,22 @@ public class SlimeController {
     }
 
     public void update(Slime slime) {
+        if (!slime.isAlive()) {
+            if (slime.getState(Slime.EnumState.DEAD).isFinished()) {
+                chamber.removeEnemy(slime);
+                chamber.removeEntityOnTop(slime);
+                return;
+            }
+        }
+        else if (slime.checkAndChangeState(Slime.EnumState.DEAD))
+            slime.kill();
+
         if (slime.canChange(Slime.EnumState.MOVE)) {
             DirectionsModel direction = chamber.getHitDirectionPlayer(slime);
             if (direction == null) {
-                if (chamber.moveRandom(slime))
+                if (chamber.moveRandom(slime)) {
                     slime.changeState(Slime.EnumState.MOVE);
+                }
             }
             else if (slime.canChange(Slime.EnumState.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(slime, chamber.getHitDirectionPlayer(slime));
@@ -55,11 +65,5 @@ public class SlimeController {
     private void hitSlime(Slime slime, int damage) {
         if (slime.changeState(Slime.EnumState.HIT))
             slime.changeHealth(damage);
-        if (!slime.isAlive() && slime.changeState(Slime.EnumState.DEAD)) {
-            chamber.removeEnemy(slime);
-            chamber.removeEntityOnTop(slime);
-        }
-        else
-            slime.changeState(Slime.EnumState.IDLE);
     }
 }

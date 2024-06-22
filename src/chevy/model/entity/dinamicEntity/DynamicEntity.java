@@ -9,9 +9,12 @@ import chevy.utilz.Vector2;
 
 public abstract class DynamicEntity extends Entity {
     protected final StateMachine stateMachine = new StateMachine();
+
     public enum Type implements EntityCommonEnumTypes {
         LIVE_ENTITY,
         PROJECTILE;
+
+
     }
     private final Type type;
 

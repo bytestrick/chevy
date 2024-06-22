@@ -1,9 +1,11 @@
 package chevy.view.entityView.entityViewAnimated;
 
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.utilz.Vector2;
 import chevy.view.Image;
 import chevy.view.animation.AnimatedSprite;
+import chevy.view.animation.Interpolate;
 import chevy.view.chamber.EntityToEntityView;
 import chevy.view.entityView.EntityView;
 
@@ -13,7 +15,6 @@ import java.util.Map;
 
 public abstract class EntityViewAnimated extends EntityView {
     private final Map<CommonEnumStates, AnimatedSprite> animations;
-
 
     public EntityViewAnimated() {
         animations = new HashMap<>();
@@ -33,6 +34,12 @@ public abstract class EntityViewAnimated extends EntityView {
             System.out.println("L'animaizone " + animationTypes + " è già presente");
     }
 
+    protected void deleteAnimations() {
+        for (CommonEnumStates key : animations.keySet()) {
+            animations.get(key).delete();
+        }
+    }
+
     protected AnimatedSprite getAnimatedSprite(CommonEnumStates animationTypes) {
         return animations.get(animationTypes);
     }
@@ -41,4 +48,6 @@ public abstract class EntityViewAnimated extends EntityView {
 
 
     public abstract Vector2<Double> getCurrentPosition();
+
+    public abstract void wasRemoved();
 }

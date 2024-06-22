@@ -29,11 +29,15 @@ public abstract class LiveEntity extends DynamicEntity {
 
         this.health += value;
         if (health <= 0) {
-            alive = false;
             this.health = 0;
         }
 
         System.out.println(" -> " + health);
+    }
+
+    public synchronized void kill() {
+        if (health <= 0)
+            alive = false;
     }
 
     public synchronized void changeShield(int value) {

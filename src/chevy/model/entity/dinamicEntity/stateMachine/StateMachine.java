@@ -5,7 +5,7 @@ package chevy.model.entity.dinamicEntity.stateMachine;
  * che gestisce le transizioni tra i diversi stati.
  * Questa classe consente di definire un comportamento strutturato in cui un entità dinamica può trovarsi
  * in uno e un solo stato alla volta, cambiando stato in risposta a determinati eventi o condizioni.
- * Prima di usare la maccina a stati finiti è necessario definire uno stato di partenza. Successivamente è
+ * Prima di usare la macchina a stati finiti è necessario definire uno stato di partenza. Successivamente è
  * possibile cambiare stato attraverso il metodo checkAndChangeState(), oppure usando in modo combinato
  * il metodo canChange() e changeState(). Se si usa solo changeState() non si controlla che lo stato corrente
  * sia finito.
@@ -13,6 +13,8 @@ package chevy.model.entity.dinamicEntity.stateMachine;
 public class StateMachine {
     private State currentState;
     private State previousState;
+    private State nextState;
+    private boolean usedWithCanChange = false;
     private String stateMachineName; // solo per capire di chi è la stampa
 
 
@@ -27,7 +29,9 @@ public class StateMachine {
 
         System.out.print(stateMachineName + ": " + currentState);
 
-        State nextState = currentState.findLinkedState(state);
+        if (!usedWithCanChange)
+            nextState = currentState.findLinkedState(state);
+
         if (nextState != null) {
             previousState = currentState;
             currentState = nextState;
@@ -35,6 +39,7 @@ public class StateMachine {
 
             System.out.println(" -> " + nextState);
 
+            nextState = null;
             return true;
         }
 
@@ -48,8 +53,11 @@ public class StateMachine {
             System.out.println("Non è presente uno stato iniziale");
             return false;
         }
-        if (currentState.findLinkedState(state) == null)
+
+        nextState = currentState.findLinkedState(state);
+        if (nextState == null) {
             return false;
+        }
 
         return currentState.isFinished();
     }
@@ -57,7 +65,9 @@ public class StateMachine {
 
     public synchronized boolean checkAndChangeState(CommonEnumStates state) {
         if (canChange(state)) {
+            usedWithCanChange = true;
             changeState(state);
+            usedWithCanChange = false;
             return true;
         }
         return false;
@@ -72,7 +82,10 @@ public class StateMachine {
 
     public synchronized State getPreviousState() { return previousState; }
 
-    public void setInitialState(State startState) { this.currentState = startState; }
+    public void setInitialState(State startState) {
+        this.currentState = startState;
+        this.currentState.startStateTimer();
+    }
 
     // solo per la stampa
     public void setStateMachineName(String stateMachineName) {
