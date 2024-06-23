@@ -1,13 +1,16 @@
 package chevy.view.entityView.entityViewAnimated.enemy;
 
+import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
+import chevy.utilz.Pair;
 import chevy.utilz.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolate;
 import chevy.view.animation.InterpolationTypes;
 import chevy.view.entityView.entityViewAnimated.EntityViewAnimated;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 
 public class SlimeView extends EntityViewAnimated {
@@ -42,29 +45,51 @@ public class SlimeView extends EntityViewAnimated {
 
 
     private void initAnimation() {
-        createAnimation(Slime.EnumState.IDLE, 6, true, 4,
+        createAnimation(Slime.EnumState.IDLE, 0,
+                6, true, 4,
                 SLIME_RESOURCES + "idle", ".png");
 
-        createAnimation(Slime.EnumState.MOVE, 6, false, 1,
+        createAnimation(Slime.EnumState.MOVE, 0,
+                6, false, 1,
                 SLIME_RESOURCES + "move", ".png");
 
-        createAnimation(Slime.EnumState.ATTACK, 5, false, 1,
+        createAnimation(Slime.EnumState.ATTACK, 0,
+                5, false, 1,
                 SLIME_RESOURCES + "attack/up", ".png");
 
-        createAnimation(Slime.EnumState.HIT, 1, false, 1,
-                SLIME_RESOURCES + "hit", ".png");
+        createAnimation(Slime.EnumState.ATTACK, 1,
+                5, false, 1,
+                SLIME_RESOURCES + "attack/down", ".png");
 
-        createAnimation(Slime.EnumState.DEAD, 2, false, 1,
+        createAnimation(Slime.EnumState.ATTACK, 2,
+                5, false, 1,
+                SLIME_RESOURCES + "attack/right", ".png");
+
+        createAnimation(Slime.EnumState.ATTACK, 3,
+                5, false, 1,
+                SLIME_RESOURCES + "attack/left", ".png");
+
+        createAnimation(Slime.EnumState.HIT, 0,
+                1, false, 1,
+                SLIME_RESOURCES + "hit/right", ".png");
+
+        createAnimation(Slime.EnumState.HIT, 1,
+                1, false, 1,
+                SLIME_RESOURCES + "hit/left", ".png");
+
+        createAnimation(Slime.EnumState.DEAD, 0,
+                2, false, 1,
                 SLIME_RESOURCES + "dead", ".png");
     }
 
-    private void createAnimation(CommonEnumStates enumStates, int nFrame, boolean loop, int times,
+    private void createAnimation(CommonEnumStates enumStates, int type,
+                                 int nFrame, boolean loop, int times,
                                  String folderPath, String extension) {
         if (!loop)
             times = 1;
         float durationFrame = slime.getState(enumStates).getDuration() / (nFrame * times);
         AnimatedSprite animatedSprite = new AnimatedSprite(
-                enumStates,
+                new Pair<>(enumStates, type),
                 nFrame,
                 durationFrame,
                 loop
@@ -75,7 +100,11 @@ public class SlimeView extends EntityViewAnimated {
 
     @Override
     public BufferedImage getCurrentFrame() {
-        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(slime.getCurrentEumState());
+        CommonEnumStates currentState = slime.getCurrentEumState();
+        int type = getType(currentState);
+
+        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, type);
+
         if (currentAnimatedSprite != null) {
             if (!currentAnimatedSprite.isRunning()) {
                 currentAnimatedSprite.start();
@@ -83,6 +112,28 @@ public class SlimeView extends EntityViewAnimated {
             return currentAnimatedSprite.getCurrentFrame();
         }
         return null;
+    }
+
+    private int getType(CommonEnumStates currentState) {
+        DirectionsModel currentDirection = slime.getDirection();
+
+        int type = switch (currentState) {
+            case Slime.EnumState.ATTACK ->
+                switch (currentDirection) {
+                    case UP -> 0;
+                    case DOWN -> 1;
+                    case RIGHT -> 2;
+                    case LEFT -> 3;
+                };
+            case Slime.EnumState.HIT -> {
+                if (currentDirection == DirectionsModel.RIGHT)
+                    yield 1;
+                else
+                    yield 0;
+            }
+            default -> 0;
+        };
+        return type;
     }
 
     @Override
