@@ -137,8 +137,11 @@ public class Chamber {
                         entity.getRow() + direction.row() * i,
                         entity.getCol() + direction.col() * i
                 );
-                if (validatePosition(checkPosition) && getEntityOnTop(checkPosition) instanceof Player)
+                if (validatePosition(checkPosition) && getEntityOnTop(checkPosition) instanceof Player) {
+                    if (entity instanceof DynamicEntity dynamicEntity)
+                        dynamicEntity.setDirection(direction);
                     return direction;
+                }
             }
         return null;
     }
@@ -151,6 +154,8 @@ public class Chamber {
 
         if (!canCross(nextPosition))
             return;
+
+        dynamicEntity.setDirection(direction);
 
         findAndRemoveEntity(dynamicEntity);
         dynamicEntity.changePosition(nextPosition);

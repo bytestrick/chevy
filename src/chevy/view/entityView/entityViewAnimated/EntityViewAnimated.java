@@ -1,7 +1,9 @@
 package chevy.view.entityView.entityViewAnimated;
 
+import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
+import chevy.utilz.Pair;
 import chevy.utilz.Vector2;
 import chevy.view.Image;
 import chevy.view.animation.AnimatedSprite;
@@ -14,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class EntityViewAnimated extends EntityView {
-    private final Map<CommonEnumStates, AnimatedSprite> animations;
+    private final Map<Pair<CommonEnumStates, Integer>, AnimatedSprite> animations;
 
     public EntityViewAnimated() {
         animations = new HashMap<>();
@@ -27,7 +29,7 @@ public abstract class EntityViewAnimated extends EntityView {
         this.addAnimation(animation.getAnimationTypes(), animation);
     }
 
-    protected void addAnimation(CommonEnumStates animationTypes, AnimatedSprite animatedSprite) {
+    protected void addAnimation(Pair<CommonEnumStates, Integer> animationTypes, AnimatedSprite animatedSprite) {
         if (!animations.containsKey(animationTypes))
             animations.put(animationTypes, animatedSprite);
         else
@@ -35,12 +37,13 @@ public abstract class EntityViewAnimated extends EntityView {
     }
 
     protected void deleteAnimations() {
-        for (CommonEnumStates key : animations.keySet()) {
+        for (Pair<CommonEnumStates, Integer> key : animations.keySet()) {
             animations.get(key).delete();
         }
     }
 
-    protected AnimatedSprite getAnimatedSprite(CommonEnumStates animationTypes) {
+    protected AnimatedSprite getAnimatedSprite(CommonEnumStates enumStates, int type) {
+        Pair<CommonEnumStates, Integer> animationTypes = new Pair<>(enumStates, type);
         return animations.get(animationTypes);
     }
 

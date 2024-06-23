@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class EntityView {
+    protected boolean flipped = false;
+
 
     public EntityView() {}
 

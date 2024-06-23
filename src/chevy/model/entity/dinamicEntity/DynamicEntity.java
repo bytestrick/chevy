@@ -14,9 +14,11 @@ public abstract class DynamicEntity extends Entity {
         LIVE_ENTITY,
         PROJECTILE;
 
+
     }
     private final Type type;
     private boolean canRemove = false;
+    protected DirectionsModel direction = null;
 
 
     public DynamicEntity(Vector2<Integer> initPosition, Type type) {
@@ -39,6 +41,14 @@ public abstract class DynamicEntity extends Entity {
 
     public boolean checkAndChangeState(CommonEnumStates state) {
         return stateMachine.checkAndChangeState(state);
+    }
+
+    public DirectionsModel getDirection() {
+        return direction;
+    }
+
+    public void setDirection(DirectionsModel direction) {
+        this.direction = direction;
     }
 
     public boolean changeToPreviousState() {

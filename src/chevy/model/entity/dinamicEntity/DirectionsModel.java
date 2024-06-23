@@ -1,6 +1,8 @@
 package chevy.model.entity.dinamicEntity;
 
+import chevy.model.entity.Entity;
 import chevy.utilz.Vector2;
+import chevy.view.entityView.EntityView;
 
 import java.util.Random;
 
@@ -25,6 +27,12 @@ public enum DirectionsModel {
         Random random = new Random();
         DirectionsModel[] directionsModels = values();
         return directionsModels[random.nextInt(directionsModels.length)];
+    }
+
+    public static DirectionsModel positionToDirection(Entity a, Entity b) {
+        Vector2<Integer> v = new Vector2<>(a.getRow(), a.getCol());
+        Vector2<Integer> v2 = new Vector2<>(b.getRow(), b.getCol());
+        return positionToDirection(v, v2);
     }
 
     public static DirectionsModel positionToDirection(Vector2<Integer> a, Vector2<Integer> b) {
