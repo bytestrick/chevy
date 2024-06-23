@@ -26,10 +26,10 @@ public class ProjectileUpdateController implements Update {
 
 
     // usato questo metodo perché l'aggiunta di elementi nella lista
-    // mentre viene iterata da un eccezzione, in questo modo la lista
+    // mentre viene iterata da un eccezione, in questo modo la lista
     // da iterare viene formata prima dell'iterazione e non viene più
     // modificata fino all'iterazione successiva
-    public void addProjectile() {
+    private void addProjectile() {
         this.projectiles.addAll(projectilesToAdd);
         projectilesToAdd.clear();
     }

@@ -14,9 +14,9 @@ public abstract class DynamicEntity extends Entity {
         LIVE_ENTITY,
         PROJECTILE;
 
-
     }
     private final Type type;
+    private boolean canRemove = false;
 
 
     public DynamicEntity(Vector2<Integer> initPosition, Type type) {
@@ -53,11 +53,12 @@ public abstract class DynamicEntity extends Entity {
         return stateMachine.getPreviousState().getStateEnum();
     }
 
-    public synchronized CommonEnumStates getPreviousEumState() {
-        State state = stateMachine.getPreviousState();
-        if (state == null)
-            return null;
-        return state.getStateEnum();
+    public void removeToUpdate() {
+        canRemove = true;
+    }
+
+    public boolean canRemoveToUpdate() {
+        return canRemove;
     }
 
     public State getState(CommonEnumStates commonEnumStates) {

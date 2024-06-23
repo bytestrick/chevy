@@ -51,7 +51,7 @@ public class BatController  {
         if (bat.changeState(Bat.EnumState.HIT))
             bat.changeHealth(damage);
         if (!bat.isAlive() && bat.changeState(Bat.EnumState.DEAD)) {
-            chamber.removeEnemy(bat);
+//            chamber.removeEnemy(bat);
             chamber.removeEntityOnTop(bat);
         }
         else

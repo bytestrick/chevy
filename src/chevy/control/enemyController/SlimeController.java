@@ -26,20 +26,21 @@ public class SlimeController {
         switch (player.getCurrentEumState()) {
             case Player.EnumState.ATTACK ->
                 hitSlime(slime, -1 * player.getDamage());
-            default -> System.out.println("Lo slimeController non gestisce questa azione");
+            default -> System.out.println("Lo slimeController non gestisce questa azione: " + player.getCurrentEumState());
         }
     }
 
     public void update(Slime slime) {
         if (!slime.isAlive()) {
             if (slime.getState(Slime.EnumState.DEAD).isFinished()) {
-                chamber.removeEnemy(slime);
                 chamber.removeEntityOnTop(slime);
+                slime.removeToUpdate();
                 return;
             }
         }
-        else if (slime.checkAndChangeState(Slime.EnumState.DEAD))
+        else if (slime.checkAndChangeState(Slime.EnumState.DEAD)) {
             slime.kill();
+        }
 
         if (slime.canChange(Slime.EnumState.MOVE)) {
             DirectionsModel direction = chamber.getHitDirectionPlayer(slime);

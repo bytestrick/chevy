@@ -50,7 +50,7 @@ public class SkeletonController {
         if (skeleton.changeState(Skeleton.EnumState.HIT))
             skeleton.changeHealth(damage);
         if (!skeleton.isAlive() && skeleton.changeState(Skeleton.EnumState.DEAD)) {
-            chamber.removeEnemy(skeleton);
+//            chamber.removeEnemy(skeleton);
             chamber.removeEntityOnTop(skeleton);
         }
         else

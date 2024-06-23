@@ -52,7 +52,7 @@ public class BigSlimeController {
             bigSlime.changeHealth(damage);
         if (!bigSlime.isAlive() && bigSlime.changeState(BigSlime.EnumState.DEAD)) {
             chamber.spawnSlimeAroundEntity(bigSlime, 2);
-            chamber.removeEnemy(bigSlime);
+//            chamber.removeEnemy(bigSlime);
             chamber.removeEntityOnTop(bigSlime);
         }
         else

@@ -48,6 +48,11 @@ public class KnightView extends EntityViewAnimated {
     public Vector2<Double> getCurrentPosition() {
         CommonEnumStates currentEnumState = knight.getCurrentEumState();
         if (currentEnumState != previousEnumState) {
+            if (previousEnumState == null) {
+                previousEnumState = currentEnumState;
+                return currentPosition;
+            }
+
             float duration = knight.getState(knight.getCurrentEumState()).getDuration();
 
             moveInterpolationX.changeStart(currentPosition.first);
@@ -58,15 +63,12 @@ public class KnightView extends EntityViewAnimated {
             moveInterpolationY.changeEnd(knight.getRow());
             moveInterpolationY.changeDuration(duration);
 
-            if (!moveInterpolationX.isRunning()) {
-                moveInterpolationX.restart();
-            }
-            if (!moveInterpolationY.isRunning()) {
-                moveInterpolationY.restart();
-            }
+            moveInterpolationX.restart();
+            moveInterpolationY.restart();
 
             previousEnumState = currentEnumState;
         }
+
         currentPosition.changeFirst(moveInterpolationX.getValue());
         currentPosition.changeSecond(moveInterpolationY.getValue());
         return currentPosition;
