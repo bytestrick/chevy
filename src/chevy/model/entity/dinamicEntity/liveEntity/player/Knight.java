@@ -35,6 +35,7 @@ public class Knight extends Player {
         idle.linkState(fall);
         hit.linkState(idle);
         hit.linkState(dead);
+        hit.linkState(move);
         move.linkState(glide);
         move.linkState(hit);
         move.linkState(fall);

@@ -2,6 +2,9 @@ package chevy.view.chamber;
 
 import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.entity.Entity;
+import chevy.model.entity.dinamicEntity.DynamicEntity;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.settings.GameSettings;
 import chevy.utilz.Vector2;
 import chevy.view.entityView.EntityView;
@@ -13,6 +16,8 @@ import java.util.List;
 
 public class ChamberView {
     private List<Layer> drawOrderChamber;
+    private static final Color bg = new Color(255, 255, 255, 80);
+    private static final Color outLine = new Color(255, 255, 255, 255);
 
 
     public ChamberView() {}
@@ -28,6 +33,14 @@ public class ChamberView {
                 Entity entity = it.next();
 
                 if (entity != null) {
+                    if (entity instanceof DynamicEntity) {
+                        g.setColor(bg);
+                        g.fillRect(entity.getCol() * GameSettings.scale + GameSettings.offsetW,
+                                entity.getRow() * GameSettings.scale + GameSettings.offsetH,
+                                GameSettings.scale, GameSettings.scale);
+                    }
+
+
                     EntityView entityViewSpecific = EntityToEntityView.getSpecific(entity);
 
                     if (entityViewSpecific != null) {
@@ -50,6 +63,13 @@ public class ChamberView {
                                     GameSettings.scale,
                                     null);
                         }
+                    }
+
+                    if (entity instanceof DynamicEntity) {
+                        g.setColor(outLine);
+                        g.drawRect(entity.getCol() * GameSettings.scale + GameSettings.offsetW,
+                                entity.getRow() * GameSettings.scale + GameSettings.offsetH,
+                                GameSettings.scale, GameSettings.scale);
                     }
 
                     if (!entity.isToDraw()) {

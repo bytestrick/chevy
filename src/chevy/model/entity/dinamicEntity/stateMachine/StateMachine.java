@@ -27,7 +27,8 @@ public class StateMachine {
             return false;
         }
 
-        System.out.print(stateMachineName + ": " + currentState);
+        if (!stateMachineName.equals("Slime"))
+            System.out.print(stateMachineName + ": " + currentState);
 
         if (!usedWithCanChange)
             nextState = currentState.findLinkedState(state);
@@ -37,13 +38,15 @@ public class StateMachine {
             currentState = nextState;
             currentState.startStateTimer();
 
-            System.out.println(" -> " + nextState);
+            if (!stateMachineName.equals("Slime"))
+                System.out.println(" -> " + nextState);
 
             nextState = null;
             return true;
         }
 
-        System.out.println();
+        if (!stateMachineName.equals("Slime"))
+            System.out.println();
 
         return false;
     }

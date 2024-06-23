@@ -130,8 +130,8 @@ public class Chamber {
         return getHitDirectionPlayer(entity, 1);
     }
 
-    public synchronized DirectionsModel getHitDirectionPlayer(Entity entity, int n) {
-        for (int i = 1; i <= n; ++i)
+    public synchronized DirectionsModel getHitDirectionPlayer(Entity entity, int distanceCell) {
+        for (int i = 1; i <= distanceCell; ++i)
             for (DirectionsModel direction : DirectionsModel.values()) {
                 Vector2<Integer> checkPosition = new Vector2<>(
                         entity.getRow() + direction.row() * i,
@@ -149,16 +149,23 @@ public class Chamber {
                 dynamicEntity.getCol() + direction.col()
         );
 
+        if (!canCross(nextPosition))
+            return;
+
         findAndRemoveEntity(dynamicEntity);
         dynamicEntity.changePosition(nextPosition);
         addEntityOnTop(dynamicEntity);
     }
 
     public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity, Vector2<Integer> nextPosition) {
-        DirectionsModel direction = DirectionsModel.directionToPosition(
+        DirectionsModel direction = DirectionsModel.positionToDirection(
                 new Vector2<>(dynamicEntity.getRow(), dynamicEntity.getCol()),
                 nextPosition
         );
+
+        if (!canCross(nextPosition))
+            return;
+
         if (direction != null)
             moveDynamicEntity(dynamicEntity, direction);
     }
@@ -277,6 +284,7 @@ public class Chamber {
     // ------------
 
     public synchronized void removeEntityOnTop(Entity entity) {
+        entity.setToDraw(false);
         chamber.get(entity.getRow()).get(entity.getCol()).removeLast();
     }
 
@@ -342,10 +350,6 @@ public class Chamber {
 
     public void addEnemy(Enemy enemy) { this.enemies.add(enemy); }
     public List<Enemy> getEnemies() { return this.enemies; }
-    public synchronized void removeEnemy(Enemy enemy) {
-        enemy.setToDraw(false);
-        enemies.remove(enemy);
-    }
 
     public void addTraps(Trap trap) { traps.add(trap); }
     public List<Trap> getTraps() { return traps; }

@@ -75,8 +75,7 @@ public class SlimeView extends EntityViewAnimated {
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentEnumState = slime.getCurrentEumState();
-        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState);
+        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(slime.getCurrentEumState());
         if (currentAnimatedSprite != null) {
             if (!currentAnimatedSprite.isRunning()) {
                 currentAnimatedSprite.start();
@@ -105,12 +104,8 @@ public class SlimeView extends EntityViewAnimated {
             moveInterpolationY.changeEnd(slime.getRow());
             moveInterpolationY.changeDuration(duration);
 
-            if (!moveInterpolationX.isRunning()) {
-                moveInterpolationX.restart();
-            }
-            if (!moveInterpolationY.isRunning()) {
-                moveInterpolationY.restart();
-            }
+            moveInterpolationX.restart();
+            moveInterpolationY.restart();
 
             previousEnumState = currentEnumState;
         }

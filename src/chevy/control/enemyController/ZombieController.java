@@ -50,7 +50,7 @@ public class ZombieController {
         if (zombie.changeState(Zombie.EnumState.HIT))
             zombie.changeHealth(damage);
         if (!zombie.isAlive() && zombie.changeState(Zombie.EnumState.DEAD)) {
-            chamber.removeEnemy(zombie);
+//            chamber.removeEnemy(zombie);
             chamber.removeEntityOnTop(zombie);
         }
         else

@@ -28,8 +28,8 @@ public class PlayerController implements Update {
     private ProjectileController projectileController;
     private DirectionsModel direction;
 
-
     public PlayerController(Chamber chamber) {
+        // TODO Sistemare il lo spostamento del player, delle volte si bugga e si sposta più di una cella
         this.chamber = chamber;
         this.player = chamber.getPlayer();
         this.enemyController = null;
@@ -145,12 +145,13 @@ public class PlayerController implements Update {
 
 
     private void hitPlayer(int damage) {
-        if (player.changeState(Player.EnumState.HIT))
+        if (player.changeState(Player.EnumState.HIT)) {
+            if (player.getPreviousEnumState() == Player.EnumState.MOVE)
+                System.out.println("----- BUG -----");
             player.changeHealth(damage);
+        }
         if (!player.isAlive() && player.changeState(Player.EnumState.DEAD))
             chamber.removeEntityOnTop(player);
-        else
-            player.changeState(Player.EnumState.IDLE);
     }
 
 

@@ -48,7 +48,7 @@ public class FrogController {
         if (frog.changeState(Frog.EnumState.HIT))
             frog.changeHealth(damage);
         if (!frog.isAlive() && frog.changeState(Frog.EnumState.DEAD)) {
-            chamber.removeEnemy(frog);
+//            chamber.removeEnemy(frog);
             chamber.removeEntityOnTop(frog);
         }
         else
