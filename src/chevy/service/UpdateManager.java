@@ -10,7 +10,7 @@ public class UpdateManager {
 
 
     public synchronized static void addToUpdate(Update u) {
-//        System.out.println("Aggiunto ad aggiornare: " + u.toString());
+//        System.out.println("[-] Aggiunto al update: " + u);
         toAdd.add(u);
     }
 
@@ -25,8 +25,10 @@ public class UpdateManager {
         while (iterator.hasNext()) {
             Update current = iterator.next();
             current.update(delta);
-            if (current.updateIsEnd())
+            if (current.updateIsEnd()) {
                 iterator.remove();
+//                System.out.println("[-] Rimosso dal update: " + current);
+            }
         }
     }
 }

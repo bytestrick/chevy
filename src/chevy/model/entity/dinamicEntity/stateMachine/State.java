@@ -69,8 +69,9 @@ public class State {
     }
 
     public void startStateTimer() {
-        if (stateTimer != null && !stateTimer.isRunning())
-            stateTimer.start();
+        if (stateTimer != null && !stateTimer.isRunning()) {
+            stateTimer.restart();
+        }
     }
 
 

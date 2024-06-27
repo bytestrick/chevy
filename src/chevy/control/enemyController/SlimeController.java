@@ -28,7 +28,7 @@ public class SlimeController {
                 slime.setDirection(DirectionsModel.positionToDirection(player, slime));
                 hitSlime(slime, -1 * player.getDamage());
             }
-            default -> System.out.println("Lo slimeController non gestisce questa azione: " + player.getCurrentEumState());
+            default -> System.out.println("[!] Lo slimeController non gestisce questa azione: " + player.getCurrentEumState());
         }
     }
 
@@ -40,8 +40,7 @@ public class SlimeController {
                 return;
             }
         }
-        else if (slime.checkAndChangeState(Slime.EnumState.DEAD)) {
-            chamber.spawnSlimeAroundEntity(slime, 1);
+        else if (slime.getHealth() <= 0 && slime.checkAndChangeState(Slime.EnumState.DEAD)) {
             slime.kill();
         }
 
@@ -53,7 +52,7 @@ public class SlimeController {
                 }
             }
             else if (slime.canChange(Slime.EnumState.ATTACK)) {
-                Entity entity = chamber.getNearEntityOnTop(slime, chamber.getHitDirectionPlayer(slime));
+                Entity entity = chamber.getNearEntityOnTop(slime, direction);
                 if (entity instanceof Player && slime.changeState(Slime.EnumState.ATTACK)) {
                     playerController.handleInteraction(InteractionTypes.ENEMY, slime);
                 }

@@ -26,14 +26,14 @@ public abstract class EntityViewAnimated extends EntityView {
     protected void initAnimation(AnimatedSprite animation, String folderPath, String extension) {
         for (int i = 0; i < animation.getNFrame(); ++i)
             animation.addFrame(i, Image.load(folderPath + "/" + i + extension));
-        this.addAnimation(animation.getAnimationTypes(), animation);
+        addAnimation(animation.getAnimationTypes(), animation);
     }
 
     protected void addAnimation(Pair<CommonEnumStates, Integer> animationTypes, AnimatedSprite animatedSprite) {
         if (!animations.containsKey(animationTypes))
             animations.put(animationTypes, animatedSprite);
         else
-            System.out.println("L'animaizone " + animationTypes + " è già presente");
+            System.out.println("[!] L'animaizone " + animationTypes + " è già presente");
     }
 
     protected void deleteAnimations() {
@@ -48,7 +48,6 @@ public abstract class EntityViewAnimated extends EntityView {
     }
 
     public abstract BufferedImage getCurrentFrame();
-
 
     public abstract Vector2<Double> getCurrentPosition();
 

@@ -32,24 +32,27 @@ public class ChamberView {
             while (it.hasNext()) {
                 Entity entity = it.next();
 
+                // disegna lo sfondo della collisione
                 if (entity != null) {
-                    if (entity instanceof DynamicEntity) {
-                        g.setColor(bg);
-                        g.fillRect(entity.getCol() * GameSettings.scale + GameSettings.offsetW,
-                                entity.getRow() * GameSettings.scale + GameSettings.offsetH,
-                                GameSettings.scale, GameSettings.scale);
-                    }
-
+//                    if (entity instanceof DynamicEntity) {
+//                        g.setColor(bg);
+//                        g.fillRect(entity.getCol() * GameSettings.scale + GameSettings.offsetW,
+//                                entity.getRow() * GameSettings.scale + GameSettings.offsetH,
+//                                GameSettings.scale, GameSettings.scale);
+//                    }
 
                     EntityView entityViewSpecific = EntityToEntityView.getSpecific(entity);
 
                     if (entityViewSpecific != null) {
+                        Vector2<Integer> offset = entityViewSpecific.getOffset();
                         Vector2<Double> position = entityViewSpecific.getCurrentPosition();
+                        int scale = Math.round(entityViewSpecific.getScale());
+
                         g.drawImage(entityViewSpecific.getCurrentFrame(),
-                                (int) (position.first * GameSettings.scale + GameSettings.offsetW),
-                                (int) (position.second * GameSettings.scale + GameSettings.offsetH),
-                                GameSettings.scale,
-                                GameSettings.scale,
+                                (int) (position.first * GameSettings.scale + GameSettings.offsetW + (offset.first / GameSettings.SIZE_TILE * GameSettings.scale)),
+                                (int) (position.second * GameSettings.scale + GameSettings.offsetH + (offset.second / GameSettings.SIZE_TILE * GameSettings.scale)),
+                                GameSettings.scale * scale,
+                                GameSettings.scale * scale,
                                 null);
                     }
                     else {
@@ -65,16 +68,17 @@ public class ChamberView {
                         }
                     }
 
-                    if (entity instanceof DynamicEntity) {
-                        g.setColor(outLine);
-                        g.drawRect(entity.getCol() * GameSettings.scale + GameSettings.offsetW,
-                                entity.getRow() * GameSettings.scale + GameSettings.offsetH,
-                                GameSettings.scale, GameSettings.scale);
-                    }
+                    // disegna il margine della collisione
+//                    if (entity instanceof DynamicEntity) {
+//                        g.setColor(outLine);
+//                        g.drawRect(entity.getCol() * GameSettings.scale + GameSettings.offsetW,
+//                                entity.getRow() * GameSettings.scale + GameSettings.offsetH,
+//                                GameSettings.scale, GameSettings.scale);
+//                    }
 
                     if (!entity.isToDraw()) {
-                        System.out.println("Rimosso dal ridisegno: " + entity);
                         it.remove();
+                        System.out.println("[-] Entity rimossa dal ridisegno: " + entity.getSpecificType());
                         if (entityViewSpecific instanceof EntityViewAnimated entityViewAnimated)
                             entityViewAnimated.wasRemoved();
                     }

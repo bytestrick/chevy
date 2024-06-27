@@ -24,7 +24,7 @@ public class BigSlimeController {
             case Player.EnumState.ATTACK -> {
                 hitBigSlime(bigSlime, -1 * player.getDamage());
             }
-            default -> System.out.println("Il BigSlimeController non gestisce questa azione");
+            default -> System.out.println("[!] Il BigSlimeController non gestisce questa azione");
         }
     }
 

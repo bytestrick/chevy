@@ -124,9 +124,8 @@ public class PlayerController implements Update {
                     }
                 }
                 default -> {
-                    if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.EnumState.MOVE)) {
+                    if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.EnumState.MOVE))
                         chamber.moveDynamicEntity(player, direction);
-                    }
                 }
             }
 
@@ -146,12 +145,12 @@ public class PlayerController implements Update {
 
     private void hitPlayer(int damage) {
         if (player.changeState(Player.EnumState.HIT)) {
-            if (player.getPreviousEnumState() == Player.EnumState.MOVE)
-                System.out.println("----- BUG -----");
             player.changeHealth(damage);
         }
-        if (!player.isAlive() && player.changeState(Player.EnumState.DEAD))
+        if (player.getHealth() <= 0 && player.changeState(Player.EnumState.DEAD)) {
+            player.kill();
             chamber.removeEntityOnTop(player);
+        }
     }
 
 

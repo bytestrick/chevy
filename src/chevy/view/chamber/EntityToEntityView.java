@@ -1,10 +1,11 @@
 package chevy.view.chamber;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.Ground;
 import chevy.model.entity.staticEntity.environment.Wall;
@@ -13,8 +14,9 @@ import chevy.view.entityView.EntityView;
 import chevy.view.entityView.GroundView;
 import chevy.view.entityView.TrapView;
 import chevy.view.entityView.WallView;
-import chevy.view.entityView.entityViewAnimated.enemy.SlimeView;
+import chevy.view.entityView.entityViewAnimated.enemy.*;
 import chevy.view.entityView.entityViewAnimated.player.KnightView;
+import chevy.view.entityView.entityViewAnimated.projectile.SlimeShotView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +38,50 @@ public class EntityToEntityView {
 
                 yield slimeView;
             }
+            case Enemy.Type.ZOMBIE -> {
+                ZombieView zombieView = null;
+                if (!entityView.containsKey(entity)) {
+                    zombieView = new ZombieView((Zombie) entity);
+                    entityView.put(entity, zombieView);
+                }
+                else
+                    zombieView = (ZombieView) entityView.get(entity);
+
+                yield zombieView;
+            }
+            case Enemy.Type.WRAITH -> {
+                WraithView wraithView = null;
+                if (!entityView.containsKey(entity)) {
+                    wraithView = new WraithView((Wraith) entity);
+                    entityView.put(entity, wraithView);
+                }
+                else
+                    wraithView = (WraithView) entityView.get(entity);
+
+                yield wraithView;
+            }
+            case Enemy.Type.SKELETON -> {
+                SkeletonView skeletonView = null;
+                if (!entityView.containsKey(entity)) {
+                    skeletonView = new SkeletonView((Skeleton) entity);
+                    entityView.put(entity, skeletonView);
+                }
+                else
+                    skeletonView = (SkeletonView) entityView.get(entity);
+
+                yield skeletonView;
+            }
+            case Enemy.Type.BEETLE -> {
+                BeetleView beetleView = null;
+                if (!entityView.containsKey(entity)) {
+                    beetleView = new BeetleView((Beetle) entity);
+                    entityView.put(entity, beetleView);
+                }
+                else
+                    beetleView = (BeetleView) entityView.get(entity);
+
+                yield beetleView;
+            }
             case Player.Type.KNIGHT -> {
                 KnightView knightView = null;
                 if (!entityView.containsKey(entity)) {
@@ -46,6 +92,16 @@ public class EntityToEntityView {
                     knightView = (KnightView) entityView.get(entity);
 
                 yield knightView;
+            }
+            case Projectile.Type.SLIME_SHOT -> {
+                SlimeShotView slimeShotView = null;
+                if (!entityView.containsKey(entity)) {
+                    slimeShotView = new SlimeShotView((SlimeShot) entity);
+                    entityView.put(entity, slimeShotView);
+                } else
+                    slimeShotView = (SlimeShotView) entityView.get(entity);
+
+                yield slimeShotView;
             }
             default -> null;
         };

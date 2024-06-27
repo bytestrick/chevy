@@ -1,12 +1,12 @@
 package chevy.view.animation;
 
-import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.service.Render;
 import chevy.service.RenderManager;
-import chevy.settings.GameSettings;
 import chevy.utilz.Pair;
+import chevy.utilz.Vector2;
 
 import java.awt.image.BufferedImage;
 
@@ -18,8 +18,10 @@ public class AnimatedSprite implements Render {
     private int currentIndexFrame = 0;
     private final boolean loop;
     private boolean isRunning = false;
-    private boolean delete = false;
+    private boolean delete = true;
     private double time = 0d;
+    private final float scale;
+    private final Vector2<Integer> offset;
 
 
     public AnimatedSprite(Pair<CommonEnumStates, Integer> animationTypes, int nFrame, float secFrameDuration, boolean loop) {
@@ -27,6 +29,21 @@ public class AnimatedSprite implements Render {
         this.nFrame = nFrame;
         this.secFrameDuration = secFrameDuration;
         this.loop = loop;
+
+        this.scale = 1;
+        this.offset = new Vector2<>(0, 0);
+
+        frames = new BufferedImage[nFrame];
+    }
+
+    public AnimatedSprite(Pair<CommonEnumStates, Integer> animationTypes, int nFrame, float secFrameDuration, boolean loop, Vector2<Integer> offset, float scale) {
+        this.animationTypes = animationTypes;
+        this.nFrame = nFrame;
+        this.secFrameDuration = secFrameDuration;
+        this.loop = loop;
+
+        this.scale = scale;
+        this.offset = offset;
 
         frames = new BufferedImage[nFrame];
     }
@@ -44,13 +61,32 @@ public class AnimatedSprite implements Render {
         return frames[currentIndexFrame];
     }
 
+    public Vector2<Integer> getOffset() {
+        return offset;
+    }
+
+    public float getScale() {
+        return scale;
+    }
+
     public void start() {
 //        System.out.println("Inizio animazione: " + animationTypes);
-        currentIndexFrame = 0;
         isRunning = true;
-        time = 0d;
 
-        RenderManager.addToRender(this);
+        if (delete) {
+            delete = false;
+            RenderManager.addToRender(this);
+        }
+    }
+
+    public void restart() {
+        currentIndexFrame = 0;
+        time = 0d;
+        if (delete) {
+            start();
+            return;
+        }
+        isRunning = true;
     }
 
     public void stop() {
@@ -71,6 +107,7 @@ public class AnimatedSprite implements Render {
     }
 
     public void delete() {
+        stop();
         delete = true;
     }
 
@@ -84,8 +121,8 @@ public class AnimatedSprite implements Render {
                 if (loop) {
                     currentIndexFrame = currentIndexFrame % nFrame;
                 }
-                else if (currentIndexFrame > nFrame - 1) {
-                    stop();
+                else if (currentIndexFrame >= nFrame) {
+                    delete();
                 }
             }
             else
@@ -95,8 +132,6 @@ public class AnimatedSprite implements Render {
 
     @Override
     public boolean renderIsEnd() {
-        if (loop)
-            return delete;
-        return !isRunning || delete;
+        return delete;
     }
 }

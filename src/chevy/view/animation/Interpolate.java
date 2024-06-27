@@ -46,6 +46,11 @@ public class Interpolate implements Render {
      * per la prima volta l'interpolazione partirà dall'inizio.
      */
     public void start() {
+        if (duration <= 0d) {
+            System.out.println("[!] L'interpolazione non è stata creata perché la sua durata é: " + duration);
+            return;
+        }
+
         isRunning = true;
 
         if (delete) {
@@ -58,12 +63,11 @@ public class Interpolate implements Render {
      * Fa iniziare sempre e comunque l'interpolazione dall'inizio.
      */
     public void restart() {
+        time = 0d;
         if (delete) {
             start();
             return;
         }
-
-        time = 0d;
         isRunning = true;
     }
 
@@ -71,20 +75,21 @@ public class Interpolate implements Render {
      * Elimina l'interpolazione, questo vuol dire che non verrà più aggiornata.
      */
     public void delete() {
+        stop();
         delete = true;
     }
 
     /**
-     * Interompe l'aggiornamento dell'interpolazione, ma non in modo perenne. L'interpolazione
+     * Interrompe l'aggiornamento dell'interpolazione, ma non in modo perenne. L'interpolazione
      * può essere ripresa in seguito usando la funzione start(), oppure, farla iniziare da capo
-     * usando la funzione restatr().
+     * usando la funzione restart().
      */
     public void stop() {
         isRunning = false;
     }
 
     public boolean isRunning() {
-        return isRunning;
+        return isRunning || !delete;
     }
 
 

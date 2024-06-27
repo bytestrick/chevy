@@ -6,13 +6,13 @@ import chevy.utilz.Vector2;
 
 public abstract class Enemy extends LiveEntity {
     public enum Type implements EntityCommonEnumTypes {
-        BAT,
+        WRAITH,
         ZOMBIE,
         WIZARD,
         SKELETON,
         SLIME,
         BIG_SLIME,
-        FROG;
+        BEETLE;
     }
     private final Type type;
 

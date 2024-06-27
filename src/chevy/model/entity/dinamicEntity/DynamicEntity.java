@@ -18,7 +18,7 @@ public abstract class DynamicEntity extends Entity {
     }
     private final Type type;
     private boolean canRemove = false;
-    protected DirectionsModel direction = null;
+    protected DirectionsModel direction = DirectionsModel.getRandom();
 
 
     public DynamicEntity(Vector2<Integer> initPosition, Type type) {
@@ -72,7 +72,7 @@ public abstract class DynamicEntity extends Entity {
     }
 
     public State getState(CommonEnumStates commonEnumStates) {
-        System.out.println("ATTENZIONE: La funzione getState deve essere ridefinita opportunamente nelle classi figlie");
+        System.out.println("[!] ATTENZIONE: La funzione getState deve essere ridefinita opportunamente nelle classi figlie");
         return null;
     }
 
