@@ -41,13 +41,10 @@ public class ProjectileUpdateController implements Update {
         Iterator<Projectile> it = projectiles.iterator();
         while (it.hasNext()) {
             Projectile projectile = it.next();
-            projectile.incrementNUpdate();
-            if (projectile.getUpdateEverySecond() * GameSettings.FPS == projectile.getCurrentNUpdate()) {
-                projectile.resetNUpdate();
-                projectileController.handleInteraction(InteractionTypes.UPDATE, projectile, null);
-            }
-            if (projectile.isCollide())
+            projectileController.handleInteraction(InteractionTypes.UPDATE, projectile, null);
+            if (projectile.isCollide()) {
                 it.remove();
+            }
         }
     }
 }

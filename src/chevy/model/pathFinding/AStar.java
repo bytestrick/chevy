@@ -65,15 +65,15 @@ public class AStar {
 
     public List<Vector2<Integer>> find(Vector2<Integer> src, Vector2<Integer> dest) {
         if (!isValid(src)) {
-            System.out.println("Il punto di partenza non è valido");
+            System.out.println("[x] Il punto di partenza non è valido");
             return null;
         }
         if (!isValid(dest)) {
-            System.out.println("Il punto d'arrivo non è valido");
+            System.out.println("[x] Il punto d'arrivo non è valido");
             return null;
         }
         if (isDestination(src, dest)) {
-            System.out.println("Il punto d'arrivo coincide con il punto di partenza");
+            System.out.println("[-] Il punto d'arrivo coincide con il punto di partenza");
             return null;
         }
 
@@ -118,7 +118,7 @@ public class AStar {
 
                         if (isDestination(neighbour, dest)) {
                             cellDetails[neighbour.first][neighbour.second].parent = new Vector2<>(currentCell.first, currentCell.second);
-                            System.out.println("Punto d'arrivo trovato");
+                            System.out.println("[-] Punto d'arrivo trovato");
                             return tracePath(cellDetails, dest);
                         }
                         // se la cella del vicinato non è stata esplorata e ci si può passare sopra
@@ -140,7 +140,7 @@ public class AStar {
                 }
             }
         }
-        System.out.println("Percorso non trovato");
+        System.out.println("[!] Percorso non trovato");
         return null;
     }
 }

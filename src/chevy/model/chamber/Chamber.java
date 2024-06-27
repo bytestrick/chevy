@@ -110,12 +110,21 @@ public class Chamber {
     }
 
     public synchronized Entity getNearEntityOnTop(DynamicEntity dynamicEntity, DirectionsModel direction) {
+        return getNearEntityOnTop(dynamicEntity, direction, 1);
+    }
+
+    public synchronized Entity getNearEntityOnTop(DynamicEntity dynamicEntity, DirectionsModel direction, int distanceCell) {
+        if (direction == null || dynamicEntity == null)
+            return null;
+
         Vector2<Integer> vector2 = new Vector2<>(
-                dynamicEntity.getRow() + direction.row(),
-                dynamicEntity.getCol() + direction.col()
+                dynamicEntity.getRow() + direction.row() * distanceCell,
+                dynamicEntity.getCol() + direction.col() * distanceCell
         );
+
         if (validatePosition(vector2))
             return getEntityOnTop(vector2);
+
         return null;
     }
 
@@ -131,8 +140,10 @@ public class Chamber {
     }
 
     public synchronized DirectionsModel getHitDirectionPlayer(Entity entity, int distanceCell) {
+        DirectionsModel[] directionsModel = DirectionsModel.values();
+
         for (int i = 1; i <= distanceCell; ++i)
-            for (DirectionsModel direction : DirectionsModel.values()) {
+            for (DirectionsModel direction : directionsModel) {
                 Vector2<Integer> checkPosition = new Vector2<>(
                         entity.getRow() + direction.row() * i,
                         entity.getCol() + direction.col() * i
@@ -157,9 +168,10 @@ public class Chamber {
 
         dynamicEntity.setDirection(direction);
 
-        findAndRemoveEntity(dynamicEntity);
-        dynamicEntity.changePosition(nextPosition);
-        addEntityOnTop(dynamicEntity);
+        if (findAndRemoveEntity(dynamicEntity)) {
+            dynamicEntity.changePosition(nextPosition);
+            addEntityOnTop(dynamicEntity);
+        }
     }
 
     public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity, Vector2<Integer> nextPosition) {
@@ -176,11 +188,16 @@ public class Chamber {
     }
 
     public synchronized boolean findAndRemoveEntity(Entity entity) {
+        return findAndRemoveEntity(entity, true);
+    }
+
+    public synchronized boolean findAndRemoveEntity(Entity entity, boolean setToDraw) {
         List<Entity> entities = chamber.get(entity.getRow()).get(entity.getCol());
         ListIterator<Entity> it = entities.listIterator(entities.size());
         while (it.hasPrevious()) {
             Entity entity2 = it.previous();
             if (entity.equals(entity2)) {
+                entity.setToDraw(setToDraw);
                 it.remove();
                 return true;
             }
@@ -303,8 +320,6 @@ public class Chamber {
 
     public synchronized Entity getEntityOnTop(int row, int col) { return chamber.get(row).get(col).getLast(); }
 
-    public synchronized  Entity getEntityOnTop(List<Entity> entities) { return entities.getLast(); }
-
     public synchronized Entity getEntityOnTop(Vector2<Integer> vector2) { return chamber.get(vector2.first).get(vector2.second).getLast(); }
 
     public synchronized Entity getEntityOnTop(Entity entity) {
@@ -321,31 +336,30 @@ public class Chamber {
 
     public boolean isInitialized() { return init; }
 
-    public void show() {
-        System.out.println();
-        for (List<List<Entity>> r : chamber) {
-            for (List<Entity> c : r) {
-                Entity onTop = getEntityOnTop(c);
-                if (onTop != null) {
-                    String a = onTop.toString();
-                    System.out.print(" | " + a.charAt(0) + a.charAt(1));
-                }
-                else {
-                    System.out.print(" | NULL");
-                }
-            }
-            System.out.println(" |");
-        }
-        System.out.println();
-
-        System.out.println("Nemici rimanenti: " + enemies);
-        System.out.println();
-    }
+//    public void show() {
+//        System.out.println();
+//        for (List<List<Entity>> r : chamber) {
+//            for (List<Entity> c : r) {
+//                Entity onTop = getEntityOnTop(c);
+//                if (onTop != null) {
+//                    String a = onTop.toString();
+//                    System.out.print(" | " + a.charAt(0) + a.charAt(1));
+//                }
+//                else {
+//                    System.out.print(" | NULL");
+//                }
+//            }
+//            System.out.println(" |");
+//        }
+//        System.out.println();
+//
+//        System.out.println("Nemici rimanenti: " + enemies);
+//        System.out.println();
+//    }
 
     public int getNRows() {
         return nRows;
     }
-
     public int getNCols() {
         return nCols;
     }
@@ -365,7 +379,6 @@ public class Chamber {
     // ---
 
     public void addEntityToDraw(Entity entity, int layer) {
-//        System.out.println("Add to draw: " + entity);
         drawOrderChamber.add(entity, layer);
     }
     public List<Layer> getDrawOrderChamber() { return Collections.unmodifiableList(drawOrderChamber.getDrawOrder()); }

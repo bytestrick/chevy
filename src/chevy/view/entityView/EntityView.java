@@ -16,6 +16,14 @@ public abstract class EntityView {
     public EntityView() {}
 
 
+    public Vector2<Integer> getOffset() {
+        return new Vector2<>(0, 0);
+    }
+
+    public float getScale() {
+        return 1f;
+    }
+
     public abstract BufferedImage getCurrentFrame();
 
     public abstract Vector2<Double> getCurrentPosition();

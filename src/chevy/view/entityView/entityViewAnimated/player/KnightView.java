@@ -1,9 +1,7 @@
 package chevy.view.entityView.entityViewAnimated.player;
 
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
+import chevy.model.entity.dinamicEntity.stateMachine.State;
 import chevy.utilz.Vector2;
 import chevy.view.Image;
 import chevy.view.animation.Interpolate;
@@ -17,7 +15,8 @@ public class KnightView extends EntityViewAnimated {
     private final Vector2<Double> currentPosition;
     private final Interpolate moveInterpolationX;
     private final Interpolate moveInterpolationY;
-    private CommonEnumStates previousEnumState = null;
+    private State currentState;
+    private boolean firstTimeInState = false;
 
 
     public KnightView(Knight knight) {
@@ -26,6 +25,7 @@ public class KnightView extends EntityViewAnimated {
                 (double) knight.getCol(),
                 (double) knight.getRow()
         );
+        currentState = knight.getState(knight.getCurrentEumState());
         moveInterpolationX = new Interpolate(currentPosition.first,
                 knight.getCol(),
                 knight.getState(knight.getCurrentEumState()).getDuration(),
@@ -46,27 +46,23 @@ public class KnightView extends EntityViewAnimated {
 
     @Override
     public Vector2<Double> getCurrentPosition() {
-        CommonEnumStates currentEnumState = knight.getCurrentEumState();
-        if (currentEnumState != previousEnumState) {
-            if (previousEnumState == null) {
-                previousEnumState = currentEnumState;
-                return currentPosition;
+        if (!currentState.isFinished()) {
+            if (firstTimeInState) {
+                float duration = currentState.getDuration();
+                moveInterpolationX.changeStart(currentPosition.first);
+                moveInterpolationX.changeEnd(knight.getCol());
+                moveInterpolationX.changeDuration(duration);
+                moveInterpolationX.restart();
+                moveInterpolationY.changeStart(currentPosition.second);
+                moveInterpolationY.changeEnd(knight.getRow());
+                moveInterpolationY.changeDuration(duration);
+                moveInterpolationY.restart();
+                firstTimeInState = false;
             }
-
-            float duration = knight.getState(knight.getCurrentEumState()).getDuration();
-
-            moveInterpolationX.changeStart(currentPosition.first);
-            moveInterpolationX.changeEnd(knight.getCol());
-            moveInterpolationX.changeDuration(duration);
-
-            moveInterpolationY.changeStart(currentPosition.second);
-            moveInterpolationY.changeEnd(knight.getRow());
-            moveInterpolationY.changeDuration(duration);
-
-            moveInterpolationX.restart();
-            moveInterpolationY.restart();
-
-            previousEnumState = currentEnumState;
+        }
+        else {
+            currentState = knight.getState(knight.getCurrentEumState());
+            firstTimeInState = true;
         }
 
         currentPosition.changeFirst(moveInterpolationX.getValue());

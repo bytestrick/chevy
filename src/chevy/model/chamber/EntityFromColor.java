@@ -68,11 +68,11 @@ public class EntityFromColor {
     private static final int NINJA = 3;
 
     // Enemy
-    private static final int BAT = 150;
+    private static final int WRAITH = 150;
     private static final int ZOMBIE = 149;
     private static final int SLIME = 148;
     private static final int BIG_SLIME = 147;
-    private static final int FROG = 146;
+    private static final int BEETLE = 146;
     private static final int WIZARD = 145;
     private static final int SKELETON = 144;
 
@@ -134,11 +134,11 @@ public class EntityFromColor {
             case NINJA -> new Ninja(new Vector2<>(row, col));
 
             // Enemy
-            case BAT -> new Bat(new Vector2<>(row, col));
+            case WRAITH -> new Wraith(new Vector2<>(row, col));
             case ZOMBIE -> new Zombie(new Vector2<>(row, col));
             case SLIME -> new Slime(new Vector2<>(row, col));
             case BIG_SLIME -> new BigSlime(new Vector2<>(row, col));
-            case FROG -> new Frog(new Vector2<>(row, col));
+            case BEETLE -> new Beetle(new Vector2<>(row, col));
             case WIZARD -> new Wizard(new Vector2<>(row, col));
             case SKELETON -> new Skeleton(new Vector2<>(row, col));
 

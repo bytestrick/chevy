@@ -14,6 +14,7 @@ public class ArrowController {
     private final PlayerController playerController;
     private final EnemyController enemyController;
 
+    // TODO: da modificare il comportamento nell'update vista la modifica fatta alla gestione degli aggiornamenti delle classi Projectile
 
     public ArrowController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
         this.chamber = chamber;
@@ -24,8 +25,8 @@ public class ArrowController {
 
     public void playerInInteraction(Projectile projectile) {
         chamber.findAndRemoveEntity(projectile);
-        playerController.handleInteraction(InteractionTypes.PROJECTILE, projectile);
         projectile.setCollide(true);
+        playerController.handleInteraction(InteractionTypes.PROJECTILE, projectile);
     }
 
     public void update(Projectile projectile) {

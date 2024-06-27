@@ -26,7 +26,7 @@ public class LoadChamber {
             chamberImage = ImageIO.read(new File(chamberPath));
         }
         catch (IOException ignored) {
-            System.out.print(chamberPath);
+            System.out.print("[x] " + chamberPath);
             System.out.println(": il layer" + layer + ".png non è stato caricato");
         }
         return chamberImage;

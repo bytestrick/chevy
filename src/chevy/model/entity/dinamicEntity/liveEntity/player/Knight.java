@@ -8,7 +8,7 @@ public class Knight extends Player {
     private final State idle = new State(EnumState.IDLE);
     private final State move = new State(EnumState.MOVE, speed);
     private final State attack = new State(EnumState.ATTACK);
-    private final State hit = new State(EnumState.HIT);
+    private final State hit = new State(EnumState.HIT, 0.1f);
     private final State dead = new State(EnumState.DEAD);
     private final State glide = new State(EnumState.GLIDE);
     private final State sludge = new State(EnumState.SLUDGE);
@@ -17,13 +17,11 @@ public class Knight extends Player {
 
     public Knight(Vector2<Integer> initPosition) {
         super(initPosition, Type.KNIGHT);
-        this.health = 10;
+        this.health = 100;
         this.shield = 2;
         this.maxDamage = 7;
         this.minDamage = 5;
 
-        stateMachine.setStateMachineName("Knight");
-        stateMachine.setInitialState(idle);
         initStateMachine();
     }
 
@@ -51,6 +49,9 @@ public class Knight extends Player {
         fall.linkState(idle);
         fall.linkState(hit);
         fall.linkState(dead);
+
+        stateMachine.setStateMachineName("Knight");
+        stateMachine.setInitialState(idle);
     }
 
     @Override

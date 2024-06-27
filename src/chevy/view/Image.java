@@ -12,7 +12,7 @@ public class Image {
             image = ImageIO.read(Objects.requireNonNull(Image.class.getResource(path)));
         }
         catch (IOException | NullPointerException e) {
-            System.out.println("Imagine: " + path + " non trovata");
+            System.out.println("[x] Imagine: " + path + " non trovata");
             System.exit(1);
         }
         return image;

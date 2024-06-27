@@ -13,8 +13,12 @@ public abstract class Entity {
     protected int minDamage;
     protected boolean safeToCross;
     protected boolean crossable;
+
+    // TODO: da eliminare, non più necessari
     protected float updateEverySecond;
     private int tick;
+    // ---- fino qui ----
+
     protected int layer;
     private boolean toDraw;
     public enum Type implements EntityCommonEnumTypes {

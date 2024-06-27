@@ -16,7 +16,6 @@ public class TrapdoorController {
 
 
     public void playerInInteraction(Player player) {
-        System.out.println("sdsdsd");
         player.changeState(Player.EnumState.IDLE);
     }
 

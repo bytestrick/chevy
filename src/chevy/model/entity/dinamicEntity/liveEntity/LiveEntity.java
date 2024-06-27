@@ -35,6 +35,10 @@ public abstract class LiveEntity extends DynamicEntity {
         System.out.println(" -> " + health);
     }
 
+    public synchronized int getHealth() {
+        return health;
+    }
+
     public synchronized void kill() {
         if (health <= 0)
             alive = false;
