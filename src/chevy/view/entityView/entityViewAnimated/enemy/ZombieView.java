@@ -4,8 +4,8 @@ import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
-import chevy.utilz.Pair;
-import chevy.utilz.Vector2;
+import chevy.utils.Pair;
+import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolate;
 import chevy.view.animation.InterpolationTypes;
@@ -101,6 +101,24 @@ public class ZombieView extends EntityViewAnimated {
                 4, false, 1,
                 ZOMBIE_RESOURCES + "attack/left", ".png");
 
+        // --- HIT
+
+        createAnimation(Zombie.EnumState.DEAD, 0,
+                1, false, 1,
+                ZOMBIE_RESOURCES + "dead/up", ".png");
+
+        createAnimation(Zombie.EnumState.DEAD, 1,
+                1, false, 1,
+                ZOMBIE_RESOURCES + "dead/down", ".png");
+
+        createAnimation(Zombie.EnumState.DEAD, 2,
+                1, false, 1,
+                ZOMBIE_RESOURCES + "dead/left", ".png");
+
+        createAnimation(Zombie.EnumState.DEAD, 3,
+                1, false, 1,
+                ZOMBIE_RESOURCES + "dead/right", ".png");
+
         // --- DEAD
 
         createAnimation(Zombie.EnumState.DEAD, 0,
@@ -136,7 +154,7 @@ public class ZombieView extends EntityViewAnimated {
 
         if (currentAnimatedSprite != null) {
             if (!currentAnimatedSprite.isRunning()) {
-                currentAnimatedSprite.start();
+                currentAnimatedSprite.restart();
             }
             return currentAnimatedSprite.getCurrentFrame();
         }

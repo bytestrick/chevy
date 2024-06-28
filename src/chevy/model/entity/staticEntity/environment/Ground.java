@@ -1,7 +1,7 @@
 package chevy.model.entity.staticEntity.environment;
 
 import chevy.model.entity.EntityCommonEnumTypes;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public class Ground extends Environment {
     public enum GroundTypes implements EntityCommonEnumTypes {

@@ -1,6 +1,6 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public class SpikedFloor extends Trap {
     private boolean active;

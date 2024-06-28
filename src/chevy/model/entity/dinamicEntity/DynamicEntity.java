@@ -5,7 +5,7 @@ import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
 import chevy.model.entity.dinamicEntity.stateMachine.StateMachine;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public abstract class DynamicEntity extends Entity {
     protected final StateMachine stateMachine = new StateMachine();

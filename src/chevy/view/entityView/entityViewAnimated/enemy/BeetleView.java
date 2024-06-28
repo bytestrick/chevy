@@ -4,8 +4,8 @@ import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
-import chevy.utilz.Pair;
-import chevy.utilz.Vector2;
+import chevy.utils.Pair;
+import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolate;
 import chevy.view.animation.InterpolationTypes;
@@ -101,6 +101,24 @@ public class BeetleView extends EntityViewAnimated {
                 4, false, 1,
                 BEETLE_RESOURCES + "attack/left", ".png");
 
+        // --- HIT
+
+        createAnimation(Beetle.EnumState.HIT, 0,
+                1, false, 1,
+                BEETLE_RESOURCES + "hit/up", ".png");
+
+        createAnimation(Beetle.EnumState.HIT, 1,
+                1, false, 1,
+                BEETLE_RESOURCES + "hit/down", ".png");
+
+        createAnimation(Beetle.EnumState.HIT, 2,
+                1, false, 1,
+                BEETLE_RESOURCES + "hit/right", ".png");
+
+        createAnimation(Beetle.EnumState.HIT, 3,
+                1, false, 1,
+                BEETLE_RESOURCES + "hit/left", ".png");
+
         // --- DEAD
 
         createAnimation(Beetle.EnumState.DEAD, 0,
@@ -145,7 +163,7 @@ public class BeetleView extends EntityViewAnimated {
     private int getAnimationType(CommonEnumStates currentState) {
         DirectionsModel currentDirection = beetle.getDirection();
         return switch (currentState) {
-            case Beetle.EnumState.ATTACK, Beetle.EnumState.IDLE, Beetle.EnumState.MOVE ->
+            case Beetle.EnumState.ATTACK, Beetle.EnumState.IDLE, Beetle.EnumState.MOVE, Beetle.EnumState.HIT ->
                     switch (currentDirection) {
                         case UP -> 0;
                         case DOWN -> 1;

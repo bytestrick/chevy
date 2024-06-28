@@ -1,14 +1,10 @@
 package chevy.view.entityView.entityViewAnimated;
 
-import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.utilz.Pair;
-import chevy.utilz.Vector2;
+import chevy.utils.Pair;
+import chevy.utils.Vector2;
 import chevy.view.Image;
 import chevy.view.animation.AnimatedSprite;
-import chevy.view.animation.Interpolate;
-import chevy.view.chamber.EntityToEntityView;
 import chevy.view.entityView.EntityView;
 
 import java.awt.image.BufferedImage;

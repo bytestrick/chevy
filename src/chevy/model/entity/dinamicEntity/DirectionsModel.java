@@ -1,8 +1,7 @@
 package chevy.model.entity.dinamicEntity;
 
 import chevy.model.entity.Entity;
-import chevy.utilz.Vector2;
-import chevy.view.entityView.EntityView;
+import chevy.utils.Vector2;
 
 import java.util.Random;
 

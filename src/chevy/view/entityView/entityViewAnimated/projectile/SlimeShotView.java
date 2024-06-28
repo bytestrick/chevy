@@ -2,11 +2,10 @@ package chevy.view.entityView.entityViewAnimated.projectile;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
-import chevy.utilz.Pair;
-import chevy.utilz.Vector2;
+import chevy.utils.Pair;
+import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolate;
 import chevy.view.animation.InterpolationTypes;

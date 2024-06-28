@@ -2,7 +2,7 @@ package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public abstract class Enemy extends LiveEntity {
     public enum Type implements EntityCommonEnumTypes {

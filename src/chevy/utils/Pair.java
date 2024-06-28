@@ -1,4 +1,4 @@
-package chevy.utilz;
+package chevy.utils;
 
 import java.util.Objects;
 
