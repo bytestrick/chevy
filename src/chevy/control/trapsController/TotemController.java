@@ -4,7 +4,7 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.projectile.Arrow;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public class TotemController {
     private final Chamber chamber;

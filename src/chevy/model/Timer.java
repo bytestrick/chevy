@@ -3,6 +3,12 @@ package chevy.model;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
 
+
+/**
+ * La classe Timer implementa l'interfaccia Update, per essere aggiornato, e rappresenta un timer.
+ * Questo timer può essere avviato, fermato, riavviato e cancellato.
+ * Il timer tiene traccia del tempo trascorso.
+ */
 public class Timer implements Update {
     private final double duration;
     private double time = 0d;

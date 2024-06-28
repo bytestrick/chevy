@@ -1,14 +1,10 @@
 package chevy.model.entity.dinamicEntity.projectile;
 
-import chevy.model.Timer;
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.model.entity.dinamicEntity.stateMachine.State;
-import chevy.service.UpdateManager;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public abstract class Projectile extends DynamicEntity {
 

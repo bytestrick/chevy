@@ -8,6 +8,9 @@ import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.*;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 
+/**
+ * Controller che gestisce le interazioni delle trappole nel gioco.
+ */
 public class TrapsController {
     private final SludgeController sludgeController;
     private final IcyFloorController icyFloorController;
@@ -16,7 +19,10 @@ public class TrapsController {
     private final SpikedFloorController spikedFloorController;
     private final TotemController totemController;
 
-
+    /**
+     * @param chamber la camera di gioco in cui si trovano le trappole
+     * @param playerController il controller del giocatore per gestire le interazioni con il giocatore
+     */
     public TrapsController(Chamber chamber, PlayerController playerController) {
         this.sludgeController = new SludgeController(chamber);
         this.icyFloorController = new IcyFloorController(playerController);
@@ -26,7 +32,12 @@ public class TrapsController {
         this.totemController = new TotemController(chamber);
     }
 
-
+    /**
+     * Gestisce le interazioni con le trappole a seconda del tipo di interazione.
+     * @param interaction il tipo di interazione
+     * @param subject l'entità che avvia l'interazione
+     * @param object l'entità che riceve l'interazione
+     */
     public synchronized void handleInteraction(InteractionTypes interaction, Entity subject, Entity object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, (Trap) object);
@@ -36,6 +47,11 @@ public class TrapsController {
         }
     }
 
+    /**
+     * Delega l'interazione del giocatore che esce dalla trappola ai controller specifici.
+     * @param player giocatore che esce dalla trappola
+     * @param trap la trappola con cui interagisce il giocatore
+     */
     private void playerOutInteraction(Player player, Trap trap) {
         switch (trap.getSpecificType()) {
             case Trap.Type.TRAPDOOR -> trapdoorController.playerOutInteraction((Trapdoor) trap);
@@ -43,6 +59,11 @@ public class TrapsController {
         }
     }
 
+    /**
+     * Delega l'interazione del giocatore che entra nella trappola ai controller specifci.
+     * @param player giocatore che entra nella trappola
+     * @param trap trappola con cui interagisce il giocatore
+     */
     private void playerInInteraction(Player player, Trap trap) {
         switch (trap.getSpecificType()) {
             case Trap.Type.SLUDGE -> sludgeController.playerInInteraction(player, (Sludge) trap);
@@ -54,6 +75,11 @@ public class TrapsController {
         }
     }
 
+    /**
+     * Delega l'interazione del giocatore con la trappola ai controller specifici.
+     * @param player il giocatore che interagisce
+     * @param trap la trappola con cui interagisce il giocatore
+     */
     private void playerInteraction(Player player, Trap trap) {
         switch (trap.getSpecificType()) {
             case Trap.Type.SLUDGE -> sludgeController.playerInteraction(player, (Sludge) trap);
@@ -61,6 +87,10 @@ public class TrapsController {
         }
     }
 
+    /**
+     * Delega l'aggiornamento della trappola ai controller specifici.
+     * @param trap la trappola da aggiornare
+     */
     private void updateTraps(Trap trap) {
         switch (trap.getSpecificType()) {
             case Trap.Type.SPIKED_FLOOR -> spikedFloorController.update((SpikedFloor) trap);

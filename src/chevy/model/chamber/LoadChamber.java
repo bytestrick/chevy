@@ -13,12 +13,21 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * La classe LoadChamber si occupa del caricamento delle stanze (Chamber) del gioco.
+ * Utilizza le immagini per determinare la disposizione delle entità all'interno di ogni stanza.
+ */
 public class LoadChamber {
     private static final String CHAMBER_PATH = "src/res/chambers/chamber";
     private static final String LAYER_FILE = "/layer";
     private static final String LAYER_FILE_EXTENSION = ".png";
 
-
+    /**
+     * Carica un'immagine di una stanza.
+     * @param nChamber Il numero della stanza da caricare.
+     * @param layer Strato dell'immagine da caricare.
+     * @return L'immagine della stanza, o null se l'immagine non può essere caricata.
+     */
     private static BufferedImage loadImage(int nChamber, int layer) {
         String chamberPath = CHAMBER_PATH + nChamber + LAYER_FILE + layer + LAYER_FILE_EXTENSION;
         BufferedImage chamberImage = null;
@@ -32,6 +41,12 @@ public class LoadChamber {
         return chamberImage;
     }
 
+    /**
+     * Carica una stanza nel gioco.
+     * @param nChamber Il numero della stanza da caricare.
+     * @param chamber La stanza in cui caricare le entità.
+     * @return true se la stanza è stata caricata correttamente, false altrimenti.
+     */
     public static boolean loadChamber(int nChamber, Chamber chamber) {
         int layer = 0;
         BufferedImage chamberImage = loadImage(nChamber, layer);

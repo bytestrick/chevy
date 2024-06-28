@@ -8,20 +8,25 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 
-
+/**
+ * La classe EnemyController è responsabile della gestione del comportamento e delle interazioni
+ * di vari tipi di nemici nel gioco. Coordina i sottocontroller specifici per ogni tipo di nemico
+ * (Wraith, Zombie, Slime, BigSlime, Skeleton, Beetle) e gestisce le interazioni tra giocatore, proiettili e nemici.
+ */
 public class EnemyController {
-    private final PlayerController playerController;
     private final WraithController wraithController;
     private final ZombieController zombieController;
     private final SlimeController slimeController;
     private final BigSlimeController bigSlimeController;
     private final SkeletonController skeletonController;
     private final BeetleController beetleController;
-    private final WizardController wizardController;
 
-
+    /**
+     * Inizializza il controller dei nemici con i riferimenti alla stanza di gioco e al controller del giocatore.
+     * @param chamber la stanza di gioco contenente i nemici.
+     * @param playerController il controller del giocatore.
+     */
     public EnemyController(Chamber chamber, PlayerController playerController) {
-        this.playerController = playerController;
 
         this.wraithController = new WraithController(chamber, playerController);
         this.zombieController = new ZombieController(chamber, playerController);
@@ -29,11 +34,14 @@ public class EnemyController {
         this.bigSlimeController = new BigSlimeController(chamber, playerController);
         this.skeletonController = new SkeletonController(chamber, playerController);
         this.beetleController = new BeetleController(chamber, playerController);
-        this.wizardController = new WizardController(chamber);
     }
 
-
-    // subject interagisce con object
+    /**
+     * Gestisce l'interazione tra entità dinamiche.
+     * @param interaction il tipo di interazione da gestire.
+     * @param subject l'entità che avvia l'interazione.
+     * @param object l'entità che subisce l'interazione.
+     */
     public synchronized void handleInteraction(InteractionTypes interaction, DynamicEntity subject, DynamicEntity object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, (Enemy) object);
@@ -43,6 +51,11 @@ public class EnemyController {
         }
     }
 
+    /**
+     * Gestisce l'interazione di un proiettile con un nemico.
+     * @param projectile il proiettile che colpisce il nemico.
+     * @param enemy il nemico colpito dal proiettile.
+     */
     private void projectileInteraction(Projectile projectile, Enemy enemy) {
         switch (enemy.getSpecificType()) {
             case Enemy.Type.WRAITH -> wraithController.projectileInteraction(projectile, (Wraith) enemy);
@@ -55,6 +68,11 @@ public class EnemyController {
         }
     }
 
+    /**
+     * Gestisce l'interazione di un giocatore con un nemico.
+     * @param player il giocatore che interagisce con il nemico.
+     * @param enemy il nemico che subisce l'interazione.
+     */
     private void playerInInteraction(Player player, Enemy enemy) {
         switch (enemy.getSpecificType()) {
             case Enemy.Type.WRAITH -> wraithController.playerInInteraction(player, (Wraith) enemy);
@@ -67,6 +85,10 @@ public class EnemyController {
         }
     }
 
+    /**
+     * Aggiorna lo stato di un nemico a ogni ciclo di gioco.
+     * @param enemy il nemico da aggiornare.
+     */
     private void updateEnemy(Enemy enemy) {
         switch (enemy.getSpecificType()) {
             case Enemy.Type.WRAITH -> wraithController.update((Wraith) enemy);

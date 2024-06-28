@@ -4,8 +4,8 @@ import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
-import chevy.utilz.Pair;
-import chevy.utilz.Vector2;
+import chevy.utils.Pair;
+import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolate;
 import chevy.view.animation.InterpolationTypes;
@@ -79,6 +79,12 @@ public class SlimeView extends EntityViewAnimated {
                 4, false, 1,
                 SLIME_RESOURCES + "attack/left", ".png");
 
+        // --- HIT
+
+        createAnimation(Slime.EnumState.HIT, 0,
+                1, false, 1,
+                SLIME_RESOURCES + "hit", ".png");
+
         // --- DEAD
 
         createAnimation(Slime.EnumState.DEAD, 0,
@@ -111,7 +117,7 @@ public class SlimeView extends EntityViewAnimated {
 
         if (currentAnimatedSprite != null) {
             if (!currentAnimatedSprite.isRunning()) {
-                currentAnimatedSprite.start();
+                currentAnimatedSprite.restart();
             }
             return currentAnimatedSprite.getCurrentFrame();
         }

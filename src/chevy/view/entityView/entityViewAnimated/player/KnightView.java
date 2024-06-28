@@ -2,7 +2,7 @@ package chevy.view.entityView.entityViewAnimated.player;
 
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 import chevy.view.Image;
 import chevy.view.animation.Interpolate;
 import chevy.view.animation.InterpolationTypes;

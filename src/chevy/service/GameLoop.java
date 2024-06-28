@@ -4,6 +4,9 @@ import chevy.settings.GameSettings;
 
 import java.awt.*;
 
+/**
+ * Thread che permette al gioco di aggiornarsi
+ */
 public class GameLoop implements Runnable {
     private boolean isRunning = false;
 
@@ -43,5 +46,8 @@ public class GameLoop implements Runnable {
         }
     }
 
+    /**
+     * Termina l'aggiornamento del gioco
+     */
     public void stopLoop() { this.isRunning = false; }
 }

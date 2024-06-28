@@ -1,6 +1,6 @@
 package chevy.model.entity.staticEntity.environment;
 
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public class Barrier extends Environment {
     public Barrier(Vector2<Integer> initVelocity) {

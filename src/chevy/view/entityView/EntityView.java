@@ -1,13 +1,8 @@
 package chevy.view.entityView;
 
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.utilz.Vector2;
-import chevy.view.Image;
-import chevy.view.animation.AnimatedSprite;
+import chevy.utils.Vector2;
 
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class EntityView {
     protected boolean flipped = false;

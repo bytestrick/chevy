@@ -4,8 +4,8 @@ import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
-import chevy.utilz.Pair;
-import chevy.utilz.Vector2;
+import chevy.utils.Pair;
+import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolate;
 import chevy.view.animation.InterpolationTypes;
@@ -100,6 +100,24 @@ public class WraithView extends EntityViewAnimated {
         createAnimation(Wraith.EnumState.ATTACK, 3,
                 4, false, 1,
                 WRAITH_RESOURCES + "attack/left", ".png");
+
+        // --- HIT
+
+        createAnimation(Wraith.EnumState.HIT, 0,
+                1, false, 1,
+                WRAITH_RESOURCES + "dead/up", ".png");
+
+        createAnimation(Wraith.EnumState.HIT, 1,
+                1, false, 1,
+                WRAITH_RESOURCES + "dead/down", ".png");
+
+        createAnimation(Wraith.EnumState.HIT, 2,
+                1, false, 1,
+                WRAITH_RESOURCES + "dead/left", ".png");
+
+        createAnimation(Wraith.EnumState.HIT, 3,
+                1, false, 1,
+                WRAITH_RESOURCES + "dead/right", ".png");
 
         // --- DEAD
 

@@ -1,6 +1,6 @@
 package chevy.view.entityView.entityViewAnimated.projectile;
 
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 import chevy.view.entityView.entityViewAnimated.EntityViewAnimated;
 
 import java.awt.image.BufferedImage;

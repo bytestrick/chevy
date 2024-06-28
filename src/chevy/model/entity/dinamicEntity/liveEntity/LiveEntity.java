@@ -2,7 +2,7 @@ package chevy.model.entity.dinamicEntity.liveEntity;
 
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public abstract class LiveEntity extends DynamicEntity {
     protected int health;

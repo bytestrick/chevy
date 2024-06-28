@@ -1,11 +1,13 @@
 package chevy.model.pathFinding;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 import java.util.*;
 
-
+/**
+ * Algoritmo euristico per la ricerca del cammino minimo
+ */
 public class AStar {
     private final Chamber chamber;
     private final int nRows;

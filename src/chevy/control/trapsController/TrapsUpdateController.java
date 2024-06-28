@@ -8,10 +8,17 @@ import chevy.settings.GameSettings;
 
 import java.util.List;
 
+/**
+ * Controller che gestisce gli aggiornamenti delle trappole nel gioco.
+ */
 public class TrapsUpdateController implements Update {
     private final TrapsController trapsController;
     private final List<Trap> traps;
 
+    /**
+     * @param trapsController il controller delle trappole per gestire gli aggiornamenti delle trappole
+     * @param traps la lista delle trappole da aggiornare
+     */
     public TrapsUpdateController(TrapsController trapsController, List<Trap> traps) {
         this.traps = traps;
         this.trapsController = trapsController;
@@ -19,6 +26,10 @@ public class TrapsUpdateController implements Update {
         UpdateManager.addToUpdate(this);
     }
 
+    /**
+     * Esegue l'aggiornamento delle trappole.
+     * @param delta tempo trascorso dall'ultimo aggiornamento
+     */
     @Override
     public void update(double delta) {
         for (Trap trap : traps) {
@@ -30,6 +41,10 @@ public class TrapsUpdateController implements Update {
         }
     }
 
+    /**
+     * Verifica se gli aggiornamenti delle trappole sono terminati.
+     * @return true se non ci sono più trappole da aggiornare, altrimenti false
+     */
     @Override
     public boolean updateIsEnd() {
         return traps.isEmpty();

@@ -2,7 +2,7 @@ package chevy.model.entity.staticEntity.environment.traps;
 
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.staticEntity.environment.Environment;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public abstract class Trap extends Environment {
     protected boolean canHitFlingEntity;

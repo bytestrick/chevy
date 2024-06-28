@@ -4,6 +4,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Classe che aggiorna i componenti del model
+ */
 public class UpdateManager {
     private static final List<Update> updateList = new LinkedList<>();
     private static final List<Update> toAdd = new LinkedList<>();

@@ -2,11 +2,8 @@ package chevy.view.chamber;
 
 import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.settings.GameSettings;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 import chevy.view.entityView.EntityView;
 import chevy.view.entityView.entityViewAnimated.EntityViewAnimated;
 
@@ -14,8 +11,13 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Gestisce il disegno a schermo della stanza
+ */
 public class ChamberView {
     private List<Layer> drawOrderChamber;
+
+    // colori per la visualizzazione della collisione
     private static final Color bg = new Color(255, 255, 255, 80);
     private static final Color outLine = new Color(255, 255, 255, 255);
 

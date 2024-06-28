@@ -1,6 +1,6 @@
 package chevy.model.entity;
 
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 import java.util.Random;
 import java.util.UUID;

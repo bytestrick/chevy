@@ -1,4 +1,4 @@
-package chevy.utilz;
+package chevy.utils;
 
 public class Vector2<T extends Number> {
     public T first;

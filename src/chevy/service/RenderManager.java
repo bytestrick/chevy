@@ -4,6 +4,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Classe che aggiorna i componenti della view
+ */
 public class RenderManager {
     private static final List<Render> renderList = new LinkedList<>();
     private static final List<Render> toAdd = new LinkedList<>();

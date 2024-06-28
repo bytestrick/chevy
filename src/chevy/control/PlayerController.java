@@ -8,6 +8,7 @@ import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
@@ -20,7 +21,14 @@ import java.awt.event.KeyEvent;
 
 import static chevy.model.entity.staticEntity.environment.Environment.Type.TRAP;
 
+/**
+ * Questa classe si occupa di gestire le interazioni del giocatore con i nemici, i proiettili e le trappole.
+ * Implementa l'interfaccia Update per aggiornare lo stato del giocatore a ogni ciclo di gioco.
+ */
 public class PlayerController implements Update {
+    /**
+     * Riferimento alla stanza di gioco.
+     */
     private Chamber chamber;
     private Player player;
     private EnemyController enemyController;
@@ -28,8 +36,10 @@ public class PlayerController implements Update {
     private ProjectileController projectileController;
     private DirectionsModel direction;
 
+    /**
+     * @param chamber riferimento alla stanza di gioco
+     */
     public PlayerController(Chamber chamber) {
-        // TODO Sistemare il lo spostamento del player, delle volte si bugga e si sposta più di una cella
         this.chamber = chamber;
         this.player = chamber.getPlayer();
         this.enemyController = null;
@@ -37,10 +47,14 @@ public class PlayerController implements Update {
         this.projectileController = null;
         this.direction = null;
 
+        // Aggiunge il controller del giocatore all'UpdateManager.
         UpdateManager.addToUpdate(this);
     }
 
-
+    /**
+     * Gestisce gli eventi di pressione dei tasti, convertendo il codice del tasto in una direzione.
+     * @param keyEvent l'evento di pressione del tasto
+     */
     public void keyPressed(KeyEvent keyEvent) {
         direction = switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_W -> DirectionsModel.UP;
@@ -55,6 +69,11 @@ public class PlayerController implements Update {
         }
     }
 
+    /**
+     * Gestisce le varie interazioni che il giocatore può subire.
+     * @param interaction il tipo di interazione
+     * @param subject l'oggetto con cui il giocatore interagisce
+     */
     public synchronized void handleInteraction(InteractionTypes interaction, Object subject) {
         switch (interaction) {
             case KEYBOARD -> keyBoardInteraction((DirectionsModel) subject);
@@ -64,10 +83,18 @@ public class PlayerController implements Update {
         }
     }
 
+    /**
+     * Gestisce le interazioni del giocatore con i proiettili, applicando il danno al giocatore.
+     * @param projectile il proiettile con cui il giocatore interagisce
+     */
     private void projectileInteraction(Projectile projectile) {
         hitPlayer(-1 * projectile.getDamage());
     }
 
+    /**
+     * Gestisce le interazioni delle trappole con il giocatore
+     * @param trap la trappola con cui il giocatore interagisce
+     */
     private void trapInteraction(Trap trap) {
         switch (trap.getSpecificType()) {
             case Trap.Type.VOID -> {
@@ -92,6 +119,11 @@ public class PlayerController implements Update {
         }
     }
 
+    /**
+     * Gestisce le interazioni della tastiera con il giocatore, gestendo i movimenti del giocatore e
+     * le interazioni con le entità nelle celle adiacenti.
+     * @param direction la direzione in cui il giocatore si muove
+     */
     private void keyBoardInteraction(DirectionsModel direction) {
         Entity entityNextCell = chamber.getNearEntityOnTop(player, direction);
         Entity entityCurrentCell = chamber.getEntityBelowTheTop(player);
@@ -138,39 +170,68 @@ public class PlayerController implements Update {
             }
     }
 
+    /**
+     * Gestisce le interazioni dei nemici con il giocatore, applicando il danno al giocatore.
+     * @param enemy il nemico con cui il giocatore interagisce
+     */
     private void enemyInteraction(Enemy enemy) {
         hitPlayer(-1 * enemy.getDamage());
     }
 
-
+    /**
+     * Applica danno al giocatore e cambia il suo stato a "HIT" se possibile.
+     * @param damage la quantità di danno da applicare
+     */
     private void hitPlayer(int damage) {
         if (player.changeState(Player.EnumState.HIT)) {
             player.changeHealth(damage);
         }
-        if (player.getHealth() <= 0 && player.changeState(Player.EnumState.DEAD)) {
-            player.kill();
-            chamber.removeEntityOnTop(player);
-        }
     }
 
-
+    /**
+     * Imposta il controller dei nemici.
+     * @param enemyController il controller dei nemici
+     */
     public void setEnemyController(EnemyController enemyController) {
         if (this.enemyController == null)
             this.enemyController = enemyController;
     }
 
+    /**
+     * Imposta il controller delle trappole.
+     * @param trapsController il controller delle trappole
+     */
     public void setTrapController(TrapsController trapsController) {
         if (this.trapsController == null)
             this.trapsController = trapsController;
     }
 
+    /**
+     * Imposta il controller dei proiettili.
+     * @param projectileController il controller dei proiettili
+     */
     public void setProjectileController(ProjectileController projectileController) {
         if (this.projectileController == null)
             this.projectileController = projectileController;
     }
 
+    /**
+     * Aggiorna lo stato del giocatore a ogni ciclo di gioco.
+     * @param delta il tempo trascorso dall'ultimo aggiornamento
+     */
     @Override
     public void update(double delta) {
+        if (!player.isAlive()) {
+            if (player.getState(BigSlime.EnumState.DEAD).isFinished()) {
+                chamber.removeEntityOnTop(player);
+                player.removeToUpdate();
+                return;
+            }
+        }
+        else if (player.getHealth() <= 0 && player.changeState(Player.EnumState.DEAD)) {
+            player.kill();
+        }
+
         player.checkAndChangeState(Player.EnumState.IDLE);
     }
 }

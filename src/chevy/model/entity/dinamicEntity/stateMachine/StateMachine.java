@@ -20,13 +20,18 @@ public class StateMachine {
 
     public StateMachine() {}
 
-
+    /**
+     * Cambia lo stato corrente della macchina a stati.
+     * @param state L'enumerazione dello stato a cui passare.
+     * @return true se lo stato è cambiato con successo, false altrimenti.
+     */
     public synchronized boolean changeState(CommonEnumStates state) {
         if (currentState == null) {
             System.out.println("[x] Non è presente uno stato iniziale");
             return false;
         }
 
+        // solo per la stampa
         if (stateMachineName != null)
             System.out.print(stateMachineName + ": " + currentState);
 
@@ -37,6 +42,7 @@ public class StateMachine {
             previousState = currentState;
             currentState = nextState;
 
+            // solo per la stampa
             if (stateMachineName != null) {
                 System.out.println(" -> " + nextState);
             }
@@ -46,12 +52,18 @@ public class StateMachine {
             return true;
         }
 
+        // solo per la stampa
         if (stateMachineName != null)
             System.out.println();
 
         return false;
     }
 
+    /**
+     * Controlla se è possibile cambiare lo stato corrente della macchina a stati.
+     * @param state L'enumerazione dello stato a cui passare.
+     * @return true se è possibile cambiare lo stato, false altrimenti.
+     */
     public synchronized boolean canChange(CommonEnumStates state) {
         if (currentState == null) {
             System.out.println("[x] Non è presente uno stato iniziale");
@@ -66,7 +78,11 @@ public class StateMachine {
         return currentState.isFinished();
     }
 
-
+    /**
+     * Controlla se è possibile cambiare lo stato corrente e, in caso affermativo, cambia lo stato.
+     * @param state L'enumerazione dello stato a cui passare.
+     * @return true se lo stato è cambiato con successo, false altrimenti.
+     */
     public synchronized boolean checkAndChangeState(CommonEnumStates state) {
         if (canChange(state)) {
             usedWithCanChange = true;
@@ -77,7 +93,6 @@ public class StateMachine {
         return false;
     }
 
-
     public synchronized boolean changeToPreviousState() {
         return changeState(previousState.getStateEnum());
     }
@@ -85,6 +100,7 @@ public class StateMachine {
     public synchronized State getCurrentState() { return currentState; }
 
     public synchronized State getPreviousState() { return previousState; }
+
 
     public void setInitialState(State startState) {
         this.currentState = startState;

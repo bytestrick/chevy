@@ -2,7 +2,7 @@ package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
 import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
 import chevy.model.entity.dinamicEntity.stateMachine.State;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public class Slime extends Enemy {
     public enum EnumState implements CommonEnumStates {

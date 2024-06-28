@@ -21,7 +21,10 @@ import chevy.view.entityView.entityViewAnimated.projectile.SlimeShotView;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * La classe EntityToEntityView gestisce la mappatura tra le entità del gioco e le loro rispettive visualizzazioni.
+ * Questa classe contiene metodi per ottenere la visualizzazione specifica o generica di un'entità.
+ */
 public class EntityToEntityView {
     private static final Map<Entity, EntityView> entityView = new HashMap<>();
 
@@ -37,6 +40,17 @@ public class EntityToEntityView {
                     slimeView = (SlimeView) entityView.get(entity);
 
                 yield slimeView;
+            }
+            case Enemy.Type.BIG_SLIME -> {
+                BigSlimeView bigSlimeView = null;
+                if (!entityView.containsKey(entity)) {
+                    bigSlimeView = new BigSlimeView((BigSlime) entity);
+                    entityView.put(entity, bigSlimeView);
+                }
+                else
+                    bigSlimeView = (BigSlimeView) entityView.get(entity);
+
+                yield bigSlimeView;
             }
             case Enemy.Type.ZOMBIE -> {
                 ZombieView zombieView = null;
