@@ -56,19 +56,19 @@ public class BeetleView extends EntityViewAnimated {
         // --- IDLE
 
         createAnimation(Beetle.EnumState.IDLE, 0,
-                4, idleDuration,
+                4, true, 4, idleDuration,
                 BEETLE_RESOURCES + "idle/up", ".png");
 
         createAnimation(Beetle.EnumState.IDLE, 1,
-                4,  idleDuration,
+                4, true, 4, idleDuration,
                 BEETLE_RESOURCES + "idle/down", ".png");
 
         createAnimation(Beetle.EnumState.IDLE, 2,
-                4,  idleDuration,
+                4, true, 4, idleDuration,
                 BEETLE_RESOURCES + "idle/right", ".png");
 
         createAnimation(Beetle.EnumState.IDLE, 3,
-                4,  idleDuration,
+                4, true, 4, idleDuration,
                 BEETLE_RESOURCES + "idle/left", ".png");
 
         // --- MOVE

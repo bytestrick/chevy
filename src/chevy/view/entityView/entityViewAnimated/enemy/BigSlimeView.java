@@ -1,6 +1,7 @@
 package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
 import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.stateMachine.State;
@@ -47,66 +48,55 @@ public class BigSlimeView extends EntityViewAnimated {
 
 
     private void initAnimation() {
+        float idleDuration = bigSlime.getState(BigSlime.EnumState.IDLE).getDuration();
+        float moveDuration = bigSlime.getState(BigSlime.EnumState.MOVE).getDuration();
+        float hitDuration = bigSlime.getState(BigSlime.EnumState.HIT).getDuration();
+        float attackDuration = bigSlime.getState(BigSlime.EnumState.ATTACK).getDuration();
+        float deadDuration = bigSlime.getState(BigSlime.EnumState.DEAD).getDuration();
         // --- IDLE
 
         createAnimation(BigSlime.EnumState.IDLE, 0,
-                4, true, 2,
+                4, true, 2, idleDuration,
                 BIG_SLIME_RESOURCES + "idle", ".png");
 
 
         // --- MOVE
 
         createAnimation(BigSlime.EnumState.MOVE, 0,
-                4, false, 1,
+                4, moveDuration,
                 BIG_SLIME_RESOURCES + "move", ".png");
 
 
         // --- ATTACK
 
         createAnimation(BigSlime.EnumState.ATTACK, 0,
-                4, false, 1,
+                4, attackDuration,
                 BIG_SLIME_RESOURCES + "attack/up", ".png");
 
         createAnimation(BigSlime.EnumState.ATTACK, 1,
-                4, false, 1,
+                4, attackDuration,
                 BIG_SLIME_RESOURCES + "attack/down", ".png");
 
         createAnimation(BigSlime.EnumState.ATTACK, 2,
-                4, false, 1,
+                4, attackDuration,
                 BIG_SLIME_RESOURCES + "attack/right", ".png");
 
         createAnimation(BigSlime.EnumState.ATTACK, 3,
-                4, false, 1,
+                4, attackDuration,
                 BIG_SLIME_RESOURCES + "attack/left", ".png");
 
         // --- HIT
 
         createAnimation(BigSlime.EnumState.HIT, 0,
-                1, false, 1,
+                1, hitDuration,
                 BIG_SLIME_RESOURCES + "hit", ".png");
 
         // --- DEAD
 
         createAnimation(BigSlime.EnumState.DEAD, 0,
-                4, false, 1,
+                4, deadDuration,
                 BIG_SLIME_RESOURCES + "dead", ".png");
     }
-
-    private void createAnimation(CommonEnumStates enumStates, int type,
-                                 int nFrame, boolean loop, int times,
-                                 String folderPath, String extension) {
-        if (!loop)
-            times = 1;
-        float durationFrame = bigSlime.getState(enumStates).getDuration() / (nFrame * times);
-        AnimatedSprite animatedSprite = new AnimatedSprite(
-                new Pair<>(enumStates, type),
-                nFrame,
-                durationFrame,
-                loop
-        );
-        super.initAnimation(animatedSprite, folderPath, extension);
-    }
-
 
     @Override
     public BufferedImage getCurrentFrame() {

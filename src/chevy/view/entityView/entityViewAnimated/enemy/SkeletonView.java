@@ -2,6 +2,7 @@ package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Pair;
@@ -47,103 +48,92 @@ public class SkeletonView extends EntityViewAnimated {
 
 
     private void initAnimation() {
+        float idleDuration = skeleton.getState(Skeleton.EnumState.IDLE).getDuration();
+        float moveDuration = skeleton.getState(Skeleton.EnumState.MOVE).getDuration();
+        float hitDuration = skeleton.getState(Skeleton.EnumState.HIT).getDuration();
+        float attackDuration = skeleton.getState(Skeleton.EnumState.ATTACK).getDuration();
+        float deadDuration = skeleton.getState(Skeleton.EnumState.DEAD).getDuration();
         // --- IDLE
 
         createAnimation(Skeleton.EnumState.IDLE, 0,
-                4, true, 6,
+                4, true, 4, idleDuration,
                 SKELETON_RESOURCES + "idle/up", ".png");
 
         createAnimation(Skeleton.EnumState.IDLE, 1,
-                4, true, 6,
+                4, true, 4, idleDuration,
                 SKELETON_RESOURCES + "idle/down", ".png");
 
         createAnimation(Skeleton.EnumState.IDLE, 2,
-                4, true, 6,
+                4, true, 4, idleDuration,
                 SKELETON_RESOURCES + "idle/right", ".png");
 
         createAnimation(Skeleton.EnumState.IDLE, 3,
-                4, true, 6,
+                4, true, 4, idleDuration,
                 SKELETON_RESOURCES + "idle/left", ".png");
 
         // --- MOVE
 
         createAnimation(Skeleton.EnumState.MOVE, 0,
-                4, false, 1,
+                4, moveDuration,
                 SKELETON_RESOURCES + "move/up", ".png");
 
         createAnimation(Skeleton.EnumState.MOVE, 1,
-                4, false, 1,
+                4, moveDuration,
                 SKELETON_RESOURCES + "move/down", ".png");
 
         createAnimation(Skeleton.EnumState.MOVE, 2,
-                4, false, 1,
+                4, moveDuration,
                 SKELETON_RESOURCES + "move/right", ".png");
 
         createAnimation(Skeleton.EnumState.MOVE, 3,
-                4, false, 1,
+                4, moveDuration,
                 SKELETON_RESOURCES + "move/left", ".png");
 
         // --- ATTACK
 
         createAnimation(Skeleton.EnumState.ATTACK, 0,
-                4, false, 1,
+                4, attackDuration,
                 SKELETON_RESOURCES + "attack/up", ".png");
 
         createAnimation(Skeleton.EnumState.ATTACK, 1,
-                4, false, 1,
+                4, attackDuration,
                 SKELETON_RESOURCES + "attack/down", ".png");
 
         createAnimation(Skeleton.EnumState.ATTACK, 2,
-                4, false, 1,
+                4, attackDuration,
                 SKELETON_RESOURCES + "attack/right", ".png");
 
         createAnimation(Skeleton.EnumState.ATTACK, 3,
-                4, false, 1,
+                4, attackDuration,
                 SKELETON_RESOURCES + "attack/left", ".png");
 
         // --- HIT
 
         createAnimation(Skeleton.EnumState.HIT, 0,
-                1, false, 1,
+                1, hitDuration,
                 SKELETON_RESOURCES + "hit/up", ".png");
 
         createAnimation(Skeleton.EnumState.HIT, 1,
-                1, false, 1,
+                1, hitDuration,
                 SKELETON_RESOURCES + "hit/down", ".png");
 
         createAnimation(Skeleton.EnumState.HIT, 2,
-                1, false, 1,
+                1, hitDuration,
                 SKELETON_RESOURCES + "hit/right", ".png");
 
         createAnimation(Skeleton.EnumState.HIT, 3,
-                1, false, 1,
+                1, hitDuration,
                 SKELETON_RESOURCES + "hit/left", ".png");
 
         // --- DEAD
 
         createAnimation(Skeleton.EnumState.DEAD, 0,
-                4, false, 1,
+                4, deadDuration,
                 SKELETON_RESOURCES + "dead/left", ".png");
         createAnimation(Skeleton.EnumState.DEAD, 1,
-                4, false, 1,
+                4, deadDuration,
                 SKELETON_RESOURCES + "dead/right", ".png");
     }
-
-    private void createAnimation(CommonEnumStates enumStates, int type,
-                                 int nFrame, boolean loop, int times,
-                                 String folderPath, String extension) {
-        if (!loop)
-            times = 1;
-        float durationFrame = skeleton.getState(enumStates).getDuration() / (nFrame * times);
-        AnimatedSprite animatedSprite = new AnimatedSprite(
-                new Pair<>(enumStates, type),
-                nFrame,
-                durationFrame,
-                loop
-        );
-        super.initAnimation(animatedSprite, folderPath, extension);
-    }
-
 
     @Override
     public BufferedImage getCurrentFrame() {

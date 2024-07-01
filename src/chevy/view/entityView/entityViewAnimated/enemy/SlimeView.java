@@ -2,6 +2,7 @@ package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Pair;
@@ -47,64 +48,55 @@ public class SlimeView extends EntityViewAnimated {
 
 
     private void initAnimation() {
+        float idleDuration = slime.getState(Slime.EnumState.IDLE).getDuration();
+        float moveDuration = slime.getState(Slime.EnumState.MOVE).getDuration();
+        float hitDuration = slime.getState(Slime.EnumState.HIT).getDuration();
+        float attackDuration = slime.getState(Slime.EnumState.ATTACK).getDuration();
+        float deadDuration = slime.getState(Slime.EnumState.DEAD).getDuration();
+        
         // --- IDLE
 
         createAnimation(Slime.EnumState.IDLE, 0,
-                4, true, 3,
+                4, true, 3, idleDuration,
                 SLIME_RESOURCES + "idle", ".png");
 
 
         // --- MOVE
 
         createAnimation(Slime.EnumState.MOVE, 0,
-                4, false, 1,
+                4, moveDuration,
                 SLIME_RESOURCES + "move", ".png");
 
 
         // --- ATTACK
 
         createAnimation(Slime.EnumState.ATTACK, 0,
-                4, false, 1,
+                4, attackDuration,
                 SLIME_RESOURCES + "attack/up", ".png");
 
         createAnimation(Slime.EnumState.ATTACK, 1,
-                4, false, 1,
+                4, attackDuration,
                 SLIME_RESOURCES + "attack/down", ".png");
 
         createAnimation(Slime.EnumState.ATTACK, 2,
-                4, false, 1,
+                4, attackDuration,
                 SLIME_RESOURCES + "attack/right", ".png");
 
         createAnimation(Slime.EnumState.ATTACK, 3,
-                4, false, 1,
+                4, attackDuration,
                 SLIME_RESOURCES + "attack/left", ".png");
 
         // --- HIT
 
         createAnimation(Slime.EnumState.HIT, 0,
-                1, false, 1,
+                1, hitDuration,
                 SLIME_RESOURCES + "hit", ".png");
 
         // --- DEAD
 
         createAnimation(Slime.EnumState.DEAD, 0,
-                4, false, 1,
+                4, deadDuration,
                 SLIME_RESOURCES + "dead", ".png");
-    }
-
-    private void createAnimation(CommonEnumStates enumStates, int type,
-                                 int nFrame, boolean loop, int times,
-                                 String folderPath, String extension) {
-        if (!loop)
-            times = 1;
-        float durationFrame = slime.getState(enumStates).getDuration() / (nFrame * times);
-        AnimatedSprite animatedSprite = new AnimatedSprite(
-                new Pair<>(enumStates, type),
-                nFrame,
-                durationFrame,
-                loop
-        );
-        super.initAnimation(animatedSprite, folderPath, extension);
     }
 
 
