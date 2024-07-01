@@ -2,7 +2,7 @@ package chevy.model.entity.staticEntity.powerUp;
 
 import chevy.model.entity.Entity;
 import chevy.model.entity.EntityCommonEnumTypes;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 import java.util.Random;
 

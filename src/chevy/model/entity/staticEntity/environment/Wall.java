@@ -1,7 +1,7 @@
 package chevy.model.entity.staticEntity.environment;
 
 import chevy.model.entity.EntityCommonEnumTypes;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public class Wall extends Environment {
     public enum WallTypes implements EntityCommonEnumTypes {

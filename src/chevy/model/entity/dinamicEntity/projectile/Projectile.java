@@ -3,42 +3,43 @@ package chevy.model.entity.dinamicEntity.projectile;
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.utilz.Vector2;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.utils.Vector2;
 
-public class Projectile extends DynamicEntity {
-    private final DirectionsModel direction;
-    private boolean collide;
+public abstract class Projectile extends DynamicEntity {
+
     public enum Type implements EntityCommonEnumTypes {
         ARROW,
-        FIRE_BALL;
+        FIRE_BALL,
+        SLIME_SHOT;
     }
     private final Type type;
+    public enum EnumState implements CommonEnumStates {
+        START,
+        LOOP,
+        END;
+    }
+    private final DirectionsModel direction;
+    private boolean isCollide = false;
 
-
-    public Projectile(Vector2<Integer> initPosition, Type type, DirectionsModel direction) {
+    public Projectile(Vector2<Integer> initPosition, Type type, DirectionsModel direction, float advanceTimer) {
         super(initPosition, DynamicEntity.Type.PROJECTILE);
         this.type = type;
         this.direction = direction;
 
-        this.updateEverySecond = 1;
-
         this.crossable = true;
         this.safeToCross = false;
-
-        this.maxDamage = 2;
-        this.minDamage = 1;
-        this.collide = false;
 
         this.layer = 1;
     }
 
 
     public boolean isCollide() {
-        return collide;
+        return isCollide;
     }
 
     public void setCollide(boolean collide) {
-        this.collide = collide;
+        this.isCollide = collide;
     }
 
     public DirectionsModel getDirection() {

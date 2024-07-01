@@ -1,9 +1,9 @@
 package chevy.model.pathFinding;
 
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 /**
- *  Contiene le informazioni necesarie per ricostruire il cammino minimo
+ *  Contiene le informazioni necessarie per ricostruire il cammino minimo
  */
 public class Cell {
     public Vector2<Integer> parent;

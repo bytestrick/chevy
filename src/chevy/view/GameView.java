@@ -8,7 +8,7 @@ public class GameView {
     // TODO: mostra FPS a schermo in modo condizionale
 
     public GameView() {
-        System.out.println("Starting");
+        System.out.println("[-] Starting");
 
         window = new Window(true);
     }

@@ -1,51 +1,52 @@
 package chevy.control.trapsController;
 
+import chevy.control.InteractionTypes;
+import chevy.control.PlayerController;
+import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 
+/**
+ * Controller per gestire le interazioni del giocatore e delle entità con il pavimento spinato nel gioco.
+ */
 public class SpikedFloorController {
     private final Chamber chamber;
+    private final PlayerController playerController;
+    private final EnemyController enemyController;
 
-    public SpikedFloorController(Chamber chamber) {
+    /**
+     * @param chamber la camera di gioco si trova il pavimento spinato
+     */
+    public SpikedFloorController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
         this.chamber = chamber;
+        this.playerController = playerController;
+        this.enemyController = enemyController;
     }
 
-
-    public void playerInInteraction(Player player) {
-        player.changeState(Player.EnumState.IDLE);
+    public void playerInInteraction(SpikedFloor spikedFloor) {
+        playerController.handleInteraction(InteractionTypes.TRAP, spikedFloor);
     }
 
-
+    /**
+     * Aggiorna lo stato del pavimento spinato.
+     * @param spikedFloor il pavimento spinato da aggiornare
+     */
     public void update(SpikedFloor spikedFloor) {
-        spikedFloor.toggleStateActive();
+        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.ACTIVATED))
+            spikedFloor.activated();
 
-        if (spikedFloor.isActive()) {
+        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.DISABLED))
+            spikedFloor.disabled();
+
+        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.DAMAGE)) {
             Entity entity = chamber.getEntityOnTop(spikedFloor);
-            boolean mayBeAttacked = false;
-            if (entity instanceof LiveEntity liveEntity) {
-                if (liveEntity instanceof Player) {
-                    if (liveEntity.changeState(Player.EnumState.HIT))
-                        mayBeAttacked = true;
-                }
-                else
-                    switch (liveEntity.getSpecificType()) {
-                        case Enemy.Type.ZOMBIE -> {
-                            if (liveEntity.changeState(Zombie.EnumState.HIT))
-                                mayBeAttacked = true;
-                        }
-                        default -> {}
-                    }
-
-                if (mayBeAttacked) {
-                    liveEntity.changeHealth(-1 * spikedFloor.getDamage());
-                    liveEntity.changeToPreviousState();
-                }
-            }
+            if (entity instanceof Player)
+                playerController.handleInteraction(InteractionTypes.TRAP, spikedFloor);
+            if (entity instanceof Enemy enemy)
+                enemyController.handleInteraction(InteractionTypes.TRAP, spikedFloor, enemy);
         }
     }
 }

@@ -2,13 +2,7 @@ package chevy;
 
 import chevy.control.GameController;
 import chevy.model.GameModel;
-import chevy.model.chamber.ChamberManager;
-import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.service.GameLoop;
-import chevy.settings.GameSettings;
-import chevy.settings.WindowSettings;
-import chevy.utilz.Utilz;
-import chevy.utilz.Vector2;
 import chevy.view.GameView;
 
 public class Main {

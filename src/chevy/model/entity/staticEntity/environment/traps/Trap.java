@@ -2,7 +2,7 @@ package chevy.model.entity.staticEntity.environment.traps;
 
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.staticEntity.environment.Environment;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public abstract class Trap extends Environment {
     protected boolean canHitFlingEntity;
@@ -15,6 +15,7 @@ public abstract class Trap extends Environment {
         ICY_FLOOR;
     }
     private final Type type;
+    protected boolean mustBeUpdated = false;
 
 
 
@@ -23,6 +24,11 @@ public abstract class Trap extends Environment {
         this.type = type;
         this.crossable = true;
         this.canHitFlingEntity = false;
+    }
+
+
+    public boolean isMustBeUpdated() {
+        return mustBeUpdated;
     }
 
 

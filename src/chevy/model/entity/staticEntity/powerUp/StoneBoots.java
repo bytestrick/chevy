@@ -1,6 +1,6 @@
 package chevy.model.entity.staticEntity.powerUp;
 
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public class StoneBoots extends PowerUp {
     public StoneBoots(Vector2<Integer> initVelocity) {

@@ -4,50 +4,65 @@ import chevy.control.InteractionTypes;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
-import chevy.settings.GameSettings;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * La classe ProjectileUpdateController implementa l'interfaccia Update per gestire gli aggiornamenti dei proiettili
+ * nel gioco. Gestisce l'aggiunta, la rimozione e l'aggiornamento dei proiettili.
+ */
 public class ProjectileUpdateController implements Update {
+    /**
+     * Controller dei proiettili per gestire gli aggiornamenti specifici dei proiettili.
+     */
     private final ProjectileController projectileController;
+    /**
+     * Lista dei proiettili attualmente presenti nel gioco.
+     */
     private final List<Projectile> projectiles;
+    /**
+     * Lista temporanea dei proiettili da aggiungere alla lista principale.
+     */
     private final List<Projectile> projectilesToAdd;
 
-
+    /**
+     * @param projectileController controller dei proiettili per gestire gli aggiornamenti dei proiettili
+     * @param projectiles lista di proiettili da aggiungere all'aggiornamento
+     */
     public ProjectileUpdateController(ProjectileController projectileController, List<Projectile> projectiles) {
         this.projectileController = projectileController;
-        this.projectiles = new LinkedList<>();
+        this.projectiles = new LinkedList<>(); // Utilizziamo LinkedList per una rimozione efficiente
         this.projectilesToAdd = projectiles;
 
-        UpdateManager.addToUpdate(this);
+        UpdateManager.addToUpdate(this); // Aggiungiamo questo controller agli aggiornamenti gestiti da UpdateManager
     }
 
-
-    // usato questo metodo perché l'aggiunta di elementi nella lista
-    // mentre viene iterata da un eccezzione, in questo modo la lista
-    // da iterare viene formata prima dell'iterazione e non viene più
-    // modificata fino all'iterazione successiva
-    public void addProjectile() {
+    /**
+     * Metodo privato per aggiungere i proiettili alla lista principale. Viene chiamato prima di ogni iterazione di aggiornamento.
+     * Questo approccio evita ConcurrentModificationException durante l'iterazione della lista.
+     */
+    private void addProjectile() {
         this.projectiles.addAll(projectilesToAdd);
-        projectilesToAdd.clear();
+        projectilesToAdd.clear(); // Pulisce la lista temporanea dopo aver aggiunto i proiettili
     }
 
+    /**
+     * Metodo di aggiornamento chiamato ad ogni ciclo di gioco per gestire gli aggiornamenti dei proiettili.
+     * @param delta tempo trascorso dall'ultimo aggiornamento
+     */
     @Override
     public void update(double delta) {
-        addProjectile();
+        addProjectile(); // Aggiunge i proiettili alla lista principale prima dell'iterazione
 
         Iterator<Projectile> it = projectiles.iterator();
         while (it.hasNext()) {
             Projectile projectile = it.next();
-            projectile.incrementNUpdate();
-            if (projectile.getUpdateEverySecond() * GameSettings.FPS == projectile.getCurrentNUpdate()) {
-                projectile.resetNUpdate();
-                projectileController.handleInteraction(InteractionTypes.UPDATE, projectile, null);
-            }
-            if (projectile.isCollide())
+            projectileController.handleInteraction(InteractionTypes.UPDATE, projectile, null); // Gestisce l'aggiornamento del proiettile
+            if (projectile.isCollide()) { // Se il proiettile collide, si rimuove dalla lista
                 it.remove();
+            }
         }
     }
 }
