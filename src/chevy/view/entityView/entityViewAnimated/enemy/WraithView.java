@@ -2,6 +2,7 @@ package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
 import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Pair;
@@ -47,101 +48,91 @@ public class WraithView extends EntityViewAnimated {
 
 
     private void initAnimation() {
+        float idleDuration = wraith.getState(Wraith.EnumState.IDLE).getDuration();
+        float moveDuration = wraith.getState(Wraith.EnumState.MOVE).getDuration();
+        float attackDuration = wraith.getState(Wraith.EnumState.ATTACK).getDuration();
+        float hitDuration = wraith.getState(Wraith.EnumState.HIT).getDuration();
+        float deadDuration = wraith.getState(Wraith.EnumState.DEAD).getDuration();
         // --- IDLE
 
         createAnimation(Wraith.EnumState.IDLE, 0,
-                4, true, 3,
+                4, true, 3, idleDuration,
                 WRAITH_RESOURCES + "idle/up", ".png");
 
         createAnimation(Wraith.EnumState.IDLE, 1,
-                4, true, 3,
+                4, true, 3, idleDuration,
                 WRAITH_RESOURCES + "idle/down", ".png");
 
         createAnimation(Wraith.EnumState.IDLE, 2,
-                4, true, 3,
+                4, true, 3, idleDuration,
                 WRAITH_RESOURCES + "idle/right", ".png");
 
         createAnimation(Wraith.EnumState.IDLE, 3,
-                4, true, 3,
+                4, true, 3, idleDuration,
                 WRAITH_RESOURCES + "idle/left", ".png");
 
         // --- MOVE
 
         createAnimation(Wraith.EnumState.MOVE, 0,
-                4, false, 1,
+                4, moveDuration,
                 WRAITH_RESOURCES + "move/up", ".png");
 
         createAnimation(Wraith.EnumState.MOVE, 1,
-                4, false, 1,
+                4, moveDuration,
                 WRAITH_RESOURCES + "move/down", ".png");
 
         createAnimation(Wraith.EnumState.MOVE, 2,
-                4, false, 1,
+                4, moveDuration,
                 WRAITH_RESOURCES + "move/right", ".png");
 
         createAnimation(Wraith.EnumState.MOVE, 3,
-                4, false, 1,
+                4, moveDuration,
                 WRAITH_RESOURCES + "move/left", ".png");
 
         // --- ATTACK
 
         createAnimation(Wraith.EnumState.ATTACK, 0,
-                4, false, 1,
+                4, attackDuration,
                 WRAITH_RESOURCES + "attack/up", ".png");
 
         createAnimation(Wraith.EnumState.ATTACK, 1,
-                4, false, 1,
+                4, attackDuration,
                 WRAITH_RESOURCES + "attack/down", ".png");
 
         createAnimation(Wraith.EnumState.ATTACK, 2,
-                4, false, 1,
+                4, attackDuration,
                 WRAITH_RESOURCES + "attack/right", ".png");
 
         createAnimation(Wraith.EnumState.ATTACK, 3,
-                4, false, 1,
+                4, attackDuration,
                 WRAITH_RESOURCES + "attack/left", ".png");
 
         // --- HIT
 
         createAnimation(Wraith.EnumState.HIT, 0,
-                1, false, 1,
+                1, hitDuration,
                 WRAITH_RESOURCES + "hit/up", ".png");
 
         createAnimation(Wraith.EnumState.HIT, 1,
-                1, false, 1,
+                1, hitDuration,
                 WRAITH_RESOURCES + "hit/down", ".png");
 
         createAnimation(Wraith.EnumState.HIT, 2,
-                1, false, 1,
+                1, hitDuration,
                 WRAITH_RESOURCES + "hit/left", ".png");
 
         createAnimation(Wraith.EnumState.HIT, 3,
-                1, false, 1,
+                1, hitDuration,
                 WRAITH_RESOURCES + "hit/right", ".png");
 
         // --- DEAD
 
         createAnimation(Wraith.EnumState.DEAD, 0,
-                4, false, 1,
+                4, deadDuration,
                 WRAITH_RESOURCES + "dead/left", ".png");
         createAnimation(Wraith.EnumState.DEAD, 1,
-                4, false, 1,
+                4, deadDuration,
                 WRAITH_RESOURCES + "dead/right", ".png");
-    }
-
-    private void createAnimation(CommonEnumStates enumStates, int type,
-                                 int nFrame, boolean loop, int times,
-                                 String folderPath, String extension) {
-        if (!loop)
-            times = 1;
-        float durationFrame = wraith.getState(enumStates).getDuration() / (nFrame * times);
-        AnimatedSprite animatedSprite = new AnimatedSprite(
-                new Pair<>(enumStates, type),
-                nFrame,
-                durationFrame,
-                loop
-        );
-        super.initAnimation(animatedSprite, folderPath, extension);
     }
 
 
