@@ -28,7 +28,7 @@ public class ChamberController {
     public ChamberController(Chamber chamber) {
         this.playerController = new PlayerController(chamber);
         EnemyController enemyController = new EnemyController(chamber, playerController);
-        TrapsController trapsController = new TrapsController(chamber, playerController);
+        TrapsController trapsController = new TrapsController(chamber, playerController, enemyController);
         ProjectileController projectileController = new ProjectileController(chamber, playerController, enemyController);
 
         playerController.setEnemyController(enemyController);

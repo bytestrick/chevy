@@ -1,7 +1,7 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.model.entity.dinamicEntity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class Zombie extends Enemy {
@@ -25,15 +25,14 @@ public class Zombie extends Enemy {
         this.maxDamage = 3;
         this.minDamage = 2;
 
-        this.updateEverySecond = 1.f;
-
-        stateMachine.setStateMachineName("Zombie");
-        stateMachine.setInitialState(idle);
         initStateMachine();
     }
 
 
     private void initStateMachine() {
+        stateMachine.setStateMachineName("Zombie");
+        stateMachine.setInitialState(idle);
+
         idle.linkState(move);
         idle.linkState(attack);
         idle.linkState(hit);
@@ -46,7 +45,7 @@ public class Zombie extends Enemy {
     }
 
     @Override
-    public State getState(CommonEnumStates commonEnumStates) {
+    public synchronized State getState(CommonEnumStates commonEnumStates) {
         EnumState zombieState = (EnumState) commonEnumStates;
         return switch (zombieState) {
             case MOVE -> move;

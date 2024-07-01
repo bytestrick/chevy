@@ -14,7 +14,7 @@ public class RenderManager {
 
     public static void addToRender(Render r) {
         toAdd.add(r);
-        System.out.println("[-] Aggiunto al render: " + r);
+//        System.out.println("[-] Aggiunto al render: " + r);
     }
 
     public static void render(double delta) {
@@ -27,7 +27,7 @@ public class RenderManager {
             currentRenderElement.render(delta);
             if (currentRenderElement.renderIsEnd()) {
                 it.remove();
-                System.out.println("[-] Rimosso dal render: " + currentRenderElement);
+//                System.out.println("[-] Rimosso dal render: " + currentRenderElement);
             }
         }
     }

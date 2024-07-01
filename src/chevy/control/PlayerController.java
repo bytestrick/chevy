@@ -12,7 +12,9 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
+import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -102,18 +104,9 @@ public class PlayerController implements Update {
                 if (player.isAlive() && chamber.canCross(player, direction.getOpposite()))
                     chamber.moveDynamicEntity(player, direction.getOpposite());
             }
-            case Trap.Type.ICY_FLOOR -> {
-                while (player.getCurrentEumState() == Player.EnumState.GLIDE &&
-                        chamber.canCross(player, direction) &&
-                        chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
-                    chamber.moveDynamicEntity(player, direction);
-                }
-
-                player.checkAndChangeState(Player.EnumState.IDLE);
-                if (chamber.getEntityBelowTheTop(player) instanceof Trap t)
-                    trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, t);
-                else if (chamber.getEntityBelowTheTop(player) instanceof Projectile p)
-                    projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player, p);
+            case Trap.Type.SPIKED_FLOOR -> {
+                SpikedFloor spikedFloor = (SpikedFloor) trap;
+                hitPlayer(-1 * spikedFloor.getDamage());
             }
             default -> {}
         }
@@ -221,8 +214,9 @@ public class PlayerController implements Update {
      */
     @Override
     public void update(double delta) {
+        // gestione della morte del player
         if (!player.isAlive()) {
-            if (player.getState(BigSlime.EnumState.DEAD).isFinished()) {
+            if (player.getState(Player.EnumState.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(player);
                 player.removeToUpdate();
                 return;
@@ -232,6 +226,30 @@ public class PlayerController implements Update {
             player.kill();
         }
 
-        player.checkAndChangeState(Player.EnumState.IDLE);
+        // gestione dello scivolamento del player
+        if (player.getCurrentEumState() == Player.EnumState.GLIDE &&
+                player.getState(player.getCurrentEumState()).isFinished() &&
+                chamber.canCross(player, direction) &&
+                chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
+
+            Entity previousEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
+            chamber.moveDynamicEntity(player, direction);
+            Entity nextEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
+
+            switch (previousEntityBelowTheTop.getGenericType()) {
+                case Environment.Type.TRAP -> trapsController.handleInteraction(InteractionTypes.PLAYER_OUT, player, (Trap) previousEntityBelowTheTop);
+                case DynamicEntity.Type.PROJECTILE -> projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Projectile) previousEntityBelowTheTop);
+                default -> {}
+            }
+            switch (nextEntityBelowTheTop.getGenericType()) {
+                case Environment.Type.TRAP -> trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Trap) nextEntityBelowTheTop);
+                case DynamicEntity.Type.PROJECTILE -> projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Projectile) nextEntityBelowTheTop);
+                default -> {}
+            }
+        }
+
+        // idle
+        if (player.getCurrentEumState() != Player.EnumState.SLUDGE)
+            player.checkAndChangeState(Player.EnumState.IDLE);
     }
 }

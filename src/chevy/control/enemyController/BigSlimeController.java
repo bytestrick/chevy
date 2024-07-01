@@ -9,6 +9,7 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.staticEntity.environment.traps.Trap;
 
 /**
  * La classe BigSlimeController è responsabile della gestione del comportamento e delle interazioni
@@ -80,10 +81,17 @@ public class BigSlimeController {
                     bigSlime.changeState(BigSlime.EnumState.MOVE);
                 }
             }
+            else if (bigSlime.canAttack() && bigSlime.getState(BigSlime.EnumState.ATTACK).isFinished()) {
+                Entity entity = chamber.getNearEntityOnTop(bigSlime, direction);
+                if (entity instanceof Player) {
+                    playerController.handleInteraction(InteractionTypes.ENEMY, bigSlime);
+                    bigSlime.setCanAttack(false);
+                }
+            }
             else if (bigSlime.canChange(BigSlime.EnumState.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(bigSlime, direction);
                 if (entity instanceof Player && bigSlime.changeState(BigSlime.EnumState.ATTACK)) {
-                    playerController.handleInteraction(InteractionTypes.ENEMY, bigSlime);
+                    bigSlime.setCanAttack(true);
                 }
             }
         }
@@ -108,5 +116,14 @@ public class BigSlimeController {
     private void hitBigSlime(BigSlime bigSlime, int damage) {
         if (bigSlime.changeState(BigSlime.EnumState.HIT))
             bigSlime.changeHealth(damage);
+    }
+
+    public void trapInteraction(Trap trap, BigSlime bigSlime) {
+        switch (trap.getSpecificType()) {
+            case Trap.Type.SPIKED_FLOOR -> {
+                hitBigSlime(bigSlime, -1 * trap.getDamage());
+            }
+            default -> {}
+        }
     }
 }

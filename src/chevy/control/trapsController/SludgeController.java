@@ -33,7 +33,7 @@ public class SludgeController {
     public void playerInteraction(Player player, Sludge sludge) {
         if (sludge.getNMoveToUnlock() <= 0) {
             player.changeState(Player.EnumState.IDLE);
-            chamber.findAndRemoveEntity(sludge);
+            chamber.findAndRemoveEntity(sludge, false);
         }
         else {
             sludge.decreaseNMoveToUnlock();

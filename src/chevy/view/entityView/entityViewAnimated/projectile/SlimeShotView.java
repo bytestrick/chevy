@@ -2,8 +2,8 @@ package chevy.view.entityView.entityViewAnimated.projectile;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.model.entity.dinamicEntity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.State;
 import chevy.utils.Pair;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -50,9 +50,10 @@ public class SlimeShotView extends EntityViewAnimated {
         // --- START
 
         int offset = 16;
+        Vector2<Integer> offsetUp = new Vector2<>(0, -16);
         createAnimation(Projectile.EnumState.START, 0,
                 4, false, 1,
-                new Vector2<>(0, -1 * offset), 1,
+                offsetUp, 1,
                 SLIME_SHOT_RESOURCES + "start/up", ".png");
 
         createAnimation(Projectile.EnumState.START, 1,
@@ -138,7 +139,7 @@ public class SlimeShotView extends EntityViewAnimated {
         if (currentAnimatedSprite != null) {
             if (currentEnumState == Projectile.EnumState.END && currentState.isFinished()) {
                 slimeShot.setToDraw(false);
-                currentAnimatedSprite.stop();
+//                currentAnimatedSprite.stop();
             }
             else if (!currentAnimatedSprite.isRunning()) {
                 currentAnimatedSprite.start();

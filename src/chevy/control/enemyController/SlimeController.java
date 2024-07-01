@@ -8,6 +8,7 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.chamber.Chamber;
+import chevy.model.entity.staticEntity.environment.traps.Trap;
 
 /**
  * La classe SlimeController è responsabile della gestione del comportamento e delle interazioni
@@ -72,10 +73,18 @@ public class SlimeController {
                 if (chamber.moveRandom(slime)) {
                     slime.changeState(Slime.EnumState.MOVE);
                 }
-            } else if (slime.canChange(Slime.EnumState.ATTACK)) {
+            }
+            else if (slime.canAttack() && slime.getState(Slime.EnumState.ATTACK).isFinished()) {
+                Entity entity = chamber.getNearEntityOnTop(slime, direction);
+                if (entity instanceof Player) {
+                    playerController.handleInteraction(InteractionTypes.ENEMY, slime);
+                    slime.setCanAttack(false);
+                }
+            }
+            else if (slime.canChange(Slime.EnumState.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(slime, direction);
                 if (entity instanceof Player && slime.changeState(Slime.EnumState.ATTACK)) {
-                    playerController.handleInteraction(InteractionTypes.ENEMY, slime);
+                    slime.setCanAttack(true);
                 }
             }
         }
@@ -100,5 +109,14 @@ public class SlimeController {
     private void hitSlime(Slime slime, int damage) {
         if (slime.changeState(Slime.EnumState.HIT))
             slime.changeHealth(damage);
+    }
+
+    public void trapInteraction(Trap trap, Slime slime) {
+        switch (trap.getSpecificType()) {
+            case Trap.Type.SPIKED_FLOOR -> {
+                hitSlime(slime, -1 * trap.getDamage());
+            }
+            default -> {}
+        }
     }
 }

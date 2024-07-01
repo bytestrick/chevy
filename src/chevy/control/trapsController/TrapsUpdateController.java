@@ -1,29 +1,46 @@
 package chevy.control.trapsController;
 
 import chevy.control.InteractionTypes;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
 import chevy.settings.GameSettings;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
- * Controller che gestisce gli aggiornamenti delle trappole nel gioco.
+ * La classe TrapsUpdateController è responsabile della gestione degli aggiornamenti
+ * delle trappole del gioco. Implementa l'interfaccia Update per integrarsi con il ciclo di
+ * aggiornamento del gioco. Gestisce l'aggiunta, l'aggiornamento delle trappole.
  */
 public class TrapsUpdateController implements Update {
     private final TrapsController trapsController;
-    private final List<Trap> traps;
+    private final List<Trap> traps = new ArrayList<>();
+    private final List<Trap> trapsToAdd;
 
     /**
      * @param trapsController il controller delle trappole per gestire gli aggiornamenti delle trappole
      * @param traps la lista delle trappole da aggiornare
      */
     public TrapsUpdateController(TrapsController trapsController, List<Trap> traps) {
-        this.traps = traps;
         this.trapsController = trapsController;
+        this.trapsToAdd = traps;
 
         UpdateManager.addToUpdate(this);
+    }
+
+    /**
+     * Aggiunge le trappole alla lista degli aggiornamenti se devono essere aggiornate
+     * e svuota la lista temporanea.
+     */
+    private void addEnemies() {
+        for (Trap trap : trapsToAdd)
+            if (trap.isMustBeUpdated())
+                traps.add(trap);
+        trapsToAdd.clear();
     }
 
     /**
@@ -32,12 +49,11 @@ public class TrapsUpdateController implements Update {
      */
     @Override
     public void update(double delta) {
+        addEnemies();
+
+        // Itera attraverso la lista dei nemici per aggiornarli e rimuove quelli che devono essere rimossi.
         for (Trap trap : traps) {
-            trap.incrementNUpdate();
-            if (trap.getUpdateEverySecond() * GameSettings.FPS == trap.getCurrentNUpdate()) {
-                trap.resetNUpdate();
-                trapsController.handleInteraction(InteractionTypes.UPDATE, trap, null);
-            }
+            trapsController.handleInteraction(InteractionTypes.UPDATE, trap, null);
         }
     }
 

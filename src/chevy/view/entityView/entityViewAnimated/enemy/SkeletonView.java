@@ -2,8 +2,8 @@ package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.model.entity.dinamicEntity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.State;
 import chevy.utils.Pair;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -105,19 +105,19 @@ public class SkeletonView extends EntityViewAnimated {
 
         createAnimation(Skeleton.EnumState.HIT, 0,
                 1, false, 1,
-                SKELETON_RESOURCES + "dead/up", ".png");
+                SKELETON_RESOURCES + "hit/up", ".png");
 
         createAnimation(Skeleton.EnumState.HIT, 1,
                 1, false, 1,
-                SKELETON_RESOURCES + "dead/down", ".png");
+                SKELETON_RESOURCES + "hit/down", ".png");
 
         createAnimation(Skeleton.EnumState.HIT, 2,
                 1, false, 1,
-                SKELETON_RESOURCES + "dead/right", ".png");
+                SKELETON_RESOURCES + "hit/right", ".png");
 
         createAnimation(Skeleton.EnumState.HIT, 3,
                 1, false, 1,
-                SKELETON_RESOURCES + "dead/left", ".png");
+                SKELETON_RESOURCES + "hit/left", ".png");
 
         // --- DEAD
 

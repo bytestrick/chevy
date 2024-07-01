@@ -1,7 +1,7 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.model.entity.dinamicEntity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class Wraith extends Enemy {
@@ -26,14 +26,13 @@ public class Wraith extends Enemy {
         this.maxDamage = 2;
         this.minDamage = 1;
 
-        this.updateEverySecond = 0.5f;
-
-        stateMachine.setStateMachineName("Wraith");
-        stateMachine.setInitialState(idle);
         initStateMachine();
     }
 
     private void initStateMachine() {
+        stateMachine.setStateMachineName("Wraith");
+        stateMachine.setInitialState(idle);
+
         idle.linkState(move);
         idle.linkState(attack);
         idle.linkState(hit);
@@ -46,7 +45,7 @@ public class Wraith extends Enemy {
     }
 
     @Override
-    public State getState(CommonEnumStates commonEnumStates) {
+    public synchronized State getState(CommonEnumStates commonEnumStates) {
         EnumState wraithState = (EnumState) commonEnumStates;
         return switch (wraithState) {
             case MOVE -> move;

@@ -1,8 +1,8 @@
 package chevy.model.entity.dinamicEntity.projectile;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.model.entity.dinamicEntity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class SlimeShot extends Projectile {
@@ -16,6 +16,7 @@ public class SlimeShot extends Projectile {
 
         this.maxDamage = 3;
         this.minDamage = 2;
+        this.layer = 2;
 
         initStateMachine();
     }

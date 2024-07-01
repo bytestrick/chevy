@@ -1,7 +1,7 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.model.entity.dinamicEntity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class BigSlime extends Enemy {
@@ -25,26 +25,27 @@ public class BigSlime extends Enemy {
         this.maxDamage = 3;
         this.minDamage = 2;
 
-        this.updateEverySecond = 1.f;
-
-        stateMachine.setStateMachineName("Big slime");
-        stateMachine.setInitialState(idle);
         initStateMachine();
     }
 
 
     private void initStateMachine() {
+        stateMachine.setStateMachineName("Big slime");
+        stateMachine.setInitialState(idle);
+
         idle.linkState(move);
         idle.linkState(attack);
         idle.linkState(hit);
         move.linkState(idle);
+        move.linkState(hit);
         attack.linkState(idle);
+        attack.linkState(hit);
         hit.linkState(idle);
         hit.linkState(dead);
     }
 
     @Override
-    public State getState(CommonEnumStates commonEnumStates) {
+    public synchronized State getState(CommonEnumStates commonEnumStates) {
         EnumState bigSlimeState = (EnumState) commonEnumStates;
         return switch (bigSlimeState) {
             case MOVE -> move;

@@ -2,8 +2,9 @@ package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.model.entity.dinamicEntity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.utils.Pair;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -47,103 +48,104 @@ public class BeetleView extends EntityViewAnimated {
 
 
     private void initAnimation() {
+        float idleDuration = beetle.getState(Beetle.EnumState.IDLE).getDuration();
+        float moveDuration = beetle.getState(Beetle.EnumState.MOVE).getDuration();
+        float hitDuration = beetle.getState(Beetle.EnumState.HIT).getDuration();
+        float attackDuration = beetle.getState(Beetle.EnumState.ATTACK).getDuration();
+        float deadDuration = beetle.getState(Beetle.EnumState.DEAD).getDuration();
         // --- IDLE
 
         createAnimation(Beetle.EnumState.IDLE, 0,
-                4, true, 4,
+                4, idleDuration,
                 BEETLE_RESOURCES + "idle/up", ".png");
 
         createAnimation(Beetle.EnumState.IDLE, 1,
-                4, true, 4,
+                4,  idleDuration,
                 BEETLE_RESOURCES + "idle/down", ".png");
 
         createAnimation(Beetle.EnumState.IDLE, 2,
-                4, true, 4,
+                4,  idleDuration,
                 BEETLE_RESOURCES + "idle/right", ".png");
 
         createAnimation(Beetle.EnumState.IDLE, 3,
-                4, true, 4,
+                4,  idleDuration,
                 BEETLE_RESOURCES + "idle/left", ".png");
 
         // --- MOVE
 
         createAnimation(Beetle.EnumState.MOVE, 0,
-                4, false, 1,
+                4,  moveDuration,
                 BEETLE_RESOURCES + "move/up", ".png");
 
         createAnimation(Beetle.EnumState.MOVE, 1,
-                4, false, 1,
+                4,  moveDuration,
                 BEETLE_RESOURCES + "move/down", ".png");
 
         createAnimation(Beetle.EnumState.MOVE, 2,
-                4, false, 1,
+                4,  moveDuration,
                 BEETLE_RESOURCES + "move/right", ".png");
 
         createAnimation(Beetle.EnumState.MOVE, 3,
-                4, false, 1,
+                4,  moveDuration,
                 BEETLE_RESOURCES + "move/left", ".png");
 
         // --- ATTACK
-
+        Vector2<Integer> offsetAttack = new Vector2<>(-2, -4);
+        float scaleAttack = 1;
         createAnimation(Beetle.EnumState.ATTACK, 0,
-                4, false, 1,
+                4,  attackDuration,
+                offsetAttack, scaleAttack,
                 BEETLE_RESOURCES + "attack/up", ".png");
 
         createAnimation(Beetle.EnumState.ATTACK, 1,
-                4, false, 1,
+                4,  attackDuration,
+                offsetAttack, scaleAttack,
                 BEETLE_RESOURCES + "attack/down", ".png");
 
         createAnimation(Beetle.EnumState.ATTACK, 2,
-                4, false, 1,
+                4,  attackDuration,
+                offsetAttack, scaleAttack,
                 BEETLE_RESOURCES + "attack/right", ".png");
 
         createAnimation(Beetle.EnumState.ATTACK, 3,
-                4, false, 1,
+                4,  attackDuration,
+                offsetAttack, scaleAttack,
                 BEETLE_RESOURCES + "attack/left", ".png");
 
         // --- HIT
 
         createAnimation(Beetle.EnumState.HIT, 0,
-                1, false, 1,
+                1,  hitDuration,
                 BEETLE_RESOURCES + "hit/up", ".png");
 
         createAnimation(Beetle.EnumState.HIT, 1,
-                1, false, 1,
+                1,  hitDuration,
                 BEETLE_RESOURCES + "hit/down", ".png");
 
         createAnimation(Beetle.EnumState.HIT, 2,
-                1, false, 1,
+                1,  hitDuration,
                 BEETLE_RESOURCES + "hit/right", ".png");
 
         createAnimation(Beetle.EnumState.HIT, 3,
-                1, false, 1,
+                1,  hitDuration,
                 BEETLE_RESOURCES + "hit/left", ".png");
 
         // --- DEAD
 
         createAnimation(Beetle.EnumState.DEAD, 0,
-                4, false, 1,
+                4,  deadDuration,
                 BEETLE_RESOURCES + "dead/left", ".png");
         createAnimation(Beetle.EnumState.DEAD, 1,
-                4, false, 1,
+                4,  deadDuration,
                 BEETLE_RESOURCES + "dead/right", ".png");
     }
 
-    private void createAnimation(CommonEnumStates enumStates, int type,
-                                 int nFrame, boolean loop, int times,
-                                 String folderPath, String extension) {
-        if (!loop)
-            times = 1;
-        float durationFrame = beetle.getState(enumStates).getDuration() / (nFrame * times);
-        AnimatedSprite animatedSprite = new AnimatedSprite(
-                new Pair<>(enumStates, type),
-                nFrame,
-                durationFrame,
-                loop
-        );
-        super.initAnimation(animatedSprite, folderPath, extension);
+    public Vector2<Integer> getOffset() {
+        CommonEnumStates currentState = beetle.getCurrentEumState();
+        int type = getAnimationType(currentState);
+        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, type);
+        return currentAnimatedSprite.getOffset();
     }
-
 
     @Override
     public BufferedImage getCurrentFrame() {

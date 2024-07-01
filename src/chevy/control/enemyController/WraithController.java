@@ -8,6 +8,7 @@ import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.staticEntity.environment.traps.Trap;
 
 /**
  * La classe WraithController è responsabile della gestione del comportamento e delle interazioni
@@ -45,7 +46,7 @@ public class WraithController {
             // Se il giocatore è in stato di attacco, il Wraith viene danneggiato in base al danno del giocatore.
             case Player.EnumState.ATTACK -> {
                 wraith.setDirection(DirectionsModel.positionToDirection(player, wraith));
-                hitBat(wraith, -1 * player.getDamage());
+                hitWraith(wraith, -1 * player.getDamage());
             }
             default -> System.out.println("[!] Il WraithController non gestisce questa azione: " + player.getCurrentEumState());
         }
@@ -72,10 +73,18 @@ public class WraithController {
                 if (chamber.moveRandomPlus(wraith)) {
                     wraith.changeState(Wraith.EnumState.MOVE);
                 }
-            } else if (wraith.canChange(Wraith.EnumState.ATTACK)) {
+            }
+            else if (wraith.canAttack() && wraith.getState(Wraith.EnumState.ATTACK).isFinished()) {
+                Entity entity = chamber.getNearEntityOnTop(wraith, direction);
+                if (entity instanceof Player) {
+                    playerController.handleInteraction(InteractionTypes.ENEMY, wraith);
+                    wraith.setCanAttack(false);
+                }
+            }
+            else if (wraith.canChange(Wraith.EnumState.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(wraith, direction);
                 if (entity instanceof Player && wraith.changeState(Wraith.EnumState.ATTACK)) {
-                    playerController.handleInteraction(InteractionTypes.ENEMY, wraith);
+                    wraith.setCanAttack(true);
                 }
             }
         }
@@ -89,7 +98,7 @@ public class WraithController {
      */
     public void projectileInteraction(Projectile projectile, Wraith wraith) {
         wraith.setDirection(DirectionsModel.positionToDirection(projectile, wraith));
-        hitBat(wraith, -1 * projectile.getDamage());
+        hitWraith(wraith, -1 * projectile.getDamage());
     }
 
     /**
@@ -97,8 +106,17 @@ public class WraithController {
      * @param wraith il Wraith che subisce il danno.
      * @param damage il danno da applicare.
      */
-    private void hitBat(Wraith wraith, int damage) {
+    private void hitWraith(Wraith wraith, int damage) {
         if (wraith.changeState(Wraith.EnumState.HIT))
             wraith.changeHealth(damage);
+    }
+
+    public void trapInteraction(Trap trap, Wraith wraith) {
+        switch (trap.getSpecificType()) {
+            case Trap.Type.SPIKED_FLOOR -> {
+                hitWraith(wraith, -1 * trap.getDamage());
+            }
+            default -> {}
+        }
     }
 }
