@@ -71,8 +71,7 @@ public class LoadChamber {
                             chamber.addEnemy(enemy);
                         }
                         else if (entity instanceof Trap trap) {
-                            if (trap instanceof SpikedFloor || trap instanceof Totem)
-                                chamber.addTraps(trap);
+                            chamber.addTraps(trap);
                         }
                     }
                 }

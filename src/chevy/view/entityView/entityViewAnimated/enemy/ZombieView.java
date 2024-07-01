@@ -2,8 +2,8 @@ package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.model.entity.dinamicEntity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.State;
 import chevy.utils.Pair;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -103,21 +103,21 @@ public class ZombieView extends EntityViewAnimated {
 
         // --- HIT
 
-        createAnimation(Zombie.EnumState.DEAD, 0,
+        createAnimation(Zombie.EnumState.HIT, 0,
                 1, false, 1,
-                ZOMBIE_RESOURCES + "dead/up", ".png");
+                ZOMBIE_RESOURCES + "hit/up", ".png");
 
-        createAnimation(Zombie.EnumState.DEAD, 1,
+        createAnimation(Zombie.EnumState.HIT, 1,
                 1, false, 1,
-                ZOMBIE_RESOURCES + "dead/down", ".png");
+                ZOMBIE_RESOURCES + "hit/down", ".png");
 
-        createAnimation(Zombie.EnumState.DEAD, 2,
+        createAnimation(Zombie.EnumState.HIT, 2,
                 1, false, 1,
-                ZOMBIE_RESOURCES + "dead/left", ".png");
+                ZOMBIE_RESOURCES + "hit/left", ".png");
 
-        createAnimation(Zombie.EnumState.DEAD, 3,
+        createAnimation(Zombie.EnumState.HIT, 3,
                 1, false, 1,
-                ZOMBIE_RESOURCES + "dead/right", ".png");
+                ZOMBIE_RESOURCES + "hit/right", ".png");
 
         // --- DEAD
 

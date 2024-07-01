@@ -3,10 +3,12 @@ package chevy.control.enemyController;
 import chevy.control.InteractionTypes;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
+import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.staticEntity.environment.traps.Trap;
 
 /**
  * La classe EnemyController è responsabile della gestione del comportamento e delle interazioni
@@ -42,11 +44,29 @@ public class EnemyController {
      * @param subject l'entità che avvia l'interazione.
      * @param object l'entità che subisce l'interazione.
      */
-    public synchronized void handleInteraction(InteractionTypes interaction, DynamicEntity subject, DynamicEntity object) {
+    public synchronized void handleInteraction(InteractionTypes interaction, Entity subject, DynamicEntity object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, (Enemy) object);
             case UPDATE -> updateEnemy((Enemy) subject);
             case PROJECTILE -> projectileInteraction((Projectile) subject, (Enemy) object);
+            case TRAP -> trapInteraction((Trap) subject, (Enemy) object);
+            default -> {}
+        }
+    }
+
+    /**
+     * Gestisce l'interazione di una trappoòa con un nemico.
+     * @param trap la trappola che interagisce con il nemico.
+     * @param enemy il nemico colpito dal proiettile.
+     */
+    private void trapInteraction(Trap trap, Enemy enemy) {
+        switch (enemy.getSpecificType()) {
+            case Enemy.Type.WRAITH -> wraithController.trapInteraction(trap, (Wraith) enemy);
+            case Enemy.Type.SLIME -> slimeController.trapInteraction(trap, (Slime) enemy);
+            case Enemy.Type.BIG_SLIME -> bigSlimeController.trapInteraction(trap, (BigSlime) enemy);
+            case Enemy.Type.ZOMBIE -> zombieController.trapInteraction(trap, (Zombie) enemy);
+            case Enemy.Type.SKELETON -> skeletonController.trapInteraction(trap, (Skeleton) enemy);
+            case Enemy.Type.BEETLE -> beetleController.trapInteraction(trap, (Beetle) enemy);
             default -> {}
         }
     }

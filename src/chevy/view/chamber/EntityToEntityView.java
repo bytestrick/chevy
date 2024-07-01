@@ -9,6 +9,9 @@ import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.Ground;
 import chevy.model.entity.staticEntity.environment.Wall;
+import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
+import chevy.model.entity.staticEntity.environment.traps.Sludge;
+import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.view.entityView.EntityView;
 import chevy.view.entityView.GroundView;
@@ -17,6 +20,9 @@ import chevy.view.entityView.WallView;
 import chevy.view.entityView.entityViewAnimated.enemy.*;
 import chevy.view.entityView.entityViewAnimated.player.KnightView;
 import chevy.view.entityView.entityViewAnimated.projectile.SlimeShotView;
+import chevy.view.entityView.entityViewAnimated.trap.IcyFloorView;
+import chevy.view.entityView.entityViewAnimated.trap.SludgeView;
+import chevy.view.entityView.entityViewAnimated.trap.SpikedFloorView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +36,7 @@ public class EntityToEntityView {
 
     public static EntityView getSpecific(Entity entity) {
         return switch (entity.getSpecificType()) {
+            // ENEMY
             case Enemy.Type.SLIME -> {
                 SlimeView slimeView = null;
                 if (!entityView.containsKey(entity)) {
@@ -96,6 +103,8 @@ public class EntityToEntityView {
 
                 yield beetleView;
             }
+
+            // PLAYER
             case Player.Type.KNIGHT -> {
                 KnightView knightView = null;
                 if (!entityView.containsKey(entity)) {
@@ -107,15 +116,53 @@ public class EntityToEntityView {
 
                 yield knightView;
             }
+
+            // PROJECTILE
             case Projectile.Type.SLIME_SHOT -> {
                 SlimeShotView slimeShotView = null;
                 if (!entityView.containsKey(entity)) {
                     slimeShotView = new SlimeShotView((SlimeShot) entity);
                     entityView.put(entity, slimeShotView);
-                } else
+                }
+                else
                     slimeShotView = (SlimeShotView) entityView.get(entity);
 
                 yield slimeShotView;
+            }
+
+            // TRAPS
+            case Trap.Type.SPIKED_FLOOR -> {
+                SpikedFloorView spikedFloorView = null;
+                if (!entityView.containsKey(entity)) {
+                    spikedFloorView = new SpikedFloorView((SpikedFloor) entity);
+                    entityView.put(entity, spikedFloorView);
+                }
+                else
+                    spikedFloorView = (SpikedFloorView) entityView.get(entity);
+
+                yield spikedFloorView;
+            }
+            case Trap.Type.SLUDGE -> {
+                SludgeView sludgeView = null;
+                if (!entityView.containsKey(entity)) {
+                    sludgeView = new SludgeView((Sludge) entity);
+                    entityView.put(entity, sludgeView);
+                }
+                else
+                    sludgeView = (SludgeView) entityView.get(entity);
+
+                yield sludgeView;
+            }
+            case Trap.Type.ICY_FLOOR -> {
+                IcyFloorView icyFloorView = null;
+                if (!entityView.containsKey(entity)) {
+                    icyFloorView = new IcyFloorView((IcyFloor) entity);
+                    entityView.put(entity, icyFloorView);
+                }
+                else
+                    icyFloorView = (IcyFloorView) entityView.get(entity);
+
+                yield icyFloorView;
             }
             default -> null;
         };

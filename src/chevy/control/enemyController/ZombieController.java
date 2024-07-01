@@ -8,6 +8,7 @@ import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.staticEntity.environment.traps.Trap;
 
 /**
  * La classe ZombieController è responsabile della gestione del comportamento e delle interazioni
@@ -73,10 +74,18 @@ public class ZombieController {
                 if (chamber.wanderChase(zombie, 4)) {
                     zombie.changeState(Zombie.EnumState.MOVE);
                 }
-            } else if (zombie.canChange(Zombie.EnumState.ATTACK)) {
+            }
+            else if (zombie.canAttack() && zombie.getState(Zombie.EnumState.ATTACK).isFinished()) {
+                Entity entity = chamber.getNearEntityOnTop(zombie, direction);
+                if (entity instanceof Player) {
+                    playerController.handleInteraction(InteractionTypes.ENEMY, zombie);
+                    zombie.setCanAttack(false);
+                }
+            }
+            else if (zombie.canChange(Zombie.EnumState.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(zombie, direction);
                 if (entity instanceof Player && zombie.changeState(Zombie.EnumState.ATTACK)) {
-                    playerController.handleInteraction(InteractionTypes.ENEMY, zombie);
+                    zombie.setCanAttack(true);
                 }
             }
         }
@@ -101,5 +110,14 @@ public class ZombieController {
     private void hitZombie(Zombie zombie, int damage) {
         if (zombie.changeState(Zombie.EnumState.HIT))
             zombie.changeHealth(damage);
+    }
+
+    public void trapInteraction(Trap trap, Zombie zombie) {
+        switch (trap.getSpecificType()) {
+            case Trap.Type.SPIKED_FLOOR -> {
+                hitZombie(zombie, -1 * trap.getDamage());
+            }
+            default -> {}
+        }
     }
 }

@@ -3,7 +3,7 @@ package chevy.model.entity.dinamicEntity.projectile;
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.utils.Vector2;
 
 public abstract class Projectile extends DynamicEntity {
@@ -26,8 +26,6 @@ public abstract class Projectile extends DynamicEntity {
         super(initPosition, DynamicEntity.Type.PROJECTILE);
         this.type = type;
         this.direction = direction;
-
-        this.updateEverySecond = 1;
 
         this.crossable = true;
         this.safeToCross = false;

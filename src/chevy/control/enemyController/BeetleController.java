@@ -9,6 +9,7 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
+import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.utils.Vector2;
 
 /**
@@ -87,9 +88,14 @@ public class BeetleController {
             DirectionsModel direction = chamber.getHitDirectionPlayer(beetle, 3);
             // Se trova il giocatore, inizia l'inseguimento (chasing).
             if (direction == null) {
+                beetle.setCanAttack(false);
                 if (chamber.chase(beetle)) {
                     beetle.changeState(Beetle.EnumState.MOVE);
                 }
+            }
+            else if (beetle.canAttack() && beetle.getState(Beetle.EnumState.ATTACK).isFinished()) {
+                playerController.handleInteraction(InteractionTypes.ENEMY, beetle);
+                beetle.setCanAttack(false);
             }
             // Se può cambiare lo stato a "ATTACK", cerca di attaccare il giocatore.
             else if (beetle.canChange(Beetle.EnumState.ATTACK)) {
@@ -101,8 +107,8 @@ public class BeetleController {
                         chamber.addEntityOnTop(slimeShot);
                         break;
                     }
-                    else if (distance == 1)
-                        playerController.handleInteraction(InteractionTypes.ENEMY, beetle);
+                    else if (distance == 1 && entity instanceof Player && beetle.changeState(Beetle.EnumState.ATTACK))
+                        beetle.setCanAttack(true);
                 }
             }
         }
@@ -110,6 +116,19 @@ public class BeetleController {
         beetle.checkAndChangeState(Beetle.EnumState.IDLE);
     }
 
+    /**
+     * Gestisce le interazioni del Beetle con le trappole.
+     * @param trap la trappola che interagisce con il beetle.
+     * @param beetle Il Beetle che subisce l'interazione.
+     */
+    public void trapInteraction(Trap trap, Beetle beetle) {
+        switch (trap.getSpecificType()) {
+            case Trap.Type.SPIKED_FLOOR -> {
+                hitBeetle(beetle, -1 * trap.getDamage());
+            }
+            default -> {}
+        }
+    }
 
     /**
      * Applica danno al Beetle e cambia il suo stato a "colpito" se possibile.

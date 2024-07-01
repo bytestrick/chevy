@@ -1,7 +1,7 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.model.entity.dinamicEntity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class Beetle extends Enemy {
@@ -14,7 +14,7 @@ public class Beetle extends Enemy {
     }
     private final State idle = new State(EnumState.IDLE, 1.5f);
     private final State move = new State(EnumState.MOVE, 0.5f);
-    private final State attack = new State(EnumState.ATTACK, 0.8f);
+    private final State attack = new State(EnumState.ATTACK, 0.5f);
     private final State hit = new State(EnumState.HIT, 0.15f);
     private final State dead = new State(EnumState.DEAD, 0.3f);
 
@@ -25,13 +25,14 @@ public class Beetle extends Enemy {
         this.maxDamage = 5;
         this.minDamage = 3;
 
-        stateMachine.setStateMachineName("Beetle");
-        stateMachine.setInitialState(idle);
         initStateMachine();
     }
 
 
     private void initStateMachine() {
+        stateMachine.setStateMachineName("Beetle");
+        stateMachine.setInitialState(idle);
+
         idle.linkState(move);
         idle.linkState(attack);
         idle.linkState(hit);
@@ -44,7 +45,7 @@ public class Beetle extends Enemy {
     }
 
     @Override
-    public State getState(CommonEnumStates commonEnumStates) {
+    public synchronized State getState(CommonEnumStates commonEnumStates) {
         EnumState beetleState = (EnumState) commonEnumStates;
         return switch (beetleState) {
             case MOVE -> move;

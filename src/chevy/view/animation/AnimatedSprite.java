@@ -1,6 +1,6 @@
 package chevy.view.animation;
 
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.service.Render;
 import chevy.service.RenderManager;
 import chevy.utils.Pair;

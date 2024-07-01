@@ -2,7 +2,7 @@ package chevy.model.entity.dinamicEntity.liveEntity.player;
 
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.utils.Vector2;
 
 public abstract class Player extends LiveEntity {

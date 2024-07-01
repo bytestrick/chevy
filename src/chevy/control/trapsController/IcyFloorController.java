@@ -24,8 +24,15 @@ public class IcyFloorController {
      * @param icyFloor il pavimento ghiacciato calpestato dal giocatore
      */
     public void playerInInteraction(Player player, IcyFloor icyFloor) {
-        if (player.changeState(Player.EnumState.GLIDE)) {
-            playerController.handleInteraction(InteractionTypes.TRAP, icyFloor);
-        }
+        player.changeState(Player.EnumState.GLIDE);
+    }
+
+    public void playerOutInteraction(Player player, IcyFloor icyFloor) {
+        player.changeState(Player.EnumState.GLIDE);
+    }
+
+    public void update(IcyFloor icyFloor) {
+        icyFloor.checkAndChangeState(IcyFloor.EnumState.ICY_FLOOR);
+        icyFloor.checkAndChangeState(IcyFloor.EnumState.ICY_FLOOR_SPARKLING);
     }
 }

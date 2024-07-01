@@ -7,7 +7,7 @@ public class WindowSettings {
 
     private static final int MAX_WINDOW_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
     private static final int MAX_WINDOW_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
-    private static final float WINDOW_SCALE = 0.8f; // da 0 a 1
+    private static final float WINDOW_SCALE = 0.5f; // da 0 a 1
 
 
 //    Questo approccio mantiene l'aspect-ratio impostato.
@@ -20,6 +20,9 @@ public class WindowSettings {
     public static int WINDOW_WIDTH = MAX_WINDOW_WIDTH <= MAX_WINDOW_HEIGHT ?
             MAX_WINDOW_SIZE :
             Math.round((float) (MAX_WINDOW_SIZE * ASPECT_RATIO_W) / ASPECT_RATIO_H);
+    public static float scaleX = (float) WINDOW_WIDTH / MAX_WINDOW_WIDTH; // fattore di scala per x
+    public static float scaleY = (float) WINDOW_HEIGHT / MAX_WINDOW_HEIGHT; // fattore di scala per y
+
 
 //    Questo approccio mantiene l'aspect-ratio dello schermo
 //    public static final int WINDOW_HEIGHT = Math.round(MAX_WINDOW_EIGHT * WINDOW_SCALE);
@@ -30,12 +33,15 @@ public class WindowSettings {
         WINDOW_HEIGHT = newHeight;
         WINDOW_WIDTH = newWidth;
 
-        GameSettings.scaleH = (float) (WINDOW_HEIGHT - SIZE_TOP_BAR) / GameSettings.nTileH;
-        GameSettings.scaleW = (float) WINDOW_WIDTH / GameSettings.nTileW;
+        GameSettings.optimalCellSizeH = (float) (WINDOW_HEIGHT - SIZE_TOP_BAR) / GameSettings.nTileH;
+        GameSettings.optimalCellSizeW = (float) WINDOW_WIDTH / GameSettings.nTileW;
 
-        GameSettings.scale = Math.round(Math.min(GameSettings.scaleH, GameSettings.scaleW));
+        GameSettings.optimalCellSize = Math.round(Math.min(GameSettings.optimalCellSizeH, GameSettings.optimalCellSizeW));
 
-        GameSettings.offsetH = Math.max(0, (WINDOW_HEIGHT - SIZE_TOP_BAR - Math.round((float) GameSettings.nTileH * GameSettings.scale)) / 2);
-        GameSettings.offsetW = Math.max(0, (WINDOW_WIDTH - Math.round((float) GameSettings.nTileW * GameSettings.scale)) / 2);
+        GameSettings.offsetH = Math.max(0, (WINDOW_HEIGHT - SIZE_TOP_BAR - Math.round((float) GameSettings.nTileH * GameSettings.optimalCellSize)) / 2);
+        GameSettings.offsetW = Math.max(0, (WINDOW_WIDTH - Math.round((float) GameSettings.nTileW * GameSettings.optimalCellSize)) / 2);
+
+        scaleX = (float) WINDOW_WIDTH / MAX_WINDOW_WIDTH * ASPECT_RATIO_W;
+        scaleY = (float) WINDOW_HEIGHT / MAX_WINDOW_HEIGHT * ASPECT_RATIO_H;
     }
 }

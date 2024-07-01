@@ -8,6 +8,7 @@ import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.staticEntity.environment.traps.Trap;
 
 /**
  * La classe SkeletonController è responsabile della gestione del comportamento e delle interazioni
@@ -76,10 +77,17 @@ public class SkeletonController {
                     skeleton.changeState(Skeleton.EnumState.MOVE);
                 }
             }
+            else if (skeleton.canAttack() && skeleton.getState(Skeleton.EnumState.ATTACK).isFinished()) {
+                Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
+                if (entity instanceof Player) {
+                    playerController.handleInteraction(InteractionTypes.ENEMY, skeleton);
+                    skeleton.setCanAttack(false);
+                }
+            }
             else if (skeleton.canChange(Skeleton.EnumState.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
                 if (entity instanceof Player && skeleton.changeState(Skeleton.EnumState.ATTACK)) {
-                    playerController.handleInteraction(InteractionTypes.ENEMY, skeleton);
+                    skeleton.setCanAttack(true);
                 }
             }
         }
@@ -105,5 +113,14 @@ public class SkeletonController {
     private void hitSkeleton(Skeleton skeleton, int damage) {
         if (skeleton.changeState(Skeleton.EnumState.HIT))
             skeleton.changeHealth(damage);
+    }
+
+    public void trapInteraction(Trap trap, Skeleton skeleton) {
+        switch (trap.getSpecificType()) {
+            case Trap.Type.SPIKED_FLOOR -> {
+                hitSkeleton(skeleton, -1 * trap.getDamage());
+            }
+            default -> {}
+        }
     }
 }

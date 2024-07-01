@@ -2,8 +2,8 @@ package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
-import chevy.model.entity.dinamicEntity.stateMachine.CommonEnumStates;
-import chevy.model.entity.dinamicEntity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.State;
 import chevy.utils.Pair;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -105,19 +105,19 @@ public class WraithView extends EntityViewAnimated {
 
         createAnimation(Wraith.EnumState.HIT, 0,
                 1, false, 1,
-                WRAITH_RESOURCES + "dead/up", ".png");
+                WRAITH_RESOURCES + "hit/up", ".png");
 
         createAnimation(Wraith.EnumState.HIT, 1,
                 1, false, 1,
-                WRAITH_RESOURCES + "dead/down", ".png");
+                WRAITH_RESOURCES + "hit/down", ".png");
 
         createAnimation(Wraith.EnumState.HIT, 2,
                 1, false, 1,
-                WRAITH_RESOURCES + "dead/left", ".png");
+                WRAITH_RESOURCES + "hit/left", ".png");
 
         createAnimation(Wraith.EnumState.HIT, 3,
                 1, false, 1,
-                WRAITH_RESOURCES + "dead/right", ".png");
+                WRAITH_RESOURCES + "hit/right", ".png");
 
         // --- DEAD
 
@@ -147,14 +147,14 @@ public class WraithView extends EntityViewAnimated {
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentState = wraith.getCurrentEumState();
-        int type = getAnimationType(currentState);
+        CommonEnumStates currentEnumState = wraith.getCurrentEumState();
+        int type = getAnimationType(currentEnumState);
 
-        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, type);
+        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, type);
 
         if (currentAnimatedSprite != null) {
             if (!currentAnimatedSprite.isRunning()) {
-                currentAnimatedSprite.start();
+                currentAnimatedSprite.restart();
             }
             return currentAnimatedSprite.getCurrentFrame();
         }

@@ -31,7 +31,7 @@ public class AStar {
         return !chamber.isSafeToCross(cell);
     }
 
-    // Contolla se si è raggiunta la posizione obiettivo
+    // Controlla se si è raggiunta la posizione obiettivo
     private boolean isDestination(Vector2<Integer> position, Vector2<Integer> dest) {
         return position.equals(dest);
     }
@@ -81,7 +81,7 @@ public class AStar {
 
         boolean[][] closedList = new boolean[nRows][nCols]; // Celle già esplorate
         Cell[][] cellDetails = new Cell[nRows][nCols];
-        PriorityQueue<Details> openList = new PriorityQueue<>(); // Creazione delle coda con priorità contenete row nodi da visitare
+        PriorityQueue<Details> openList = new PriorityQueue<>(); // Creazione della coda con priorità contenete row nodi da visitare
 
         // Inizializzazione della cella di partenza
         Vector2<Integer> currentCell = new Vector2<>(src.first, src.second);
@@ -90,7 +90,7 @@ public class AStar {
         cellDetails[currentCell.first][currentCell.second].g = 0.0;
         cellDetails[currentCell.first][currentCell.second].h = 0.0;
         cellDetails[currentCell.first][currentCell.second].parent = new Vector2<>( currentCell.first, currentCell.second );
-        // Aggiunge la prima cella nella coda dei nodi da esplorare con valore della funzioine euristica pari a 0
+        // Aggiunge la prima cella nella coda dei nodi da esplorare con valore della funzione euristica pari a 0
         openList.add(new Details(0.0d, currentCell.first, currentCell.second));
 
         while (!openList.isEmpty()) {
@@ -128,7 +128,7 @@ public class AStar {
                             double gNew = cellDetails[currentCell.first][currentCell.second].g + 1.0d; // costo del cammino fino al nodo corrente + 1
                             double hNew = calculateHValue(neighbour, dest);
                             double fNew = gNew + hNew;
-                            // se la cella del vicinato non ha valore f oppure ha un valore migliore
+                            // se la cella del vicinato non ha valore f, oppure, ha un valore migliore
                             if (cellDetails[neighbour.first][neighbour.second].f == -1 || cellDetails[neighbour.first][neighbour.second].f > fNew) {
                                 openList.add(new Details(fNew, neighbour.first, neighbour.second)); // aggiungi la cella del vicinato come visitabile
                                 // aggiorna i valori della cella, del vicinato considerata
