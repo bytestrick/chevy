@@ -2,12 +2,18 @@ package chevy.model.chamber.drawOrder;
 
 import chevy.model.entity.Entity;
 
-
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * La classe LayerManager gestisce l'ordine di disegno delle entità nel gioco.
+ * Utilizza una lista di Layer, ognuno dei quali contiene un insieme di entità da disegnare.
+ */
 public class LayerManager {
+    /**
+     * Lista di Layer che rappresenta l'ordine di disegno delle entità.
+     */
     private final List<Layer> drawOrder;
 
 
@@ -16,6 +22,11 @@ public class LayerManager {
     }
 
 
+    /**
+     * Trova un Layer specifico nella lista. Se il Layer non esiste, lo crea e lo aggiunge alla lista.
+     * @param nLayer priorità di ridisegno del livello da trovare.
+     * @return ll Layer trovato o creato.
+     */
     private Layer findLayer(int nLayer) {
         Layer newLayer = new Layer(nLayer);
         int index = Collections.binarySearch(drawOrder, newLayer);
@@ -28,6 +39,11 @@ public class LayerManager {
         return drawOrder.get(index);
     }
 
+    /**
+     * Aggiunge un'entità a un Layer specifico.
+     * @param entity L'entità da aggiungere.
+     * @param nLayer Il numero del Layer a cui aggiungere l'entità.
+     */
     public synchronized void add(Entity entity, int nLayer) {
         Layer layer = findLayer(nLayer);
         layer.add(entity);
@@ -37,4 +53,3 @@ public class LayerManager {
         return drawOrder;
     }
 }
-

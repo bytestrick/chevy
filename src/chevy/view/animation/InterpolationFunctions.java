@@ -1,5 +1,8 @@
 package chevy.view.animation;
 
+/**
+ * Raccolta di funzioni di easing
+ */
 public class InterpolationFunctions {
     private static double lerp(double a, double b, double t) {
         // 0 <= t <= 1

@@ -1,7 +1,7 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public class Totem extends Trap {
     private final DirectionsModel directionShot;
@@ -11,8 +11,7 @@ public class Totem extends Trap {
         super(initVelocity, Type.TOTEM);
         this.directionShot = directionShot;
         this.crossable = false;
-        this.updateEverySecond = 10;
-        this.canHitFlingEntity = true;
+        this.mustBeUpdated = true;
     }
 
 

@@ -2,7 +2,7 @@ package chevy.model.entity.dinamicEntity.liveEntity;
 
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public abstract class LiveEntity extends DynamicEntity {
     protected int health;
@@ -29,11 +29,19 @@ public abstract class LiveEntity extends DynamicEntity {
 
         this.health += value;
         if (health <= 0) {
-            alive = false;
             this.health = 0;
         }
 
         System.out.println(" -> " + health);
+    }
+
+    public synchronized int getHealth() {
+        return health;
+    }
+
+    public synchronized void kill() {
+        if (health <= 0)
+            alive = false;
     }
 
     public synchronized void changeShield(int value) {

@@ -1,7 +1,7 @@
 package chevy.view.entityView;
 
 import chevy.model.entity.staticEntity.environment.Ground;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 import chevy.view.Image;
 
 import java.awt.image.BufferedImage;

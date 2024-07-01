@@ -1,6 +1,9 @@
 package chevy.model.entity;
 
-import chevy.utilz.Vector2;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.StateMachine;
+import chevy.utils.Vector2;
 
 import java.util.Random;
 import java.util.UUID;
@@ -13,10 +16,10 @@ public abstract class Entity {
     protected int minDamage;
     protected boolean safeToCross;
     protected boolean crossable;
-    protected float updateEverySecond;
-    private int tick;
+
     protected int layer;
     private boolean toDraw;
+    protected final StateMachine stateMachine = new StateMachine();
     public enum Type implements EntityCommonEnumTypes {
         DYNAMIC,
         ENVIRONMENT,
@@ -24,12 +27,10 @@ public abstract class Entity {
     }
     private final Type type;
 
+
     public Entity(Vector2<Integer> initPosition, Type type) {
         this.position = initPosition;
         this.type = type;
-
-        this.updateEverySecond = 0;
-        this.tick = 0;
 
         this.crossable = false;
         this.safeToCross = true;
@@ -45,22 +46,6 @@ public abstract class Entity {
 
     public void setToDraw(boolean toDraw) {
         this.toDraw = toDraw;
-    }
-
-    public float getUpdateEverySecond() {
-        return updateEverySecond;
-    }
-
-    public int getCurrentNUpdate() {
-        return tick;
-    }
-
-    public void incrementNUpdate() {
-        ++tick;
-    }
-
-    public void resetNUpdate() {
-        tick = 0;
     }
 
     public synchronized int getDamage() {
@@ -88,6 +73,36 @@ public abstract class Entity {
     public int getLayer() {
         return Math.abs(this.layer);
     }
+
+    public State getState(CommonEnumStates commonEnumStates) {
+        System.out.println("[!] La funzione getState() deve essere ridefinita opportunamente nelle classi figlie");
+        return null;
+    }
+
+    public boolean changeState(CommonEnumStates state) {
+        return stateMachine.changeState(state);
+    }
+
+    public boolean canChange(CommonEnumStates state) {
+        return stateMachine.canChange(state);
+    }
+
+    public boolean checkAndChangeState(CommonEnumStates state) {
+        return stateMachine.checkAndChangeState(state);
+    }
+
+    public boolean changeToPreviousState() {
+        return stateMachine.changeToPreviousState();
+    }
+
+    public CommonEnumStates getCurrentEumState() {
+        return stateMachine.getCurrentState().getStateEnum();
+    }
+
+    public CommonEnumStates getPreviousEnumState() {
+        return stateMachine.getPreviousState().getStateEnum();
+    }
+
 
     @Override
     public String toString() {

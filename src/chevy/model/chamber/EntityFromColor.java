@@ -9,8 +9,12 @@ import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
 import chevy.model.entity.staticEntity.environment.*;
 import chevy.model.entity.staticEntity.environment.traps.*;
 import chevy.model.entity.staticEntity.environment.traps.Void;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
+/**
+ * La classe EntityFromColor si occupa della creazione di entità basate su valori di colore.
+ * Ogni valore di colore corrisponde a un tipo specifico di entità nel gioco.
+ */
 public class EntityFromColor {
     // Wall
     private static final int WALL_INTERIOR_CORNER_BOTTOM_LEFT = 255;
@@ -68,79 +72,78 @@ public class EntityFromColor {
     private static final int NINJA = 3;
 
     // Enemy
-    private static final int BAT = 150;
+    private static final int WRAITH = 150;
     private static final int ZOMBIE = 149;
     private static final int SLIME = 148;
     private static final int BIG_SLIME = 147;
-    private static final int FROG = 146;
-    private static final int WIZARD = 145;
-    private static final int SKELETON = 144;
+    private static final int BEETLE = 146;
+    private static final int SKELETON = 145;
 
     //
     private static final int NULL = 0;
 
 
     public static Entity get(int r, int row, int col) {
+        Vector2<Integer> startPosition = new Vector2<>(row, col);
         return switch (r) {
             // Wall
-            case WALL_TOP -> new Wall(new Vector2<>(row, col), Wall.WallTypes.TOP);
-            case WALL_INTERIOR_CORNER_TOP_LEFT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.CORNER_INTERIOR_TOP_LEFT);
-            case WALL_INTERIOR_CORNER_TOP_RIGHT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.CORNER_INTERIOR_TOP_RIGHT);
-            case WALL_INTERIOR_CORNER_BOTTOM_LEFT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.CORNER_INTERIOR_BOTTOM_LEFT);
-            case WALL_INTERIOR_CORNER_BOTTOM_RIGHT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.CORNER_INTERIOR_BOTTOM_RIGHT);
-            case WALL_BOTTOM -> new Wall(new Vector2<>(row, col), Wall.WallTypes.BOTTOM);
-            case WALL_LEFT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.LEFT);
-            case WALL_RIGHT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.RIGHT);
-            case WALL_EXTERNAL_CORNER_BOTTOM_LEFT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
-            case WALL_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
-            case WALL_EXTERNAL_CORNER_TOP_LEFT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.EXTERNAL_CORNER_TOP_LEFT);
-            case WALL_EXTERNAL_CORNER_TOP_RIGHT -> new Wall(new Vector2<>(row, col), Wall.WallTypes.EXTERNAL_CORNER_TOP_RIGHT);
+            case WALL_TOP -> new Wall(startPosition, Wall.WallTypes.TOP);
+            case WALL_INTERIOR_CORNER_TOP_LEFT -> new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_TOP_LEFT);
+            case WALL_INTERIOR_CORNER_TOP_RIGHT -> new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_TOP_RIGHT);
+            case WALL_INTERIOR_CORNER_BOTTOM_LEFT -> new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_BOTTOM_LEFT);
+            case WALL_INTERIOR_CORNER_BOTTOM_RIGHT -> new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_BOTTOM_RIGHT);
+            case WALL_BOTTOM -> new Wall(startPosition, Wall.WallTypes.BOTTOM);
+            case WALL_LEFT -> new Wall(startPosition, Wall.WallTypes.LEFT);
+            case WALL_RIGHT -> new Wall(startPosition, Wall.WallTypes.RIGHT);
+            case WALL_EXTERNAL_CORNER_BOTTOM_LEFT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
+            case WALL_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
+            case WALL_EXTERNAL_CORNER_TOP_LEFT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_TOP_LEFT);
+            case WALL_EXTERNAL_CORNER_TOP_RIGHT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_TOP_RIGHT);
 
             // Ground
-            case GROUND_TOP -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.TOP);
-            case GROUND_INTERIOR_CORNER_TOP_LEFT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.INTERIOR_CORNER_TOP_LEFT);
-            case GROUND_INTERIOR_CORNER_TOP_RIGHT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.INTERIOR_CORNER_TOP_RIGHT);
-            case GROUND_LEFT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.LEFT);
-            case GROUND_CENTRAL -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.CENTRAL);
-            case GROUND_CENTRAL_PATTERNED -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.CENTRAL_PATTERNED);
-            case GROUND_CENTRAL_PATTERNED_2 -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.CENTRAL_PATTERNED_2);
-            case GROUND_CENTRAL_BROKEN -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.CENTRAL_BROKEN);
-            case GROUND_CENTRAL_BROKEN_2 -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.CENTRAL_BROKEN_2);
-            case GROUND_CENTRAL_BROKEN_3 -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.CENTRAL_BROKEN_3);
-            case GROUND_RIGHT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.RIGHT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM);
-            case GROUND_EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT);
-            case GROUND_EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT -> new Ground(new Vector2<>(row, col), Ground.GroundTypes.EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT);
+            case GROUND_TOP -> new Ground(startPosition, Ground.GroundTypes.TOP);
+            case GROUND_INTERIOR_CORNER_TOP_LEFT -> new Ground(startPosition, Ground.GroundTypes.INTERIOR_CORNER_TOP_LEFT);
+            case GROUND_INTERIOR_CORNER_TOP_RIGHT -> new Ground(startPosition, Ground.GroundTypes.INTERIOR_CORNER_TOP_RIGHT);
+            case GROUND_LEFT -> new Ground(startPosition, Ground.GroundTypes.LEFT);
+            case GROUND_CENTRAL -> new Ground(startPosition, Ground.GroundTypes.CENTRAL);
+            case GROUND_CENTRAL_PATTERNED -> new Ground(startPosition, Ground.GroundTypes.CENTRAL_PATTERNED);
+            case GROUND_CENTRAL_PATTERNED_2 -> new Ground(startPosition, Ground.GroundTypes.CENTRAL_PATTERNED_2);
+            case GROUND_CENTRAL_BROKEN -> new Ground(startPosition, Ground.GroundTypes.CENTRAL_BROKEN);
+            case GROUND_CENTRAL_BROKEN_2 -> new Ground(startPosition, Ground.GroundTypes.CENTRAL_BROKEN_2);
+            case GROUND_CENTRAL_BROKEN_3 -> new Ground(startPosition, Ground.GroundTypes.CENTRAL_BROKEN_3);
+            case GROUND_RIGHT -> new Ground(startPosition, Ground.GroundTypes.RIGHT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM);
+            case GROUND_EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT);
+            case GROUND_EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT);
 
             // Trap
-            case VOID -> new Void(new Vector2<>(row, col));
-            case ICY_FLOOR -> new IcyFloor(new Vector2<>(row, col));
-            case SLUDGE -> new Sludge(new Vector2<>(row, col));
-            case TRAPDOOR -> new Trapdoor(new Vector2<>(row, col));
-            case SPIKED_FLOOR -> new SpikedFloor(new Vector2<>(row, col));
-            case TOTEM_UP -> new Totem(new Vector2<>(row, col), DirectionsModel.UP);
-            case TOTEM_RIGHT -> new Totem(new Vector2<>(row, col), DirectionsModel.RIGHT);
-            case TOTEM_DOWN -> new Totem(new Vector2<>(row, col), DirectionsModel.DOWN);
-            case TOTEM_LEFT -> new Totem(new Vector2<>(row, col), DirectionsModel.LEFT);
+            case VOID -> new Void(startPosition);
+            case ICY_FLOOR -> new IcyFloor(startPosition);
+            case SLUDGE -> new Sludge(startPosition);
+            case TRAPDOOR -> new Trapdoor(startPosition);
+            case SPIKED_FLOOR -> new SpikedFloor(startPosition);
+            case TOTEM_UP -> new Totem(startPosition, DirectionsModel.UP);
+            case TOTEM_RIGHT -> new Totem(startPosition, DirectionsModel.RIGHT);
+            case TOTEM_DOWN -> new Totem(startPosition, DirectionsModel.DOWN);
+            case TOTEM_LEFT -> new Totem(startPosition, DirectionsModel.LEFT);
 
             // Player
-            case KNIGHT -> new Knight(new Vector2<>(row, col));
-            case ARCHER -> new Archer(new Vector2<>(row, col));
-            case NINJA -> new Ninja(new Vector2<>(row, col));
+            case KNIGHT -> new Knight(startPosition);
+            case ARCHER -> new Archer(startPosition);
+            case NINJA -> new Ninja(startPosition);
 
             // Enemy
-            case BAT -> new Bat(new Vector2<>(row, col));
-            case ZOMBIE -> new Zombie(new Vector2<>(row, col));
-            case SLIME -> new Slime(new Vector2<>(row, col));
-            case BIG_SLIME -> new BigSlime(new Vector2<>(row, col));
-            case FROG -> new Frog(new Vector2<>(row, col));
-            case WIZARD -> new Wizard(new Vector2<>(row, col));
-            case SKELETON -> new Skeleton(new Vector2<>(row, col));
+            case WRAITH -> new Wraith(startPosition);
+            case ZOMBIE -> new Zombie(startPosition);
+            case SLIME -> new Slime(startPosition);
+            case BIG_SLIME -> new BigSlime(startPosition);
+            case BEETLE -> new Beetle(startPosition);
+            case SKELETON -> new Skeleton(startPosition);
 
             // ---
             case NULL -> null;

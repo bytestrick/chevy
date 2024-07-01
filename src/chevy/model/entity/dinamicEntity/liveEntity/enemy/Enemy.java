@@ -2,19 +2,19 @@ package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
-import chevy.utilz.Vector2;
+import chevy.utils.Vector2;
 
 public abstract class Enemy extends LiveEntity {
     public enum Type implements EntityCommonEnumTypes {
-        BAT,
+        WRAITH,
         ZOMBIE,
-        WIZARD,
         SKELETON,
         SLIME,
         BIG_SLIME,
-        FROG;
+        BEETLE;
     }
     private final Type type;
+    protected boolean canAttack = false;
 
 
     public Enemy(Vector2<Integer> initPosition, Type type) {
@@ -24,7 +24,16 @@ public abstract class Enemy extends LiveEntity {
         this.layer = 2;
     }
 
+    /**
+     * @return ritorna true se il player è in grado di attaccare false altrimenti
+     */
+    public boolean canAttack() {
+         return canAttack;
+    }
 
+    public void setCanAttack(boolean canAttack) {
+        this.canAttack = canAttack;
+    }
 
     @Override
     public EntityCommonEnumTypes getSpecificType() { return type; }
