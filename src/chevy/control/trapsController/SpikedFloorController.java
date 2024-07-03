@@ -32,21 +32,26 @@ public class SpikedFloorController {
 
     /**
      * Aggiorna lo stato del pavimento spinato.
+     *
      * @param spikedFloor il pavimento spinato da aggiornare
      */
     public void update(SpikedFloor spikedFloor) {
-        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.ACTIVATED))
+        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.ACTIVATED)) {
             spikedFloor.activated();
+        }
 
-        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.DISABLED))
+        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.DISABLED)) {
             spikedFloor.disabled();
+        }
 
         if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.DAMAGE)) {
             Entity entity = chamber.getEntityOnTop(spikedFloor);
-            if (entity instanceof Player)
+            if (entity instanceof Player) {
                 playerController.handleInteraction(InteractionTypes.TRAP, spikedFloor);
-            if (entity instanceof Enemy enemy)
+            }
+            if (entity instanceof Enemy enemy) {
                 enemyController.handleInteraction(InteractionTypes.TRAP, spikedFloor, enemy);
+            }
         }
     }
 }

@@ -1,7 +1,13 @@
 package chevy.view.chamber;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
@@ -13,194 +19,190 @@ import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.Sludge;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
-import chevy.view.entityView.EntityView;
-import chevy.view.entityView.GroundView;
-import chevy.view.entityView.TrapView;
-import chevy.view.entityView.WallView;
-import chevy.view.entityView.entityViewAnimated.enemy.*;
-import chevy.view.entityView.entityViewAnimated.player.KnightView;
-import chevy.view.entityView.entityViewAnimated.projectile.SlimeShotView;
-import chevy.view.entityView.entityViewAnimated.trap.IcyFloorView;
-import chevy.view.entityView.entityViewAnimated.trap.SludgeView;
-import chevy.view.entityView.entityViewAnimated.trap.SpikedFloorView;
+import chevy.view.entities.EntityView;
+import chevy.view.entities.GroundView;
+import chevy.view.entities.TrapView;
+import chevy.view.entities.WallView;
+import chevy.view.entities.animated.enemy.BeetleView;
+import chevy.view.entities.animated.enemy.BigSlimeView;
+import chevy.view.entities.animated.enemy.SkeletonView;
+import chevy.view.entities.animated.enemy.SlimeView;
+import chevy.view.entities.animated.enemy.WraithView;
+import chevy.view.entities.animated.enemy.ZombieView;
+import chevy.view.entities.animated.player.KnightView;
+import chevy.view.entities.animated.projectile.SlimeShotView;
+import chevy.view.entities.animated.trap.IcyFloorView;
+import chevy.view.entities.animated.trap.SludgeView;
+import chevy.view.entities.animated.trap.SpikedFloorView;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * La classe EntityToEntityView gestisce la mappatura tra le entità del gioco e le loro rispettive visualizzazioni.
- * Questa classe contiene metodi per ottenere la visualizzazione specifica o generica di un'entità.
+ * Mappa le entità alle loro rappresentazioni visive.
  */
 public class EntityToEntityView {
     private static final Map<Entity, EntityView> entityView = new HashMap<>();
 
+    /**
+     * Ottieni la rappresentazione specifica di un entità.
+     */
     public static EntityView getSpecific(Entity entity) {
         return switch (entity.getSpecificType()) {
-            // ENEMY
+            // Enemy
             case Enemy.Type.SLIME -> {
-                SlimeView slimeView = null;
-                if (!entityView.containsKey(entity)) {
+                SlimeView slimeView;
+                if (entityView.containsKey(entity)) {
+                    slimeView = (SlimeView) entityView.get(entity);
+                } else {
                     slimeView = new SlimeView((Slime) entity);
                     entityView.put(entity, slimeView);
                 }
-                else
-                    slimeView = (SlimeView) entityView.get(entity);
-
                 yield slimeView;
             }
             case Enemy.Type.BIG_SLIME -> {
-                BigSlimeView bigSlimeView = null;
-                if (!entityView.containsKey(entity)) {
+                BigSlimeView bigSlimeView;
+                if (entityView.containsKey(entity)) {
+                    bigSlimeView = (BigSlimeView) entityView.get(entity);
+                } else {
                     bigSlimeView = new BigSlimeView((BigSlime) entity);
                     entityView.put(entity, bigSlimeView);
                 }
-                else
-                    bigSlimeView = (BigSlimeView) entityView.get(entity);
-
                 yield bigSlimeView;
             }
             case Enemy.Type.ZOMBIE -> {
-                ZombieView zombieView = null;
-                if (!entityView.containsKey(entity)) {
+                ZombieView zombieView;
+                if (entityView.containsKey(entity)) {
+                    zombieView = (ZombieView) entityView.get(entity);
+                } else {
                     zombieView = new ZombieView((Zombie) entity);
                     entityView.put(entity, zombieView);
                 }
-                else
-                    zombieView = (ZombieView) entityView.get(entity);
-
                 yield zombieView;
             }
             case Enemy.Type.WRAITH -> {
-                WraithView wraithView = null;
-                if (!entityView.containsKey(entity)) {
+                WraithView wraithView;
+                if (entityView.containsKey(entity)) {
+                    wraithView = (WraithView) entityView.get(entity);
+                } else {
                     wraithView = new WraithView((Wraith) entity);
                     entityView.put(entity, wraithView);
                 }
-                else
-                    wraithView = (WraithView) entityView.get(entity);
-
                 yield wraithView;
             }
             case Enemy.Type.SKELETON -> {
-                SkeletonView skeletonView = null;
-                if (!entityView.containsKey(entity)) {
+                SkeletonView skeletonView;
+                if (entityView.containsKey(entity)) {
+                    skeletonView = (SkeletonView) entityView.get(entity);
+                } else {
                     skeletonView = new SkeletonView((Skeleton) entity);
                     entityView.put(entity, skeletonView);
                 }
-                else
-                    skeletonView = (SkeletonView) entityView.get(entity);
-
                 yield skeletonView;
             }
             case Enemy.Type.BEETLE -> {
-                BeetleView beetleView = null;
-                if (!entityView.containsKey(entity)) {
+                BeetleView beetleView;
+                if (entityView.containsKey(entity)) {
+                    beetleView = (BeetleView) entityView.get(entity);
+                } else {
                     beetleView = new BeetleView((Beetle) entity);
                     entityView.put(entity, beetleView);
                 }
-                else
-                    beetleView = (BeetleView) entityView.get(entity);
-
                 yield beetleView;
             }
 
-            // PLAYER
+            // Player
             case Player.Type.KNIGHT -> {
-                KnightView knightView = null;
-                if (!entityView.containsKey(entity)) {
+                KnightView knightView;
+                if (entityView.containsKey(entity)) {
+                    knightView = (KnightView) entityView.get(entity);
+                } else {
                     knightView = new KnightView((Knight) entity);
                     entityView.put(entity, knightView);
                 }
-                else
-                    knightView = (KnightView) entityView.get(entity);
-
                 yield knightView;
             }
 
-            // PROJECTILE
+            // Projectile
             case Projectile.Type.SLIME_SHOT -> {
-                SlimeShotView slimeShotView = null;
-                if (!entityView.containsKey(entity)) {
+                SlimeShotView slimeShotView;
+                if (entityView.containsKey(entity)) {
+                    slimeShotView = (SlimeShotView) entityView.get(entity);
+                } else {
                     slimeShotView = new SlimeShotView((SlimeShot) entity);
                     entityView.put(entity, slimeShotView);
                 }
-                else
-                    slimeShotView = (SlimeShotView) entityView.get(entity);
-
                 yield slimeShotView;
             }
 
-            // TRAPS
+            // Traps
             case Trap.Type.SPIKED_FLOOR -> {
-                SpikedFloorView spikedFloorView = null;
-                if (!entityView.containsKey(entity)) {
+                SpikedFloorView spikedFloorView;
+                if (entityView.containsKey(entity)) {
+                    spikedFloorView = (SpikedFloorView) entityView.get(entity);
+                } else {
                     spikedFloorView = new SpikedFloorView((SpikedFloor) entity);
                     entityView.put(entity, spikedFloorView);
                 }
-                else
-                    spikedFloorView = (SpikedFloorView) entityView.get(entity);
-
                 yield spikedFloorView;
             }
             case Trap.Type.SLUDGE -> {
-                SludgeView sludgeView = null;
-                if (!entityView.containsKey(entity)) {
+                SludgeView sludgeView;
+                if (entityView.containsKey(entity)) {
+                    sludgeView = (SludgeView) entityView.get(entity);
+                } else {
                     sludgeView = new SludgeView((Sludge) entity);
                     entityView.put(entity, sludgeView);
                 }
-                else
-                    sludgeView = (SludgeView) entityView.get(entity);
-
                 yield sludgeView;
             }
             case Trap.Type.ICY_FLOOR -> {
-                IcyFloorView icyFloorView = null;
-                if (!entityView.containsKey(entity)) {
+                IcyFloorView icyFloorView;
+                if (entityView.containsKey(entity)) {
+                    icyFloorView = (IcyFloorView) entityView.get(entity);
+                } else {
                     icyFloorView = new IcyFloorView((IcyFloor) entity);
                     entityView.put(entity, icyFloorView);
                 }
-                else
-                    icyFloorView = (IcyFloorView) entityView.get(entity);
-
                 yield icyFloorView;
             }
             default -> null;
         };
     }
 
+    /**
+     * Ottieni la rappresentazione generica di un entità.
+     */
     public static EntityView getGeneric(Entity entity) {
         return switch (entity.getGenericType()) {
             case Environment.Type.WALL -> {
-                WallView wallView = null;
-                if (!entityView.containsKey(entity)) {
+                WallView wallView;
+                if (entityView.containsKey(entity)) {
+                    wallView = (WallView) entityView.get(entity);
+                } else {
                     wallView = new WallView((Wall) entity);
                     entityView.put(entity, wallView);
                 }
-                else
-                    wallView = (WallView) entityView.get(entity);
-
                 yield wallView;
             }
             case Environment.Type.GROUND -> {
-                GroundView groundView = null;
-                if (!entityView.containsKey(entity)) {
+                GroundView groundView;
+                if (entityView.containsKey(entity)) {
+                    groundView = (GroundView) entityView.get(entity);
+                } else {
                     groundView = new GroundView((Ground) entity);
                     entityView.put(entity, groundView);
                 }
-                else
-                    groundView = (GroundView) entityView.get(entity);
-
                 yield groundView;
             }
             case Environment.Type.TRAP -> {
-                TrapView trapView = null;
-                if (!entityView.containsKey(entity)) {
+                TrapView trapView;
+                if (entityView.containsKey(entity)) {
+                    trapView = (TrapView) entityView.get(entity);
+                } else {
                     trapView = new TrapView((Trap) entity);
                     entityView.put(entity, trapView);
                 }
-                else
-                    trapView = (TrapView) entityView.get(entity);
-
                 yield trapView;
             }
             default -> null;

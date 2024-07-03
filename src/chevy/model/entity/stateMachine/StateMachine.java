@@ -1,5 +1,7 @@
 package chevy.model.entity.stateMachine;
 
+import chevy.utils.Log;
+
 /**
  * La classe StateMachine rappresenta una macchina a stati finiti (FSM - Finite State Machine)
  * che gestisce le transizioni tra i diversi stati.
@@ -27,13 +29,15 @@ public class StateMachine {
      */
     public synchronized boolean changeState(CommonEnumStates state) {
         if (currentState == null) {
-            System.out.println("[x] Non è presente uno stato iniziale");
+            Log.error("Non è presente uno stato iniziale");
             return false;
         }
 
         // solo per la stampa
-        if (stateMachineName != null)
-            System.out.print(stateMachineName + ": " + currentState);
+        String logMessage = "";
+        if (stateMachineName != null) {
+            logMessage += stateMachineName + ": " + currentState;
+        }
 
         if (!usedWithCanChange)
             nextState = currentState.findLinkedState(state);
@@ -44,7 +48,7 @@ public class StateMachine {
 
             // solo per la stampa
             if (stateMachineName != null) {
-                System.out.println(" -> " + nextState);
+                Log.info(logMessage + " -> " + nextState);
             }
 
             currentState.startStateTimer();
@@ -53,8 +57,9 @@ public class StateMachine {
         }
 
         // solo per la stampa
-        if (stateMachineName != null)
-            System.out.println();
+        if (stateMachineName != null) {
+            Log.info(logMessage);
+        }
 
         return false;
     }
@@ -66,7 +71,7 @@ public class StateMachine {
      */
     public synchronized boolean canChange(CommonEnumStates state) {
         if (currentState == null) {
-            System.out.println("[x] Non è presente uno stato iniziale");
+            Log.error("Non è presente uno stato iniziale");
             return false;
         }
 
@@ -99,7 +104,7 @@ public class StateMachine {
 
     public synchronized State getCurrentState() {
         if (currentState == null) {
-            System.out.println("[x] Non è presente uno stato iniziale");
+            Log.error("Non è presente uno stato iniziale");
         }
         return currentState;
     }

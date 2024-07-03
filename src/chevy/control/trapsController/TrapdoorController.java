@@ -7,7 +7,7 @@ import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.utils.Vector2;
 
 /**
- * Controller per gestire le interazioni del giocatore con la botola nel gioco.
+ * Gestisce le interazioni del giocatore con la botola nel gioco.
  */
 public class TrapdoorController {
     /**
@@ -21,22 +21,21 @@ public class TrapdoorController {
 
     /**
      * Gestisce l'interazione del giocatore quando è sopra la botola.
+     *
      * @param player il giocatore che interagisce con la botola
      */
     public void playerInInteraction(Player player) {
-        player.changeState(Player.EnumState.IDLE);
+        player.changeState(Player.States.IDLE);
     }
 
     /**
      * Gestisce l'interazione della botola quando il giocatore esce da essa.
+     *
      * @param trapdoor la botola con cui interagisce il giocatore
      */
     public void playerOutInteraction(Trapdoor trapdoor) {
         // Rimuove la botola e aggiunge un'entità Void al suo posto.
         chamber.removeEntityOnTop(trapdoor);
-        chamber.addEntityOnTop(new Void(new Vector2<>(
-                trapdoor.getRow(),
-                trapdoor.getCol()
-        )));
+        chamber.addEntityOnTop(new Void(new Vector2<>(trapdoor.getRow(), trapdoor.getCol())));
     }
 }

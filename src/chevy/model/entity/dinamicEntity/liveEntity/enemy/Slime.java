@@ -5,20 +5,11 @@ import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class Slime extends Enemy {
-    public enum EnumState implements CommonEnumStates {
-        MOVE,
-        ATTACK,
-        HIT,
-        DEAD,
-        IDLE
-    }
-    private final State idle = new State(EnumState.IDLE, 1.f, true);
-    private final State move = new State(EnumState.MOVE, 0.5f);
-    private final State attack = new State(EnumState.ATTACK, 0.5f);
-    private final State hit = new State(EnumState.HIT, 0.15f);
-    private final State dead = new State(EnumState.DEAD, 0.3f);
-
-
+    private final State idle = new State(States.IDLE, 1.f, true);
+    private final State move = new State(States.MOVE, 0.5f);
+    private final State attack = new State(States.ATTACK, 0.5f);
+    private final State hit = new State(States.HIT, 0.15f);
+    private final State dead = new State(States.DEAD, 0.3f);
     public Slime(Vector2<Integer> initPosition) {
         super(initPosition, Type.SLIME);
         this.health = 3;
@@ -27,7 +18,6 @@ public class Slime extends Enemy {
 
         initStateMachine();
     }
-
 
     private void initStateMachine() {
         this.stateMachine.setStateMachineName("Slime");
@@ -44,10 +34,9 @@ public class Slime extends Enemy {
         hit.linkState(dead);
     }
 
-
     @Override
     public synchronized State getState(CommonEnumStates commonEnumStates) {
-        EnumState slimeState = (EnumState) commonEnumStates;
+        States slimeState = (States) commonEnumStates;
         return switch (slimeState) {
             case MOVE -> move;
             case ATTACK -> attack;
@@ -55,5 +44,9 @@ public class Slime extends Enemy {
             case DEAD -> dead;
             case IDLE -> idle;
         };
+    }
+
+    public enum States implements CommonEnumStates {
+        MOVE, ATTACK, HIT, DEAD, IDLE
     }
 }

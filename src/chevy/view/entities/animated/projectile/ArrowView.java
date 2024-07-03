@@ -1,11 +1,11 @@
-package chevy.view.entityView.entityViewAnimated.projectile;
+package chevy.view.entities.animated.projectile;
 
 import chevy.utils.Vector2;
-import chevy.view.entityView.entityViewAnimated.EntityViewAnimated;
+import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class ArrowView extends EntityViewAnimated {
+public class ArrowView extends AnimatedEntityView {
 
     @Override
     public BufferedImage getCurrentFrame() {

@@ -15,7 +15,6 @@ public class Details implements Comparable<Details> {
         this.col = col;
     }
 
-
     @Override
     public int compareTo(Details o) {
         return (int) Math.round(f - o.f);

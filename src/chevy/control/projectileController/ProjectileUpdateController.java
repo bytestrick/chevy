@@ -10,8 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * La classe ProjectileUpdateController implementa l'interfaccia Update per gestire gli aggiornamenti dei proiettili
- * nel gioco. Gestisce l'aggiunta, la rimozione e l'aggiornamento dei proiettili.
+ * Gestisce gli aggiornamenti dei proiettili nel gioco.
+ * Gestisce l'aggiunta, la rimozione e l'aggiornamento dei proiettili.
  */
 public class ProjectileUpdateController implements Update {
     /**
@@ -29,7 +29,7 @@ public class ProjectileUpdateController implements Update {
 
     /**
      * @param projectileController controller dei proiettili per gestire gli aggiornamenti dei proiettili
-     * @param projectiles lista di proiettili da aggiungere all'aggiornamento
+     * @param projectiles          lista di proiettili da aggiungere all'aggiornamento
      */
     public ProjectileUpdateController(ProjectileController projectileController, List<Projectile> projectiles) {
         this.projectileController = projectileController;
@@ -40,7 +40,8 @@ public class ProjectileUpdateController implements Update {
     }
 
     /**
-     * Metodo privato per aggiungere i proiettili alla lista principale. Viene chiamato prima di ogni iterazione di aggiornamento.
+     * Metodo privato per aggiungere i proiettili alla lista principale. Viene chiamato prima di ogni iterazione di
+     * aggiornamento.
      * Questo approccio evita ConcurrentModificationException durante l'iterazione della lista.
      */
     private void addProjectile() {
@@ -49,7 +50,8 @@ public class ProjectileUpdateController implements Update {
     }
 
     /**
-     * Metodo di aggiornamento chiamato ad ogni ciclo di gioco per gestire gli aggiornamenti dei proiettili.
+     * Metodo di aggiornamento chiamato a ogni ciclo di gioco per gestire gli aggiornamenti dei proiettili.
+     *
      * @param delta tempo trascorso dall'ultimo aggiornamento
      */
     @Override
@@ -59,8 +61,9 @@ public class ProjectileUpdateController implements Update {
         Iterator<Projectile> it = projectiles.iterator();
         while (it.hasNext()) {
             Projectile projectile = it.next();
-            projectileController.handleInteraction(InteractionTypes.UPDATE, projectile, null); // Gestisce l'aggiornamento del proiettile
-            if (projectile.isCollide()) { // Se il proiettile collide, si rimuove dalla lista
+            projectileController.handleInteraction(InteractionTypes.UPDATE, projectile, null); // Gestisce
+            // l'aggiornamento del proiettile
+            if (projectile.isCollision()) { // Se il proiettile collide, si rimuove dalla lista
                 it.remove();
             }
         }

@@ -5,15 +5,21 @@ import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 
 /**
- * La classe EnemyController è responsabile della gestione del comportamento e delle interazioni
- * di vari tipi di nemici nel gioco. Coordina i sottocontroller specifici per ogni tipo di nemico
- * (Wraith, Zombie, Slime, BigSlime, Skeleton, Beetle) e gestisce le interazioni tra giocatore, proiettili e nemici.
+ * Gestisce il comportamento e le interazioni di vari tipi di nemici nel gioco.
+ * Coordina i sotto controller specifici per ogni tipo di nemico (Wraith, Zombie, Slime, BigSlime, Skeleton, Beetle)
+ * e gestisce le interazioni tra giocatore, proiettili e nemici.
  */
 public class EnemyController {
     private final WraithController wraithController;
@@ -24,12 +30,10 @@ public class EnemyController {
     private final BeetleController beetleController;
 
     /**
-     * Inizializza il controller dei nemici con i riferimenti alla stanza di gioco e al controller del giocatore.
-     * @param chamber la stanza di gioco contenente i nemici.
-     * @param playerController il controller del giocatore.
+     * @param chamber          la stanza di gioco contenente i nemici
+     * @param playerController il controller del giocatore
      */
     public EnemyController(Chamber chamber, PlayerController playerController) {
-
         this.wraithController = new WraithController(chamber, playerController);
         this.zombieController = new ZombieController(chamber, playerController);
         this.slimeController = new SlimeController(chamber, playerController);
@@ -40,9 +44,10 @@ public class EnemyController {
 
     /**
      * Gestisce l'interazione tra entità dinamiche.
-     * @param interaction il tipo di interazione da gestire.
-     * @param subject l'entità che avvia l'interazione.
-     * @param object l'entità che subisce l'interazione.
+     *
+     * @param interaction il tipo di interazione da gestire
+     * @param subject     l'entità che avvia l'interazione
+     * @param object      l'entità che subisce l'interazione
      */
     public synchronized void handleInteraction(InteractionTypes interaction, Entity subject, DynamicEntity object) {
         switch (interaction) {
@@ -50,14 +55,15 @@ public class EnemyController {
             case UPDATE -> updateEnemy((Enemy) subject);
             case PROJECTILE -> projectileInteraction((Projectile) subject, (Enemy) object);
             case TRAP -> trapInteraction((Trap) subject, (Enemy) object);
-            default -> {}
+            default -> { }
         }
     }
 
     /**
      * Gestisce l'interazione di una trappoòa con un nemico.
-     * @param trap la trappola che interagisce con il nemico.
-     * @param enemy il nemico colpito dal proiettile.
+     *
+     * @param trap  la trappola che interagisce con il nemico
+     * @param enemy il nemico colpito dal proiettile
      */
     private void trapInteraction(Trap trap, Enemy enemy) {
         switch (enemy.getSpecificType()) {
@@ -67,14 +73,15 @@ public class EnemyController {
             case Enemy.Type.ZOMBIE -> zombieController.trapInteraction(trap, (Zombie) enemy);
             case Enemy.Type.SKELETON -> skeletonController.trapInteraction(trap, (Skeleton) enemy);
             case Enemy.Type.BEETLE -> beetleController.trapInteraction(trap, (Beetle) enemy);
-            default -> {}
+            default -> { }
         }
     }
 
     /**
      * Gestisce l'interazione di un proiettile con un nemico.
-     * @param projectile il proiettile che colpisce il nemico.
-     * @param enemy il nemico colpito dal proiettile.
+     *
+     * @param projectile il proiettile che colpisce il nemico
+     * @param enemy      il nemico colpito dal proiettile
      */
     private void projectileInteraction(Projectile projectile, Enemy enemy) {
         switch (enemy.getSpecificType()) {
@@ -84,14 +91,15 @@ public class EnemyController {
             case Enemy.Type.ZOMBIE -> zombieController.projectileInteraction(projectile, (Zombie) enemy);
             case Enemy.Type.SKELETON -> skeletonController.projectileInteraction(projectile, (Skeleton) enemy);
             case Enemy.Type.BEETLE -> beetleController.projectileInteraction(projectile, (Beetle) enemy);
-            default -> {}
+            default -> { }
         }
     }
 
     /**
      * Gestisce l'interazione di un giocatore con un nemico.
-     * @param player il giocatore che interagisce con il nemico.
-     * @param enemy il nemico che subisce l'interazione.
+     *
+     * @param player il giocatore che interagisce con il nemico
+     * @param enemy  il nemico che subisce l'interazione
      */
     private void playerInInteraction(Player player, Enemy enemy) {
         switch (enemy.getSpecificType()) {
@@ -101,13 +109,14 @@ public class EnemyController {
             case Enemy.Type.ZOMBIE -> zombieController.playerInInteraction(player, (Zombie) enemy);
             case Enemy.Type.SKELETON -> skeletonController.playerInInteraction(player, (Skeleton) enemy);
             case Enemy.Type.BEETLE -> beetleController.playerInInteraction(player, (Beetle) enemy);
-            default -> {}
+            default -> { }
         }
     }
 
     /**
      * Aggiorna lo stato di un nemico a ogni ciclo di gioco.
-     * @param enemy il nemico da aggiornare.
+     *
+     * @param enemy il nemico da aggiornare
      */
     private void updateEnemy(Enemy enemy) {
         switch (enemy.getSpecificType()) {
@@ -117,7 +126,7 @@ public class EnemyController {
             case Enemy.Type.BIG_SLIME -> bigSlimeController.update((BigSlime) enemy);
             case Enemy.Type.SKELETON -> skeletonController.update((Skeleton) enemy);
             case Enemy.Type.BEETLE -> beetleController.update((Beetle) enemy);
-            default -> {}
+            default -> { }
         }
     }
 }

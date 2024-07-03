@@ -9,10 +9,11 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.utils.Log;
 
 /**
- * La classe ZombieController è responsabile della gestione del comportamento e delle interazioni
- * del nemico Zombie all'interno del gioco. Gestisce come lo Zombie risponde agli attacchi del giocatore,
+ * Gestisce il comportamento e le interazioni del nemico Zombie all'interno del gioco. Gestisce come lo Zombie
+ * risponde agli attacchi del giocatore,
  * ai colpi dei proiettili e coordina il suo stato e i suoi movimenti.
  */
 public class ZombieController {
@@ -27,8 +28,7 @@ public class ZombieController {
     private final PlayerController playerController;
 
     /**
-     * Inizializza il controller con i riferimenti alla stanza di gioco e al controller del giocatore.
-     * @param chamber riferimento della stanza
+     * @param chamber          riferimento della stanza di gioco
      * @param playerController riferimento al controllo del giocatore
      */
     public ZombieController(Chamber chamber, PlayerController playerController) {
@@ -38,64 +38,65 @@ public class ZombieController {
 
     /**
      * Gestisce le interazioni dello Zombie con il giocatore.
-     * @param player il giocatore che interagisce con lo Zombie.
-     * @param zombie lo Zombie che subisce l'interazione.
+     *
+     * @param player il giocatore che interagisce con lo Zombie
+     * @param zombie lo Zombie che subisce l'interazione
      */
     public void playerInInteraction(Player player, Zombie zombie) {
         switch (player.getCurrentEumState()) {
             // Se il giocatore è in stato di attacco, lo Zombie viene danneggiato in base al danno del giocatore.
-            case Player.EnumState.ATTACK -> {
+            case Player.States.ATTACK -> {
                 zombie.setDirection(DirectionsModel.positionToDirection(player, zombie));
                 hitZombie(zombie, -1 * player.getDamage());
             }
-            default -> System.out.println("[!] Lo ZombieController non gestisce questa azione: " + player.getCurrentEumState());
+            default -> Log.warn("Lo ZombieController non gestisce questa azione: " + player.getCurrentEumState());
         }
     }
 
     /**
-     * Aggiorna lo stato dello Zombie a ogni ciclo di gioco.
-     * @param zombie lo Zombie da aggiornare.
+     * Aggiorna lo stato dello Zombie a ogni ciclo di gioco
+     *
+     * @param zombie lo Zombie da aggiornare
      */
     public void update(Zombie zombie) {
         if (!zombie.isAlive()) {
-            if (zombie.getState(Zombie.EnumState.DEAD).isFinished()) {
+            if (zombie.getState(Zombie.States.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(zombie);
                 zombie.removeToUpdate();
                 return;
             }
-        } else if (zombie.getHealth() <= 0 && zombie.checkAndChangeState(Zombie.EnumState.DEAD)) {
+        } else if (zombie.getHealth() <= 0 && zombie.checkAndChangeState(Zombie.States.DEAD)) {
             zombie.kill();
         }
 
-        if (zombie.canChange(Zombie.EnumState.MOVE)) {
+        if (zombie.canChange(Zombie.States.MOVE)) {
             DirectionsModel direction = chamber.getHitDirectionPlayer(zombie);
             if (direction == null) {
                 // Se non c'è un giocatore nelle vicinanze, lo Zombie vaga casualmente.
                 if (chamber.wanderChase(zombie, 4)) {
-                    zombie.changeState(Zombie.EnumState.MOVE);
+                    zombie.changeState(Zombie.States.MOVE);
                 }
-            }
-            else if (zombie.canAttack() && zombie.getState(Zombie.EnumState.ATTACK).isFinished()) {
+            } else if (zombie.canAttack() && zombie.getState(Zombie.States.ATTACK).isFinished()) {
                 Entity entity = chamber.getNearEntityOnTop(zombie, direction);
                 if (entity instanceof Player) {
                     playerController.handleInteraction(InteractionTypes.ENEMY, zombie);
                     zombie.setCanAttack(false);
                 }
-            }
-            else if (zombie.canChange(Zombie.EnumState.ATTACK)) {
+            } else if (zombie.canChange(Zombie.States.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(zombie, direction);
-                if (entity instanceof Player && zombie.changeState(Zombie.EnumState.ATTACK)) {
+                if (entity instanceof Player && zombie.changeState(Zombie.States.ATTACK)) {
                     zombie.setCanAttack(true);
                 }
             }
         }
-        zombie.checkAndChangeState(Zombie.EnumState.IDLE);
+        zombie.checkAndChangeState(Zombie.States.IDLE);
     }
 
     /**
      * Gestisce le interazioni dello Zombie con i proiettili.
-     * @param projectile il proiettile che colpisce lo Zombie.
-     * @param zombie lo Zombie che subisce l'interazione.
+     *
+     * @param projectile il proiettile che colpisce lo Zombie
+     * @param zombie     lo Zombie che subisce l'interazione
      */
     public void projectileInteraction(Projectile projectile, Zombie zombie) {
         zombie.setDirection(DirectionsModel.positionToDirection(projectile, zombie));
@@ -104,12 +105,14 @@ public class ZombieController {
 
     /**
      * Applica danno allo Zombie e aggiorna il suo stato se possibile.
-     * @param zombie lo Zombie che subisce il danno.
-     * @param damage il danno da applicare.
+     *
+     * @param zombie lo Zombie che subisce il danno
+     * @param damage il danno da applicare
      */
     private void hitZombie(Zombie zombie, int damage) {
-        if (zombie.changeState(Zombie.EnumState.HIT))
+        if (zombie.changeState(Zombie.States.HIT)) {
             zombie.changeHealth(damage);
+        }
     }
 
     public void trapInteraction(Trap trap, Zombie zombie) {
@@ -117,7 +120,7 @@ public class ZombieController {
             case Trap.Type.SPIKED_FLOOR -> {
                 hitZombie(zombie, -1 * trap.getDamage());
             }
-            default -> {}
+            default -> { }
         }
     }
 }

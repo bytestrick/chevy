@@ -1,16 +1,16 @@
 package chevy.control.projectileController;
 
+import chevy.control.InteractionTypes;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
-import chevy.control.InteractionTypes;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 
 /**
- * La classe ProjectileController gestisce le interazioni e gli aggiornamenti dei proiettili nel gioco,
- * delegando la gestione specifica a controller più specifici come ArrowController e SlimeShotController.
+ * Gestisce le interazioni e gli aggiornamenti dei proiettili nel gioco, delegando la gestione specifica a controller
+ * più specifici come ArrowController e SlimeShotController.
  */
 public class ProjectileController {
     /**
@@ -23,11 +23,9 @@ public class ProjectileController {
     private final SlimeShotController slimeShotController;
 
     /**
-     * Inizializza il controller dei proiettili con riferimenti alla stanza di gioco, al controller del giocatore
-     * e al controller dei nemici.
-     * @param chamber la stanza di gioco
+     * @param chamber          la stanza di gioco
      * @param playerController il controller del giocatore
-     * @param enemyController il controller dei nemici
+     * @param enemyController  il controller dei nemici
      */
     public ProjectileController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
         this.arrowController = new ArrowController(chamber, playerController, enemyController);
@@ -36,9 +34,10 @@ public class ProjectileController {
 
     /**
      * Gestisce le interazioni dei proiettili in base al tipo di interazione e ai soggetti coinvolti.
-     * @param interaction il tipo di interazione da gestire.
-     * @param subject l'entità che avvia l'interazione.
-     * @param object l'entità che subisce l'interazione.
+     *
+     * @param interaction il tipo di interazione da gestire
+     * @param subject     l'entità che avvia l'interazione
+     * @param object      l'entità che subisce l'interazione
      */
     public void handleInteraction(InteractionTypes interaction, DynamicEntity subject, DynamicEntity object) {
         switch (interaction) {
@@ -48,27 +47,31 @@ public class ProjectileController {
     }
 
     /**
-     * Gestisce l'interazione tra un giocatore e un proiettile, delegando il controllo al controller appropriato in base al tipo di proiettile.
-     * @param player giocatore che interagisce
+     * Gestisce l'interazione tra un giocatore e un proiettile, delegando il controllo al controller appropriato in
+     * base al tipo di proiettile.
+     *
+     * @param player     giocatore che interagisce
      * @param projectile proiettile coinvolto nell'interazione
      */
     private void playerInInteraction(Player player, Projectile projectile) {
         switch (projectile.getSpecificType()) {
             case Projectile.Type.ARROW -> arrowController.playerInInteraction(projectile);
             case Projectile.Type.SLIME_SHOT -> slimeShotController.playerInInteraction(projectile);
-            default -> {}
+            default -> { }
         }
     }
 
     /**
-     * Aggiorna lo stato di un proiettile, delegando il controllo al controller appropriato in base al tipo di proiettile.
+     * Aggiorna lo stato di un proiettile, delegando il controllo al controller appropriato in base al tipo di
+     * proiettile.
+     *
      * @param projectile proiettile da aggiornare
      */
     public synchronized void updateProjectile(Projectile projectile) {
         switch (projectile.getSpecificType()) {
             case Projectile.Type.ARROW -> arrowController.update(projectile);
             case Projectile.Type.SLIME_SHOT -> slimeShotController.update(projectile);
-            default -> {}
+            default -> { }
         }
     }
 }

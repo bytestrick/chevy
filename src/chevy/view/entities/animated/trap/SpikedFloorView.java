@@ -1,46 +1,38 @@
-package chevy.view.entityView.entityViewAnimated.trap;
+package chevy.view.entities.animated.trap;
 
 import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
-import chevy.view.entityView.entityViewAnimated.EntityViewAnimated;
+import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class SpikedFloorView extends EntityViewAnimated {
+public class SpikedFloorView extends AnimatedEntityView {
     private static final String SPIKED_FLOOR_PATH = "/assets/traps/spikedFloor/";
     private final Vector2<Double> position;
     private final SpikedFloor spikedFloor;
 
-
     public SpikedFloorView(SpikedFloor spikedFloor) {
         this.spikedFloor = spikedFloor;
-        position = new Vector2<>(
-                (double) spikedFloor.getCol(),
-                (double) spikedFloor.getRow()
-        );
+        position = new Vector2<>((double) spikedFloor.getCol(), (double) spikedFloor.getRow());
 
         initAnimation();
     }
 
-
     private void initAnimation() {
         Vector2<Integer> offset = new Vector2<>(0, -7);
-        createAnimation(SpikedFloor.EnumState.DISABLED, 0,
-                1, spikedFloor.getState(SpikedFloor.EnumState.DISABLED).getDuration(),
-                offset, 1,
-                SPIKED_FLOOR_PATH + "disabled", ".png");
+        createAnimation(SpikedFloor.EnumState.DISABLED, 0, 1,
+                spikedFloor.getState(SpikedFloor.EnumState.DISABLED).getDuration(), offset, 1, SPIKED_FLOOR_PATH +
+                        "disabled", ".png");
 
-        createAnimation(SpikedFloor.EnumState.ACTIVATED, 0,
-                2, spikedFloor.getState(SpikedFloor.EnumState.ACTIVATED).getDuration(),
-                offset, 1,
-                SPIKED_FLOOR_PATH + "active", ".png");
+        createAnimation(SpikedFloor.EnumState.ACTIVATED, 0, 2,
+                spikedFloor.getState(SpikedFloor.EnumState.ACTIVATED).getDuration(), offset, 1, SPIKED_FLOOR_PATH +
+                        "active", ".png");
 
-        createAnimation(SpikedFloor.EnumState.DAMAGE, 0,
-                1, spikedFloor.getState(SpikedFloor.EnumState.DAMAGE).getDuration(),
-                offset, 1,
-                SPIKED_FLOOR_PATH + "damage", ".png");
+        createAnimation(SpikedFloor.EnumState.DAMAGE, 0, 1,
+                spikedFloor.getState(SpikedFloor.EnumState.DAMAGE).getDuration(), offset, 1, SPIKED_FLOOR_PATH +
+                        "damage", ".png");
     }
 
     public Vector2<Integer> getOffset() {

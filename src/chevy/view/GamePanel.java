@@ -1,30 +1,22 @@
 package chevy.view;
 
-import chevy.model.chamber.Chamber;
 import chevy.service.Render;
 import chevy.service.RenderManager;
 import chevy.view.chamber.ChamberView;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.KeyListener;
 
-
 public class GamePanel extends JPanel implements Render {
-    private Chamber chamber;
     private final ChamberView chamberView;
-
 
     public GamePanel() {
         this.chamberView = new ChamberView();
 
         RenderManager.addToRender(this);
         setBackground(Color.BLACK);
-    }
-
-
-    public void setChamber(Chamber chamber) {
-        this.chamber = chamber;
     }
 
     public ChamberView getChamberView() {
