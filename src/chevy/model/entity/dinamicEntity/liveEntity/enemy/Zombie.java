@@ -5,19 +5,11 @@ import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class Zombie extends Enemy {
-    public enum EnumState implements CommonEnumStates {
-        MOVE,
-        ATTACK,
-        HIT,
-        DEAD,
-        IDLE
-    }
-    private final State idle = new State(EnumState.IDLE, 1f, true);
-    private final State move = new State(EnumState.MOVE, 0.5f);
-    private final State attack = new State(EnumState.ATTACK, 0.5f);
-    private final State hit = new State(EnumState.HIT, 0.15f);
-    private final State dead = new State(EnumState.DEAD, 0.3f);
-
+    private final State idle = new State(States.IDLE, 1f, true);
+    private final State move = new State(States.MOVE, 0.5f);
+    private final State attack = new State(States.ATTACK, 0.5f);
+    private final State hit = new State(States.HIT, 0.15f);
+    private final State dead = new State(States.DEAD, 0.3f);
 
     public Zombie(Vector2<Integer> initPosition) {
         super(initPosition, Type.ZOMBIE);
@@ -27,7 +19,6 @@ public class Zombie extends Enemy {
 
         initStateMachine();
     }
-
 
     private void initStateMachine() {
         stateMachine.setStateMachineName("Zombie");
@@ -46,7 +37,7 @@ public class Zombie extends Enemy {
 
     @Override
     public synchronized State getState(CommonEnumStates commonEnumStates) {
-        EnumState zombieState = (EnumState) commonEnumStates;
+        States zombieState = (States) commonEnumStates;
         return switch (zombieState) {
             case MOVE -> move;
             case ATTACK -> attack;
@@ -54,5 +45,9 @@ public class Zombie extends Enemy {
             case DEAD -> dead;
             case IDLE -> idle;
         };
+    }
+
+    public enum States implements CommonEnumStates {
+        MOVE, ATTACK, HIT, DEAD, IDLE
     }
 }

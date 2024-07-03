@@ -6,24 +6,8 @@ import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.utils.Vector2;
 
 public abstract class Player extends LiveEntity {
-    public enum EnumState implements CommonEnumStates {
-        IDLE,
-        ATTACK,
-        MOVE,
-        DEAD,
-        HIT,
-        SLUDGE,
-        FALL,
-        GLIDE
-    }
-    public enum Type implements EntityCommonEnumTypes {
-        KNIGHT,
-        NINJA,
-        ARCHER;
-    }
     private final Type type;
     protected float speed = 0.1f;
-
 
     public Player(Vector2<Integer> initPosition, Type type) {
         super(initPosition, LiveEntity.Type.PLAYER);
@@ -31,7 +15,6 @@ public abstract class Player extends LiveEntity {
 
         this.layer = 2;
     }
-
 
     @Override
     public Type getSpecificType() {
@@ -46,5 +29,13 @@ public abstract class Player extends LiveEntity {
     @Override
     public String toString() {
         return type.toString();
+    }
+
+    public enum States implements CommonEnumStates {
+        IDLE, ATTACK, MOVE, DEAD, HIT, SLUDGE, FALL, GLIDE
+    }
+
+    public enum Type implements EntityCommonEnumTypes {
+        KNIGHT, NINJA, ARCHER;
     }
 }

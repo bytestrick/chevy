@@ -33,10 +33,10 @@ public class WindowSettings {
         WINDOW_HEIGHT = newHeight;
         WINDOW_WIDTH = newWidth;
 
-        GameSettings.optimalCellSizeH = (float) (WINDOW_HEIGHT - SIZE_TOP_BAR) / GameSettings.nTileH;
-        GameSettings.optimalCellSizeW = (float) WINDOW_WIDTH / GameSettings.nTileW;
+        GameSettings.optimalCellHeight = (float) (WINDOW_HEIGHT - SIZE_TOP_BAR) / GameSettings.nTileH;
+        GameSettings.optimalCellWidth = (float) WINDOW_WIDTH / GameSettings.nTileW;
 
-        GameSettings.optimalCellSize = Math.round(Math.min(GameSettings.optimalCellSizeH, GameSettings.optimalCellSizeW));
+        GameSettings.optimalCellSize = Math.round(Math.min(GameSettings.optimalCellHeight, GameSettings.optimalCellWidth));
 
         GameSettings.offsetH = Math.max(0, (WINDOW_HEIGHT - SIZE_TOP_BAR - Math.round((float) GameSettings.nTileH * GameSettings.optimalCellSize)) / 2);
         GameSettings.offsetW = Math.max(0, (WINDOW_WIDTH - Math.round((float) GameSettings.nTileW * GameSettings.optimalCellSize)) / 2);

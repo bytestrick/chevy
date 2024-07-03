@@ -1,13 +1,11 @@
-package chevy.model;
+package chevy.model.entity.stateMachine;
 
 import chevy.service.Update;
 import chevy.service.UpdateManager;
-
+import chevy.utils.Log;
 
 /**
- * La classe Timer implementa l'interfaccia Update, per essere aggiornato, e rappresenta un timer.
- * Questo timer può essere avviato, fermato, riavviato e cancellato.
- * Il timer tiene traccia del tempo trascorso.
+ * Un timer che tiene traccia del tempo trascorso.
  */
 public class Timer implements Update {
     private final double duration;
@@ -31,7 +29,7 @@ public class Timer implements Update {
      */
     public void start() {
         if (duration <= 0d) {
-            System.out.println("[!] Il timer non è stato creato perché la sua durata é: " + duration);
+            Log.warn("Il timer non è stato creato perché la sua durata è: " + duration);
             return;
         }
 
@@ -56,7 +54,7 @@ public class Timer implements Update {
     }
 
     /**
-     * Interrompe l'aggiornamento del timer, ma non in modo perenne. L'interpolazione
+     * Interrompe l'aggiornamento del timer, ma non in modo permanente. L'interpolazione
      * può essere ripresa in seguito usando la funzione start(), oppure, farla iniziare da capo
      * usando la funzione restart().
      */
@@ -86,7 +84,7 @@ public class Timer implements Update {
     }
 
     @Override
-    public boolean updateIsEnd() {
+    public boolean updateFinished() {
         return delete;
     }
 }

@@ -5,18 +5,18 @@ import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class Knight extends Player {
-    private final State idle = new State(EnumState.IDLE);
-    private final State move = new State(EnumState.MOVE, speed);
-    private final State attack = new State(EnumState.ATTACK);
-    private final State hit = new State(EnumState.HIT, 0.1f);
-    private final State dead = new State(EnumState.DEAD);
-    private final State glide = new State(EnumState.GLIDE, speed, true);
-    private final State sludge = new State(EnumState.SLUDGE, speed);
-    private final State fall = new State(EnumState.FALL);
-
+    private final State idle = new State(States.IDLE);
+    private final State move = new State(States.MOVE, speed);
+    private final State attack = new State(States.ATTACK);
+    private final State hit = new State(States.HIT, 0.1f);
+    private final State dead = new State(States.DEAD);
+    private final State glide = new State(States.GLIDE, speed, true);
+    private final State sludge = new State(States.SLUDGE, speed);
+    private final State fall = new State(States.FALL);
 
     public Knight(Vector2<Integer> initPosition) {
         super(initPosition, Type.KNIGHT);
+
         this.health = 100;
         this.shield = 2;
         this.maxDamage = 7;
@@ -24,7 +24,6 @@ public class Knight extends Player {
 
         initStateMachine();
     }
-
 
     private void initStateMachine() {
         idle.linkState(move);
@@ -57,7 +56,7 @@ public class Knight extends Player {
 
     @Override
     public synchronized State getState(CommonEnumStates commonEnumStates) {
-        Player.EnumState playerState = (Player.EnumState) commonEnumStates;
+        States playerState = (States) commonEnumStates;
         return switch (playerState) {
             case IDLE -> idle;
             case ATTACK -> attack;

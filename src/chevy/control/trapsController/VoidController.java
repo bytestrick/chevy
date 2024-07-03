@@ -14,19 +14,17 @@ public class VoidController {
      */
     private final PlayerController playerController;
 
-
     public VoidController(PlayerController playerController) {
         this.playerController = playerController;
     }
 
-
     /**
      * Gestisce l'interazione del giocatore con la trappola Void.
+     *
      * @param player il giocatore che interagisce con la trappola
-     * @param v la trappola Void con cui il giocatore interagisce
+     * @param v      la trappola Void con cui il giocatore interagisce
      */
     public void playerInInteraction(Player player, Void v) {
-        if (player.changeState(Player.EnumState.FALL))
-            playerController.handleInteraction(InteractionTypes.TRAP, v);
+        if (player.changeState(Player.States.FALL)) playerController.handleInteraction(InteractionTypes.TRAP, v);
     }
 }

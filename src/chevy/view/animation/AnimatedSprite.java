@@ -9,43 +9,33 @@ import chevy.utils.Vector2;
 import java.awt.image.BufferedImage;
 
 /**
- * La classe AnimatedSprite implementa l'interfaccia Render e gestisce le animazioni sprite nel gioco.
- * Questa classe contiene metodi per gestire lo stato dell'animazione, come l'avvio, l'arresto e l'aggiornamento dell'animazione.
+ * Gestisce le animazioni sprite nel gioco.
  */
 public class AnimatedSprite implements Render {
-    // Tipo di animazione.
-    private final Pair<CommonEnumStates, Integer> animationTypes;
-    // Array di frame per l'animazione.
-    private final BufferedImage[] frames;
-    // Numero totale di frame nell'animazione.
-    private final int nFrame;
-    // Durata in secondi di ciascun frame.
-    private final float secFrameDuration;
-    // Indice del frame corrente nell'animazione.
-    private int currentIndexFrame = 0;
-    // Se l'animazione deve ripetersi o meno.
-    private final boolean loop;
-    // Se l'animazione è attualmente in esecuzione.
-    private boolean isRunning = false;
-    // Se l'animazione deve essere eliminata.
-    private boolean delete = true;
-    // Tempo trascorso dall'inizio.
-    private double time = 0d;
-    // Scala dell'animazione.
-    private final float scale;
-    // Offset dell'animazione.
-    private final Vector2<Integer> offset;
+    private final Pair<CommonEnumStates, Integer> animationTypes; // Tipi di animazione.
+    private final BufferedImage[] frames; // Array di frame per l'animazione.
+    private final int nFrame; // Numero totale di frame nell'animazione.
+    private final float secFrameDuration; // Durata in secondi di ciascun frame.
+    private final boolean loop; // Se l'animazione deve ripetersi o meno.
+    private final float scale; // Scala dell'animazione.
+    private final Vector2<Integer> offset; // Offset dell'animazione.
+    private int currentIndexFrame = 0; // Indice del frame corrente nell'animazione.
+    private boolean isRunning = false; // Se l'animazione è attualmente in esecuzione.
+    private boolean delete = true; // Se l'animazione deve essere eliminata.
+    private double time = 0d; // Tempo trascorso dall'inizio.
 
     /**
-     * Costruttore della classe AnimatedSprite. Inizializza l'oggetto con i tipo di animazione, il numero di frame,
-     * la durata di ciascun frame e se l'animazione deve ripetersi.
+     * @param animationTypes   tipi di animazione
+     * @param nFrame           numero di frame
+     * @param secFrameDuration durata di ciascun frame
+     * @param loop             se l'animazione deve ripetersi
      */
-    public AnimatedSprite(Pair<CommonEnumStates, Integer> animationTypes, int nFrame, float secFrameDuration, boolean loop) {
+    public AnimatedSprite(Pair<CommonEnumStates, Integer> animationTypes, int nFrame, float secFrameDuration,
+                          boolean loop) {
         this.animationTypes = animationTypes;
         this.nFrame = nFrame;
         this.secFrameDuration = secFrameDuration;
         this.loop = loop;
-
         this.scale = 1;
         this.offset = new Vector2<>(0, 0);
 
@@ -53,16 +43,19 @@ public class AnimatedSprite implements Render {
     }
 
     /**
-     * Inizializza l'oggetto con i tipi di animazione, il numero di frame, la durata di ciascun frame,
-     * se l'animazione deve ripetersi, l'offset e la scale che la sequenza di sprite deve avere quando
-     * viene mostrato.
+     * @param animationTypes   tipi di animazione
+     * @param nFrame           numero di frame
+     * @param secFrameDuration durata di ciascun frame
+     * @param loop             se l'animazione deve ripetersi
+     * @param offset           offset dell'animazione
+     * @param scale            scala che la sequenza deve avere durante la rappresentazione
      */
-    public AnimatedSprite(Pair<CommonEnumStates, Integer> animationTypes, int nFrame, float secFrameDuration, boolean loop, Vector2<Integer> offset, float scale) {
+    public AnimatedSprite(Pair<CommonEnumStates, Integer> animationTypes, int nFrame, float secFrameDuration,
+                          boolean loop, Vector2<Integer> offset, float scale) {
         this.animationTypes = animationTypes;
         this.nFrame = nFrame;
         this.secFrameDuration = secFrameDuration;
         this.loop = loop;
-
         this.scale = scale;
         this.offset = offset;
 
@@ -73,12 +66,13 @@ public class AnimatedSprite implements Render {
      * Aggiunge un frame all'animazione all'indice specificato.
      */
     public void addFrame(int index, BufferedImage frame) {
-        if (index < nFrame)
+        if (index < nFrame) {
             frames[index] = frame;
+        }
     }
 
     /**
-     * Restituisce il frame corrente dell'animazione.
+     * @return il frame corrente dell'animazione
      */
     public BufferedImage getCurrentFrame() {
         if (currentIndexFrame >= nFrame) {
@@ -88,14 +82,12 @@ public class AnimatedSprite implements Render {
     }
 
     /**
-     * Restituisce l'offset dell'animazione.
+     * @return l'offset dell'animazione
      */
-    public Vector2<Integer> getOffset() {
-        return offset;
-    }
+    public Vector2<Integer> getOffset() { return offset; }
 
     /**
-     * Restituisce la scala dell'animazione.
+     * @return la scala dell'animazione
      */
     public float getScale() {
         return scale;
@@ -106,7 +98,6 @@ public class AnimatedSprite implements Render {
      */
     public void start() {
         isRunning = true;
-
         if (delete) {
             delete = false;
             RenderManager.addToRender(this);
@@ -129,30 +120,22 @@ public class AnimatedSprite implements Render {
     /**
      * Ferma l'animazione.
      */
-    public void stop() {
-        isRunning = false;
-    }
+    public void stop() { isRunning = false; }
 
     /**
-     * Restituisce il numero totale di frame nell'animazione.
+     * @return il numero totale di frame nell'animazione
      */
-    public int getNFrame() {
-        return nFrame;
-    }
+    public int getNFrame() { return nFrame; }
 
     /**
-     * Restituisce se l'animazione è attualmente in esecuzione.
+     * @return true se l'animazione è in esecuzione, false altrimenti
      */
-    public boolean isRunning() {
-        return isRunning;
-    }
+    public boolean isRunning() { return isRunning; }
 
     /**
-     * Restituisce il tipo di animazione per lo sprite.
+     * @return il tipo di animazione per lo sprite
      */
-    public Pair<CommonEnumStates, Integer> getAnimationTypes() {
-        return animationTypes;
-    }
+    public Pair<CommonEnumStates, Integer> getAnimationTypes() { return animationTypes; }
 
     /**
      * Elimina l'animazione.
@@ -169,22 +152,20 @@ public class AnimatedSprite implements Render {
     public void render(double delta) {
         if (isRunning) {
             if (time >= secFrameDuration) {
-                time -= secFrameDuration; // non time = 0d perché se time è 1.5 quando viene impostato a 0 si perdono 0.5s
+                // non time = 0d perché se time è 1.5 quando viene impostato a 0 si perdono 0.5s
+                time -= secFrameDuration;
                 ++currentIndexFrame;
                 if (loop) {
                     currentIndexFrame = currentIndexFrame % nFrame;
-                }
-                else if (currentIndexFrame >= nFrame) {
+                } else if (currentIndexFrame >= nFrame) {
                     delete();
                 }
-            }
-            else
+            } else {
                 time += delta;
+            }
         }
     }
 
     @Override
-    public boolean renderIsEnd() {
-        return delete;
-    }
+    public boolean renderFinished() { return delete; }
 }

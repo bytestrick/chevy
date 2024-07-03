@@ -5,19 +5,11 @@ import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class BigSlime extends Enemy {
-    public enum EnumState implements CommonEnumStates {
-        MOVE,
-        ATTACK,
-        HIT,
-        DEAD,
-        IDLE
-    }
-    private final State idle = new State(EnumState.IDLE, 0.7f);
-    private final State move = new State(EnumState.MOVE, 0.5f);
-    private final State attack = new State(EnumState.ATTACK, 0.5f);
-    private final State hit = new State(EnumState.HIT, 0.2f);
-    private final State dead = new State(EnumState.DEAD, 0.3f);
-
+    private final State idle = new State(States.IDLE, 0.7f);
+    private final State move = new State(States.MOVE, 0.5f);
+    private final State attack = new State(States.ATTACK, 0.5f);
+    private final State hit = new State(States.HIT, 0.2f);
+    private final State dead = new State(States.DEAD, 0.3f);
 
     public BigSlime(Vector2<Integer> initPosition) {
         super(initPosition, Type.BIG_SLIME);
@@ -27,7 +19,6 @@ public class BigSlime extends Enemy {
 
         initStateMachine();
     }
-
 
     private void initStateMachine() {
         stateMachine.setStateMachineName("Big slime");
@@ -46,7 +37,7 @@ public class BigSlime extends Enemy {
 
     @Override
     public synchronized State getState(CommonEnumStates commonEnumStates) {
-        EnumState bigSlimeState = (EnumState) commonEnumStates;
+        States bigSlimeState = (States) commonEnumStates;
         return switch (bigSlimeState) {
             case MOVE -> move;
             case ATTACK -> attack;
@@ -54,5 +45,9 @@ public class BigSlime extends Enemy {
             case DEAD -> dead;
             case IDLE -> idle;
         };
+    }
+
+    public enum States implements CommonEnumStates {
+        MOVE, ATTACK, HIT, DEAD, IDLE
     }
 }

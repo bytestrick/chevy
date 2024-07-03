@@ -4,7 +4,6 @@ import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.utils.Vector2;
 
 public class Arrow extends Projectile {
-
     public Arrow(Vector2<Integer> initPosition, DirectionsModel direction) {
         super(initPosition, Type.ARROW, direction, 1f);
     }

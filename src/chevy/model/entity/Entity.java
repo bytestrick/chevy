@@ -3,30 +3,23 @@ package chevy.model.entity;
 import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.model.entity.stateMachine.StateMachine;
+import chevy.utils.Log;
 import chevy.utils.Vector2;
 
 import java.util.Random;
 import java.util.UUID;
 
-
 public abstract class Entity {
-    private final UUID ID = UUID.randomUUID();
     protected final Vector2<Integer> position;
+    protected final StateMachine stateMachine = new StateMachine();
+    private final UUID ID = UUID.randomUUID();
+    private final Type type;
     protected int maxDamage;
     protected int minDamage;
     protected boolean safeToCross;
     protected boolean crossable;
-
     protected int layer;
     private boolean toDraw;
-    protected final StateMachine stateMachine = new StateMachine();
-    public enum Type implements EntityCommonEnumTypes {
-        DYNAMIC,
-        ENVIRONMENT,
-        POWER_UP
-    }
-    private final Type type;
-
 
     public Entity(Vector2<Integer> initPosition, Type type) {
         this.position = initPosition;
@@ -38,7 +31,6 @@ public abstract class Entity {
         this.layer = 0;
         this.toDraw = false;
     }
-
 
     public boolean isToDraw() {
         return toDraw;
@@ -64,8 +56,7 @@ public abstract class Entity {
     public boolean isCrossable() { return crossable; }
 
     public boolean isSafeToCross() {
-        if (crossable)
-            return safeToCross;
+        if (crossable) return safeToCross;
 
         return false;
     }
@@ -75,7 +66,7 @@ public abstract class Entity {
     }
 
     public State getState(CommonEnumStates commonEnumStates) {
-        System.out.println("[!] La funzione getState() deve essere ridefinita opportunamente nelle classi figlie");
+        Log.warn("La funzione getState() deve essere ridefinita opportunamente nelle classi figlie");
         return null;
     }
 
@@ -103,7 +94,6 @@ public abstract class Entity {
         return stateMachine.getPreviousState().getStateEnum();
     }
 
-
     @Override
     public String toString() {
         return "ENTITY";
@@ -122,5 +112,9 @@ public abstract class Entity {
     @Override
     public int hashCode() {
         return ID.hashCode();
+    }
+
+    public enum Type implements EntityCommonEnumTypes {
+        DYNAMIC, ENVIRONMENT, POWER_UP
     }
 }

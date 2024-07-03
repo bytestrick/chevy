@@ -2,17 +2,27 @@ package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Archer;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
-import chevy.model.entity.staticEntity.environment.*;
-import chevy.model.entity.staticEntity.environment.traps.*;
+import chevy.model.entity.staticEntity.environment.Ground;
+import chevy.model.entity.staticEntity.environment.Wall;
+import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
+import chevy.model.entity.staticEntity.environment.traps.Sludge;
+import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
+import chevy.model.entity.staticEntity.environment.traps.Totem;
+import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.utils.Vector2;
 
 /**
- * La classe EntityFromColor si occupa della creazione di entità basate su valori di colore.
+ * Crea entità in base a valori di colore.
  * Ogni valore di colore corrisponde a un tipo specifico di entità nel gioco.
  */
 public class EntityFromColor {
@@ -25,7 +35,7 @@ public class EntityFromColor {
     private static final int WALL_TOP = 248;
     private static final int WALL_INTERIOR_CORNER_TOP_RIGHT = 247;
     private static final int WALL_INTERIOR_CORNER_BOTTOM_RIGHT = 253;
-//     private static final int WALL_TOP_TORCH = ;
+    //     private static final int WALL_TOP_TORCH = ;
 //     private static final int WALL_TOP_HOLE = ;
 //     private static final int WALL_TOP_HOLE_2 = ;
 //     private static final int WALL_TOP_BROKEN = ;
@@ -82,7 +92,6 @@ public class EntityFromColor {
     //
     private static final int NULL = 0;
 
-
     public static Entity get(int r, int row, int col) {
         Vector2<Integer> startPosition = new Vector2<>(row, col);
         return switch (r) {
@@ -90,20 +99,26 @@ public class EntityFromColor {
             case WALL_TOP -> new Wall(startPosition, Wall.WallTypes.TOP);
             case WALL_INTERIOR_CORNER_TOP_LEFT -> new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_TOP_LEFT);
             case WALL_INTERIOR_CORNER_TOP_RIGHT -> new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_TOP_RIGHT);
-            case WALL_INTERIOR_CORNER_BOTTOM_LEFT -> new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_BOTTOM_LEFT);
-            case WALL_INTERIOR_CORNER_BOTTOM_RIGHT -> new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_BOTTOM_RIGHT);
+            case WALL_INTERIOR_CORNER_BOTTOM_LEFT ->
+                    new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_BOTTOM_LEFT);
+            case WALL_INTERIOR_CORNER_BOTTOM_RIGHT ->
+                    new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_BOTTOM_RIGHT);
             case WALL_BOTTOM -> new Wall(startPosition, Wall.WallTypes.BOTTOM);
             case WALL_LEFT -> new Wall(startPosition, Wall.WallTypes.LEFT);
             case WALL_RIGHT -> new Wall(startPosition, Wall.WallTypes.RIGHT);
-            case WALL_EXTERNAL_CORNER_BOTTOM_LEFT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
-            case WALL_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
+            case WALL_EXTERNAL_CORNER_BOTTOM_LEFT ->
+                    new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
+            case WALL_EXTERNAL_CORNER_BOTTOM_RIGHT ->
+                    new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
             case WALL_EXTERNAL_CORNER_TOP_LEFT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_TOP_LEFT);
             case WALL_EXTERNAL_CORNER_TOP_RIGHT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_TOP_RIGHT);
 
             // Ground
             case GROUND_TOP -> new Ground(startPosition, Ground.GroundTypes.TOP);
-            case GROUND_INTERIOR_CORNER_TOP_LEFT -> new Ground(startPosition, Ground.GroundTypes.INTERIOR_CORNER_TOP_LEFT);
-            case GROUND_INTERIOR_CORNER_TOP_RIGHT -> new Ground(startPosition, Ground.GroundTypes.INTERIOR_CORNER_TOP_RIGHT);
+            case GROUND_INTERIOR_CORNER_TOP_LEFT ->
+                    new Ground(startPosition, Ground.GroundTypes.INTERIOR_CORNER_TOP_LEFT);
+            case GROUND_INTERIOR_CORNER_TOP_RIGHT ->
+                    new Ground(startPosition, Ground.GroundTypes.INTERIOR_CORNER_TOP_RIGHT);
             case GROUND_LEFT -> new Ground(startPosition, Ground.GroundTypes.LEFT);
             case GROUND_CENTRAL -> new Ground(startPosition, Ground.GroundTypes.CENTRAL);
             case GROUND_CENTRAL_PATTERNED -> new Ground(startPosition, Ground.GroundTypes.CENTRAL_PATTERNED);
@@ -112,14 +127,22 @@ public class EntityFromColor {
             case GROUND_CENTRAL_BROKEN_2 -> new Ground(startPosition, Ground.GroundTypes.CENTRAL_BROKEN_2);
             case GROUND_CENTRAL_BROKEN_3 -> new Ground(startPosition, Ground.GroundTypes.CENTRAL_BROKEN_3);
             case GROUND_RIGHT -> new Ground(startPosition, Ground.GroundTypes.RIGHT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM);
-            case GROUND_EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT);
-            case GROUND_EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT ->
+                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT ->
+                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM ->
+                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT ->
+                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT ->
+                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM ->
+                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM);
+            case GROUND_EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT ->
+                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT);
+            case GROUND_EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT ->
+                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT);
 
             // Trap
             case VOID -> new Void(startPosition);

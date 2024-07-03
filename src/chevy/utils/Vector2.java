@@ -14,13 +14,9 @@ public class Vector2<T extends Number> {
         this.second = vector2.second;
     }
 
-    public void changeFirst(T first) {
-        this.first = first;
-    }
+    public void changeFirst(T first) { this.first = first; }
 
-    public void changeSecond(T second) {
-        this.second = second;
-    }
+    public void changeSecond(T second) { this.second = second; }
 
     @Override
     public String toString() {

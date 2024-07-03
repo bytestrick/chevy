@@ -9,7 +9,6 @@ public class KeyboardListener implements KeyListener {
     private final GameView gameView;
     private ChamberController chamberController;
 
-
     public KeyboardListener(GameView gameView) {
         this.gameView = gameView;
 
@@ -17,21 +16,19 @@ public class KeyboardListener implements KeyListener {
         gameView.getWindow().getGamePanel().addKeyBoardListener(this);
     }
 
-
     @Override
     public void keyTyped(KeyEvent keyEvent) {
     }
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-        if (chamberController != null)
+        if (chamberController != null) {
             chamberController.keyPressed(keyEvent);
+        }
     }
 
     @Override
-    public void keyReleased(KeyEvent keyEvent) {
-
-    }
+    public void keyReleased(KeyEvent keyEvent) { }
 
     public void setChamber(ChamberController chamberController) {
         this.chamberController = chamberController;

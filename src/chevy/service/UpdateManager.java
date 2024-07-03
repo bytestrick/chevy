@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Classe che aggiorna i componenti del model
+ * Aggiorna tutti gli oggetti di model.
  */
 public class UpdateManager {
     private static final List<Update> updateList = new LinkedList<>();
@@ -13,7 +13,6 @@ public class UpdateManager {
 
 
     public synchronized static void addToUpdate(Update u) {
-//        System.out.println("[-] Aggiunto al update: " + u);
         toAdd.add(u);
     }
 
@@ -28,9 +27,8 @@ public class UpdateManager {
         while (iterator.hasNext()) {
             Update current = iterator.next();
             current.update(delta);
-            if (current.updateIsEnd()) {
+            if (current.updateFinished()) {
                 iterator.remove();
-//                System.out.println("[-] Rimosso dal update: " + current);
             }
         }
     }

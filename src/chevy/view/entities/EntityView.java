@@ -1,15 +1,13 @@
-package chevy.view.entityView;
+package chevy.view.entities;
 
 import chevy.utils.Vector2;
 
 import java.awt.image.BufferedImage;
 
 public abstract class EntityView {
-    protected boolean flipped = false;
+//    protected boolean flipped = false;
 
-
-    public EntityView() {}
-
+    public EntityView() { }
 
     public Vector2<Integer> getOffset() {
         return new Vector2<>(0, 0);

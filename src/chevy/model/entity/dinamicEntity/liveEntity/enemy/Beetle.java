@@ -5,19 +5,11 @@ import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class Beetle extends Enemy {
-    public enum EnumState implements CommonEnumStates {
-        MOVE,
-        ATTACK,
-        HIT,
-        DEAD,
-        IDLE
-    }
-    private final State idle = new State(EnumState.IDLE, 1.5f);
-    private final State move = new State(EnumState.MOVE, 0.5f);
-    private final State attack = new State(EnumState.ATTACK, 0.5f);
-    private final State hit = new State(EnumState.HIT, 0.15f);
-    private final State dead = new State(EnumState.DEAD, 0.3f);
-
+    private final State idle = new State(States.IDLE, 1.5f);
+    private final State move = new State(States.MOVE, 0.5f);
+    private final State attack = new State(States.ATTACK, 0.5f);
+    private final State hit = new State(States.HIT, 0.15f);
+    private final State dead = new State(States.DEAD, 0.3f);
 
     public Beetle(Vector2<Integer> initPosition) {
         super(initPosition, Type.BEETLE);
@@ -27,7 +19,6 @@ public class Beetle extends Enemy {
 
         initStateMachine();
     }
-
 
     private void initStateMachine() {
         stateMachine.setStateMachineName("Beetle");
@@ -46,7 +37,7 @@ public class Beetle extends Enemy {
 
     @Override
     public synchronized State getState(CommonEnumStates commonEnumStates) {
-        EnumState beetleState = (EnumState) commonEnumStates;
+        States beetleState = (States) commonEnumStates;
         return switch (beetleState) {
             case MOVE -> move;
             case ATTACK -> attack;
@@ -54,5 +45,9 @@ public class Beetle extends Enemy {
             case DEAD -> dead;
             case IDLE -> idle;
         };
+    }
+
+    public enum States implements CommonEnumStates {
+        MOVE, ATTACK, HIT, DEAD, IDLE
     }
 }
