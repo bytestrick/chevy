@@ -27,7 +27,7 @@ public class StateMachine {
      * @param state L'enumerazione dello stato a cui passare.
      * @return true se lo stato è cambiato con successo, false altrimenti.
      */
-    public synchronized boolean changeState(CommonEnumStates state) {
+    public synchronized boolean changeState(CommonStates state) {
         if (currentState == null) {
             Log.error("Non è presente uno stato iniziale");
             return false;
@@ -69,7 +69,7 @@ public class StateMachine {
      * @param state L'enumerazione dello stato a cui passare.
      * @return true se è possibile cambiare lo stato, false altrimenti.
      */
-    public synchronized boolean canChange(CommonEnumStates state) {
+    public synchronized boolean canChange(CommonStates state) {
         if (currentState == null) {
             Log.error("Non è presente uno stato iniziale");
             return false;
@@ -88,7 +88,7 @@ public class StateMachine {
      * @param state L'enumerazione dello stato a cui passare.
      * @return true se lo stato è cambiato con successo, false altrimenti.
      */
-    public synchronized boolean checkAndChangeState(CommonEnumStates state) {
+    public synchronized boolean checkAndChangeState(CommonStates state) {
         if (canChange(state)) {
             usedWithCanChange = true;
             changeState(state);

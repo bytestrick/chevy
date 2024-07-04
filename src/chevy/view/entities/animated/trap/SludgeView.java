@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.trap;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.staticEntity.environment.traps.Sludge;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -26,14 +26,14 @@ public class SludgeView extends AnimatedEntityView {
     }
 
     public Vector2<Integer> getOffset() {
-        CommonEnumStates currentState = sludge.getCurrentEumState();
+        CommonStates currentState = sludge.getCurrentState();
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, 0);
         return currentAnimatedSprite.getOffset();
     }
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentEnumState = sludge.getCurrentEumState();
+        CommonStates currentEnumState = sludge.getCurrentState();
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, 0);
 
         if (currentAnimatedSprite != null) {
@@ -51,7 +51,7 @@ public class SludgeView extends AnimatedEntityView {
     }
 
     @Override
-    public void wasRemoved() {
+    public void remove() {
         deleteAnimations();
     }
 }

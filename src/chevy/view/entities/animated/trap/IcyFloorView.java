@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.trap;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -31,7 +31,7 @@ public class IcyFloorView extends AnimatedEntityView {
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentEnumState = icyFloor.getCurrentEumState();
+        CommonStates currentEnumState = icyFloor.getCurrentState();
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, 0);
 
         if (currentAnimatedSprite != null) {
@@ -49,7 +49,7 @@ public class IcyFloorView extends AnimatedEntityView {
     }
 
     @Override
-    public void wasRemoved() {
+    public void remove() {
         deleteAnimations();
     }
 }

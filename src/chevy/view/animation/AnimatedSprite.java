@@ -1,6 +1,6 @@
 package chevy.view.animation;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.service.Render;
 import chevy.service.RenderManager;
 import chevy.utils.Pair;
@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  * Gestisce le animazioni sprite nel gioco.
  */
 public class AnimatedSprite implements Render {
-    private final Pair<CommonEnumStates, Integer> animationTypes; // Tipi di animazione.
+    private final Pair<CommonStates, Integer> animationTypes; // Tipi di animazione.
     private final BufferedImage[] frames; // Array di frame per l'animazione.
     private final int nFrame; // Numero totale di frame nell'animazione.
     private final float secFrameDuration; // Durata in secondi di ciascun frame.
@@ -30,7 +30,7 @@ public class AnimatedSprite implements Render {
      * @param secFrameDuration durata di ciascun frame
      * @param loop             se l'animazione deve ripetersi
      */
-    public AnimatedSprite(Pair<CommonEnumStates, Integer> animationTypes, int nFrame, float secFrameDuration,
+    public AnimatedSprite(Pair<CommonStates, Integer> animationTypes, int nFrame, float secFrameDuration,
                           boolean loop) {
         this.animationTypes = animationTypes;
         this.nFrame = nFrame;
@@ -50,7 +50,7 @@ public class AnimatedSprite implements Render {
      * @param offset           offset dell'animazione
      * @param scale            scala che la sequenza deve avere durante la rappresentazione
      */
-    public AnimatedSprite(Pair<CommonEnumStates, Integer> animationTypes, int nFrame, float secFrameDuration,
+    public AnimatedSprite(Pair<CommonStates, Integer> animationTypes, int nFrame, float secFrameDuration,
                           boolean loop, Vector2<Integer> offset, float scale) {
         this.animationTypes = animationTypes;
         this.nFrame = nFrame;
@@ -135,7 +135,7 @@ public class AnimatedSprite implements Render {
     /**
      * @return il tipo di animazione per lo sprite
      */
-    public Pair<CommonEnumStates, Integer> getAnimationTypes() { return animationTypes; }
+    public Pair<CommonStates, Integer> getAnimationTypes() { return animationTypes; }
 
     /**
      * Elimina l'animazione.

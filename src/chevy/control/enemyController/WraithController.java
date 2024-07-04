@@ -43,13 +43,13 @@ public class WraithController {
      * @param wraith il Wraith che subisce l'interazione
      */
     public void playerInInteraction(Player player, Wraith wraith) {
-        switch (player.getCurrentEumState()) {
+        switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, il Wraith viene danneggiato in base al danno del giocatore.
             case Player.States.ATTACK -> {
                 wraith.setDirection(DirectionsModel.positionToDirection(player, wraith));
                 hitWraith(wraith, -1 * player.getDamage());
             }
-            default -> Log.warn("Il WraithController non gestisce questa azione: " + player.getCurrentEumState());
+            default -> Log.warn("Il WraithController non gestisce questa azione: " + player.getCurrentState());
         }
     }
 

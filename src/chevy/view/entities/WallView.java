@@ -1,5 +1,6 @@
 package chevy.view.entities;
 
+import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.staticEntity.environment.Wall;
 import chevy.utils.Image;
 import chevy.utils.Vector2;

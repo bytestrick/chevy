@@ -1,11 +1,11 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class IcyFloor extends Trap {
-    public enum EnumState implements CommonEnumStates {
+    public enum EnumState implements CommonStates {
         ICY_FLOOR,
         ICY_FLOOR_SPARKLING
     }
@@ -30,7 +30,7 @@ public class IcyFloor extends Trap {
     }
 
 
-    public synchronized State getState(CommonEnumStates commonEnumStates) {
+    public synchronized State getState(CommonStates commonEnumStates) {
         EnumState icyFloorState = (EnumState) commonEnumStates;
         return switch (icyFloorState) {
             case ICY_FLOOR -> icyFloor;

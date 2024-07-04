@@ -242,7 +242,7 @@ public class PlayerController implements Update {
         }
 
         // gestione dello scivolamento del player
-        if (player.getCurrentEumState() == Player.States.GLIDE && player.getState(player.getCurrentEumState()).isFinished() && chamber.canCross(player, direction) && chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
+        if (player.getCurrentState() == Player.States.GLIDE && player.getState(player.getCurrentState()).isFinished() && chamber.canCross(player, direction) && chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
             Entity previousEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
             chamber.moveDynamicEntity(player, direction);
             Entity nextEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
@@ -267,7 +267,7 @@ public class PlayerController implements Update {
         }
 
         // idle
-        if (player.getCurrentEumState() != Player.States.SLUDGE) {
+        if (player.getCurrentState() != Player.States.SLUDGE) {
             player.checkAndChangeState(Player.States.IDLE);
         }
     }

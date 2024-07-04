@@ -43,13 +43,13 @@ public class SlimeController {
      * @param slime  lo Slime che subisce l'interazione
      */
     public void playerInInteraction(Player player, Slime slime) {
-        switch (player.getCurrentEumState()) {
+        switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, lo Slime viene danneggiato in base al danno del giocatore.
             case Player.States.ATTACK -> {
                 slime.setDirection(DirectionsModel.positionToDirection(player, slime));
                 hitSlime(slime, -1 * player.getDamage());
             }
-            default -> Log.warn("Lo slimeController non gestisce questa azione: " + player.getCurrentEumState());
+            default -> Log.warn("Lo slimeController non gestisce questa azione: " + player.getCurrentState());
         }
     }
 

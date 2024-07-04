@@ -1,12 +1,12 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class Sludge extends Trap {
     private int nMoveToUnlock;
-    public enum EnumState implements CommonEnumStates {
+    public enum EnumState implements CommonStates {
         SLUDGE_BUBBLES
     }
 
@@ -40,7 +40,7 @@ public class Sludge extends Trap {
         return nMoveToUnlock;
     }
 
-    public synchronized State getState(CommonEnumStates commonEnumStates) {
+    public synchronized State getState(CommonStates commonEnumStates) {
         EnumState spikedFloorState = (EnumState) commonEnumStates;
         return switch (spikedFloorState) {
             case SLUDGE_BUBBLES -> active;

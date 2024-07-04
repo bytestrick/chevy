@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.trap;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -36,14 +36,14 @@ public class SpikedFloorView extends AnimatedEntityView {
     }
 
     public Vector2<Integer> getOffset() {
-        CommonEnumStates currentState = spikedFloor.getCurrentEumState();
+        CommonStates currentState = spikedFloor.getCurrentState();
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, 0);
         return currentAnimatedSprite.getOffset();
     }
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentEnumState = spikedFloor.getCurrentEumState();
+        CommonStates currentEnumState = spikedFloor.getCurrentState();
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, 0);
 
         if (currentAnimatedSprite != null) {
@@ -61,7 +61,7 @@ public class SpikedFloorView extends AnimatedEntityView {
     }
 
     @Override
-    public void wasRemoved() {
+    public void remove() {
         deleteAnimations();
     }
 }

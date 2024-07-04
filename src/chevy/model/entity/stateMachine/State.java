@@ -8,11 +8,11 @@ import java.util.Objects;
  * Rappresenta uno stato all'interno di una macchina a stati.
  */
 public class State {
-    private final CommonEnumStates commonEnumStates; // L'enumerazione associata a questo stato.
+    private final CommonStates commonEnumStates; // L'enumerazione associata a questo stato.
     private final boolean selfEdge; // Indica se questo stato ha un auto-arco.
     private final float durationState; // La durata di questo stato.
     // Gli stati collegati a questo stato.
-    private final Dictionary<CommonEnumStates, State> linkedStates = new Hashtable<>();
+    private final Dictionary<CommonStates, State> linkedStates = new Hashtable<>();
     private final Timer stateTimer;
 
     /**
@@ -20,7 +20,7 @@ public class State {
      *
      * @param commonEnumStates l'enumerazione associata a questo stato
      */
-    public State(CommonEnumStates commonEnumStates) {
+    public State(CommonStates commonEnumStates) {
         this.commonEnumStates = commonEnumStates;
         this.selfEdge = false;
         this.durationState = 0.f;
@@ -33,7 +33,7 @@ public class State {
      * @param commonEnumStates l'enumerazione associata a questo stato
      * @param secDuration      la durata di questo stato in secondi
      */
-    public State(CommonEnumStates commonEnumStates, float secDuration) {
+    public State(CommonStates commonEnumStates, float secDuration) {
         this.commonEnumStates = commonEnumStates;
         this.selfEdge = false;
         this.durationState = secDuration;
@@ -46,7 +46,7 @@ public class State {
      * @param commonEnumStates l'enumerazione associata a questo stato
      * @param selfEdge         indica se questo stato ha un auto-arco
      */
-    public State(CommonEnumStates commonEnumStates, boolean selfEdge) {
+    public State(CommonStates commonEnumStates, boolean selfEdge) {
         this.commonEnumStates = commonEnumStates;
         this.selfEdge = selfEdge;
         this.durationState = 0.f;
@@ -60,7 +60,7 @@ public class State {
      * @param duration         la durata di questo stato in secondi
      * @param selfEdge         indica se questo stato ha un auto-arco
      */
-    public State(CommonEnumStates commonEnumStates, float duration, boolean selfEdge) {
+    public State(CommonStates commonEnumStates, float duration, boolean selfEdge) {
         this.commonEnumStates = commonEnumStates;
         this.selfEdge = selfEdge;
         this.durationState = duration;
@@ -72,7 +72,7 @@ public class State {
      *
      * @return L'enumerazione associata a questo stato
      */
-    public CommonEnumStates getStateEnum() {
+    public CommonStates getStateEnum() {
         return commonEnumStates;
     }
 
@@ -91,7 +91,7 @@ public class State {
      * @param commonEnumStates l'enumerazione dello stato da trovare
      * @return lo stato collegato a questo stato, o null se non esiste
      */
-    public State findLinkedState(CommonEnumStates commonEnumStates) {
+    public State findLinkedState(CommonStates commonEnumStates) {
         if (selfEdge && Objects.equals(this.commonEnumStates, commonEnumStates)) {
             return this;
         }

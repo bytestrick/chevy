@@ -2,7 +2,7 @@ package chevy.view.entities.animated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -14,19 +14,14 @@ import java.awt.image.BufferedImage;
 public class SlimeView extends AnimatedEntityView {
     private static final String SLIME_RESOURCES = "/assets/enemy/slime/";
     private final Slime slime;
-    private final Vector2<Double> currentPosition;
-    private final Interpolation moveInterpolationX;
-    private final Interpolation moveInterpolationY;
-    private State currentState;
-    private boolean firstTimeInState = false;
 
     public SlimeView(Slime slime) {
         super();
         this.slime = slime;
         this.currentPosition = new Vector2<>((double) slime.getCol(), (double) slime.getRow());
-        currentState = slime.getState(slime.getCurrentEumState());
+        currentState = slime.getState(slime.getCurrentState());
 
-        float duration = slime.getState(slime.getCurrentEumState()).getDuration();
+        float duration = slime.getState(slime.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentPosition.first, slime.getCol(), duration,
                 Interpolation.Types.EASE_OUT_SINE);
         moveInterpolationY = new Interpolation(currentPosition.second, slime.getRow(), duration,
@@ -62,7 +57,7 @@ public class SlimeView extends AnimatedEntityView {
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentState = slime.getCurrentEumState();
+        CommonStates currentState = slime.getCurrentState();
         int type = getAnimationType(currentState);
 
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, type);
@@ -76,7 +71,7 @@ public class SlimeView extends AnimatedEntityView {
         return null;
     }
 
-    private int getAnimationType(CommonEnumStates currentState) {
+    private int getAnimationType(CommonStates currentState) {
         DirectionsModel currentDirection = slime.getDirection();
         return switch (currentState) {
             case Slime.States.ATTACK -> switch (currentDirection) {
@@ -92,7 +87,7 @@ public class SlimeView extends AnimatedEntityView {
     @Override
     public Vector2<Double> getCurrentPosition() {
         if (currentState.isFinished()) {
-            currentState = slime.getState(slime.getCurrentEumState());
+            currentState = slime.getState(slime.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
             float duration = currentState.getDuration();
@@ -110,12 +105,5 @@ public class SlimeView extends AnimatedEntityView {
         currentPosition.changeFirst(moveInterpolationX.getValue());
         currentPosition.changeSecond(moveInterpolationY.getValue());
         return currentPosition;
-    }
-
-    @Override
-    public void wasRemoved() {
-        moveInterpolationX.delete();
-        moveInterpolationY.delete();
-        deleteAnimations();
     }
 }

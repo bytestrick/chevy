@@ -43,7 +43,7 @@ public class BigSlimeController {
      * @param bigSlime il BigSlime che subisce l'interazione
      */
     public void playerInInteraction(Player player, BigSlime bigSlime) {
-        switch (player.getCurrentEumState()) {
+        switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, il BigSlime viene danneggiato in base al danno del giocatore.
             case Player.States.ATTACK -> {
                 bigSlime.setDirection(DirectionsModel.positionToDirection(player, bigSlime));

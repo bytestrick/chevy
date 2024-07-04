@@ -2,7 +2,7 @@ package chevy.view.entities.animated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -14,19 +14,14 @@ import java.awt.image.BufferedImage;
 public class WraithView extends AnimatedEntityView {
     private static final String WRAITH_RESOURCES = "/assets/enemy/wraith/";
     private final Wraith wraith;
-    private final Vector2<Double> currentPosition;
-    private final Interpolation moveInterpolationX;
-    private final Interpolation moveInterpolationY;
-    private State currentState;
-    private boolean firstTimeInState = false;
 
     public WraithView(Wraith wraith) {
         super();
         this.wraith = wraith;
         this.currentPosition = new Vector2<>((double) wraith.getCol(), (double) wraith.getRow());
-        currentState = wraith.getState(wraith.getCurrentEumState());
+        currentState = wraith.getState(wraith.getCurrentState());
 
-        float duration = wraith.getState(wraith.getCurrentEumState()).getDuration();
+        float duration = wraith.getState(wraith.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentPosition.first, wraith.getCol(), duration,
                 Interpolation.Types.EASE_OUT_SINE);
         moveInterpolationY = new Interpolation(currentPosition.second, wraith.getRow(), duration,
@@ -72,7 +67,7 @@ public class WraithView extends AnimatedEntityView {
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentEnumState = wraith.getCurrentEumState();
+        CommonStates currentEnumState = wraith.getCurrentState();
         int type = getAnimationType(currentEnumState);
 
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, type);
@@ -86,7 +81,7 @@ public class WraithView extends AnimatedEntityView {
         return null;
     }
 
-    private int getAnimationType(CommonEnumStates currentState) {
+    private int getAnimationType(CommonStates currentState) {
         DirectionsModel currentDirection = wraith.getDirection();
         return switch (currentState) {
             case Wraith.States.ATTACK, Wraith.States.IDLE, Wraith.States.MOVE -> switch (currentDirection) {
@@ -106,7 +101,7 @@ public class WraithView extends AnimatedEntityView {
     @Override
     public Vector2<Double> getCurrentPosition() {
         if (currentState.isFinished()) {
-            currentState = wraith.getState(wraith.getCurrentEumState());
+            currentState = wraith.getState(wraith.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
             float duration = currentState.getDuration();
@@ -124,12 +119,5 @@ public class WraithView extends AnimatedEntityView {
         currentPosition.changeFirst(moveInterpolationX.getValue());
         currentPosition.changeSecond(moveInterpolationY.getValue());
         return currentPosition;
-    }
-
-    @Override
-    public void wasRemoved() {
-        moveInterpolationX.delete();
-        moveInterpolationY.delete();
-        deleteAnimations();
     }
 }

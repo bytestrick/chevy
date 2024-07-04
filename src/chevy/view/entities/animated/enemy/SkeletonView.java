@@ -2,7 +2,7 @@ package chevy.view.entities.animated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -14,19 +14,14 @@ import java.awt.image.BufferedImage;
 public class SkeletonView extends AnimatedEntityView {
     private static final String SKELETON_RESOURCES = "/assets/enemy/skeleton/";
     private final Skeleton skeleton;
-    private final Vector2<Double> currentPosition;
-    private final Interpolation moveInterpolationX;
-    private final Interpolation moveInterpolationY;
-    private State currentState;
-    private boolean firstTimeInState = false;
 
     public SkeletonView(Skeleton skeleton) {
         super();
         this.skeleton = skeleton;
         this.currentPosition = new Vector2<>((double) skeleton.getCol(), (double) skeleton.getRow());
-        currentState = skeleton.getState(skeleton.getCurrentEumState());
+        currentState = skeleton.getState(skeleton.getCurrentState());
 
-        float duration = skeleton.getState(skeleton.getCurrentEumState()).getDuration();
+        float duration = skeleton.getState(skeleton.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentPosition.first, skeleton.getCol(), duration,
                 Interpolation.Types.EASE_OUT_SINE);
         moveInterpolationY = new Interpolation(currentPosition.second, skeleton.getRow(), duration,
@@ -73,7 +68,7 @@ public class SkeletonView extends AnimatedEntityView {
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentState = skeleton.getCurrentEumState();
+        CommonStates currentState = skeleton.getCurrentState();
         int type = getAnimationType(currentState);
 
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, type);
@@ -87,7 +82,7 @@ public class SkeletonView extends AnimatedEntityView {
         return null;
     }
 
-    private int getAnimationType(CommonEnumStates currentState) {
+    private int getAnimationType(CommonStates currentState) {
         DirectionsModel currentDirection = skeleton.getDirection();
         return switch (currentState) {
             case Skeleton.States.ATTACK, Skeleton.States.IDLE, Skeleton.States.MOVE ->
@@ -108,7 +103,7 @@ public class SkeletonView extends AnimatedEntityView {
     @Override
     public Vector2<Double> getCurrentPosition() {
         if (currentState.isFinished()) {
-            currentState = skeleton.getState(skeleton.getCurrentEumState());
+            currentState = skeleton.getState(skeleton.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
             float duration = currentState.getDuration();
@@ -126,12 +121,5 @@ public class SkeletonView extends AnimatedEntityView {
         currentPosition.changeFirst(moveInterpolationX.getValue());
         currentPosition.changeSecond(moveInterpolationY.getValue());
         return currentPosition;
-    }
-
-    @Override
-    public void wasRemoved() {
-        moveInterpolationX.delete();
-        moveInterpolationY.delete();
-        deleteAnimations();
     }
 }

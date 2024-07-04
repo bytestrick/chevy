@@ -1,7 +1,7 @@
 package chevy.model.entity.dinamicEntity.projectile;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
@@ -30,7 +30,7 @@ public class SlimeShot extends Projectile {
     }
 
     @Override
-    public State getState(CommonEnumStates commonEnumStates) {
+    public State getState(CommonStates commonEnumStates) {
         States projectileState = (States) commonEnumStates;
         return switch (projectileState) {
             case START -> start;

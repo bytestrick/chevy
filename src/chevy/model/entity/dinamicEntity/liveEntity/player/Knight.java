@@ -1,15 +1,15 @@
 package chevy.model.entity.dinamicEntity.liveEntity.player;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class Knight extends Player {
-    private final State idle = new State(States.IDLE);
+    private final State idle = new State(States.IDLE );
     private final State move = new State(States.MOVE, speed);
-    private final State attack = new State(States.ATTACK);
-    private final State hit = new State(States.HIT, 0.1f);
-    private final State dead = new State(States.DEAD);
+    private final State attack = new State(States.ATTACK, .4f);
+    private final State hit = new State(States.HIT, .2f);
+    private final State dead = new State(States.DEAD, 2f);
     private final State glide = new State(States.GLIDE, speed, true);
     private final State sludge = new State(States.SLUDGE, speed);
     private final State fall = new State(States.FALL);
@@ -17,6 +17,7 @@ public class Knight extends Player {
     public Knight(Vector2<Integer> initPosition) {
         super(initPosition, Type.KNIGHT);
 
+        this.speed = 0.2f;
         this.health = 100;
         this.shield = 2;
         this.maxDamage = 7;
@@ -55,9 +56,8 @@ public class Knight extends Player {
     }
 
     @Override
-    public synchronized State getState(CommonEnumStates commonEnumStates) {
-        States playerState = (States) commonEnumStates;
-        return switch (playerState) {
+    public synchronized State getState(CommonStates state) {
+        return switch ((Player.States) state) {
             case IDLE -> idle;
             case ATTACK -> attack;
             case MOVE -> move;

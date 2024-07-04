@@ -43,13 +43,13 @@ public class SkeletonController {
      * @param skeleton lo Skeleton che subisce l'interazione
      */
     public void playerInInteraction(Player player, Skeleton skeleton) {
-        switch (player.getCurrentEumState()) {
+        switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, lo Skeleton viene danneggiato in base al danno del giocatore.
             case Player.States.ATTACK -> {
                 hitSkeleton(skeleton, -1 * player.getDamage());
                 skeleton.setDirection(DirectionsModel.positionToDirection(player, skeleton));
             }
-            default -> Log.warn("Lo SkeletonController non gestisce questa azione: " + player.getCurrentEumState());
+            default -> Log.warn("Lo SkeletonController non gestisce questa azione: " + player.getCurrentState());
         }
     }
 

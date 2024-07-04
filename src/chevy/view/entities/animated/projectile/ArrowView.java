@@ -18,7 +18,7 @@ public class ArrowView extends AnimatedEntityView {
     }
 
     @Override
-    public void wasRemoved() {
+    public void remove() {
 
     }
 }

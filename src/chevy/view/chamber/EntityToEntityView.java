@@ -8,7 +8,9 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Archer;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
@@ -29,7 +31,9 @@ import chevy.view.entities.animated.enemy.SkeletonView;
 import chevy.view.entities.animated.enemy.SlimeView;
 import chevy.view.entities.animated.enemy.WraithView;
 import chevy.view.entities.animated.enemy.ZombieView;
+import chevy.view.entities.animated.player.ArcherView;
 import chevy.view.entities.animated.player.KnightView;
+import chevy.view.entities.animated.player.NinjaView;
 import chevy.view.entities.animated.projectile.SlimeShotView;
 import chevy.view.entities.animated.trap.IcyFloorView;
 import chevy.view.entities.animated.trap.SludgeView;
@@ -121,6 +125,26 @@ public class EntityToEntityView {
                     entityView.put(entity, knightView);
                 }
                 yield knightView;
+            }
+            case Player.Type.ARCHER -> {
+                ArcherView archerView;
+                if (entityView.containsKey(entity)) {
+                    archerView = (ArcherView) entityView.get(entity);
+                } else {
+                    archerView = new ArcherView((Archer) entity);
+                    entityView.put(entity, archerView);
+                }
+                yield archerView;
+            }
+            case Player.Type.NINJA -> {
+                NinjaView ninjaView;
+                if (entityView.containsKey(entity)) {
+                    ninjaView = (NinjaView) entityView.get(entity);
+                } else {
+                    ninjaView = new NinjaView((Ninja) entity);
+                    entityView.put(entity, ninjaView);
+                }
+                yield ninjaView;
             }
 
             // Projectile
