@@ -1,5 +1,6 @@
 package chevy.view.entities;
 
+import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.utils.Vector2;
 
 import java.awt.image.BufferedImage;

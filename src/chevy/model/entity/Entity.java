@@ -1,6 +1,6 @@
 package chevy.model.entity;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.model.entity.stateMachine.StateMachine;
 import chevy.utils.Log;
@@ -65,20 +65,20 @@ public abstract class Entity {
         return Math.abs(this.layer);
     }
 
-    public State getState(CommonEnumStates commonEnumStates) {
+    public State getState(CommonStates commonEnumStates) {
         Log.warn("La funzione getState() deve essere ridefinita opportunamente nelle classi figlie");
         return null;
     }
 
-    public boolean changeState(CommonEnumStates state) {
+    public boolean changeState(CommonStates state) {
         return stateMachine.changeState(state);
     }
 
-    public boolean canChange(CommonEnumStates state) {
+    public boolean canChange(CommonStates state) {
         return stateMachine.canChange(state);
     }
 
-    public boolean checkAndChangeState(CommonEnumStates state) {
+    public boolean checkAndChangeState(CommonStates state) {
         return stateMachine.checkAndChangeState(state);
     }
 
@@ -86,11 +86,11 @@ public abstract class Entity {
         return stateMachine.changeToPreviousState();
     }
 
-    public CommonEnumStates getCurrentEumState() {
+    public CommonStates getCurrentState() {
         return stateMachine.getCurrentState().getStateEnum();
     }
 
-    public CommonEnumStates getPreviousEnumState() {
+    public CommonStates getPreviousEnumState() {
         return stateMachine.getPreviousState().getStateEnum();
     }
 

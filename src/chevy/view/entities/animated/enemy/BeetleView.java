@@ -2,7 +2,7 @@ package chevy.view.entities.animated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -14,17 +14,12 @@ import java.awt.image.BufferedImage;
 public class BeetleView extends AnimatedEntityView {
     private static final String BEETLE_RESOURCES = "/assets/enemy/beetle/";
     private final Beetle beetle;
-    private final Vector2<Double> currentPosition;
-    private final Interpolation moveInterpolationX;
-    private final Interpolation moveInterpolationY;
-    private State currentState;
-    private boolean firstTimeInState = false;
 
     public BeetleView(Beetle beetle) {
         super();
         this.beetle = beetle;
         this.currentPosition = new Vector2<>((double) beetle.getCol(), (double) beetle.getRow());
-        currentState = beetle.getState(beetle.getCurrentEumState());
+        currentState = beetle.getState(beetle.getCurrentState());
 
         float duration = currentState.getDuration();
         moveInterpolationX = new Interpolation(currentPosition.first, beetle.getCol(), duration,
@@ -77,7 +72,7 @@ public class BeetleView extends AnimatedEntityView {
     }
 
     public Vector2<Integer> getOffset() {
-        CommonEnumStates currentState = beetle.getCurrentEumState();
+        CommonStates currentState = beetle.getCurrentState();
         int type = getAnimationType(currentState);
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, type);
         return currentAnimatedSprite.getOffset();
@@ -85,20 +80,20 @@ public class BeetleView extends AnimatedEntityView {
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentStateState = beetle.getCurrentEumState();
-        int type = getAnimationType(currentStateState);
-        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentStateState, type);
+        CommonStates currentState = beetle.getCurrentState();
+        int type = getAnimationType(currentState);
+        AnimatedSprite animatedSprite = this.getAnimatedSprite(currentState, type);
 
-        if (currentAnimatedSprite != null) {
-            if (!currentAnimatedSprite.isRunning()) {
-                currentAnimatedSprite.restart();
+        if (animatedSprite != null) {
+            if (!animatedSprite.isRunning()) {
+                animatedSprite.restart();
             }
-            return currentAnimatedSprite.getCurrentFrame();
+            return animatedSprite.getCurrentFrame();
         }
         return null;
     }
 
-    private int getAnimationType(CommonEnumStates currentState) {
+    private int getAnimationType(CommonStates currentState) {
         DirectionsModel currentDirection = beetle.getDirection();
         return switch (currentState) {
             case Beetle.States.ATTACK, Beetle.States.IDLE, Beetle.States.MOVE, Beetle.States.HIT ->
@@ -109,8 +104,11 @@ public class BeetleView extends AnimatedEntityView {
                         case LEFT -> 3;
                     };
             case Beetle.States.DEAD -> {
-                if (currentDirection == DirectionsModel.RIGHT) yield 1;
-                else yield 0;
+                if (currentDirection == DirectionsModel.RIGHT) {
+                    yield 1;
+                } else {
+                    yield 0;
+                }
             }
             default -> 0;
         };
@@ -119,7 +117,7 @@ public class BeetleView extends AnimatedEntityView {
     @Override
     public Vector2<Double> getCurrentPosition() {
         if (currentState.isFinished()) {
-            currentState = beetle.getState(beetle.getCurrentEumState());
+            currentState = beetle.getState(beetle.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
             float duration = currentState.getDuration();
@@ -137,12 +135,5 @@ public class BeetleView extends AnimatedEntityView {
         currentPosition.changeFirst(moveInterpolationX.getValue());
         currentPosition.changeSecond(moveInterpolationY.getValue());
         return currentPosition;
-    }
-
-    @Override
-    public void wasRemoved() {
-        moveInterpolationX.delete();
-        moveInterpolationY.delete();
-        deleteAnimations();
     }
 }

@@ -1,6 +1,6 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
@@ -35,7 +35,7 @@ public class Slime extends Enemy {
     }
 
     @Override
-    public synchronized State getState(CommonEnumStates commonEnumStates) {
+    public synchronized State getState(CommonStates commonEnumStates) {
         States slimeState = (States) commonEnumStates;
         return switch (slimeState) {
             case MOVE -> move;
@@ -46,7 +46,7 @@ public class Slime extends Enemy {
         };
     }
 
-    public enum States implements CommonEnumStates {
+    public enum States implements CommonStates {
         MOVE, ATTACK, HIT, DEAD, IDLE
     }
 }

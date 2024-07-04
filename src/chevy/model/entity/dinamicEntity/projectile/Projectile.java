@@ -3,7 +3,7 @@ package chevy.model.entity.dinamicEntity.projectile;
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.utils.Vector2;
 
 public abstract class Projectile extends DynamicEntity {
@@ -40,7 +40,7 @@ public abstract class Projectile extends DynamicEntity {
         ARROW, FIRE_BALL, SLIME_SHOT;
     }
 
-    public enum States implements CommonEnumStates {
+    public enum States implements CommonStates {
         START, LOOP, END;
     }
 }

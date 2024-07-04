@@ -2,7 +2,7 @@ package chevy.model.entity.dinamicEntity.liveEntity.player;
 
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.utils.Vector2;
 
 public abstract class Player extends LiveEntity {
@@ -31,7 +31,7 @@ public abstract class Player extends LiveEntity {
         return type.toString();
     }
 
-    public enum States implements CommonEnumStates {
+    public enum States implements CommonStates {
         IDLE, ATTACK, MOVE, DEAD, HIT, SLUDGE, FALL, GLIDE
     }
 

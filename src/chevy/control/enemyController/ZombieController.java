@@ -43,13 +43,13 @@ public class ZombieController {
      * @param zombie lo Zombie che subisce l'interazione
      */
     public void playerInInteraction(Player player, Zombie zombie) {
-        switch (player.getCurrentEumState()) {
+        switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, lo Zombie viene danneggiato in base al danno del giocatore.
             case Player.States.ATTACK -> {
                 zombie.setDirection(DirectionsModel.positionToDirection(player, zombie));
                 hitZombie(zombie, -1 * player.getDamage());
             }
-            default -> Log.warn("Lo ZombieController non gestisce questa azione: " + player.getCurrentEumState());
+            default -> Log.warn("Lo ZombieController non gestisce questa azione: " + player.getCurrentState());
         }
     }
 

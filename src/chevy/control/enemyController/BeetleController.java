@@ -45,13 +45,13 @@ public class BeetleController {
      * @param beetle il Beetle che subisce l'interazione
      */
     public void playerInInteraction(Player player, Beetle beetle) {
-        switch (player.getCurrentEumState()) {
+        switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, il Beetle viene danneggiato in base al danno del giocatore.
             case Player.States.ATTACK -> {
                 beetle.setDirection(DirectionsModel.positionToDirection(player, beetle));
                 hitBeetle(beetle, -1 * player.getDamage());
             }
-            default -> Log.warn("Il BeetleController non gestisce questa azione: " + player.getCurrentEumState());
+            default -> Log.warn("Il BeetleController non gestisce questa azione: " + player.getCurrentState());
         }
     }
 

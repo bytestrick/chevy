@@ -2,7 +2,7 @@ package chevy.view.entities.animated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
-import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.CommonStates;
 import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -14,19 +14,14 @@ import java.awt.image.BufferedImage;
 public class BigSlimeView extends AnimatedEntityView {
     private static final String BIG_SLIME_RESOURCES = "/assets/enemy/bigSlime/";
     private final BigSlime bigSlime;
-    private final Vector2<Double> currentPosition;
-    private final Interpolation moveInterpolationX;
-    private final Interpolation moveInterpolationY;
-    private State currentState;
-    private boolean firstTimeInState = false;
 
     public BigSlimeView(BigSlime bigSlime) {
         super();
         this.bigSlime = bigSlime;
         this.currentPosition = new Vector2<>((double) bigSlime.getCol(), (double) bigSlime.getRow());
-        currentState = bigSlime.getState(bigSlime.getCurrentEumState());
+        currentState = bigSlime.getState(bigSlime.getCurrentState());
 
-        float duration = bigSlime.getState(bigSlime.getCurrentEumState()).getDuration();
+        float duration = bigSlime.getState(bigSlime.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentPosition.first, bigSlime.getCol(), duration,
                 Interpolation.Types.EASE_OUT_SINE);
         moveInterpolationY = new Interpolation(currentPosition.second, bigSlime.getRow(), duration,
@@ -62,7 +57,7 @@ public class BigSlimeView extends AnimatedEntityView {
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentState = bigSlime.getCurrentEumState();
+        CommonStates currentState = bigSlime.getCurrentState();
         int type = getAnimationType(currentState);
 
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, type);
@@ -76,7 +71,7 @@ public class BigSlimeView extends AnimatedEntityView {
         return null;
     }
 
-    private int getAnimationType(CommonEnumStates currentState) {
+    private int getAnimationType(CommonStates currentState) {
         DirectionsModel currentDirection = bigSlime.getDirection();
         return switch (currentState) {
             case BigSlime.States.ATTACK -> switch (currentDirection) {
@@ -92,7 +87,7 @@ public class BigSlimeView extends AnimatedEntityView {
     @Override
     public Vector2<Double> getCurrentPosition() {
         if (currentState.isFinished()) {
-            currentState = bigSlime.getState(bigSlime.getCurrentEumState());
+            currentState = bigSlime.getState(bigSlime.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
             float duration = currentState.getDuration();
@@ -110,12 +105,5 @@ public class BigSlimeView extends AnimatedEntityView {
         currentPosition.changeFirst(moveInterpolationX.getValue());
         currentPosition.changeSecond(moveInterpolationY.getValue());
         return currentPosition;
-    }
-
-    @Override
-    public void wasRemoved() {
-        moveInterpolationX.delete();
-        moveInterpolationY.delete();
-        deleteAnimations();
     }
 }

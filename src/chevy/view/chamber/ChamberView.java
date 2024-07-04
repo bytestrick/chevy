@@ -90,7 +90,7 @@ public class ChamberView {
                         it.remove();
                         Log.info("Entity rimossa dal ridisegno: " + entity.getSpecificType());
                         if (entityViewSpecific instanceof AnimatedEntityView entityViewAnimated) {
-                            entityViewAnimated.wasRemoved();
+                            entityViewAnimated.remove();
                         }
                     }
                 }
