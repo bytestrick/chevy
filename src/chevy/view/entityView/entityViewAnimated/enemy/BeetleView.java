@@ -90,7 +90,7 @@ public class BeetleView extends EntityViewAnimated {
                 BEETLE_RESOURCES + "move/left", ".png");
 
         // --- ATTACK
-        Vector2<Integer> offsetAttack = new Vector2<>(-2, -4);
+        Vector2<Integer> offsetAttack = new Vector2<>(-1, -3);
         float scaleAttack = 1;
         createAnimation(Beetle.EnumState.ATTACK, 0,
                 4,  attackDuration,

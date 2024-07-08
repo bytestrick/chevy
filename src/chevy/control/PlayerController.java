@@ -31,12 +31,11 @@ public class PlayerController implements Update {
     /**
      * Riferimento alla stanza di gioco.
      */
-    private Chamber chamber;
-    private Player player;
+    private final Chamber chamber;
+    private final Player player;
     private EnemyController enemyController;
     private TrapsController trapsController;
     private ProjectileController projectileController;
-    private DirectionsModel direction;
 
     /**
      * @param chamber riferimento alla stanza di gioco
@@ -47,7 +46,6 @@ public class PlayerController implements Update {
         this.enemyController = null;
         this.trapsController = null;
         this.projectileController = null;
-        this.direction = null;
 
         // Aggiunge il controller del giocatore all'UpdateManager.
         UpdateManager.addToUpdate(this);
@@ -58,7 +56,7 @@ public class PlayerController implements Update {
      * @param keyEvent l'evento di pressione del tasto
      */
     public void keyPressed(KeyEvent keyEvent) {
-        direction = switch (keyEvent.getKeyCode()) {
+        DirectionsModel direction = switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_W -> DirectionsModel.UP;
             case KeyEvent.VK_A -> DirectionsModel.LEFT;
             case KeyEvent.VK_S -> DirectionsModel.DOWN;
@@ -101,8 +99,8 @@ public class PlayerController implements Update {
         switch (trap.getSpecificType()) {
             case Trap.Type.VOID -> {
                 hitPlayer(-1 * trap.getDamage());
-                if (player.isAlive() && chamber.canCross(player, direction.getOpposite()))
-                    chamber.moveDynamicEntity(player, direction.getOpposite());
+                if (player.isAlive() && chamber.canCross(player, player.getDirection().getOpposite()))
+                    chamber.moveDynamicEntity(player, player.getDirection().getOpposite());
             }
             case Trap.Type.SPIKED_FLOOR -> {
                 SpikedFloor spikedFloor = (SpikedFloor) trap;
@@ -124,7 +122,9 @@ public class PlayerController implements Update {
         // Player on
         if (entityCurrentCell != null)
             switch (entityCurrentCell.getGenericType()) {
-                case TRAP -> trapsController.handleInteraction(InteractionTypes.PLAYER, player, (Trap) entityCurrentCell);
+                case TRAP -> {
+                    trapsController.handleInteraction(InteractionTypes.PLAYER, player, (Trap) entityCurrentCell);
+                }
                 default -> {}
             }
 
@@ -229,11 +229,11 @@ public class PlayerController implements Update {
         // gestione dello scivolamento del player
         if (player.getCurrentEumState() == Player.EnumState.GLIDE &&
                 player.getState(player.getCurrentEumState()).isFinished() &&
-                chamber.canCross(player, direction) &&
+                chamber.canCross(player, player.getDirection()) &&
                 chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
 
             Entity previousEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
-            chamber.moveDynamicEntity(player, direction);
+            chamber.moveDynamicEntity(player, player.getDirection());
             Entity nextEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
 
             switch (previousEntityBelowTheTop.getGenericType()) {

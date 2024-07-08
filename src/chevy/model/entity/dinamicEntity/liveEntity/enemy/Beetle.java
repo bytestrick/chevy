@@ -24,6 +24,7 @@ public class Beetle extends Enemy {
         this.health = 10;
         this.maxDamage = 5;
         this.minDamage = 3;
+        this.layer = 3;
 
         initStateMachine();
     }

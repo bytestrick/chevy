@@ -48,51 +48,77 @@ public class SlimeShotView extends EntityViewAnimated {
 
     private void initAnimation() {
         // --- START
+        Vector2<Integer> startOffsetUp = new Vector2<>(1, -16);
+        Vector2<Integer> startOffsetDown = new Vector2<>(1, 16);
+        Vector2<Integer> startOffsetRight = new Vector2<>(18, 2);
+        Vector2<Integer> startOffsetLeft = new Vector2<>(-16, 2);
 
-        int offset = 16;
-        Vector2<Integer> offsetUp = new Vector2<>(0, -16);
         createAnimation(Projectile.EnumState.START, 0,
                 4, false, 1,
-                offsetUp, 1,
+                startOffsetUp, 1,
                 SLIME_SHOT_RESOURCES + "start/up", ".png");
 
         createAnimation(Projectile.EnumState.START, 1,
                 4, false, 1,
-                new Vector2<>(0, offset), 1,
+                startOffsetDown, 1,
                 SLIME_SHOT_RESOURCES + "start/down", ".png");
 
         createAnimation(Projectile.EnumState.START, 2,
                 4, false, 1,
-                new Vector2<>(offset, 0), 1,
+                startOffsetRight, 1,
                 SLIME_SHOT_RESOURCES + "start/right", ".png");
 
         createAnimation(Projectile.EnumState.START, 3,
                 4, false, 1,
-                new Vector2<>(-1 * offset, 0), 1,
+                startOffsetLeft, 1,
                 SLIME_SHOT_RESOURCES + "start/left", ".png");
 
         // --- LOOP
+        Vector2<Integer> loopEndOffsetUp = new Vector2<>(2, 0);
+        Vector2<Integer> loopEndOffsetDown = new Vector2<>(2, 4);
+        Vector2<Integer> loopEndOffsetRight = new Vector2<>(4, 2);
+        Vector2<Integer> loopEndOffsetLeft = new Vector2<>(0, 2);
 
         createAnimation(Projectile.EnumState.LOOP, 0,
                 4, true, 3,
+                loopEndOffsetUp, 1,
                 SLIME_SHOT_RESOURCES + "loop/up", ".png");
 
         createAnimation(Projectile.EnumState.LOOP, 1,
                 4, true, 3,
+                loopEndOffsetDown, 1,
                 SLIME_SHOT_RESOURCES + "loop/down", ".png");
 
         createAnimation(Projectile.EnumState.LOOP, 2,
                 4, true, 3,
+                loopEndOffsetRight, 1,
                 SLIME_SHOT_RESOURCES + "loop/right", ".png");
 
         createAnimation(Projectile.EnumState.LOOP, 3,
                 4, true, 3,
+                loopEndOffsetLeft, 1,
                 SLIME_SHOT_RESOURCES + "loop/left", ".png");
 
         // --- END
 
         createAnimation(Projectile.EnumState.END, 0,
                 5, false, 1,
+                loopEndOffsetUp, 1,
+                SLIME_SHOT_RESOURCES + "end", ".png");
+
+        createAnimation(Projectile.EnumState.END, 1,
+                5, false, 1,
+                loopEndOffsetDown, 1,
+                SLIME_SHOT_RESOURCES + "end", ".png");
+
+        createAnimation(Projectile.EnumState.END, 2,
+                5, false, 1,
+                loopEndOffsetRight, 1,
+                SLIME_SHOT_RESOURCES + "end", ".png");
+
+        createAnimation(Projectile.EnumState.END, 3,
+                5, false, 1,
+                loopEndOffsetLeft, 1,
                 SLIME_SHOT_RESOURCES + "end", ".png");
     }
 
@@ -114,22 +140,6 @@ public class SlimeShotView extends EntityViewAnimated {
         super.initAnimation(animatedSprite, folderPath, extension);
     }
 
-    private void createAnimation(CommonEnumStates enumStates, int type,
-                                 int nFrame, boolean loop, int times,
-                                 String folderPath, String extension) {
-        if (!loop)
-            times = 1;
-        float durationFrame = slimeShot.getState(enumStates).getDuration() / (nFrame * times);
-        AnimatedSprite animatedSprite = new AnimatedSprite(
-                new Pair<>(enumStates, type),
-                nFrame,
-                durationFrame,
-                loop
-        );
-        super.initAnimation(animatedSprite, folderPath, extension);
-    }
-
-
     @Override
     public BufferedImage getCurrentFrame() {
         CommonEnumStates currentEnumState = slimeShot.getCurrentEumState();
@@ -139,7 +149,6 @@ public class SlimeShotView extends EntityViewAnimated {
         if (currentAnimatedSprite != null) {
             if (currentEnumState == Projectile.EnumState.END && currentState.isFinished()) {
                 slimeShot.setToDraw(false);
-//                currentAnimatedSprite.stop();
             }
             else if (!currentAnimatedSprite.isRunning()) {
                 currentAnimatedSprite.start();
@@ -166,7 +175,7 @@ public class SlimeShotView extends EntityViewAnimated {
     private int getAnimationType(CommonEnumStates currentState) {
         DirectionsModel currentDirection = slimeShot.getDirection();
         return switch (currentState) {
-            case Projectile.EnumState.START, Projectile.EnumState.LOOP ->
+            case Projectile.EnumState.START, Projectile.EnumState.LOOP, Projectile.EnumState.END ->
                     switch (currentDirection) {
                         case UP -> 0;
                         case DOWN -> 1;

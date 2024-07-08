@@ -20,6 +20,7 @@ public abstract class EntityViewAnimated extends EntityView {
     }
 
 
+    // crea l'animation player con le funzionalità base
     protected void createAnimation(CommonEnumStates enumStates, int type,
                                    int nFrame, float secDurationFrame,
                                    String folderPath, String extension) {
@@ -63,9 +64,9 @@ public abstract class EntityViewAnimated extends EntityView {
      * @param extension estensione comune dei frame
      */
     protected void createAnimation(CommonEnumStates enumStates, int type,
-                                 int nFrame, boolean loop, int times, float animationDuration,
-                                 Vector2<Integer> offset, float scale,
-                                 String folderPath, String extension) {
+                                   int nFrame, boolean loop, int times, float animationDuration,
+                                   Vector2<Integer> offset, float scale,
+                                   String folderPath, String extension) {
         AnimatedSprite animatedSprite = new AnimatedSprite(
                 new Pair<>(enumStates, type),
                 nFrame,
