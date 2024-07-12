@@ -21,7 +21,7 @@ public abstract class Enemy extends LiveEntity {
         super(initPosition, LiveEntity.Type.ENEMY);
         this.type = type;
 
-        this.layer = 2;
+        this.drawLayer = 2;
     }
 
     /**

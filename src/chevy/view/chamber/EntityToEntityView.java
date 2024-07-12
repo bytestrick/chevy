@@ -4,25 +4,22 @@ import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dinamicEntity.projectile.Arrow;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.Ground;
 import chevy.model.entity.staticEntity.environment.Wall;
-import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
-import chevy.model.entity.staticEntity.environment.traps.Sludge;
-import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
-import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.model.entity.staticEntity.environment.traps.*;
 import chevy.view.entityView.EntityView;
 import chevy.view.entityView.GroundView;
 import chevy.view.entityView.TrapView;
 import chevy.view.entityView.WallView;
 import chevy.view.entityView.entityViewAnimated.enemy.*;
 import chevy.view.entityView.entityViewAnimated.player.KnightView;
+import chevy.view.entityView.entityViewAnimated.projectile.ArrowView;
 import chevy.view.entityView.entityViewAnimated.projectile.SlimeShotView;
-import chevy.view.entityView.entityViewAnimated.trap.IcyFloorView;
-import chevy.view.entityView.entityViewAnimated.trap.SludgeView;
-import chevy.view.entityView.entityViewAnimated.trap.SpikedFloorView;
+import chevy.view.entityView.entityViewAnimated.trap.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -129,6 +126,17 @@ public class EntityToEntityView {
 
                 yield slimeShotView;
             }
+            case Projectile.Type.ARROW -> {
+                ArrowView arrowView = null;
+                if (!entityView.containsKey(entity)) {
+                    arrowView = new ArrowView((Arrow) entity);
+                    entityView.put(entity, arrowView);
+                }
+                else
+                    arrowView = (ArrowView) entityView.get(entity);
+
+                yield arrowView;
+            }
 
             // TRAPS
             case Trap.Type.SPIKED_FLOOR -> {
@@ -163,6 +171,28 @@ public class EntityToEntityView {
                     icyFloorView = (IcyFloorView) entityView.get(entity);
 
                 yield icyFloorView;
+            }
+            case Trap.Type.TOTEM -> {
+                TotemView totemView = null;
+                if (!entityView.containsKey(entity)) {
+                    totemView = new TotemView((Totem) entity);
+                    entityView.put(entity, totemView);
+                }
+                else
+                    totemView = (TotemView) entityView.get(entity);
+
+                yield totemView;
+            }
+            case Trap.Type.TRAPDOOR -> {
+                TrapdoorView trapdoorView = null;
+                if (!entityView.containsKey(entity)) {
+                    trapdoorView = new TrapdoorView((Trapdoor) entity);
+                    entityView.put(entity, trapdoorView);
+                }
+                else
+                    trapdoorView = (TrapdoorView) entityView.get(entity);
+
+                yield trapdoorView;
             }
             default -> null;
         };

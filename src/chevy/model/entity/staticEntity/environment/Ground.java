@@ -33,7 +33,7 @@ public class Ground extends Environment {
         this.type = type;
         this.crossable = true;
 
-        this.layer = 0;
+        this.drawLayer = 0;
     }
 
 

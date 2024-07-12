@@ -7,10 +7,11 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dinamicEntity.projectile.Arrow;
+import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
 
 /**
- * La classe ArrowController è responsabile della gestione delle frecce (Projectile)
+ * La classe ArrowController è responsabile della gestione delle frecce (Arrow)
  * nel gioco, inclusa la gestione delle collisioni e degli aggiornamenti delle loro posizioni.
  */
 public class ArrowController {
@@ -41,39 +42,40 @@ public class ArrowController {
 
     /**
      * Gestisce le interazioni della freccia con il giocatore.
-     * @param projectile il proiettile (freccia) che interagisce con il giocatore.
+     * @param arrow il proiettile (freccia) che interagisce con il giocatore.
      */
-    public void playerInInteraction(Projectile projectile) {
-        chamber.findAndRemoveEntity(projectile);
-        projectile.setCollide(true);
-        playerController.handleInteraction(InteractionTypes.PROJECTILE, projectile);
+    public void playerInInteraction(Arrow arrow) {
+        if (arrow.changeState(Arrow.EnumState.END)) {
+            chamber.findAndRemoveEntity(arrow);
+            arrow.setCollide(true);
+            playerController.handleInteraction(InteractionTypes.PROJECTILE, arrow);
+        }
     }
 
     /**
      * Aggiorna lo stato della freccia a ogni ciclo di gioco, gestendo la sua posizione e le sue collisioni.
-     * @param projectile il proiettile (freccia) da aggiornare.
+     * @param arrow il proiettile (freccia) da aggiornare.
      */
-    public void update(Projectile projectile) {
-        // Ottiene l'entità più vicina nella direzione della freccia.
-        Entity nextEntity = chamber.getNearEntityOnTop(projectile, projectile.getDirection());
+    public void update(Arrow arrow) {
+        if (arrow.checkAndChangeState(Arrow.EnumState.LOOP)) {
+            Entity nextEntity = chamber.getNearEntityOnTop(arrow, arrow.getDirection());
 
-        switch (nextEntity.getGenericType()) {
-            case LiveEntity.Type.PLAYER ->
-                // Se la freccia colpisce il giocatore, gestisce l'interazione con il giocatore.
-                    playerController.handleInteraction(InteractionTypes.PROJECTILE, projectile);
-            case LiveEntity.Type.ENEMY ->
-                // Se la freccia colpisce un nemico, gestisce l'interazione con il nemico.
-                    enemyController.handleInteraction(InteractionTypes.PROJECTILE, projectile, (Enemy) nextEntity);
-            default -> {}
-        }
+            switch (nextEntity.getGenericType()) {
+                case LiveEntity.Type.PLAYER ->
+                        playerController.handleInteraction(InteractionTypes.PROJECTILE, arrow);
+                case LiveEntity.Type.ENEMY ->
+                        enemyController.handleInteraction(InteractionTypes.PROJECTILE, arrow, (Enemy) nextEntity);
+                default -> {}
+            }
 
-        if (nextEntity.isCrossable()) {
-            // Se l'entità successiva è attraversabile, muove la freccia.
-            chamber.moveDynamicEntity(projectile, projectile.getDirection());
-        } else {
-            // Se l'entità non è attraversabile, rimuove la freccia e imposta lo stato di collisione.
-            chamber.findAndRemoveEntity(projectile);
-            projectile.setCollide(true);
+            if (nextEntity.isCrossable()) {
+                chamber.moveDynamicEntity(arrow, arrow.getDirection());
+            }
+            else if (arrow.changeState(Arrow.EnumState.END)) {
+                chamber.findAndRemoveEntity(arrow);
+                arrow.setCollide(true);
+            }
         }
     }
+
 }

@@ -4,8 +4,6 @@ import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
 import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.stateMachine.State;
-import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
-import chevy.utils.Pair;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolate;
@@ -17,7 +15,6 @@ import java.awt.image.BufferedImage;
 public class BeetleView extends EntityViewAnimated {
     private static final String BEETLE_RESOURCES = "/assets/enemy/beetle/";
     private final Beetle beetle;
-    private final Vector2<Double> currentPosition;
     private final Interpolate moveInterpolationX;
     private final Interpolate moveInterpolationY;
     private State currentState;
@@ -27,17 +24,17 @@ public class BeetleView extends EntityViewAnimated {
     public BeetleView(Beetle beetle) {
         super();
         this.beetle = beetle;
-        this.currentPosition = new Vector2<>(
+        this.currentViewPosition = new Vector2<>(
                 (double) beetle.getCol(),
                 (double) beetle.getRow()
         );
         currentState = beetle.getState(beetle.getCurrentEumState());
-        moveInterpolationX = new Interpolate(currentPosition.first,
+        moveInterpolationX = new Interpolate(currentViewPosition.first,
                 beetle.getCol(),
                 currentState.getDuration(),
                 InterpolationTypes.EASE_OUT_SINE
         );
-        moveInterpolationY = new Interpolate(currentPosition.second,
+        moveInterpolationY = new Interpolate(currentViewPosition.second,
                 beetle.getRow(),
                 currentState.getDuration(),
                 InterpolationTypes.EASE_OUT_SINE
@@ -183,15 +180,15 @@ public class BeetleView extends EntityViewAnimated {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition()  {
+    public Vector2<Double> getCurrentViewPosition()  {
         if (!currentState.isFinished()) {
             if (firstTimeInState) {
                 float duration = currentState.getDuration();
-                moveInterpolationX.changeStart(currentPosition.first);
+                moveInterpolationX.changeStart(currentViewPosition.first);
                 moveInterpolationX.changeEnd(beetle.getCol());
                 moveInterpolationX.changeDuration(duration);
                 moveInterpolationX.restart();
-                moveInterpolationY.changeStart(currentPosition.second);
+                moveInterpolationY.changeStart(currentViewPosition.second);
                 moveInterpolationY.changeEnd(beetle.getRow());
                 moveInterpolationY.changeDuration(duration);
                 moveInterpolationY.restart();
@@ -203,9 +200,9 @@ public class BeetleView extends EntityViewAnimated {
             firstTimeInState = true;
         }
 
-        currentPosition.changeFirst(moveInterpolationX.getValue());
-        currentPosition.changeSecond(moveInterpolationY.getValue());
-        return currentPosition;
+        currentViewPosition.changeFirst(moveInterpolationX.getValue());
+        currentViewPosition.changeSecond(moveInterpolationY.getValue());
+        return currentViewPosition;
     }
 
     @Override

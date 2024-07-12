@@ -30,7 +30,7 @@ public class TrapsController {
         this.sludgeController = new SludgeController(chamber);
         this.icyFloorController = new IcyFloorController(playerController);
         this.voidController = new VoidController(playerController);
-        this.trapdoorController = new TrapdoorController(chamber);
+        this.trapdoorController = new TrapdoorController(chamber, playerController);
         this.spikedFloorController = new SpikedFloorController(chamber, playerController, enemyController);
         this.totemController = new TotemController(chamber);
     }
@@ -73,7 +73,7 @@ public class TrapsController {
             case Trap.Type.SLUDGE -> sludgeController.playerInInteraction(player, (Sludge) trap);
             case Trap.Type.ICY_FLOOR -> icyFloorController.playerInInteraction(player, (IcyFloor) trap);
             case Trap.Type.VOID -> voidController.playerInInteraction(player, (Void) trap);
-            case Trap.Type.TRAPDOOR -> trapdoorController.playerInInteraction(player);
+            case Trap.Type.TRAPDOOR -> trapdoorController.playerInInteraction((Trapdoor) trap);
             case Trap.Type.SPIKED_FLOOR -> spikedFloorController.playerInInteraction((SpikedFloor) trap);
             default -> {}
         }
@@ -100,6 +100,7 @@ public class TrapsController {
             case Trap.Type.SPIKED_FLOOR -> spikedFloorController.update((SpikedFloor) trap);
             case Trap.Type.TOTEM -> totemController.update((Totem) trap);
             case Trap.Type.ICY_FLOOR -> icyFloorController.update((IcyFloor) trap);
+            case Trap.Type.TRAPDOOR -> trapdoorController.update((Trapdoor) trap);
             default -> {}
         }
     }

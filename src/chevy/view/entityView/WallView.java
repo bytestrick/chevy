@@ -73,7 +73,7 @@ public class WallView extends EntityView {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition() {
+    public Vector2<Double> getCurrentViewPosition() {
         position.changeFirst((double) wall.getCol());
         position.changeSecond((double) wall.getRow());
         return position;

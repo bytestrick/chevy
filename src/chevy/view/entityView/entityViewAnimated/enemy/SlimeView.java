@@ -2,10 +2,8 @@ package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.stateMachine.State;
-import chevy.utils.Pair;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolate;
@@ -17,7 +15,6 @@ import java.awt.image.BufferedImage;
 public class SlimeView extends EntityViewAnimated {
     private static final String SLIME_RESOURCES = "/assets/enemy/slime/";
     private final Slime slime;
-    private final Vector2<Double> currentPosition;
     private final Interpolate moveInterpolationX;
     private final Interpolate moveInterpolationY;
     private State currentState;
@@ -27,17 +24,17 @@ public class SlimeView extends EntityViewAnimated {
     public SlimeView(Slime slime) {
         super();
         this.slime = slime;
-        this.currentPosition = new Vector2<>(
+        this.currentViewPosition = new Vector2<>(
                 (double) slime.getCol(),
                 (double) slime.getRow()
         );
         currentState = slime.getState(slime.getCurrentEumState());
-        moveInterpolationX = new Interpolate(currentPosition.first,
+        moveInterpolationX = new Interpolate(currentViewPosition.first,
                 slime.getCol(),
                 slime.getState(slime.getCurrentEumState()).getDuration(),
                 InterpolationTypes.EASE_OUT_SINE
         );
-        moveInterpolationY = new Interpolate(currentPosition.second,
+        moveInterpolationY = new Interpolate(currentViewPosition.second,
                 slime.getRow(),
                 slime.getState(slime.getCurrentEumState()).getDuration(),
                 InterpolationTypes.EASE_OUT_SINE
@@ -55,21 +52,18 @@ public class SlimeView extends EntityViewAnimated {
         float deadDuration = slime.getState(Slime.EnumState.DEAD).getDuration();
         
         // --- IDLE
-
         createAnimation(Slime.EnumState.IDLE, 0,
                 4, true, 3, idleDuration,
                 SLIME_RESOURCES + "idle", ".png");
 
 
         // --- MOVE
-
         createAnimation(Slime.EnumState.MOVE, 0,
                 4, moveDuration,
                 SLIME_RESOURCES + "move", ".png");
 
 
         // --- ATTACK
-
         createAnimation(Slime.EnumState.ATTACK, 0,
                 4, attackDuration,
                 SLIME_RESOURCES + "attack/up", ".png");
@@ -87,13 +81,11 @@ public class SlimeView extends EntityViewAnimated {
                 SLIME_RESOURCES + "attack/left", ".png");
 
         // --- HIT
-
         createAnimation(Slime.EnumState.HIT, 0,
                 1, hitDuration,
                 SLIME_RESOURCES + "hit", ".png");
 
         // --- DEAD
-
         createAnimation(Slime.EnumState.DEAD, 0,
                 4, deadDuration,
                 SLIME_RESOURCES + "dead", ".png");
@@ -131,15 +123,15 @@ public class SlimeView extends EntityViewAnimated {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition()  {
+    public Vector2<Double> getCurrentViewPosition()  {
         if (!currentState.isFinished()) {
             if (firstTimeInState) {
                 float duration = currentState.getDuration();
-                moveInterpolationX.changeStart(currentPosition.first);
+                moveInterpolationX.changeStart(currentViewPosition.first);
                 moveInterpolationX.changeEnd(slime.getCol());
                 moveInterpolationX.changeDuration(duration);
                 moveInterpolationX.restart();
-                moveInterpolationY.changeStart(currentPosition.second);
+                moveInterpolationY.changeStart(currentViewPosition.second);
                 moveInterpolationY.changeEnd(slime.getRow());
                 moveInterpolationY.changeDuration(duration);
                 moveInterpolationY.restart();
@@ -151,9 +143,9 @@ public class SlimeView extends EntityViewAnimated {
             firstTimeInState = true;
         }
 
-        currentPosition.changeFirst(moveInterpolationX.getValue());
-        currentPosition.changeSecond(moveInterpolationY.getValue());
-        return currentPosition;
+        currentViewPosition.changeFirst(moveInterpolationX.getValue());
+        currentViewPosition.changeSecond(moveInterpolationY.getValue());
+        return currentViewPosition;
     }
 
     @Override

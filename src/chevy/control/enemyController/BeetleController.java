@@ -40,7 +40,7 @@ public class BeetleController {
     }
 
     /**
-     * Gestisce le interazioni del Beetle con il giocatore.
+     * Gestisce le interazioni del Giocatore con il Beetle.
      * @param player Il giocatore che interagisce con il Beetle.
      * @param beetle  Il Beetle che subisce l'interazione.
      */
@@ -99,8 +99,15 @@ public class BeetleController {
             }
             // Se può cambiare lo stato a "ATTACK", cerca di attaccare il giocatore.
             else if (beetle.canChange(Beetle.EnumState.ATTACK)) {
-                for (int distance = 3; distance > 0; --distance) {
+                for (int distance = 1; distance <= 3; ++distance) {
                     Entity entity = chamber.getNearEntityOnTop(beetle, direction, distance);
+                    // muoviti in modo casuale, non sparare, se tra te è il player c'è un ostacolo che non può essere attraversato
+                    if (!(entity instanceof Player) && !entity.isCrossable()) {
+                        if (beetle.checkAndChangeState(Beetle.EnumState.MOVE))
+                            chamber.moveRandomPlus(beetle);
+                        break;
+                    }
+
                     if (distance > 1 && entity instanceof Player && beetle.changeState(Beetle.EnumState.ATTACK)) {
                         Projectile slimeShot = new SlimeShot(new Vector2<>(beetle.getRow(), beetle.getCol()), direction, 1f);
                         chamber.addProjectile(slimeShot);

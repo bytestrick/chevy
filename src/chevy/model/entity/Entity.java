@@ -17,7 +17,7 @@ public abstract class Entity {
     protected boolean safeToCross;
     protected boolean crossable;
 
-    protected int layer;
+    protected int drawLayer;
     private boolean toDraw;
     protected final StateMachine stateMachine = new StateMachine();
     public enum Type implements EntityCommonEnumTypes {
@@ -35,7 +35,7 @@ public abstract class Entity {
         this.crossable = false;
         this.safeToCross = true;
 
-        this.layer = 0;
+        this.drawLayer = 0;
         this.toDraw = false;
     }
 
@@ -70,8 +70,8 @@ public abstract class Entity {
         return false;
     }
 
-    public int getLayer() {
-        return Math.abs(this.layer);
+    public int getDrawLayer() {
+        return Math.abs(this.drawLayer);
     }
 
     public State getState(CommonEnumStates commonEnumStates) {

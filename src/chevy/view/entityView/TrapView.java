@@ -30,7 +30,7 @@ public class TrapView extends EntityView {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition() {
+    public Vector2<Double> getCurrentViewPosition() {
         position.changeFirst((double) trap.getCol());
         position.changeSecond((double) trap.getRow());
         return position;

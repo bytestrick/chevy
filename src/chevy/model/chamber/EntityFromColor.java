@@ -80,7 +80,7 @@ public class EntityFromColor {
     private static final int SKELETON = 145;
 
     //
-    private static final int NULL = 0;
+    private static final int NULL = 0; // assenza di colore rosso
 
 
     public static Entity get(int r, int row, int col) {

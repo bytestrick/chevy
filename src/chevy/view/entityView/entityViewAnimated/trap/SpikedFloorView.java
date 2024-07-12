@@ -10,13 +10,12 @@ import java.awt.image.BufferedImage;
 
 public class SpikedFloorView extends EntityViewAnimated {
     private static final String SPIKED_FLOOR_PATH = "/assets/traps/spikedFloor/";
-    private final Vector2<Double> position;
     private final SpikedFloor spikedFloor;
 
 
     public SpikedFloorView(SpikedFloor spikedFloor) {
         this.spikedFloor = spikedFloor;
-        position = new Vector2<>(
+        this.currentViewPosition = new Vector2<>(
                 (double) spikedFloor.getCol(),
                 (double) spikedFloor.getRow()
         );
@@ -64,8 +63,8 @@ public class SpikedFloorView extends EntityViewAnimated {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition() {
-        return position;
+    public Vector2<Double> getCurrentViewPosition() {
+        return currentViewPosition;
     }
 
     @Override

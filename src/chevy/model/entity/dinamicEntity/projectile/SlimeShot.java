@@ -6,17 +6,22 @@ import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 public class SlimeShot extends Projectile {
+    public enum EnumState implements CommonEnumStates {
+        START,
+        LOOP,
+        END;
+    }
     public final State start = new State(EnumState.START, 0.5f);
     public final State loop = new State(EnumState.LOOP, 1f, true);
     public final State end = new State(EnumState.END, 0.5f);
 
 
     public SlimeShot(Vector2<Integer> initPosition, DirectionsModel direction, float advanceTimer) {
-        super(initPosition, Projectile.Type.SLIME_SHOT, direction, advanceTimer);
+        super(initPosition, Projectile.Type.SLIME_SHOT, direction);
 
         this.maxDamage = 3;
         this.minDamage = 2;
-        this.layer = 2;
+        this.drawLayer = 2;
 
         initStateMachine();
     }

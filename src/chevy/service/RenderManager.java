@@ -12,14 +12,16 @@ public class RenderManager {
     private static final List<Render> toAdd = new LinkedList<>();
 
 
-    public static void addToRender(Render r) {
+    public synchronized static void addToRender(Render r) {
         toAdd.add(r);
 //        System.out.println("[-] Aggiunto al render: " + r);
     }
 
     public static void render(double delta) {
-        renderList.addAll(toAdd);
-        toAdd.clear();
+        synchronized (toAdd) {
+            renderList.addAll(toAdd);
+            toAdd.clear();
+        }
 
         Iterator<Render> it = renderList.iterator();
         while (it.hasNext()) {
