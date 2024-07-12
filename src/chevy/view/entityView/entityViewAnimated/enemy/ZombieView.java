@@ -2,10 +2,8 @@ package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.stateMachine.State;
-import chevy.utils.Pair;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolate;
@@ -17,7 +15,6 @@ import java.awt.image.BufferedImage;
 public class ZombieView extends EntityViewAnimated {
     private static final String ZOMBIE_RESOURCES = "/assets/enemy/zombie/";
     private final Zombie zombie;
-    private final Vector2<Double> currentPosition;
     private final Interpolate moveInterpolationX;
     private final Interpolate moveInterpolationY;
     private State currentState;
@@ -27,17 +24,17 @@ public class ZombieView extends EntityViewAnimated {
     public ZombieView(Zombie zombie) {
         super();
         this.zombie = zombie;
-        this.currentPosition = new Vector2<>(
+        this.currentViewPosition = new Vector2<>(
                 (double) zombie.getCol(),
                 (double) zombie.getRow()
         );
         currentState = zombie.getState(zombie.getCurrentEumState());
-        moveInterpolationX = new Interpolate(currentPosition.first,
+        moveInterpolationX = new Interpolate(currentViewPosition.first,
                 zombie.getCol(),
                 zombie.getState(zombie.getCurrentEumState()).getDuration(),
                 InterpolationTypes.EASE_OUT_SINE
         );
-        moveInterpolationY = new Interpolate(currentPosition.second,
+        moveInterpolationY = new Interpolate(currentViewPosition.second,
                 zombie.getRow(),
                 zombie.getState(zombie.getCurrentEumState()).getDuration(),
                 InterpolationTypes.EASE_OUT_SINE
@@ -53,8 +50,8 @@ public class ZombieView extends EntityViewAnimated {
         float attackDuration = zombie.getState(Zombie.EnumState.ATTACK).getDuration();
         float hitDuration = zombie.getState(Zombie.EnumState.HIT).getDuration();
         float deadDuration = zombie.getState(Zombie.EnumState.DEAD).getDuration();
-        // --- IDLE
 
+        // --- IDLE
         createAnimation(Zombie.EnumState.IDLE, 0,
                 4, true, 3, idleDuration,
                 ZOMBIE_RESOURCES + "idle/up", ".png");
@@ -72,7 +69,6 @@ public class ZombieView extends EntityViewAnimated {
                 ZOMBIE_RESOURCES + "idle/left", ".png");
 
         // --- MOVE
-
         createAnimation(Zombie.EnumState.MOVE, 0,
                 4, moveDuration,
                 ZOMBIE_RESOURCES + "move/up", ".png");
@@ -90,7 +86,6 @@ public class ZombieView extends EntityViewAnimated {
                 ZOMBIE_RESOURCES + "move/left", ".png");
 
         // --- ATTACK
-
         createAnimation(Zombie.EnumState.ATTACK, 0,
                 4, attackDuration,
                 ZOMBIE_RESOURCES + "attack/up", ".png");
@@ -108,7 +103,6 @@ public class ZombieView extends EntityViewAnimated {
                 ZOMBIE_RESOURCES + "attack/left", ".png");
 
         // --- HIT
-
         createAnimation(Zombie.EnumState.HIT, 0,
                 1, hitDuration,
                 ZOMBIE_RESOURCES + "hit/up", ".png");
@@ -126,7 +120,6 @@ public class ZombieView extends EntityViewAnimated {
                 ZOMBIE_RESOURCES + "hit/right", ".png");
 
         // --- DEAD
-
         createAnimation(Zombie.EnumState.DEAD, 0,
                 4, deadDuration,
                 ZOMBIE_RESOURCES + "dead/left", ".png");
@@ -173,15 +166,15 @@ public class ZombieView extends EntityViewAnimated {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition()  {
+    public Vector2<Double> getCurrentViewPosition()  {
         if (!currentState.isFinished()) {
             if (firstTimeInState) {
                 float duration = currentState.getDuration();
-                moveInterpolationX.changeStart(currentPosition.first);
+                moveInterpolationX.changeStart(currentViewPosition.first);
                 moveInterpolationX.changeEnd(zombie.getCol());
                 moveInterpolationX.changeDuration(duration);
                 moveInterpolationX.restart();
-                moveInterpolationY.changeStart(currentPosition.second);
+                moveInterpolationY.changeStart(currentViewPosition.second);
                 moveInterpolationY.changeEnd(zombie.getRow());
                 moveInterpolationY.changeDuration(duration);
                 moveInterpolationY.restart();
@@ -193,9 +186,9 @@ public class ZombieView extends EntityViewAnimated {
             firstTimeInState = true;
         }
 
-        currentPosition.changeFirst(moveInterpolationX.getValue());
-        currentPosition.changeSecond(moveInterpolationY.getValue());
-        return currentPosition;
+        currentViewPosition.changeFirst(moveInterpolationX.getValue());
+        currentViewPosition.changeSecond(moveInterpolationY.getValue());
+        return currentViewPosition;
     }
 
     @Override

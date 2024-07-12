@@ -2,10 +2,8 @@ package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.stateMachine.State;
-import chevy.utils.Pair;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolate;
@@ -17,7 +15,6 @@ import java.awt.image.BufferedImage;
 public class SkeletonView extends EntityViewAnimated {
     private static final String SKELETON_RESOURCES = "/assets/enemy/skeleton/";
     private final Skeleton skeleton;
-    private final Vector2<Double> currentPosition;
     private final Interpolate moveInterpolationX;
     private final Interpolate moveInterpolationY;
     private State currentState;
@@ -27,17 +24,17 @@ public class SkeletonView extends EntityViewAnimated {
     public SkeletonView(Skeleton skeleton) {
         super();
         this.skeleton = skeleton;
-        this.currentPosition = new Vector2<>(
+        this.currentViewPosition = new Vector2<>(
                 (double) skeleton.getCol(),
                 (double) skeleton.getRow()
         );
         currentState = skeleton.getState(skeleton.getCurrentEumState());
-        moveInterpolationX = new Interpolate(currentPosition.first,
+        moveInterpolationX = new Interpolate(currentViewPosition.first,
                 skeleton.getCol(),
                 skeleton.getState(skeleton.getCurrentEumState()).getDuration(),
                 InterpolationTypes.EASE_OUT_SINE
         );
-        moveInterpolationY = new Interpolate(currentPosition.second,
+        moveInterpolationY = new Interpolate(currentViewPosition.second,
                 skeleton.getRow(),
                 skeleton.getState(skeleton.getCurrentEumState()).getDuration(),
                 InterpolationTypes.EASE_OUT_SINE
@@ -53,8 +50,8 @@ public class SkeletonView extends EntityViewAnimated {
         float hitDuration = skeleton.getState(Skeleton.EnumState.HIT).getDuration();
         float attackDuration = skeleton.getState(Skeleton.EnumState.ATTACK).getDuration();
         float deadDuration = skeleton.getState(Skeleton.EnumState.DEAD).getDuration();
-        // --- IDLE
 
+        // --- IDLE
         createAnimation(Skeleton.EnumState.IDLE, 0,
                 4, true, 4, idleDuration,
                 SKELETON_RESOURCES + "idle/up", ".png");
@@ -72,7 +69,6 @@ public class SkeletonView extends EntityViewAnimated {
                 SKELETON_RESOURCES + "idle/left", ".png");
 
         // --- MOVE
-
         createAnimation(Skeleton.EnumState.MOVE, 0,
                 4, moveDuration,
                 SKELETON_RESOURCES + "move/up", ".png");
@@ -90,7 +86,6 @@ public class SkeletonView extends EntityViewAnimated {
                 SKELETON_RESOURCES + "move/left", ".png");
 
         // --- ATTACK
-
         createAnimation(Skeleton.EnumState.ATTACK, 0,
                 4, attackDuration,
                 SKELETON_RESOURCES + "attack/up", ".png");
@@ -108,7 +103,6 @@ public class SkeletonView extends EntityViewAnimated {
                 SKELETON_RESOURCES + "attack/left", ".png");
 
         // --- HIT
-
         createAnimation(Skeleton.EnumState.HIT, 0,
                 1, hitDuration,
                 SKELETON_RESOURCES + "hit/up", ".png");
@@ -126,7 +120,6 @@ public class SkeletonView extends EntityViewAnimated {
                 SKELETON_RESOURCES + "hit/left", ".png");
 
         // --- DEAD
-
         createAnimation(Skeleton.EnumState.DEAD, 0,
                 4, deadDuration,
                 SKELETON_RESOURCES + "dead/left", ".png");
@@ -172,15 +165,15 @@ public class SkeletonView extends EntityViewAnimated {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition()  {
+    public Vector2<Double> getCurrentViewPosition()  {
         if (!currentState.isFinished()) {
             if (firstTimeInState) {
                 float duration = currentState.getDuration();
-                moveInterpolationX.changeStart(currentPosition.first);
+                moveInterpolationX.changeStart(currentViewPosition.first);
                 moveInterpolationX.changeEnd(skeleton.getCol());
                 moveInterpolationX.changeDuration(duration);
                 moveInterpolationX.restart();
-                moveInterpolationY.changeStart(currentPosition.second);
+                moveInterpolationY.changeStart(currentViewPosition.second);
                 moveInterpolationY.changeEnd(skeleton.getRow());
                 moveInterpolationY.changeDuration(duration);
                 moveInterpolationY.restart();
@@ -192,9 +185,9 @@ public class SkeletonView extends EntityViewAnimated {
             firstTimeInState = true;
         }
 
-        currentPosition.changeFirst(moveInterpolationX.getValue());
-        currentPosition.changeSecond(moveInterpolationY.getValue());
-        return currentPosition;
+        currentViewPosition.changeFirst(moveInterpolationX.getValue());
+        currentViewPosition.changeSecond(moveInterpolationY.getValue());
+        return currentViewPosition;
     }
 
     @Override

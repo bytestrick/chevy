@@ -487,7 +487,7 @@ public class Chamber {
         chamber.get(entity.getRow()).get(entity.getCol()).addLast(entity);
         if (!entity.isToDraw()) {
             entity.setToDraw(true);
-            addEntityToDraw(entity, entity.getLayer());
+            addEntityToDraw(entity, entity.getDrawLayer());
         }
     }
 

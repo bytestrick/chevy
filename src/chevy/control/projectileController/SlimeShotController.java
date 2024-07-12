@@ -7,7 +7,7 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
 
 /**
  * Controller per gestire le interazioni e gli aggiornamenti specifici dei proiettili di tipo Slime Shot nel gioco.
@@ -33,8 +33,8 @@ public class SlimeShotController {
      * Gestisce l'interazione del giocatore con lo Slime Shot.
      * @param projectile il proiettile che viene colpito dal giocatore
      */
-    public void playerInInteraction(Projectile projectile) {
-        if (projectile.changeState(Projectile.EnumState.END)) {
+    public void playerInInteraction(SlimeShot projectile) {
+        if (projectile.changeState(SlimeShot.EnumState.END)) {
             chamber.findAndRemoveEntity(projectile);
             projectile.setCollide(true);
             playerController.handleInteraction(InteractionTypes.PROJECTILE, projectile);
@@ -45,8 +45,8 @@ public class SlimeShotController {
      * Gestisce l'aggiornamento dello Slime Shot.
      * @param projectile Slime Shot da aggiornare
      */
-    public void update(Projectile projectile) {
-        if (projectile.checkAndChangeState(Projectile.EnumState.LOOP)) {
+    public void update(SlimeShot projectile) {
+        if (projectile.checkAndChangeState(SlimeShot.EnumState.LOOP)) {
             Entity nextEntity = chamber.getNearEntityOnTop(projectile, projectile.getDirection());
 
             switch (nextEntity.getGenericType()) {
@@ -60,7 +60,7 @@ public class SlimeShotController {
             if (nextEntity.isCrossable()) {
                 chamber.moveDynamicEntity(projectile, projectile.getDirection());
             }
-            else if (projectile.changeState(Projectile.EnumState.END)) {
+            else if (projectile.changeState(SlimeShot.EnumState.END)) {
                 chamber.findAndRemoveEntity(projectile);
                 projectile.setCollide(true);
             }

@@ -20,7 +20,7 @@ public abstract class Environment extends Entity {
         super(initVelocity, Entity.Type.ENVIRONMENT);
         this.type = type;
 
-        this.layer = 1;
+        this.drawLayer = 1;
     }
 
 

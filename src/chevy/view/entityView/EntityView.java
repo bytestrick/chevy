@@ -5,7 +5,7 @@ import chevy.utils.Vector2;
 import java.awt.image.BufferedImage;
 
 public abstract class EntityView {
-    protected boolean flipped = false;
+    protected Vector2<Double> currentViewPosition;
 
 
     public EntityView() {}
@@ -21,5 +21,5 @@ public abstract class EntityView {
 
     public abstract BufferedImage getCurrentFrame();
 
-    public abstract Vector2<Double> getCurrentPosition();
+    public abstract Vector2<Double> getCurrentViewPosition();
 }

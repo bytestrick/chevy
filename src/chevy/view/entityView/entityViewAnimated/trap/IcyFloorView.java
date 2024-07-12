@@ -9,13 +9,12 @@ import java.awt.image.BufferedImage;
 
 public class IcyFloorView extends EntityViewAnimated {
     private static final String ICY_FLOOR_PATH = "/assets/traps/icyFloor/";
-    private final Vector2<Double> position;
     private final IcyFloor icyFloor;
 
 
     public IcyFloorView(IcyFloor icyFloor) {
         this.icyFloor = icyFloor;
-        position = new Vector2<>(
+        this.currentViewPosition = new Vector2<>(
                 (double) icyFloor.getCol(),
                 (double) icyFloor.getRow()
         );
@@ -49,8 +48,8 @@ public class IcyFloorView extends EntityViewAnimated {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition() {
-        return position;
+    public Vector2<Double> getCurrentViewPosition() {
+        return currentViewPosition;
     }
 
     @Override

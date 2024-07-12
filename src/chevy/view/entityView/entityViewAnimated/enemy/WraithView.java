@@ -2,10 +2,8 @@ package chevy.view.entityView.entityViewAnimated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
 import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.stateMachine.State;
-import chevy.utils.Pair;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolate;
@@ -17,7 +15,6 @@ import java.awt.image.BufferedImage;
 public class WraithView extends EntityViewAnimated {
     private static final String WRAITH_RESOURCES = "/assets/enemy/wraith/";
     private final Wraith wraith;
-    private final Vector2<Double> currentPosition;
     private final Interpolate moveInterpolationX;
     private final Interpolate moveInterpolationY;
     private State currentState;
@@ -27,17 +24,17 @@ public class WraithView extends EntityViewAnimated {
     public WraithView(Wraith wraith) {
         super();
         this.wraith = wraith;
-        this.currentPosition = new Vector2<>(
+        this.currentViewPosition = new Vector2<>(
                 (double) wraith.getCol(),
                 (double) wraith.getRow()
         );
         currentState = wraith.getState(wraith.getCurrentEumState());
-        moveInterpolationX = new Interpolate(currentPosition.first,
+        moveInterpolationX = new Interpolate(currentViewPosition.first,
                 wraith.getCol(),
                 wraith.getState(wraith.getCurrentEumState()).getDuration(),
                 InterpolationTypes.EASE_OUT_SINE
         );
-        moveInterpolationY = new Interpolate(currentPosition.second,
+        moveInterpolationY = new Interpolate(currentViewPosition.second,
                 wraith.getRow(),
                 wraith.getState(wraith.getCurrentEumState()).getDuration(),
                 InterpolationTypes.EASE_OUT_SINE
@@ -53,8 +50,8 @@ public class WraithView extends EntityViewAnimated {
         float attackDuration = wraith.getState(Wraith.EnumState.ATTACK).getDuration();
         float hitDuration = wraith.getState(Wraith.EnumState.HIT).getDuration();
         float deadDuration = wraith.getState(Wraith.EnumState.DEAD).getDuration();
-        // --- IDLE
 
+        // --- IDLE
         createAnimation(Wraith.EnumState.IDLE, 0,
                 4, true, 3, idleDuration,
                 WRAITH_RESOURCES + "idle/up", ".png");
@@ -72,7 +69,6 @@ public class WraithView extends EntityViewAnimated {
                 WRAITH_RESOURCES + "idle/left", ".png");
 
         // --- MOVE
-
         createAnimation(Wraith.EnumState.MOVE, 0,
                 4, moveDuration,
                 WRAITH_RESOURCES + "move/up", ".png");
@@ -90,7 +86,6 @@ public class WraithView extends EntityViewAnimated {
                 WRAITH_RESOURCES + "move/left", ".png");
 
         // --- ATTACK
-
         createAnimation(Wraith.EnumState.ATTACK, 0,
                 4, attackDuration,
                 WRAITH_RESOURCES + "attack/up", ".png");
@@ -108,7 +103,6 @@ public class WraithView extends EntityViewAnimated {
                 WRAITH_RESOURCES + "attack/left", ".png");
 
         // --- HIT
-
         createAnimation(Wraith.EnumState.HIT, 0,
                 1, hitDuration,
                 WRAITH_RESOURCES + "hit/up", ".png");
@@ -126,7 +120,6 @@ public class WraithView extends EntityViewAnimated {
                 WRAITH_RESOURCES + "hit/right", ".png");
 
         // --- DEAD
-
         createAnimation(Wraith.EnumState.DEAD, 0,
                 4, deadDuration,
                 WRAITH_RESOURCES + "dead/left", ".png");
@@ -173,15 +166,15 @@ public class WraithView extends EntityViewAnimated {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition()  {
+    public Vector2<Double> getCurrentViewPosition()  {
         if (!currentState.isFinished()) {
             if (firstTimeInState) {
                 float duration = currentState.getDuration();
-                moveInterpolationX.changeStart(currentPosition.first);
+                moveInterpolationX.changeStart(currentViewPosition.first);
                 moveInterpolationX.changeEnd(wraith.getCol());
                 moveInterpolationX.changeDuration(duration);
                 moveInterpolationX.restart();
-                moveInterpolationY.changeStart(currentPosition.second);
+                moveInterpolationY.changeStart(currentViewPosition.second);
                 moveInterpolationY.changeEnd(wraith.getRow());
                 moveInterpolationY.changeDuration(duration);
                 moveInterpolationY.restart();
@@ -193,9 +186,9 @@ public class WraithView extends EntityViewAnimated {
             firstTimeInState = true;
         }
 
-        currentPosition.changeFirst(moveInterpolationX.getValue());
-        currentPosition.changeSecond(moveInterpolationY.getValue());
-        return currentPosition;
+        currentViewPosition.changeFirst(moveInterpolationX.getValue());
+        currentViewPosition.changeSecond(moveInterpolationY.getValue());
+        return currentViewPosition;
     }
 
     @Override

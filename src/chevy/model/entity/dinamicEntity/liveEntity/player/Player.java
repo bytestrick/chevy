@@ -29,7 +29,7 @@ public abstract class Player extends LiveEntity {
         super(initPosition, LiveEntity.Type.PLAYER);
         this.type = type;
 
-        this.layer = 2;
+        this.drawLayer = 2;
     }
 
 

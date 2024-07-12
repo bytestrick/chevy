@@ -6,7 +6,9 @@ import chevy.control.InteractionTypes;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dinamicEntity.projectile.Arrow;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
 
 /**
  * La classe ProjectileController gestisce le interazioni e gli aggiornamenti dei proiettili nel gioco,
@@ -54,8 +56,8 @@ public class ProjectileController {
      */
     private void playerInInteraction(Player player, Projectile projectile) {
         switch (projectile.getSpecificType()) {
-            case Projectile.Type.ARROW -> arrowController.playerInInteraction(projectile);
-            case Projectile.Type.SLIME_SHOT -> slimeShotController.playerInInteraction(projectile);
+            case Projectile.Type.ARROW -> arrowController.playerInInteraction((Arrow) projectile);
+            case Projectile.Type.SLIME_SHOT -> slimeShotController.playerInInteraction((SlimeShot) projectile);
             default -> {}
         }
     }
@@ -66,8 +68,8 @@ public class ProjectileController {
      */
     public synchronized void updateProjectile(Projectile projectile) {
         switch (projectile.getSpecificType()) {
-            case Projectile.Type.ARROW -> arrowController.update(projectile);
-            case Projectile.Type.SLIME_SHOT -> slimeShotController.update(projectile);
+            case Projectile.Type.ARROW -> arrowController.update((Arrow) projectile);
+            case Projectile.Type.SLIME_SHOT -> slimeShotController.update((SlimeShot) projectile);
             default -> {}
         }
     }

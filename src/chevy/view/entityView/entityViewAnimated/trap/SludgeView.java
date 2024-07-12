@@ -10,13 +10,12 @@ import java.awt.image.BufferedImage;
 
 public class SludgeView extends EntityViewAnimated {
         private static final String SLUDGE_FLOOR_PATH = "/assets/traps/sludge/";
-        private final Vector2<Double> position;
         private final Sludge sludge;
 
 
         public SludgeView(Sludge sludge) {
             this.sludge = sludge;
-            position = new Vector2<>(
+            this.currentViewPosition = new Vector2<>(
                     (double) sludge.getCol(),
                     (double) sludge.getRow()
             );
@@ -52,8 +51,8 @@ public class SludgeView extends EntityViewAnimated {
         }
 
         @Override
-        public Vector2<Double> getCurrentPosition() {
-            return position;
+        public Vector2<Double> getCurrentViewPosition() {
+            return currentViewPosition;
         }
 
         @Override

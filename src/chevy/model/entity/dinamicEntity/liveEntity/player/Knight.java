@@ -12,7 +12,7 @@ public class Knight extends Player {
     private final State dead = new State(EnumState.DEAD);
     private final State glide = new State(EnumState.GLIDE, speed, true);
     private final State sludge = new State(EnumState.SLUDGE, speed);
-    private final State fall = new State(EnumState.FALL);
+    private final State fall = new State(EnumState.FALL, speed);
 
 
     public Knight(Vector2<Integer> initPosition) {
@@ -34,6 +34,7 @@ public class Knight extends Player {
         hit.linkState(idle);
         hit.linkState(dead);
         hit.linkState(move);
+        hit.linkState(fall);
         move.linkState(glide);
         move.linkState(hit);
         move.linkState(fall);
@@ -48,7 +49,6 @@ public class Knight extends Player {
         glide.linkState(sludge);
         sludge.linkState(idle);
         fall.linkState(idle);
-        fall.linkState(hit);
         fall.linkState(dead);
 
         stateMachine.setStateMachineName("Knight");

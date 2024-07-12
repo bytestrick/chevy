@@ -16,10 +16,12 @@ import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
 
 import java.awt.event.KeyEvent;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static chevy.model.entity.staticEntity.environment.Environment.Type.TRAP;
 
@@ -99,12 +101,16 @@ public class PlayerController implements Update {
         switch (trap.getSpecificType()) {
             case Trap.Type.VOID -> {
                 hitPlayer(-1 * trap.getDamage());
-                if (player.isAlive() && chamber.canCross(player, player.getDirection().getOpposite()))
-                    chamber.moveDynamicEntity(player, player.getDirection().getOpposite());
             }
             case Trap.Type.SPIKED_FLOOR -> {
                 SpikedFloor spikedFloor = (SpikedFloor) trap;
                 hitPlayer(-1 * spikedFloor.getDamage());
+            }
+            case Trap.Type.TRAPDOOR -> {
+                Trapdoor trapdoor = (Trapdoor) trap;
+                hitPlayer(-1 * trapdoor.getDamage());
+
+                player.changeState(Player.EnumState.FALL);
             }
             default -> {}
         }
@@ -177,6 +183,7 @@ public class PlayerController implements Update {
      */
     private void hitPlayer(int damage) {
         if (player.changeState(Player.EnumState.HIT)) {
+//            System.out.println(Thread.currentThread());
             player.changeHealth(damage);
         }
     }
@@ -214,10 +221,10 @@ public class PlayerController implements Update {
      */
     @Override
     public void update(double delta) {
-        // gestione della morte del player
+        // gestione della morte del player (stato DEAD)
         if (!player.isAlive()) {
             if (player.getState(Player.EnumState.DEAD).isFinished()) {
-                chamber.removeEntityOnTop(player);
+                chamber.findAndRemoveEntity(player);
                 player.removeToUpdate();
                 return;
             }
@@ -226,7 +233,7 @@ public class PlayerController implements Update {
             player.kill();
         }
 
-        // gestione dello scivolamento del player
+        // gestione dello scivolamento del player (stato GLIDE)
         if (player.getCurrentEumState() == Player.EnumState.GLIDE &&
                 player.getState(player.getCurrentEumState()).isFinished() &&
                 chamber.canCross(player, player.getDirection()) &&
@@ -248,8 +255,14 @@ public class PlayerController implements Update {
             }
         }
 
-        // idle
-        if (player.getCurrentEumState() != Player.EnumState.SLUDGE)
+        // IDLE
+        if (player.getCurrentEumState() == Player.EnumState.FALL && player.getState(Player.EnumState.FALL).isFinished() &&
+                chamber.canCross(player, player.getDirection().getOpposite())) {
+            chamber.moveDynamicEntity(player, player.getDirection().getOpposite());
             player.checkAndChangeState(Player.EnumState.IDLE);
+        }
+        else if (player.getCurrentEumState() != Player.EnumState.SLUDGE) {
+            player.checkAndChangeState(Player.EnumState.IDLE);
+        }
     }
 }

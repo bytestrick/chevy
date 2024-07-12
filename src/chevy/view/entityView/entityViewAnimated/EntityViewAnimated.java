@@ -105,7 +105,7 @@ public abstract class EntityViewAnimated extends EntityView {
 
     public abstract BufferedImage getCurrentFrame();
 
-    public abstract Vector2<Double> getCurrentPosition();
+    public abstract Vector2<Double> getCurrentViewPosition();
 
     public abstract void wasRemoved();
 }
