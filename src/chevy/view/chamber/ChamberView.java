@@ -17,7 +17,7 @@ import java.util.List;
  * Gestisce il disegno a schermo della stanza
  */
 public class ChamberView {
-    private static final boolean DRAW_COLLISIONS = true;
+    private static final boolean DRAW_COLLISIONS = false;
     // colori per la visualizzazione della collisione
     private static final Color bg = new Color(255, 255, 255, 80);
     private static final Color outLine = new Color(255, 255, 255, 255);
@@ -93,8 +93,8 @@ public class ChamberView {
                     if (!entity.isToDraw()) {
                         it.remove();
                         System.out.println("[-] Entity rimossa dal ridisegno: " + entity.getSpecificType());
-                        if (entityViewSpecific instanceof EntityViewAnimated entityViewAnimated)
-                            entityViewAnimated.wasRemoved();
+                        if (entityViewSpecific != null)
+                            entityViewSpecific.wasRemoved();
                     }
                 }
             }

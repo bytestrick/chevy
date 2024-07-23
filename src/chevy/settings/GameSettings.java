@@ -11,8 +11,8 @@ public class GameSettings {
     public static float optimalCellSizeH = (float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR) / nTileH; // calcola la dimensione ottimale di una cella in altezza, tenendo conto dell'altezza della finestra.
     public static float optimalCellSizeW = (float) WindowSettings.WINDOW_WIDTH / nTileW; // calcola la dimensione ottimale di una cella in larghezza, tenendo conto della larghezza della finestra.
     public static int optimalCellSize = Math.round(Math.min(optimalCellSizeH, optimalCellSizeW)); // scale che bisogna applicare a ogni tile per avere il numero di celle in altezza e larghezza desiderato
-    public static int offsetH = Math.max(0, (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR - (nTileH * optimalCellSize)) / 2); // offset usato per mantenere centrato il contenuto di segnato a schermo, su y
-    public static int offsetW = Math.max(0, (WindowSettings.WINDOW_WIDTH - (nTileW * optimalCellSize)) / 2); // offset usato per mantenere centrato il contenuto di segnato a schermo, su x
+    public static int offsetH = Math.max(0, Math.round((float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR - nTileH * optimalCellSize) / 2)); // offset usato per mantenere centrato il contenuto di segnato a schermo, su y
+    public static int offsetW = Math.max(0, Math.round((float) (WindowSettings.WINDOW_WIDTH - nTileW * optimalCellSize) / 2)); // offset usato per mantenere centrato il contenuto di segnato a schermo, su x
 
     public static void updateValue(int newNTileH, int newNTileW) {
         nTileH = newNTileH;
@@ -23,7 +23,7 @@ public class GameSettings {
 
         optimalCellSize = Math.round(Math.min(optimalCellSizeH, optimalCellSizeW));
 
-        offsetH = Math.max(0, (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR - Math.round((float) nTileH * optimalCellSize)) / 2);
-        offsetW = Math.max(0, (WindowSettings.WINDOW_WIDTH - Math.round((float) nTileW * optimalCellSize)) / 2);
+        offsetH = Math.max(0, Math.round((float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR - nTileH * optimalCellSize) / 2));
+        offsetW = Math.max(0, Math.round((float) (WindowSettings.WINDOW_WIDTH - nTileW * optimalCellSize) / 2));
     }
 }

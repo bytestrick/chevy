@@ -40,7 +40,6 @@ public class GameLoop implements Runnable {
 //             System.out.print("\r delta:  " + delta + "\t");
 
             UpdateManager.update(delta);
-            // render
             RenderManager.render(delta);
             Toolkit.getDefaultToolkit().sync();
         }

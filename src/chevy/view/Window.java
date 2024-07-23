@@ -16,10 +16,6 @@ public class Window extends JFrame {
     public Window(boolean resizable) {
         setTitle("Chevy");
 
-        setResizable(resizable);
-        if (resizable)
-            makeResponsive();
-
         setSize(size);
         setLocationRelativeTo(null);
         setBackground(Color.DARK_GRAY);
@@ -29,10 +25,16 @@ public class Window extends JFrame {
         add(gamePanel);
 
         setVisible(true);
-        WindowSettings.SIZE_TOP_BAR = getInsets().top;
         requestFocus();
 
-        System.out.println(size);
+        // assicura l'esecuzione del codice solamente dopo la creazione del componente JFrame
+        SwingUtilities.invokeLater(() -> {
+            WindowSettings.SIZE_TOP_BAR = getInsets().top;
+            setResizable(resizable);
+            if (resizable)
+                makeResponsive();
+            System.out.println(size);
+        });
     }
 
     private void makeResponsive() {

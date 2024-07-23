@@ -29,7 +29,6 @@ public class EnemyController {
      * @param playerController il controller del giocatore.
      */
     public EnemyController(Chamber chamber, PlayerController playerController) {
-
         this.wraithController = new WraithController(chamber, playerController);
         this.zombieController = new ZombieController(chamber, playerController);
         this.slimeController = new SlimeController(chamber, playerController);
@@ -44,12 +43,12 @@ public class EnemyController {
      * @param subject l'entità che avvia l'interazione.
      * @param object l'entità che subisce l'interazione.
      */
-    public synchronized void handleInteraction(InteractionTypes interaction, Entity subject, DynamicEntity object) {
+    public synchronized void handleInteraction(InteractionTypes interaction, Entity subject, Enemy object) {
         switch (interaction) {
-            case PLAYER_IN -> playerInInteraction((Player) subject, (Enemy) object);
+            case PLAYER_IN -> playerInInteraction((Player) subject, object);
             case UPDATE -> updateEnemy((Enemy) subject);
-            case PROJECTILE -> projectileInteraction((Projectile) subject, (Enemy) object);
-            case TRAP -> trapInteraction((Trap) subject, (Enemy) object);
+            case PROJECTILE -> projectileInteraction((Projectile) subject, object);
+            case TRAP -> trapInteraction((Trap) subject, object);
             default -> {}
         }
     }
