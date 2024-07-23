@@ -22,4 +22,6 @@ public abstract class EntityView {
     public abstract BufferedImage getCurrentFrame();
 
     public abstract Vector2<Double> getCurrentViewPosition();
+
+    public void wasRemoved() {}
 }

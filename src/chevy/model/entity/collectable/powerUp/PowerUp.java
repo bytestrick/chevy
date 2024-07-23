@@ -1,12 +1,13 @@
-package chevy.model.entity.staticEntity.powerUp;
+package chevy.model.entity.collectable.powerUp;
 
 import chevy.model.entity.Entity;
 import chevy.model.entity.EntityCommonEnumTypes;
+import chevy.model.entity.collectable.Collectable;
 import chevy.utils.Vector2;
 
 import java.util.Random;
 
-public abstract class PowerUp extends Entity {
+public abstract class PowerUp extends Collectable {
     public enum Type implements EntityCommonEnumTypes {
         THUNDERBOLT,
         HOLY_SHIELD,
@@ -27,8 +28,6 @@ public abstract class PowerUp extends Entity {
         CAT_CLAW,
         SLIME_PIECE,
         PIECE_OF_BONE,
-        MILK,
-        CARROT,
         GOLD_ARROW;
 
         public Type getRandom() {
@@ -39,15 +38,22 @@ public abstract class PowerUp extends Entity {
     }
     private final Type type;
 
+
     public PowerUp(Vector2<Integer> initVelocity, Type type) {
-        super(initVelocity, Entity.Type.POWER_UP);
+        super(initVelocity, Collectable.Type.POWER_UP);
         this.type = type;
         this.crossable = true;
     }
 
+
     @Override
     public EntityCommonEnumTypes getSpecificType() {
         return type;
+    }
+
+    @Override
+    public EntityCommonEnumTypes getGenericType() {
+        return super.getSpecificType();
     }
 
     @Override

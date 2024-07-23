@@ -1,6 +1,8 @@
 package chevy.view.chamber;
 
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.Collectable;
+import chevy.model.entity.collectable.Health;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
@@ -11,10 +13,7 @@ import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.Ground;
 import chevy.model.entity.staticEntity.environment.Wall;
 import chevy.model.entity.staticEntity.environment.traps.*;
-import chevy.view.entityView.EntityView;
-import chevy.view.entityView.GroundView;
-import chevy.view.entityView.TrapView;
-import chevy.view.entityView.WallView;
+import chevy.view.entityView.*;
 import chevy.view.entityView.entityViewAnimated.enemy.*;
 import chevy.view.entityView.entityViewAnimated.player.KnightView;
 import chevy.view.entityView.entityViewAnimated.projectile.ArrowView;
@@ -193,6 +192,19 @@ public class EntityToEntityView {
                     trapdoorView = (TrapdoorView) entityView.get(entity);
 
                 yield trapdoorView;
+            }
+
+            // COLLECTABLES
+            case Collectable.Type.HEALTH -> {
+                HealthView healthView = null;
+                if (!entityView.containsKey(entity)) {
+                    healthView = new HealthView((Health) entity);
+                    entityView.put(entity, healthView);
+                }
+                else
+                    healthView = (HealthView) entityView.get(entity);
+
+                yield healthView;
             }
             default -> null;
         };

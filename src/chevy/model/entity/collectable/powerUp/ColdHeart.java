@@ -1,4 +1,4 @@
-package chevy.model.entity.staticEntity.powerUp;
+package chevy.model.entity.collectable.powerUp;
 
 import chevy.utils.Vector2;
 

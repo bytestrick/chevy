@@ -13,6 +13,7 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.model.pathFinding.AStar;
 import chevy.settings.GameSettings;
+import chevy.settings.WindowSettings;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
 

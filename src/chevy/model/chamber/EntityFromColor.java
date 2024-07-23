@@ -1,6 +1,7 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.Health;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Archer;
@@ -79,7 +80,10 @@ public class EntityFromColor {
     private static final int BEETLE = 146;
     private static final int SKELETON = 145;
 
-    //
+    // Collectable
+    private static final int HEALTH = 10;
+
+    // ---
     private static final int NULL = 0; // assenza di colore rosso
 
 
@@ -144,6 +148,9 @@ public class EntityFromColor {
             case BIG_SLIME -> new BigSlime(startPosition);
             case BEETLE -> new Beetle(startPosition);
             case SKELETON -> new Skeleton(startPosition);
+
+            // Collectable
+            case HEALTH -> new Health(startPosition);
 
             // ---
             case NULL -> null;

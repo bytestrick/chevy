@@ -42,9 +42,9 @@ public class ProjectileController {
      * @param subject l'entità che avvia l'interazione.
      * @param object l'entità che subisce l'interazione.
      */
-    public void handleInteraction(InteractionTypes interaction, DynamicEntity subject, DynamicEntity object) {
+    public void handleInteraction(InteractionTypes interaction, DynamicEntity subject, Projectile object) {
         switch (interaction) {
-            case PLAYER_IN -> playerInInteraction((Player) subject, (Projectile) object);
+            case PLAYER_IN -> playerInInteraction((Player) subject, object);
             case UPDATE -> updateProjectile((Projectile) subject);
         }
     }

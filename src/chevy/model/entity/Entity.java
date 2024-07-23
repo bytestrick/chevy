@@ -23,7 +23,7 @@ public abstract class Entity {
     public enum Type implements EntityCommonEnumTypes {
         DYNAMIC,
         ENVIRONMENT,
-        POWER_UP
+        COLLECTABLE
     }
     private final Type type;
 

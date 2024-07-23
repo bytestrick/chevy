@@ -41,11 +41,11 @@ public class TrapsController {
      * @param subject l'entità che avvia l'interazione
      * @param object l'entità che riceve l'interazione
      */
-    public synchronized void handleInteraction(InteractionTypes interaction, Entity subject, Entity object) {
+    public synchronized void handleInteraction(InteractionTypes interaction, Entity subject, Trap object) {
         switch (interaction) {
-            case PLAYER_IN -> playerInInteraction((Player) subject, (Trap) object);
-            case PLAYER_OUT -> playerOutInteraction((Player) subject, (Trap) object);
-            case PLAYER -> playerInteraction((Player) subject, (Trap) object);
+            case PLAYER_IN -> playerInInteraction((Player) subject, object);
+            case PLAYER_OUT -> playerOutInteraction((Player) subject, object);
+            case PLAYER -> playerInteraction((Player) subject, object);
             case UPDATE -> updateTraps((Trap) subject);
         }
     }

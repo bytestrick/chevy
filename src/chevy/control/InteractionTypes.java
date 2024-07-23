@@ -8,5 +8,5 @@ public enum InteractionTypes {
     UPDATE,
     KEYBOARD,
     TRAP,
-    ENEMY
+    COLLECTABLE, ENEMY
 }

@@ -22,7 +22,7 @@ public class Interpolate implements Render {
     // Durata totale dell'interpolazione.
     private float duration;
     // Se l'interpolazione deve essere eliminata.
-    private boolean delete = true;
+    private boolean isDelete = true;
 
     /**
      * Costruttore della classe Interpolate. Inizializza l'oggetto con i valori di inizio e fine,
@@ -39,6 +39,7 @@ public class Interpolate implements Render {
      * Restituisce il valore corrente dell'interpolazione.
      */
     public double getValue() {
+//        time = (double) Math.round(time * 100) / 100;
         return InterpolationFunctions.interpolate(start, end, time, interpolationTypes);
     }
 
@@ -82,8 +83,8 @@ public class Interpolate implements Render {
 
         isRunning = true;
 
-        if (delete) {
-            delete = false;
+        if (isDelete) {
+            isDelete = false;
             RenderManager.addToRender(this);
         }
     }
@@ -93,7 +94,7 @@ public class Interpolate implements Render {
      */
     public void restart() {
         time = 0d;
-        if (delete) {
+        if (isDelete) {
             start();
             return;
         }
@@ -105,7 +106,7 @@ public class Interpolate implements Render {
      */
     public void delete() {
         stop();
-        delete = true;
+        isDelete = true;
     }
 
     /**
@@ -121,7 +122,7 @@ public class Interpolate implements Render {
      * Restituisce se l'interpolazione è attualmente in esecuzione.
      */
     public boolean isRunning() {
-        return isRunning || !delete;
+        return isRunning && !isDelete;
     }
 
     /**
@@ -144,6 +145,6 @@ public class Interpolate implements Render {
      */
     @Override
     public boolean renderIsEnd() {
-        return delete;
+        return isDelete;
     }
 }
