@@ -20,6 +20,7 @@ public abstract class Entity {
     protected int drawLayer;
     private boolean toDraw;
     protected final StateMachine stateMachine = new StateMachine();
+    protected boolean mustBeUpdate = false;
     public enum Type implements EntityCommonEnumTypes {
         DYNAMIC,
         ENVIRONMENT,
@@ -101,6 +102,14 @@ public abstract class Entity {
 
     public CommonEnumStates getPreviousEnumState() {
         return stateMachine.getPreviousState().getStateEnum();
+    }
+
+    public boolean canRemoveToUpdate() {
+        return !mustBeUpdate;
+    }
+
+    public void removeToUpdate() {
+        mustBeUpdate = false;
     }
 
 

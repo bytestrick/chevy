@@ -1,6 +1,7 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.Coin;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
@@ -82,6 +83,7 @@ public class EntityFromColor {
 
     // Collectable
     private static final int HEALTH = 10;
+    private static final int COIN = 11;
 
     // ---
     private static final int NULL = 0; // assenza di colore rosso
@@ -151,6 +153,7 @@ public class EntityFromColor {
 
             // Collectable
             case HEALTH -> new Health(startPosition);
+            case COIN -> new Coin(startPosition);
 
             // ---
             case NULL -> null;

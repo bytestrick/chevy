@@ -15,7 +15,7 @@ public class IcyFloor extends Trap {
 
     public IcyFloor(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.ICY_FLOOR);
-        this.mustBeUpdated = true;
+        this.mustBeUpdate = true;
 
         initStateMachine();
     }

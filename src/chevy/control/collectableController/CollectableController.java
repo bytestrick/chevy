@@ -4,17 +4,20 @@ import chevy.control.InteractionTypes;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.Coin;
 import chevy.model.entity.collectable.Collectable;
 
 
 public class CollectableController {
     private final PlayerController playerController;
+    private final CoinController coinController;
     private final Chamber chamber;
 
 
     public CollectableController(Chamber chamber, PlayerController playerController) {
         this.chamber = chamber;
         this.playerController = playerController;
+        this.coinController = new CoinController(chamber);
     }
 
 
@@ -27,6 +30,7 @@ public class CollectableController {
     public void handleInteraction(InteractionTypes interaction, Entity subject, Collectable object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction(object);
+            case UPDATE ->  update(subject);
             default -> {}
         }
     }
@@ -42,6 +46,14 @@ public class CollectableController {
                 collectable.collect();
                 chamber.findAndRemoveEntity(collectable, false);
             }
+            case Collectable.Type.COIN -> coinController.playerInInteraction((Coin) collectable);
+            default -> {}
+        }
+    }
+
+    private void update(Entity subject) {
+        switch (subject.getSpecificType()) {
+            case Collectable.Type.COIN -> coinController.update((Coin) subject);
             default -> {}
         }
     }

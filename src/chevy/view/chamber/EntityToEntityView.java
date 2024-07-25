@@ -1,6 +1,7 @@
 package chevy.view.chamber;
 
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.Coin;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
@@ -14,6 +15,7 @@ import chevy.model.entity.staticEntity.environment.Ground;
 import chevy.model.entity.staticEntity.environment.Wall;
 import chevy.model.entity.staticEntity.environment.traps.*;
 import chevy.view.entityView.*;
+import chevy.view.entityView.entityViewAnimated.collectable.CoinView;
 import chevy.view.entityView.entityViewAnimated.enemy.*;
 import chevy.view.entityView.entityViewAnimated.player.KnightView;
 import chevy.view.entityView.entityViewAnimated.projectile.ArrowView;
@@ -205,6 +207,17 @@ public class EntityToEntityView {
                     healthView = (HealthView) entityView.get(entity);
 
                 yield healthView;
+            }
+            case Collectable.Type.COIN -> {
+                CoinView coinView = null;
+                if (!entityView.containsKey(entity)) {
+                    coinView = new CoinView((Coin) entity);
+                    entityView.put(entity, coinView);
+                }
+                else
+                    coinView = (CoinView) entityView.get(entity);
+
+                yield coinView;
             }
             default -> null;
         };

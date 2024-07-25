@@ -21,7 +21,7 @@ public class Trapdoor extends Trap {
         this.maxDamage = 1;
         this.minDamage = 1;
 
-        this.mustBeUpdated = true;
+        this.mustBeUpdate = true;
         this.safeToCross = true;
 
         initStateMachine();

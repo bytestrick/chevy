@@ -14,11 +14,11 @@ public abstract class Collectable extends Entity {
     private final Type type;
     private boolean collected = false;
 
-
     public Collectable(Vector2<Integer> initPosition, Type type) {
         super(initPosition, Entity.Type.COLLECTABLE);
         this.type = type;
 
+        this.mustBeUpdate = true;
         this.crossable = true;
         this.safeToCross = true;
         this.drawLayer = 1;
