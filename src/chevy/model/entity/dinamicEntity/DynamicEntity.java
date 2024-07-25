@@ -15,13 +15,15 @@ public abstract class DynamicEntity extends Entity {
 
     }
     private final Type type;
-    private boolean canRemove = false;
+
     protected DirectionsModel direction = DirectionsModel.getRandom();
 
 
     public DynamicEntity(Vector2<Integer> initPosition, Type type) {
         super(initPosition, Entity.Type.DYNAMIC);
         this.type = type;
+
+        this.mustBeUpdate = true;
     }
 
 
@@ -35,14 +37,6 @@ public abstract class DynamicEntity extends Entity {
 
     public void setDirection(DirectionsModel direction) {
         this.direction = direction;
-    }
-
-    public void removeToUpdate() {
-        canRemove = true;
-    }
-
-    public boolean canRemoveToUpdate() {
-        return canRemove;
     }
 
     @Override

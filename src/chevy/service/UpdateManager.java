@@ -12,9 +12,11 @@ public class UpdateManager {
     private static final List<Update> toAdd = new LinkedList<>();
 
 
-    public synchronized static void addToUpdate(Update u) {
+    public static void addToUpdate(Update u) {
+        synchronized (toAdd) {
+            toAdd.add(u);
 //        System.out.println("[-] Aggiunto al update: " + u);
-        toAdd.add(u);
+        }
     }
 
 

@@ -18,7 +18,7 @@ public class SpikedFloor extends Trap {
     public SpikedFloor(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.SPIKED_FLOOR);
         this.safeToCross = true;
-        this.mustBeUpdated = true;
+        this.mustBeUpdate = true;
 
         this.maxDamage = 2;
         this.minDamage = 1;

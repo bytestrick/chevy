@@ -3,6 +3,7 @@ package chevy.model.chamber;
 import chevy.model.chamber.drawOrder.LayerManager;
 import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
@@ -62,6 +63,10 @@ public class Chamber {
      * Lista che tiene traccia dei proiettili presenti nella stanza.
      */
     private final List<Projectile> projectiles = new LinkedList<>();
+    /**
+     * Lista che tiene traccia degli oggetti collezionabili presenti nella stanza.
+     */
+    private final List<Collectable> collectables = new LinkedList<>();
 
 
     public Chamber() {}
@@ -552,10 +557,13 @@ public class Chamber {
     public synchronized void addProjectile(Projectile projectile) { projectiles.add(projectile); }
     public synchronized List<Projectile> getProjectiles() { return projectiles; }
 
-    // ---
+    public synchronized void addCollectable(Collectable collectable) { collectables.add(collectable); }
+    public synchronized List<Collectable> getCollectables() { return collectables; }
 
+    // ---
     public void addEntityToDraw(Entity entity, int layer) {
         drawOrderChamber.add(entity, layer);
     }
+
     public List<Layer> getDrawOrderChamber() { return Collections.unmodifiableList(drawOrderChamber.getDrawOrder()); }
 }

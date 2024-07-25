@@ -15,8 +15,6 @@ public abstract class Trap extends Environment {
         ICY_FLOOR;
     }
     private final Type type;
-    protected boolean mustBeUpdated = false;
-
 
 
     public Trap(Vector2<Integer> initVelocity, Type type) {
@@ -24,11 +22,6 @@ public abstract class Trap extends Environment {
         this.type = type;
         this.crossable = true;
         this.canHitFlingEntity = false;
-    }
-
-
-    public boolean isMustBeUpdated() {
-        return mustBeUpdated;
     }
 
 
