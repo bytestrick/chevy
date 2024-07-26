@@ -21,7 +21,7 @@ public abstract class Collectable extends Entity {
         this.mustBeUpdate = true;
         this.crossable = true;
         this.safeToCross = true;
-        this.drawLayer = 1;
+        this.drawLayer = 3;
     }
 
 

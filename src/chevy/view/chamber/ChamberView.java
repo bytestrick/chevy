@@ -5,6 +5,7 @@ import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.settings.GameSettings;
 import chevy.utils.Vector2;
+import chevy.view.Image;
 import chevy.view.entityView.EntityView;
 import chevy.view.entityView.entityViewAnimated.EntityViewAnimated;
 
@@ -18,6 +19,7 @@ import java.util.List;
  */
 public class ChamberView {
     private static final boolean DRAW_COLLISIONS = false;
+    private static final BufferedImage NULL_IMAGE = Image.load("/assets/null.png");
     // colori per la visualizzazione della collisione
     private static final Color bg = new Color(255, 255, 255, 80);
     private static final Color outLine = new Color(255, 255, 255, 255);
@@ -53,6 +55,8 @@ public class ChamberView {
                         Vector2<Integer> offset = entityViewSpecific.getOffset();
                         float scale = entityViewSpecific.getScale();
                         BufferedImage image = entityViewSpecific.getCurrentFrame();
+                        if (image == null)
+                            image = NULL_IMAGE;
 
                         float offsetX = (float) offset.first / GameSettings.SIZE_TILE;
                         if (offset.first == 0)
