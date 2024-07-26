@@ -1,13 +1,10 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.collectable.Coin;
-import chevy.model.entity.collectable.Health;
+import chevy.model.entity.collectable.*;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Archer;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
+import chevy.model.entity.dinamicEntity.liveEntity.player.*;
 import chevy.model.entity.staticEntity.environment.*;
 import chevy.model.entity.staticEntity.environment.traps.*;
 import chevy.model.entity.staticEntity.environment.traps.Void;
@@ -84,6 +81,7 @@ public class EntityFromColor {
     // Collectable
     private static final int HEALTH = 10;
     private static final int COIN = 11;
+    private static final int KEY = 12;
 
     // ---
     private static final int NULL = 0; // assenza di colore rosso
@@ -154,6 +152,7 @@ public class EntityFromColor {
             // Collectable
             case HEALTH -> new Health(startPosition);
             case COIN -> new Coin(startPosition);
+            case KEY -> new Key(startPosition);
 
             // ---
             case NULL -> null;

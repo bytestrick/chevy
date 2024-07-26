@@ -20,7 +20,6 @@ public class Coin extends Collectable {
 
     public Coin(Vector2<Integer> initPosition) {
         super(initPosition, Type.COIN);
-        this.drawLayer = 3;
 
         initStateMachine();
     }
@@ -38,8 +37,8 @@ public class Coin extends Collectable {
     }
 
     public synchronized State getState(CommonEnumStates commonEnumStates) {
-        EnumState coinState = (EnumState) commonEnumStates;
-        return switch (coinState) {
+        EnumState coinEnumState = (EnumState) commonEnumStates;
+        return switch (coinEnumState) {
             case IDLE -> idle;
             case COLLECT -> collect;
         };
