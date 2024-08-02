@@ -8,7 +8,6 @@ import chevy.view.animation.Interpolate;
 import chevy.view.animation.InterpolationTypes;
 import chevy.view.entityView.entityViewAnimated.EntityViewAnimated;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class CoinView extends EntityViewAnimated {
@@ -34,16 +33,16 @@ public class CoinView extends EntityViewAnimated {
                 6, coin.getState(Coin.EnumState.IDLE).getDuration(),
                 COIN_PATH + "idle", ".png");
 
-        createAnimation(Coin.EnumState.COLLECT, 0,
-                7, coin.getState(Coin.EnumState.COLLECT).getDuration(),
+        createAnimation(Coin.EnumState.COLLECTED, 0,
+                7, coin.getState(Coin.EnumState.COLLECTED).getDuration(),
                 COIN_PATH + "collect", ".png");
     }
 
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentStateState = coin.getCurrentEumState();
-        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentStateState, 0);
+        CommonEnumStates currentEnumState = coin.getCurrentEumState();
+        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, 0);
 
         if (currentAnimatedSprite != null) {
             if (!currentAnimatedSprite.isRunning()) {
@@ -56,7 +55,7 @@ public class CoinView extends EntityViewAnimated {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (coin.getCurrentEumState() == Coin.EnumState.COLLECT)
+        if (coin.getCurrentEumState() == Coin.EnumState.COLLECTED)
             moveInterpolationY.start();
         currentViewPosition.second = moveInterpolationY.getValue();
         return currentViewPosition;
@@ -64,6 +63,7 @@ public class CoinView extends EntityViewAnimated {
 
     @Override
     public void wasRemoved() {
-        deleteAnimations();
+        super.deleteAnimations();
+        moveInterpolationY.delete();
     }
 }

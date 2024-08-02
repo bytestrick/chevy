@@ -13,7 +13,7 @@ public class HealthController {
 
 
     public void playerInInteraction(Health health) {
-        if (health.changeState(Health.EnumState.COLLECT)) {
+        if (health.changeState(Health.EnumState.COLLECTED)) {
             health.collect();
             chamber.findAndRemoveEntity(health);
         }
@@ -21,7 +21,7 @@ public class HealthController {
 
     public void update(Health health) {
         if (health.isCollected()) {
-            if (health.getState(Health.EnumState.COLLECT).isFinished()) {
+            if (health.getState(Health.EnumState.COLLECTED).isFinished()) {
                 health.setToDraw(false);
                 health.removeToUpdate();
             }

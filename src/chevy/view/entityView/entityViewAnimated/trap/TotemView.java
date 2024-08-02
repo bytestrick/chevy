@@ -104,6 +104,6 @@ public class TotemView extends EntityViewAnimated {
 
     @Override
     public void wasRemoved() {
-
+        super.deleteAnimations();
     }
 }

@@ -1,5 +1,6 @@
 package chevy.control;
 
+import chevy.control.collectableController.PowerUpTextVisualizerController;
 import chevy.model.GameModel;
 import chevy.view.GameView;
 
@@ -36,7 +37,10 @@ public class GameController {
         this.gameView.getWindow().getGamePanel().getChamberView().setDrawOrderChamber(gameModel.getCurrentChamber().getDrawOrderChamber());
 
         // inizializzazione del controller della stanza
-        ChamberController chamberController = new ChamberController(gameModel.getCurrentChamber());
+        PowerUpTextVisualizerController powerUpTextVisualizerController = new PowerUpTextVisualizerController(
+                gameView.getWindow().getGamePanel().getPowerUpTextVisualizerController()
+        );
+        ChamberController chamberController = new ChamberController(gameModel.getCurrentChamber(), powerUpTextVisualizerController);
         keyboardListener.setChamber(chamberController);
     }
 }

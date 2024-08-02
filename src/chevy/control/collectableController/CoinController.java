@@ -13,7 +13,7 @@ public class CoinController {
 
 
     public void playerInInteraction(Coin coin) {
-        if (coin.changeState(Coin.EnumState.COLLECT)) {
+        if (coin.changeState(Coin.EnumState.COLLECTED)) {
             coin.collect();
             chamber.findAndRemoveEntity(coin);
         }
@@ -21,7 +21,7 @@ public class CoinController {
 
     public void update(Coin coin) {
         if (coin.isCollected()) {
-            if (coin.getState(Coin.EnumState.COLLECT).isFinished()) {
+            if (coin.getState(Coin.EnumState.COLLECTED).isFinished()) {
                 coin.setToDraw(false);
                 coin.removeToUpdate();
             }

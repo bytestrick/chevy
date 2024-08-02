@@ -2,6 +2,8 @@ package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.*;
+import chevy.model.entity.collectable.powerUp.Agility;
+import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
 import chevy.model.entity.dinamicEntity.liveEntity.player.*;
@@ -82,6 +84,8 @@ public class EntityFromColor {
     private static final int HEALTH = 10;
     private static final int COIN = 11;
     private static final int KEY = 12;
+    // Collectable: Power Up
+    private static final int AGILITY = 13;
 
     // ---
     private static final int NULL = 0; // assenza di colore rosso
@@ -153,6 +157,8 @@ public class EntityFromColor {
             case HEALTH -> new Health(startPosition);
             case COIN -> new Coin(startPosition);
             case KEY -> new Key(startPosition);
+            // Collectable: Power Up
+            case AGILITY -> new Agility(startPosition);
 
             // ---
             case NULL -> null;

@@ -33,16 +33,16 @@ public class KeyView extends EntityViewAnimated {
                 12, key.getState(Key.EnumState.IDLE).getDuration(),
                 KEY_PATH + "idle", ".png");
 
-        createAnimation(Key.EnumState.COLLECT, 0,
-                7, key.getState(Key.EnumState.COLLECT).getDuration(),
+        createAnimation(Key.EnumState.COLLECTED, 0,
+                7, key.getState(Key.EnumState.COLLECTED).getDuration(),
                 KEY_PATH + "collect", ".png");
     }
 
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentStateState = key.getCurrentEumState();
-        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentStateState, 0);
+        CommonEnumStates currentEnumState = key.getCurrentEumState();
+        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, 0);
 
         if (currentAnimatedSprite != null) {
             if (!currentAnimatedSprite.isRunning()) {
@@ -55,7 +55,7 @@ public class KeyView extends EntityViewAnimated {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (key.getCurrentEumState().equals(Key.EnumState.COLLECT))
+        if (key.getCurrentEumState().equals(Key.EnumState.COLLECTED))
             moveInterpolationY.start();
         currentViewPosition.second = moveInterpolationY.getValue();
         return currentViewPosition;
@@ -63,6 +63,7 @@ public class KeyView extends EntityViewAnimated {
 
     @Override
     public void wasRemoved() {
-        deleteAnimations();
+        super.deleteAnimations();
+        moveInterpolationY.delete();
     }
 }

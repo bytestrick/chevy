@@ -195,6 +195,6 @@ public class WraithView extends EntityViewAnimated {
     public void wasRemoved() {
         moveInterpolationX.delete();
         moveInterpolationY.delete();
-        deleteAnimations();
+        super.deleteAnimations();
     }
 }

@@ -32,7 +32,6 @@ public class Arrow extends Projectile {
         loop.linkState(end);
     }
 
-    @Override
     public State getState(CommonEnumStates commonEnumStates) {
         EnumState arrowState = (EnumState) commonEnumStates;
         return switch (arrowState) {

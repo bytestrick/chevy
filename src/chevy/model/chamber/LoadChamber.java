@@ -1,12 +1,14 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
+import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
@@ -75,17 +77,10 @@ public class LoadChamber {
                             case DynamicEntity.Type.PROJECTILE -> chamber.addProjectile((Projectile) entity);
                             case LiveEntity.Type.ENEMY -> chamber.addEnemy((Enemy) entity);
                             case LiveEntity.Type.PLAYER -> chamber.setPlayer((Player) entity);
-                            case Entity.Type.COLLECTABLE -> chamber.addCollectable((Collectable) entity);
+                            case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
+                                    chamber.addCollectable((Collectable) entity);
                             default -> {}
                         }
-//                        if (entity instanceof Player player)
-//                            chamber.setPlayer(player);
-//                        else if (entity instanceof Enemy enemy) {
-//                            chamber.addEnemy(enemy);
-//                        }
-//                        else if (entity instanceof Trap trap) {
-//                            chamber.addTraps(trap);
-//                        }
                     }
                 }
             }

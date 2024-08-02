@@ -202,6 +202,6 @@ public class SlimeShotView extends EntityViewAnimated {
     public void wasRemoved() {
         moveInterpolationX.delete();
         moveInterpolationY.delete();
-        deleteAnimations();
+        super.deleteAnimations();
     }
 }

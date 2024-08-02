@@ -61,6 +61,6 @@ public class TrapdoorView extends EntityViewAnimated {
 
     @Override
     public void wasRemoved() {
-        deleteAnimations();
+        super.deleteAnimations();
     }
 }
