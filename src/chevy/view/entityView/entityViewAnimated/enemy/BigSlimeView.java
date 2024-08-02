@@ -93,10 +93,10 @@ public class BigSlimeView extends EntityViewAnimated {
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonEnumStates currentState = bigSlime.getCurrentEumState();
-        int type = getAnimationType(currentState);
+        CommonEnumStates currentEnumState = bigSlime.getCurrentEumState();
+        int type = getAnimationType(currentEnumState);
 
-        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, type);
+        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, type);
 
         if (currentAnimatedSprite != null) {
             if (!currentAnimatedSprite.isRunning()) {
@@ -151,6 +151,6 @@ public class BigSlimeView extends EntityViewAnimated {
     public void wasRemoved() {
         moveInterpolationX.delete();
         moveInterpolationY.delete();
-        deleteAnimations();
+        super.deleteAnimations();
     }
 }

@@ -47,6 +47,7 @@ public class StateMachine {
                 System.out.println(" -> " + nextState);
             }
 
+            previousState.stopStateTimer();
             currentState.startStateTimer();
             nextState = null;
             return true;

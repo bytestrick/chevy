@@ -3,6 +3,8 @@ package chevy.model.entity.collectable.powerUp;
 import chevy.model.entity.Entity;
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.collectable.Collectable;
+import chevy.model.entity.stateMachine.CommonEnumStates;
+import chevy.model.entity.stateMachine.State;
 import chevy.utils.Vector2;
 
 import java.util.Random;
@@ -37,12 +39,58 @@ public abstract class PowerUp extends Collectable {
         }
     }
     private final Type type;
+    public enum EnumState implements CommonEnumStates {
+        IDLE,
+        SELECTED,
+        DESELECTED,
+        COLLECTED
+    }
+    private final State idle = new State(EnumState.IDLE, 0.5f);
+    private final State selected = new State(EnumState.SELECTED, 0.2f);
+    private final State deselected = new State(EnumState.DESELECTED, 0.2f);
+    private final State collected = new State(EnumState.COLLECTED, 0.8f);
+    protected String name;
+    protected String description;
 
 
     public PowerUp(Vector2<Integer> initVelocity, Type type) {
         super(initVelocity, Collectable.Type.POWER_UP);
         this.type = type;
-        this.crossable = true;
+
+        this.name = "No name";
+        this.description = "No description";
+
+        initStaticMachine();
+    }
+
+
+    private void initStaticMachine() {
+//        this.stateMachine.setStateMachineName("PowerUp");
+        this.stateMachine.setInitialState(idle);
+
+        idle.linkState(selected);
+        selected.linkState(collected);
+        selected.linkState(deselected);
+        deselected.linkState(idle);
+        deselected.linkState(selected);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public State getState(CommonEnumStates commonEnumStates) {
+        EnumState powerUpEnumState = (EnumState) commonEnumStates;
+        return switch (powerUpEnumState) {
+            case IDLE -> idle;
+            case SELECTED -> selected;
+            case COLLECTED -> collected;
+            case DESELECTED -> deselected;
+        };
     }
 
 

@@ -14,8 +14,8 @@ public class GameLoop implements Runnable {
     public GameLoop() {
         Thread loop = new Thread(this);
         loop.setPriority(Thread.NORM_PRIORITY);
-        loop.start();
         this.isRunning = true;
+        loop.start();
     }
 
 

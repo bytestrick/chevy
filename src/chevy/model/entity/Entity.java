@@ -97,11 +97,17 @@ public abstract class Entity {
     }
 
     public CommonEnumStates getCurrentEumState() {
-        return stateMachine.getCurrentState().getStateEnum();
+        State currentState = stateMachine.getCurrentState();
+        if (currentState == null)
+            return null;
+        return currentState.getStateEnum();
     }
 
     public CommonEnumStates getPreviousEnumState() {
-        return stateMachine.getPreviousState().getStateEnum();
+        State previousState = stateMachine.getPreviousState();
+        if (previousState == null)
+            return null;
+        return previousState.getStateEnum();
     }
 
     public boolean canRemoveToUpdate() {

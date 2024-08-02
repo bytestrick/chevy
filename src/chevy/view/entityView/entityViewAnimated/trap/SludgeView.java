@@ -57,6 +57,6 @@ public class SludgeView extends EntityViewAnimated {
 
         @Override
         public void wasRemoved() {
-            deleteAnimations();
+            super.deleteAnimations();
         }
     }

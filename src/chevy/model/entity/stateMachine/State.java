@@ -116,6 +116,13 @@ public class State {
         }
     }
 
+    public void stopStateTimer() {
+        if (stateTimer != null && stateTimer.isRunning()) {
+            stateTimer.stop();
+        }
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

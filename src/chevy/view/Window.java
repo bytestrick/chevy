@@ -1,6 +1,5 @@
 package chevy.view;
 
-import chevy.settings.GameSettings;
 import chevy.settings.WindowSettings;
 
 import javax.swing.*;
@@ -19,10 +18,11 @@ public class Window extends JFrame {
         setSize(size);
         setLocationRelativeTo(null);
         setBackground(Color.DARK_GRAY);
+        setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         gamePanel = new GamePanel();
-        add(gamePanel);
+        add(gamePanel, BorderLayout.CENTER);
 
         setVisible(true);
         requestFocus();
@@ -41,6 +41,7 @@ public class Window extends JFrame {
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
                 WindowSettings.updateValue(getHeight(), getWidth());
+                gamePanel.windowResized();
             }
         });
     }

@@ -69,6 +69,6 @@ public class SpikedFloorView extends EntityViewAnimated {
 
     @Override
     public void wasRemoved() {
-        deleteAnimations();
+        super.deleteAnimations();
     }
 }

@@ -6,6 +6,7 @@ import chevy.control.projectileController.ProjectileController;
 import chevy.control.trapsController.TrapsController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
+import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
@@ -144,18 +145,24 @@ public class PlayerController implements Update {
     private void keyBoardInteraction(DirectionsModel direction) {
         Entity entityNextCell = chamber.getNearEntityOnTop(player, direction);
         Entity entityCurrentCell = chamber.getEntityBelowTheTop(player);
+        EntityCommonEnumTypes entityNextCellEnum = entityNextCell.getGenericType();
+        if (entityNextCellEnum == null)
+            entityNextCellEnum = entityNextCell.getSpecificType();
+        EntityCommonEnumTypes entityCurrentCellEnum = entityCurrentCell.getGenericType();
+        if (entityCurrentCellEnum == null)
+            entityCurrentCellEnum = entityCurrentCell.getSpecificType();
 
         // Player on
-        if (entityCurrentCell != null)
-            switch (entityCurrentCell.getGenericType()) {
+        if (entityNextCellEnum != null)
+            switch (entityNextCellEnum) {
                 case Environment.Type.TRAP ->
                     trapsController.handleInteraction(InteractionTypes.PLAYER, player, (Trap) entityCurrentCell);
                 default -> {}
             }
 
         // Player in
-        if (entityNextCell != null)
-            switch (entityNextCell.getGenericType()) {
+        if (entityNextCellEnum != null)
+            switch (entityNextCellEnum) {
                 case LiveEntity.Type.ENEMY -> {
                     if (player.checkAndChangeState(Player.EnumState.ATTACK))
                         enemyController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Enemy) entityNextCell);
@@ -173,7 +180,7 @@ public class PlayerController implements Update {
                         projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Projectile) entityNextCell);
                     }
                 }
-                case Entity.Type.COLLECTABLE -> {
+                case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP -> {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.EnumState.MOVE)) {
                         chamber.moveDynamicEntity(player, direction);
                         collectableController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Collectable) entityNextCell);
@@ -187,8 +194,8 @@ public class PlayerController implements Update {
 
 
         // Player out
-        if (entityCurrentCell != null)
-            switch (entityCurrentCell.getGenericType()) {
+        if (entityCurrentCellEnum != null)
+            switch (entityCurrentCellEnum) {
                 case Environment.Type.TRAP ->
                         trapsController.handleInteraction(InteractionTypes.PLAYER_OUT, player, (Trap) entityCurrentCell);
                 default -> {}

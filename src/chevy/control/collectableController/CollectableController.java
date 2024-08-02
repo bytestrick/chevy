@@ -8,6 +8,7 @@ import chevy.model.entity.collectable.Coin;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
+import chevy.model.entity.collectable.powerUp.PowerUp;
 
 
 public class CollectableController {
@@ -15,15 +16,17 @@ public class CollectableController {
     private final CoinController coinController;
     private final HealthController healthController;
     private final KeyController keyController;
+    private final PowerUpController powerUpController;
     private final Chamber chamber;
 
 
-    public CollectableController(Chamber chamber, PlayerController playerController) {
+    public CollectableController(Chamber chamber, PlayerController playerController, PowerUpTextVisualizerController powerUpTextVisualizerController) {
         this.chamber = chamber;
         this.playerController = playerController;
         this.keyController = new KeyController(chamber);
         this.healthController = new HealthController(chamber);
         this.coinController = new CoinController(chamber);
+        this.powerUpController = new PowerUpController(chamber, powerUpTextVisualizerController);
     }
 
 
@@ -52,6 +55,8 @@ public class CollectableController {
             case Collectable.Type.KEY -> keyController.playerInInteraction((Key) collectable);
             default -> {}
         }
+        if (collectable.getGenericType() == Collectable.Type.POWER_UP)
+            powerUpController.playerInInteraction((PowerUp) collectable);
     }
 
     private void update(Entity subject) {
@@ -61,6 +66,8 @@ public class CollectableController {
             case Collectable.Type.KEY -> keyController.update((Key) subject);
             default -> {}
         }
+        if (subject.getGenericType() == Collectable.Type.POWER_UP)
+            powerUpController.update((PowerUp) subject);
     }
 }
 

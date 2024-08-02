@@ -5,6 +5,7 @@ import chevy.model.entity.collectable.Coin;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
+import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.*;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
@@ -19,6 +20,7 @@ import chevy.view.entityView.*;
 import chevy.view.entityView.entityViewAnimated.collectable.CoinView;
 import chevy.view.entityView.entityViewAnimated.collectable.HealthView;
 import chevy.view.entityView.entityViewAnimated.collectable.KeyView;
+import chevy.view.entityView.entityViewAnimated.collectable.powerUp.PowerUpView;
 import chevy.view.entityView.entityViewAnimated.enemy.*;
 import chevy.view.entityView.entityViewAnimated.player.KnightView;
 import chevy.view.entityView.entityViewAnimated.projectile.ArrowView;
@@ -271,6 +273,17 @@ public class EntityToEntityView {
                     trapView = (TrapView) entityView.get(entity);
 
                 yield trapView;
+            }
+            case Collectable.Type.POWER_UP -> {
+                PowerUpView powerUpView = null;
+                if (!entityView.containsKey(entity)) {
+                    powerUpView = new PowerUpView((PowerUp) entity);
+                    entityView.put(entity, powerUpView);
+                }
+                else
+                    powerUpView = (PowerUpView) entityView.get(entity);
+
+                yield powerUpView;
             }
             default -> null;
         };

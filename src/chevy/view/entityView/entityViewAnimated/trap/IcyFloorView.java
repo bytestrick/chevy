@@ -54,6 +54,6 @@ public class IcyFloorView extends EntityViewAnimated {
 
     @Override
     public void wasRemoved() {
-        deleteAnimations();
+        super.deleteAnimations();
     }
 }

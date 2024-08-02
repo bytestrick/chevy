@@ -86,6 +86,6 @@ public class KnightView extends EntityViewAnimated {
     public void wasRemoved() {
         moveInterpolationX.delete();
         moveInterpolationY.delete();
-        deleteAnimations();
+        super.deleteAnimations();
     }
 }

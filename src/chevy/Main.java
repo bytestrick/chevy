@@ -12,5 +12,7 @@ public class Main {
 
         new GameController(gameModel, gameView);
         new GameLoop();
+
+        System.out.println("[-] End");
     }
 }
