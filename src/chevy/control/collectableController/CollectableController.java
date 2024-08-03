@@ -9,6 +9,7 @@ import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 
 
 public class CollectableController {
@@ -38,7 +39,7 @@ public class CollectableController {
      */
     public void handleInteraction(InteractionTypes interaction, Entity subject, Collectable object) {
         switch (interaction) {
-            case PLAYER_IN -> playerInInteraction(object);
+            case PLAYER_IN -> playerInInteraction((Player) subject, object);
             case UPDATE ->  update(subject);
             default -> {}
         }
@@ -48,7 +49,7 @@ public class CollectableController {
      * Gestisce l'interazione di un giocatore con un oggetto collezionabile.
      * @param collectable l'oggetto da collezionare.
      */
-    private void playerInInteraction(Collectable collectable) {
+    private void playerInInteraction(Player player, Collectable collectable) {
         switch (collectable.getSpecificType()) {
             case Collectable.Type.HEALTH -> healthController.playerInInteraction((Health) collectable);
             case Collectable.Type.COIN -> coinController.playerInInteraction((Coin) collectable);
@@ -56,7 +57,7 @@ public class CollectableController {
             default -> {}
         }
         if (collectable.getGenericType() == Collectable.Type.POWER_UP)
-            powerUpController.playerInInteraction((PowerUp) collectable);
+            powerUpController.playerInInteraction(player, (PowerUp) collectable);
     }
 
     private void update(Entity subject) {

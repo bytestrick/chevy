@@ -33,7 +33,7 @@ public class Window extends JFrame {
             setResizable(resizable);
             if (resizable)
                 makeResponsive();
-            System.out.println(size);
+            System.out.println("Start window size: " + size);
         });
     }
 

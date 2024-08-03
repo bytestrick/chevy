@@ -2,6 +2,7 @@ package chevy.control.collectableController;
 
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.powerUp.PowerUp;
+import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 
 public class PowerUpController {
     private final Chamber chamber;
@@ -14,16 +15,17 @@ public class PowerUpController {
     }
 
 
-    public void playerInInteraction(PowerUp powerUp) {
+    public void playerInInteraction(Player player, PowerUp powerUp) {
         if (powerUp.changeState(PowerUp.EnumState.COLLECTED)) {
             powerUp.collect();
             chamber.findAndRemoveEntity(powerUp);
+            powerUpTextVisualizerController.hide();
+            player.acquirePowerUp((PowerUp.Type) powerUp.getSpecificType(), powerUp);
         }
     }
 
     public void update(PowerUp powerUp) {
         if (powerUp.isCollected()) {
-            powerUpTextVisualizerController.hide();
             if (powerUp.getState(PowerUp.EnumState.COLLECTED).isFinished()) {
                 powerUp.setToDraw(false);
                 powerUp.removeToUpdate();

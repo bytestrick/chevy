@@ -9,6 +9,7 @@ import chevy.model.entity.Entity;
 import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
+import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
@@ -266,7 +267,15 @@ public class PlayerController implements Update {
      * @param damage la quantità di danno da applicare
      */
     private void hitPlayer(int damage) {
-        if (player.changeState(Player.EnumState.HIT)) {
+        PowerUp agility = player.getOwnedPowerUp(PowerUp.Type.AGILITY);
+        boolean dodged = false;
+        if (agility != null) {
+            dodged = agility.isOccurring();
+            if (dodged)
+                System.out.println(player + " ha schivato l'attacco");
+        }
+
+        if (!dodged && player.changeState(Player.EnumState.HIT)) {
 //            System.out.println(Thread.currentThread());
             player.changeHealth(damage);
         }

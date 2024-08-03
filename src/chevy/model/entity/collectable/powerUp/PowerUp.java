@@ -49,16 +49,14 @@ public abstract class PowerUp extends Collectable {
     private final State selected = new State(EnumState.SELECTED, 0.2f);
     private final State deselected = new State(EnumState.DESELECTED, 0.2f);
     private final State collected = new State(EnumState.COLLECTED, 0.8f);
-    protected String name;
-    protected String description;
+    protected String name = "No name";
+    protected String description = "No description";
+    protected int occurringPercentage = 0;
 
 
     public PowerUp(Vector2<Integer> initVelocity, Type type) {
         super(initVelocity, Collectable.Type.POWER_UP);
         this.type = type;
-
-        this.name = "No name";
-        this.description = "No description";
 
         initStaticMachine();
     }
@@ -91,6 +89,10 @@ public abstract class PowerUp extends Collectable {
             case COLLECTED -> collected;
             case DESELECTED -> deselected;
         };
+    }
+
+    public boolean isOccurring() {
+        return new Random().nextInt(1, 100) < occurringPercentage;
     }
 
 
