@@ -67,10 +67,12 @@ public abstract class PowerUp extends Collectable {
         this.stateMachine.setInitialState(idle);
 
         idle.linkState(selected);
+        idle.linkState(collected);
         selected.linkState(collected);
         selected.linkState(deselected);
         deselected.linkState(idle);
         deselected.linkState(selected);
+        deselected.linkState(collected);
     }
 
     public String getName() {

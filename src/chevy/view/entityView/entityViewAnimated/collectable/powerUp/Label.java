@@ -1,5 +1,6 @@
 package chevy.view.entityView.entityViewAnimated.collectable.powerUp;
 
+import chevy.settings.WindowSettings;
 import chevy.utils.Vector2;
 
 import javax.swing.*;
@@ -14,6 +15,8 @@ public class Label extends JPanel {
     public static final int RIGHT = 3;
     public static final int BOTTOM = 4;
 
+
+    // TODO: cambiare la JLabel con un JTextArea, la JLabel non permette l'andata a capo.
     private final JLabel text;
     private final JLabel shadow;
     private float shadowSize = 0;
@@ -31,13 +34,6 @@ public class Label extends JPanel {
         shadow = new JLabel(text);
         initLabel();
     }
-
-//    public Label(String text, float shadowSize) {
-//        this.text = new JLabel(text);
-//        shadow = new JLabel(text);
-//        this.shadowSize = shadowSize;
-//        initLabel();
-//    }
 
     public Label(String text, int horizontalAlignment) {
         this.text = new JLabel(text, horizontalAlignment);
@@ -94,11 +90,9 @@ public class Label extends JPanel {
     }
 
     private void setComponentSize() {
-        revalidate();
         setMinimumSize(text.getMinimumSize());
         setPreferredSize(text.getPreferredSize());
         setMinimumSize(text.getMaximumSize());
-        repaint();
     }
 
     public void setFont(String fontPath) {
@@ -122,6 +116,7 @@ public class Label extends JPanel {
     public void setSizeFont(float fontSize, float scale) {
         text.setFont(text.getFont().deriveFont(fontSize * scale));
         shadow.setFont(shadow.getFont().deriveFont((fontSize + shadowSize) * scale));
+        setOffsetShadow(shadowOffset);
         setComponentSize();
     }
 
@@ -156,15 +151,15 @@ public class Label extends JPanel {
     public void setOffsetShadow(int offsetX, int offsetY) {
         shadowOffset.change(new Vector2<>(offsetX, offsetY));
 
-        springLayout.putConstraint(SpringLayout.NORTH, shadow, shadowOffset.second,
-                SpringLayout.NORTH, text);
-        springLayout.putConstraint(SpringLayout.WEST, shadow, shadowOffset.first,
+        springLayout.putConstraint(SpringLayout.WEST, shadow, (int) (shadowOffset.first * WindowSettings.scaleX),
                 SpringLayout.WEST, text);
+        springLayout.putConstraint(SpringLayout.NORTH, shadow, (int) (shadowOffset.second * WindowSettings.scaleY),
+                SpringLayout.NORTH, text);
 
         setComponentSize();
     }
 
-    public void setShadowOffset(Vector2<Integer> offsetShadow) {
+    public void setOffsetShadow(Vector2<Integer> offsetShadow) {
         setOffsetShadow(offsetShadow.first, offsetShadow.second);
     }
 }

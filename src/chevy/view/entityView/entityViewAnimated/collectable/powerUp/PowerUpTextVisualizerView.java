@@ -8,13 +8,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class PowerUpTextVisualizerView extends JPanel {
-    private static final String FONT_PATH = "src/res/assets/Silver.ttf";
-    private float fontSizeName = 42f;
-    private float fontSizeDescription = 32f;
-    private float fontSizeInfoEscape = 16f;
+    private static final String FONT_PATH = "src/res/fonts/PixelatedPusab.ttf";
+    private float fontSizeName = 24f;
+    private float fontSizeDescription = 16f;
+    private float fontSizeInfoEscape = 10f;
     private final Color BGColor = new Color(0, 0, 0, 153);
-    private final Color shadowColor = new Color(67, 97, 116, 255);
-    private final Color textColor = new Color(255, 255, 255, 255);
+    private final Color shadowColor = new Color(105, 127, 144, 255);
+    private final Color textColor = new Color(228, 236, 238, 255);
     private Label name;
     private Label description;
     private Label infoEscape;
@@ -32,7 +32,7 @@ public class PowerUpTextVisualizerView extends JPanel {
         name.setTextColor(textColor);
         name.setShadowColor(shadowColor);
         name.setSizeFont(fontSizeName);
-        name.setOffsetShadow(0, 6);
+        name.setOffsetShadow(0, 2);
         name.setAlignmentX(Label.CENTER);
         name.setAlignmentY(Label.BOTTOM);
 
@@ -40,14 +40,14 @@ public class PowerUpTextVisualizerView extends JPanel {
         description.setTextColor(textColor);
         description.setShadowColor(shadowColor);
         description.setSizeFont(fontSizeDescription);
-        description.setOffsetShadow(0, 5);
+        description.setOffsetShadow(0, 2);
         description.setAlignmentX(Label.CENTER);
 
         infoEscape.setFont(FONT_PATH);
         infoEscape.setTextColor(textColor);
         infoEscape.setShadowColor(shadowColor);
         infoEscape.setSizeFont(fontSizeInfoEscape);
-        infoEscape.setOffsetShadow(0, 3);
+        infoEscape.setOffsetShadow(0, 1);
         infoEscape.setAlignmentX(Label.CENTER);
 
         // aggiunta componenti al panel
