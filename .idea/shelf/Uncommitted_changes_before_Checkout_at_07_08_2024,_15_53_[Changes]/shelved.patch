@@ -1,0 +1,266 @@
+Index: src/chevy/control/PlayerController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chevy.control;\n\nimport chevy.control.enemyController.EnemyController;\nimport chevy.control.projectileController.ProjectileController;\nimport chevy.control.trapsController.TrapsController;\nimport chevy.model.chamber.Chamber;\nimport chevy.model.entity.Entity;\nimport chevy.model.entity.dinamicEntity.DirectionsModel;\nimport chevy.model.entity.dinamicEntity.DynamicEntity;\nimport chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;\nimport chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;\nimport chevy.model.entity.dinamicEntity.liveEntity.player.Player;\nimport chevy.model.entity.dinamicEntity.projectile.Projectile;\nimport chevy.model.entity.staticEntity.environment.Environment;\nimport chevy.model.entity.staticEntity.environment.traps.IcyFloor;\nimport chevy.model.entity.staticEntity.environment.traps.SpikedFloor;\nimport chevy.model.entity.staticEntity.environment.traps.Trap;\nimport chevy.service.Update;\nimport chevy.service.UpdateManager;\n\nimport java.awt.event.KeyEvent;\n\nimport static chevy.model.entity.staticEntity.environment.Environment.Type.TRAP;\n\n/**\n * Gestisce le interazioni del giocatore con i nemici, i proiettili e le trappole.\n * Implementa l'interfaccia Update per aggiornare lo stato del giocatore a ogni ciclo di gioco.\n */\npublic class PlayerController implements Update {\n    /**\n     * Riferimento alla stanza di gioco.\n     */\n    private final Chamber chamber;\n    private final Player player;\n    private EnemyController enemyController;\n    private TrapsController trapsController;\n    private ProjectileController projectileController;\n    private DirectionsModel direction;\n\n    /**\n     * @param chamber riferimento alla stanza di gioco\n     */\n    public PlayerController(Chamber chamber) {\n        this.chamber = chamber;\n        this.player = chamber.getPlayer();\n        this.enemyController = null;\n        this.trapsController = null;\n        this.projectileController = null;\n        this.direction = null;\n\n        // Aggiunge il controller del giocatore all'UpdateManager.\n        UpdateManager.addToUpdate(this);\n    }\n\n    /**\n     * Gestisce gli eventi di pressione dei tasti, convertendo il codice del tasto in una direzione.\n     *\n     * @param keyEvent l'evento di pressione del tasto\n     */\n    public void keyPressed(KeyEvent keyEvent) {\n        direction = switch (keyEvent.getKeyCode()) {\n            case KeyEvent.VK_W -> DirectionsModel.UP;\n            case KeyEvent.VK_A -> DirectionsModel.LEFT;\n            case KeyEvent.VK_S -> DirectionsModel.DOWN;\n            case KeyEvent.VK_D -> DirectionsModel.RIGHT;\n            default -> null;\n        };\n\n        if (direction != null) {\n            handleInteraction(InteractionTypes.KEYBOARD, direction);\n        }\n    }\n\n    /**\n     * Gestisce le varie interazioni che il giocatore può subire.\n     *\n     * @param interaction il tipo di interazione\n     * @param subject     l'oggetto con cui il giocatore interagisce\n     */\n    public synchronized void handleInteraction(InteractionTypes interaction, Object subject) {\n        switch (interaction) {\n            case KEYBOARD -> keyBoardInteraction((DirectionsModel) subject);\n            case ENEMY -> enemyInteraction((Enemy) subject);\n            case PROJECTILE -> projectileInteraction((Projectile) subject);\n            case TRAP -> trapInteraction((Trap) subject);\n        }\n    }\n\n    /**\n     * Gestisce le interazioni del giocatore con i proiettili, applicando il danno al giocatore.\n     *\n     * @param projectile il proiettile con cui il giocatore interagisce\n     */\n    private void projectileInteraction(Projectile projectile) {\n        hitPlayer(-1 * projectile.getDamage());\n    }\n\n    /**\n     * Gestisce le interazioni delle trappole con il giocatore\n     *\n     * @param trap la trappola con cui il giocatore interagisce\n     */\n    private void trapInteraction(Trap trap) {\n        switch (trap.getSpecificType()) {\n            case Trap.Type.VOID -> {\n                hitPlayer(-1 * trap.getDamage());\n                if (player.isAlive() && chamber.canCross(player, direction.getOpposite())) {\n                    chamber.moveDynamicEntity(player, direction.getOpposite());\n                }\n            }\n            case Trap.Type.SPIKED_FLOOR -> {\n                SpikedFloor spikedFloor = (SpikedFloor) trap;\n                hitPlayer(-1 * spikedFloor.getDamage());\n            }\n            default -> { }\n        }\n    }\n\n    /**\n     * Gestisce le interazioni della tastiera con il giocatore, gestendo i movimenti del giocatore e\n     * le interazioni con le entità nelle celle adiacenti.\n     *\n     * @param direction la direzione in cui il giocatore si muove\n     */\n    private void keyBoardInteraction(DirectionsModel direction) {\n        Entity entityNextCell = chamber.getNearEntityOnTop(player, direction);\n        Entity entityCurrentCell = chamber.getEntityBelowTheTop(player);\n\n        // Player on\n        if (entityCurrentCell != null) {\n            switch (entityCurrentCell.getGenericType()) {\n                case TRAP ->\n                        trapsController.handleInteraction(InteractionTypes.PLAYER, player, (Trap) entityCurrentCell);\n                default -> { }\n            }\n        }\n\n        // Player in\n        if (entityNextCell != null) switch (entityNextCell.getGenericType()) {\n            case LiveEntity.Type.ENEMY -> {\n                if (player.checkAndChangeState(Player.States.ATTACK)) {\n                    enemyController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Enemy) entityNextCell);\n                }\n                player.checkAndChangeState(Player.States.IDLE);\n            }\n            case TRAP -> {\n                if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.States.MOVE)) {\n                    chamber.moveDynamicEntity(player, direction);\n                    trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, entityNextCell);\n                }\n            }\n            case DynamicEntity.Type.PROJECTILE -> {\n                if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.States.MOVE)) {\n                    chamber.moveDynamicEntity(player, direction);\n                    projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player,\n                            (Projectile) entityNextCell);\n                }\n            }\n            default -> {\n                if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.States.MOVE)) {\n                    chamber.moveDynamicEntity(player, direction);\n                }\n            }\n        }\n\n        // Player out\n        if (entityCurrentCell != null) {\n            switch (entityCurrentCell.getGenericType()) {\n                case TRAP -> trapsController.handleInteraction(InteractionTypes.PLAYER_OUT, player, entityCurrentCell);\n                default -> { }\n            }\n        }\n    }\n\n    /**\n     * Gestisce le interazioni dei nemici con il giocatore, applicando il danno al giocatore.\n     *\n     * @param enemy il nemico con cui il giocatore interagisce\n     */\n    private void enemyInteraction(Enemy enemy) {\n        hitPlayer(-1 * enemy.getDamage());\n    }\n\n    /**\n     * Applica danno al giocatore e cambia il suo stato a \"HIT\" se possibile.\n     *\n     * @param damage la quantità di danno da inferire\n     */\n    private void hitPlayer(int damage) {\n        if (player.changeState(Player.States.HIT)) {\n            player.changeHealth(damage);\n        }\n    }\n\n    /**\n     * Imposta il controller dei nemici.\n     *\n     * @param enemyController il controller dei nemici\n     */\n    public void setEnemyController(EnemyController enemyController) {\n        if (this.enemyController == null) {\n            this.enemyController = enemyController;\n        }\n    }\n\n    /**\n     * Imposta il controller delle trappole.\n     *\n     * @param trapsController il controller delle trappole\n     */\n    public void setTrapController(TrapsController trapsController) {\n        if (this.trapsController == null) {\n            this.trapsController = trapsController;\n        }\n    }\n\n    /**\n     * Imposta il controller dei proiettili.\n     *\n     * @param projectileController il controller dei proiettili\n     */\n    public void setProjectileController(ProjectileController projectileController) {\n        if (this.projectileController == null) this.projectileController = projectileController;\n    }\n\n    /**\n     * Aggiorna lo stato del giocatore a ogni ciclo di gioco.\n     *\n     * @param delta il tempo trascorso dall'ultimo aggiornamento\n     */\n    @Override\n    public void update(double delta) {\n        // gestione della morte del player\n        if (!player.isAlive()) {\n            if (player.getState(Player.States.DEAD).isFinished()) {\n                chamber.removeEntityOnTop(player);\n                player.removeToUpdate();\n                return;\n            }\n        } else if (player.getHealth() <= 0 && player.changeState(Player.States.DEAD)) {\n            player.kill();\n        }\n\n        // gestione dello scivolamento del player\n        if (player.getCurrentState() == Player.States.GLIDE && player.getState(player.getCurrentState()).isFinished() && chamber.canCross(player, direction) && chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {\n            Entity previousEntityBelowTheTop = chamber.getEntityBelowTheTop(player);\n            chamber.moveDynamicEntity(player, direction);\n            Entity nextEntityBelowTheTop = chamber.getEntityBelowTheTop(player);\n\n            switch (previousEntityBelowTheTop.getGenericType()) {\n                case Environment.Type.TRAP ->\n                        trapsController.handleInteraction(InteractionTypes.PLAYER_OUT, player,\n                                previousEntityBelowTheTop);\n                case DynamicEntity.Type.PROJECTILE ->\n                        projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player,\n                                (Projectile) previousEntityBelowTheTop);\n                default -> { }\n            }\n            switch (nextEntityBelowTheTop.getGenericType()) {\n                case Environment.Type.TRAP ->\n                        trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, nextEntityBelowTheTop);\n                case DynamicEntity.Type.PROJECTILE ->\n                        projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player,\n                                (Projectile) nextEntityBelowTheTop);\n                default -> { }\n            }\n        }\n\n        // idle\n        if (player.getCurrentState() != Player.States.SLUDGE) {\n            player.checkAndChangeState(Player.States.IDLE);\n        }\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/chevy/control/PlayerController.java b/src/chevy/control/PlayerController.java
+--- a/src/chevy/control/PlayerController.java	
++++ b/src/chevy/control/PlayerController.java	
+@@ -67,7 +67,7 @@
+         };
+ 
+         if (direction != null) {
+-            handleInteraction(InteractionTypes.KEYBOARD, direction);
++            handleInteraction(InteractionType.KEYBOARD, direction);
+         }
+     }
+ 
+@@ -77,7 +77,7 @@
+      * @param interaction il tipo di interazione
+      * @param subject     l'oggetto con cui il giocatore interagisce
+      */
+-    public synchronized void handleInteraction(InteractionTypes interaction, Object subject) {
++    public synchronized void handleInteraction(InteractionType interaction, Object subject) {
+         switch (interaction) {
+             case KEYBOARD -> keyBoardInteraction((DirectionsModel) subject);
+             case ENEMY -> enemyInteraction((Enemy) subject);
+@@ -130,7 +130,7 @@
+         if (entityCurrentCell != null) {
+             switch (entityCurrentCell.getGenericType()) {
+                 case TRAP ->
+-                        trapsController.handleInteraction(InteractionTypes.PLAYER, player, (Trap) entityCurrentCell);
++                        trapsController.handleInteraction(InteractionType.PLAYER, player, (Trap) entityCurrentCell);
+                 default -> { }
+             }
+         }
+@@ -139,20 +139,20 @@
+         if (entityNextCell != null) switch (entityNextCell.getGenericType()) {
+             case LiveEntity.Type.ENEMY -> {
+                 if (player.checkAndChangeState(Player.States.ATTACK)) {
+-                    enemyController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Enemy) entityNextCell);
++                    enemyController.handleInteraction(InteractionType.PLAYER_IN, player, (Enemy) entityNextCell);
+                 }
+                 player.checkAndChangeState(Player.States.IDLE);
+             }
+             case TRAP -> {
+                 if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.States.MOVE)) {
+                     chamber.moveDynamicEntity(player, direction);
+-                    trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, entityNextCell);
++                    trapsController.handleInteraction(InteractionType.PLAYER_IN, player, entityNextCell);
+                 }
+             }
+             case DynamicEntity.Type.PROJECTILE -> {
+                 if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.States.MOVE)) {
+                     chamber.moveDynamicEntity(player, direction);
+-                    projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player,
++                    projectileController.handleInteraction(InteractionType.PLAYER_IN, player,
+                             (Projectile) entityNextCell);
+                 }
+             }
+@@ -166,7 +166,7 @@
+         // Player out
+         if (entityCurrentCell != null) {
+             switch (entityCurrentCell.getGenericType()) {
+-                case TRAP -> trapsController.handleInteraction(InteractionTypes.PLAYER_OUT, player, entityCurrentCell);
++                case TRAP -> trapsController.handleInteraction(InteractionType.PLAYER_OUT, player, entityCurrentCell);
+                 default -> { }
+             }
+         }
+@@ -249,18 +249,18 @@
+ 
+             switch (previousEntityBelowTheTop.getGenericType()) {
+                 case Environment.Type.TRAP ->
+-                        trapsController.handleInteraction(InteractionTypes.PLAYER_OUT, player,
++                        trapsController.handleInteraction(InteractionType.PLAYER_OUT, player,
+                                 previousEntityBelowTheTop);
+                 case DynamicEntity.Type.PROJECTILE ->
+-                        projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player,
++                        projectileController.handleInteraction(InteractionType.PLAYER_IN, player,
+                                 (Projectile) previousEntityBelowTheTop);
+                 default -> { }
+             }
+             switch (nextEntityBelowTheTop.getGenericType()) {
+                 case Environment.Type.TRAP ->
+-                        trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, nextEntityBelowTheTop);
++                        trapsController.handleInteraction(InteractionType.PLAYER_IN, player, nextEntityBelowTheTop);
+                 case DynamicEntity.Type.PROJECTILE ->
+-                        projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player,
++                        projectileController.handleInteraction(InteractionType.PLAYER_IN, player,
+                                 (Projectile) nextEntityBelowTheTop);
+                 default -> { }
+             }
+Index: src/chevy/control/InteractionType.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chevy.control;\n\npublic enum InteractionTypes {\n    PLAYER_IN, PLAYER, PLAYER_OUT, PROJECTILE, UPDATE, MOVE, ATTACK, TRAP, ENEMY\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/chevy/control/InteractionType.java b/src/chevy/control/InteractionType.java
+--- a/src/chevy/control/InteractionType.java	
++++ b/src/chevy/control/InteractionType.java	
+@@ -1,5 +1,5 @@
+ package chevy.control;
+ 
+-public enum InteractionTypes {
+-    PLAYER_IN, PLAYER, PLAYER_OUT, PROJECTILE, UPDATE, MOVE, ATTACK, TRAP, ENEMY
++public enum InteractionType {
++    PLAYER_IN, PLAYER, PLAYER_OUT, PROJECTILE, UPDATE, KEYBOARD, TRAP, ENEMY
+ }
+\ No newline at end of file
+Index: src/chevy/model/entity/dinamicEntity/projectile/Projectile.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chevy.model.entity.dinamicEntity.projectile;\n\nimport chevy.model.entity.EntityCommonEnumTypes;\nimport chevy.model.entity.dinamicEntity.DirectionsModel;\nimport chevy.model.entity.dinamicEntity.DynamicEntity;\nimport chevy.model.entity.stateMachine.CommonStates;\nimport chevy.utils.Vector2;\n\npublic abstract class Projectile extends DynamicEntity {\n    private final Type type;\n    private final DirectionsModel direction;\n    private boolean collision = false;\n\n    public Projectile(Vector2<Integer> initPosition, Type type, DirectionsModel direction, float advanceTimer) {\n        super(initPosition, DynamicEntity.Type.PROJECTILE);\n\n        this.type = type;\n        this.direction = direction;\n        this.crossable = true;\n        this.safeToCross = false;\n        this.layer = 1;\n    }\n\n    public boolean isCollision() { return collision; }\n\n    public void setCollision(boolean collision) { this.collision = collision; }\n\n    public DirectionsModel getDirection() { return direction; }\n\n    @Override\n    public EntityCommonEnumTypes getSpecificType() { return type; }\n\n    @Override\n    public EntityCommonEnumTypes getGenericType() { return super.getSpecificType(); }\n\n    @Override\n    public String toString() { return \"PROJECTILE\"; }\n\n    public enum Type implements EntityCommonEnumTypes {\n        ARROW, FIRE_BALL, SLIME_SHOT;\n    }\n\n    public enum States implements CommonStates {\n        START, LOOP, END;\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/chevy/model/entity/dinamicEntity/projectile/Projectile.java b/src/chevy/model/entity/dinamicEntity/projectile/Projectile.java
+--- a/src/chevy/model/entity/dinamicEntity/projectile/Projectile.java	
++++ b/src/chevy/model/entity/dinamicEntity/projectile/Projectile.java	
+@@ -37,10 +37,10 @@
+     public String toString() { return "PROJECTILE"; }
+ 
+     public enum Type implements EntityCommonEnumTypes {
+-        ARROW, FIRE_BALL, SLIME_SHOT;
++        ARROW, FIRE_BALL, SLIME_SHOT
+     }
+ 
+     public enum States implements CommonStates {
+-        START, LOOP, END;
++        START, LOOP, END
+     }
+ }
+\ No newline at end of file
+Index: src/chevy/control/trapsController/SpikedFloorController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chevy.control.trapsController;\n\nimport chevy.control.InteractionTypes;\nimport chevy.control.PlayerController;\nimport chevy.control.enemyController.EnemyController;\nimport chevy.model.chamber.Chamber;\nimport chevy.model.entity.Entity;\nimport chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;\nimport chevy.model.entity.dinamicEntity.liveEntity.player.Player;\nimport chevy.model.entity.staticEntity.environment.traps.SpikedFloor;\n\n/**\n * Controller per gestire le interazioni del giocatore e delle entità con il pavimento spinato nel gioco.\n */\npublic class SpikedFloorController {\n    private final Chamber chamber;\n    private final PlayerController playerController;\n    private final EnemyController enemyController;\n\n    /**\n     * @param chamber la camera di gioco si trova il pavimento spinato\n     */\n    public SpikedFloorController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {\n        this.chamber = chamber;\n        this.playerController = playerController;\n        this.enemyController = enemyController;\n    }\n\n    public void playerInInteraction(SpikedFloor spikedFloor) {\n        playerController.handleInteraction(InteractionTypes.TRAP, spikedFloor);\n    }\n\n    /**\n     * Aggiorna lo stato del pavimento spinato.\n     *\n     * @param spikedFloor il pavimento spinato da aggiornare\n     */\n    public void update(SpikedFloor spikedFloor) {\n        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.ACTIVATED)) {\n            spikedFloor.activated();\n        }\n\n        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.DISABLED)) {\n            spikedFloor.disabled();\n        }\n\n        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.DAMAGE)) {\n            Entity entity = chamber.getEntityOnTop(spikedFloor);\n            if (entity instanceof Player) {\n                playerController.handleInteraction(InteractionTypes.TRAP, spikedFloor);\n            }\n            if (entity instanceof Enemy enemy) {\n                enemyController.handleInteraction(InteractionTypes.TRAP, spikedFloor, enemy);\n            }\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/chevy/control/trapsController/SpikedFloorController.java b/src/chevy/control/trapsController/SpikedFloorController.java
+--- a/src/chevy/control/trapsController/SpikedFloorController.java	
++++ b/src/chevy/control/trapsController/SpikedFloorController.java	
+@@ -36,15 +36,15 @@
+      * @param spikedFloor il pavimento spinato da aggiornare
+      */
+     public void update(SpikedFloor spikedFloor) {
+-        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.ACTIVATED)) {
++        if (spikedFloor.checkAndChangeState(SpikedFloor.State.ACTIVATED)) {
+             spikedFloor.activated();
+         }
+ 
+-        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.DISABLED)) {
++        if (spikedFloor.checkAndChangeState(SpikedFloor.State.DISABLED)) {
+             spikedFloor.disabled();
+         }
+ 
+-        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.DAMAGE)) {
++        if (spikedFloor.checkAndChangeState(SpikedFloor.State.DAMAGE)) {
+             Entity entity = chamber.getEntityOnTop(spikedFloor);
+             if (entity instanceof Player) {
+                 playerController.handleInteraction(InteractionTypes.TRAP, spikedFloor);
+Index: src/chevy/model/entity/staticEntity/environment/traps/SpikedFloor.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chevy.model.entity.staticEntity.environment.traps;\n\nimport chevy.model.entity.stateMachine.CommonStates;\nimport chevy.model.entity.stateMachine.State;\nimport chevy.utils.Vector2;\n\npublic class SpikedFloor extends Trap {\n    public enum EnumState implements CommonStates {\n        ACTIVATED,\n        DAMAGE,\n        DISABLED\n    }\n    private final State activated = new State(EnumState.ACTIVATED, 0.2f);\n    private final State disabled = new State(EnumState.DISABLED, 3f);\n    private final State damage = new State(EnumState.DAMAGE, 0.8f);\n\n\n    public SpikedFloor(Vector2<Integer> initVelocity) {\n        super(initVelocity, Type.SPIKED_FLOOR);\n        this.safeToCross = true;\n        this.mustBeUpdated = true;\n\n        this.maxDamage = 2;\n        this.minDamage = 1;\n\n        initStateMachine();\n    }\n\n    private void initStateMachine() {\n        stateMachine.setStateMachineName(\"Spiked floor\");\n        stateMachine.setInitialState(disabled);\n\n        disabled.linkState(activated);\n        activated.linkState(damage);\n        damage.linkState(disabled);\n    }\n\n    public void activated() {\n        safeToCross = false;\n    }\n\n    public void disabled() {\n        safeToCross = true;\n    }\n\n    public synchronized State getState(CommonStates commonEnumStates) {\n        EnumState spikedFloorState = (EnumState) commonEnumStates;\n        return switch (spikedFloorState) {\n            case ACTIVATED -> activated;\n            case DISABLED -> disabled;\n            case DAMAGE -> damage;\n        };\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/chevy/model/entity/staticEntity/environment/traps/SpikedFloor.java b/src/chevy/model/entity/staticEntity/environment/traps/SpikedFloor.java
+--- a/src/chevy/model/entity/staticEntity/environment/traps/SpikedFloor.java	
++++ b/src/chevy/model/entity/staticEntity/environment/traps/SpikedFloor.java	
+@@ -1,24 +1,18 @@
+ package chevy.model.entity.staticEntity.environment.traps;
+ 
+-import chevy.model.entity.stateMachine.CommonStates;
+-import chevy.model.entity.stateMachine.State;
++import chevy.model.entity.stateMachine.CommonState;
++import chevy.model.entity.stateMachine.GlobalState;
+ import chevy.utils.Vector2;
+ 
+ public class SpikedFloor extends Trap {
+-    public enum EnumState implements CommonStates {
+-        ACTIVATED,
+-        DAMAGE,
+-        DISABLED
+-    }
+-    private final State activated = new State(EnumState.ACTIVATED, 0.2f);
+-    private final State disabled = new State(EnumState.DISABLED, 3f);
+-    private final State damage = new State(EnumState.DAMAGE, 0.8f);
+-
++    private final GlobalState activated = new GlobalState(State.ACTIVATED, 0.2f);
++    private final GlobalState disabled = new GlobalState(State.DISABLED, 3f);
++    private final GlobalState damage = new GlobalState(State.DAMAGE, 0.8f);
+ 
+     public SpikedFloor(Vector2<Integer> initVelocity) {
+         super(initVelocity, Type.SPIKED_FLOOR);
+         this.safeToCross = true;
+-        this.mustBeUpdated = true;
++        this.mustBeUpdate = true;
+ 
+         this.maxDamage = 2;
+         this.minDamage = 1;
+@@ -43,12 +37,16 @@
+         safeToCross = true;
+     }
+ 
+-    public synchronized State getState(CommonStates commonEnumStates) {
+-        EnumState spikedFloorState = (EnumState) commonEnumStates;
+-        return switch (spikedFloorState) {
++    public synchronized GlobalState getState(CommonState commonState) {
++        State state = (State) commonState;
++        return switch (state) {
+             case ACTIVATED -> activated;
+             case DISABLED -> disabled;
+             case DAMAGE -> damage;
+         };
+     }
+-}
++
++    public enum State implements CommonState {
++        ACTIVATED, DAMAGE, DISABLED
++    }
++}
+\ No newline at end of file
+Index: src/chevy/model/chamber/Chamber.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chevy.model.chamber;\n\nimport chevy.model.chamber.drawOrder.Layer;\nimport chevy.model.chamber.drawOrder.LayerManager;\nimport chevy.model.entity.Entity;\nimport chevy.model.entity.dinamicEntity.DirectionsModel;\nimport chevy.model.entity.dinamicEntity.DynamicEntity;\nimport chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;\nimport chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;\nimport chevy.model.entity.dinamicEntity.liveEntity.player.Player;\nimport chevy.model.entity.dinamicEntity.projectile.Projectile;\nimport chevy.model.entity.staticEntity.environment.traps.Trap;\nimport chevy.model.entity.staticEntity.environment.traps.Void;\nimport chevy.model.pathFinding.AStar;\nimport chevy.settings.GameSettings;\nimport chevy.utils.Utils;\nimport chevy.utils.Vector2;\n\nimport java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.LinkedList;\nimport java.util.List;\nimport java.util.ListIterator;\nimport java.util.Random;\n\n/**\n * L'area di gioco.\n * Gestisce l'inizializzazione della griglia di gioco, il posizionamento e il movimento delle entità.\n */\npublic class Chamber {\n    /**\n     * Lista che tiene traccia dei nemici presenti nella stanza.\n     */\n    private final List<Enemy> enemies = new LinkedList<>();\n    /**\n     * Lista che tiene traccia delle trappole presenti nella stanza.\n     */\n    private final List<Trap> traps = new LinkedList<>();\n    /**\n     * Lista che tiene traccia dei proiettili presenti nella stanza.\n     */\n    private final List<Projectile> projectiles = new LinkedList<>();\n    /**\n     * Una struttura dati tridimensionale che rappresenta la griglia di gioco.\n     * Ogni cella della griglia può contenere una lista di entità.\n     */\n    private List<List<List<Entity>>> chamber;\n    /**\n     * Un gestore degli strati di disegno che mantiene l'ordine in cui le entità\n     * devono essere disegnate sullo schermo.\n     */\n    private LayerManager drawOrderChamber;\n    /**\n     * Numero di righe della griglia di gioco.\n     */\n    private int nRows;\n    /**\n     * Numero di colonne della griglia di gioco.\n     */\n    private int nCols;\n    /**\n     * Indica se il mondo è stato inizializzato.\n     */\n    private boolean init = false;\n    /**\n     * Il giocatore attuale.\n     */\n    private Player player;\n\n    public Chamber() { }\n\n    /**\n     * Inizializza la griglia di gioco con le dimensioni specificate e aggiorna le impostazioni di gioco.\n     *\n     * @param nRow numero di righe che avrà la griglia\n     * @param nCol numero di colonne che avrà la griglia\n     */\n    public void initWorld(int nRow, int nCol) {\n        this.nRows = nRow;\n        this.nCols = nCol;\n        GameSettings.updateValue(nCol, nRow);\n\n        chamber = new ArrayList<>(nRow);\n        for (int i = 0; i < nRow; ++i) {\n            List<List<Entity>> row = new LinkedList<>();\n            for (int j = 0; j < nCol; ++j)\n                row.add(new LinkedList<>());\n            chamber.add(row);\n        }\n\n        drawOrderChamber = new LayerManager();\n        init = true;\n    }\n\n    /**\n     * Verifica se una posizione è valida all'interno della griglia.\n     *\n     * @param vector2 posizione da validare\n     * @return true se valida, false altrimenti\n     */\n    public boolean validatePosition(Vector2<Integer> vector2) {\n        if (init) {\n            return vector2.first >= 0 && vector2.first < nRows && vector2.second >= 0 && vector2.second < nCols;\n        }\n        return false;\n    }\n\n    /**\n     * Verifica se una posizione è valida all'interno della griglia.\n     *\n     * @param row riga da validare\n     * @param col colonna da validare\n     * @return true se è valida, false altrimenti\n     */\n    public boolean validatePosition(int row, int col) {\n        if (init) {\n            return row >= 0 && row < nRows && col >= 0 && col < nCols;\n        }\n        return false;\n    }\n\n    /**\n     * Verifica se la posizione in cui si deve spostare l'entità è valida all'interno della griglia.\n     *\n     * @param entity    entità da considerare\n     * @param direction direzione in cui l'entità si deve muovere\n     * @return true se è valida, false altrimenti\n     */\n    public boolean validatePosition(Entity entity, DirectionsModel direction) {\n        Vector2<Integer> vector2 = new Vector2<>(entity.getRow() + direction.row(), entity.getCol() + direction.col());\n\n        return validatePosition(vector2);\n    }\n\n    /**\n     * Verifica se una determinata cella in una determinata posizione può essere attraversata da un'entità dinamica.\n     *\n     * @param dynamicEntity entità dinamica da considerare.\n     * @param direction     direzione in cui l'entità si deve spostare.\n     * @return true se si può passare, false altrimenti.\n     */\n    public synchronized boolean canCross(DynamicEntity dynamicEntity, DirectionsModel direction) {\n        Vector2<Integer> vector2 = new Vector2<>(dynamicEntity.getRow() + direction.row(),\n                dynamicEntity.getCol() + direction.col());\n\n        return canCross(vector2);\n    }\n\n    /**\n     * Verifica se una determinata cella in una determinata posizione può essere attraversata.\n     *\n     * @param vector2 posizione in cui è presente la cella da controllare\n     * @return true se si può passare, false altrimenti\n     */\n    public synchronized boolean canCross(Vector2<Integer> vector2) {\n        if (validatePosition(vector2)) {\n            List<Entity> entityList = chamber.get(vector2.first).get(vector2.second);\n            for (Entity entity : entityList) {\n                if (!entity.isCrossable()) {\n                    return false;\n                }\n            }\n        }\n        return true;\n    }\n\n    /**\n     * Verifica se una posizione è sicura da attraversare\n     * (usata principalmente per far si che i nemici non si spostano su celle in cui potrebbero prendere danno).\n     *\n     * @param dynamicEntity entità dinamica considerata\n     * @param direction     direzione in cui si deve spostare\n     * @return true se lo spostamento non danneggerà l'entità dinamica, false altrimenti\n     */\n    public boolean isSafeToCross(DynamicEntity dynamicEntity, DirectionsModel direction) {\n        Vector2<Integer> vector2 = new Vector2<>(dynamicEntity.getRow() + direction.row(),\n                dynamicEntity.getCol() + direction.col());\n        return isSafeToCross(vector2);\n    }\n\n    /**\n     * Verifica se una posizione è sicura da attraversare\n     * (usata principalmente per far si che i nemici non si spostano su celle in cui potrebbero prendere danno).\n     *\n     * @param vector2 posizione della cella da controllare\n     * @return true se lo spostamento non danneggerà l'entità dinamica, false altrimenti\n     */\n    public boolean isSafeToCross(Vector2<Integer> vector2) {\n        Entity onTop = getEntityOnTop(vector2);\n        return canCross(vector2) && onTop.isSafeToCross();\n    }\n\n    /**\n     * Ritorna l'entità in cima alla griglia, situata nella cella in cui si dovrà spostare il player.\n     *\n     * @param dynamicEntity entità dinamica da considerare\n     * @param direction     direzione in cui si deve spostare l'entità dinamica\n     * @return entità in cima alla griglia.\n     */\n    public synchronized Entity getNearEntityOnTop(DynamicEntity dynamicEntity, DirectionsModel direction) {\n        return getNearEntityOnTop(dynamicEntity, direction, 1);\n    }\n\n    /**\n     * Ritorna l'entità in cima alla griglia, situata nella cella in cui si dovrà spostare il player.\n     *\n     * @param dynamicEntity entità dinamica da considerare\n     * @param direction     direzione in cui si deve spostare l'entità dinamica\n     * @param distanceCell  offset che considera le celle più avanti rispetto alla direzione selezionata\n     * @return entità in cima alla griglia\n     */\n    public synchronized Entity getNearEntityOnTop(DynamicEntity dynamicEntity, DirectionsModel direction,\n                                                  int distanceCell) {\n        if (direction == null || dynamicEntity == null) return null;\n\n        Vector2<Integer> vector2 = new Vector2<>(dynamicEntity.getRow() + direction.row() * distanceCell,\n                dynamicEntity.getCol() + direction.col() * distanceCell);\n        if (validatePosition(vector2)) {\n            return getEntityOnTop(vector2);\n        }\n\n        return null;\n    }\n\n    /**\n     * Controlla se un'entità può essere creata in una determinata cella.\n     *\n     * @param vector2 posizione della cella da verificare\n     * @return true se può essere creata, false altrimenti\n     */\n    private synchronized boolean canSpawn(Vector2<Integer> vector2) {\n        Entity onTop = getEntityOnTop(vector2);\n        return validatePosition(vector2) && onTop.isCrossable() && !(onTop instanceof Void);\n    }\n\n    /**\n     * Data un entità ritorna la direzione in cui bisogna avanzare per incontrare il player.\n     *\n     * @param entity entità da considerare per il calcolo della direzione\n     * @return direzione in cui si trova il player\n     */\n    public synchronized DirectionsModel getHitDirectionPlayer(Entity entity) {\n        return getHitDirectionPlayer(entity, 1);\n    }\n\n    /**\n     * Data un entità ritorna la direzione in cui bisogna avanzare per incontrare il player.\n     *\n     * @param entity       entità da considerare per il calcolo della direzione\n     * @param distanceCell offset che considera le celle più avanti rispetto alla direzione selezionata\n     * @return direzione in cui si trova il player\n     */\n    public synchronized DirectionsModel getHitDirectionPlayer(Entity entity, int distanceCell) {\n        DirectionsModel[] directionsModel = DirectionsModel.values();\n\n        for (int i = 1; i <= distanceCell; ++i) {\n            for (DirectionsModel direction : directionsModel) {\n                Vector2<Integer> checkPosition = new Vector2<>(entity.getRow() + direction.row() * i,\n                        entity.getCol() + direction.col() * i);\n                if (validatePosition(checkPosition) && getEntityOnTop(checkPosition) instanceof Player) {\n                    if (entity instanceof DynamicEntity dynamicEntity) {\n                        dynamicEntity.setDirection(direction);\n                    }\n                    return direction;\n                }\n            }\n        }\n        return null;\n    }\n\n    /**\n     * Sposta un entità dinamica nella cella successiva in corrispondenza della direzione selezionata.\n     *\n     * @param dynamicEntity entità dinamica da spostare\n     * @param direction     direzione in cui l'entità dinamica si deve spostare\n     */\n    public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity, DirectionsModel direction) {\n        Vector2<Integer> nextPosition = new Vector2<>(dynamicEntity.getRow() + direction.row(),\n                dynamicEntity.getCol() + direction.col());\n\n        if (canCross(nextPosition)) {\n            dynamicEntity.setDirection(direction);\n\n            if (findAndRemoveEntity(dynamicEntity)) {\n                dynamicEntity.changePosition(nextPosition);\n                addEntityOnTop(dynamicEntity);\n            }\n        }\n    }\n\n    /**\n     * Sposta un entità dinamica alla cella presente nella posizione data.\n     *\n     * @param dynamicEntity entità dinamica da spostare\n     * @param nextPosition  posizione in cui è presente la cella\n     */\n    public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity, Vector2<Integer> nextPosition) {\n        DirectionsModel direction = DirectionsModel.positionToDirection(new Vector2<>(dynamicEntity.getRow(),\n                dynamicEntity.getCol()), nextPosition);\n\n        if (canCross(nextPosition) && direction != null) {\n            moveDynamicEntity(dynamicEntity, direction);\n        }\n    }\n\n    /**\n     * Trova e rimuove un'entità dalla griglia di gioco.\n     *\n     * @param entity entità da rimuovere\n     * @return true se è stata rimossa, false altrimenti\n     */\n    public synchronized boolean findAndRemoveEntity(Entity entity) {\n        return findAndRemoveEntity(entity, true);\n    }\n\n    /**\n     * Trova e rimuove un'entità dalla griglia di gioco.\n     *\n     * @param entity    entità da rimuovere\n     * @param setToDraw booleana che in base al valore permette all'entità di essere mostrata a schermo\n     * @return true se è stata rimossa, false altrimenti\n     */\n    public synchronized boolean findAndRemoveEntity(Entity entity, boolean setToDraw) {\n        List<Entity> entities = chamber.get(entity.getRow()).get(entity.getCol());\n        ListIterator<Entity> it = entities.listIterator(entities.size());\n        while (it.hasPrevious()) {\n            Entity entity2 = it.previous();\n            if (entity.equals(entity2)) {\n                entity.setToDraw(setToDraw);\n                it.remove();\n                return true;\n            }\n        }\n        return false;\n    }\n\n    /**\n     * Genera un numero specificato di Slime attorno a un'entità.\n     *\n     * @param entity entità considerata\n     * @param nSlime numero di slime da generare\n     */\n    public synchronized void spawnSlimeAroundEntity(Entity entity, int nSlime) {\n        int f = (int) System.currentTimeMillis(); // fattore che randomizza la posizione\n\n        for (int i = 0; i < 3 && nSlime > 0; ++i) {\n            for (int j = 0; j < 3 && nSlime > 0; ++j) {\n                int randomI = Utils.wrap(f + i, -1, 1);\n                int randomJ = Utils.wrap(f + j, -1, 1);\n\n                if (randomI != 0 || randomJ != 0) {\n                    Vector2<Integer> spawnPosition = new Vector2<>(entity.getRow() + randomI,\n                            entity.getCol() + randomJ);\n                    if (canSpawn(spawnPosition)) {\n                        Slime slime = new Slime(spawnPosition);\n                        addEnemy(slime);\n                        addEntityOnTop(slime);\n                        --nSlime;\n                    }\n                }\n            }\n        }\n    }\n\n    /**\n     * Cerca il giocatore in un intervallo quadrato attorno a un'entità.\n     *\n     * @param entity entità da considerare\n     * @param edge   lato del quadrato\n     * @return ritorna il giocatore se presente nell'area, null altrimenti\n     */\n    public synchronized Player findPlayerInSquareRange(Entity entity, int edge) {\n        int startRow = entity.getRow() - edge;\n        int startCol = entity.getCol() - edge;\n        int endRow = entity.getRow() + edge;\n        int endCol = entity.getCol() + edge;\n\n        for (int i = startRow; i <= endRow; ++i) {\n            for (int j = startCol; j <= endCol; ++j) {\n                if (validatePosition(i, j) && getEntityOnTop(i, j) instanceof Player p) {\n                    return p;\n                }\n            }\n        }\n        return null;\n    }\n\n    /**\n     * Muove in modo casuale il nemico. Il movimento non viene ricalcolato se il movimento precedente non è valido,\n     * as esempio: se la funzione calcola che il nemico si deve spostare a destra dove è presente un muro, il movimento\n     * viene scartato e il nemico non si sposterà.\n     *\n     * @param enemy nemico da spostare\n     * @return true se il nemico è stato spostato, false altrimenti\n     */\n    public synchronized boolean moveRandom(Enemy enemy) {\n        DirectionsModel directionMove = DirectionsModel.getRandom();\n        if (isSafeToCross(enemy, directionMove)) {\n            moveDynamicEntity(enemy, directionMove);\n            return true;\n        }\n        return false;\n    }\n\n    /**\n     * Muove in modo casuale il nemico. Il movimento viene ricalcolato se quello precedente è invalido.\n     * L'operazione viene ripetuta finché non si esauriscono le direzioni disponibili o il nuovo movimento è valido.\n     *\n     * @param enemy nemico da spostare\n     * @return true se il nemico è stato spostato, false altrimenti\n     */\n    public synchronized boolean moveRandomPlus(Enemy enemy) {\n        DirectionsModel[] directions = DirectionsModel.values();\n        Random random = new Random();\n        int index = random.nextInt(directions.length);\n        for (int i = 0; i <= directions.length; ++i) {\n            if (isSafeToCross(enemy, directions[index])) {\n                moveDynamicEntity(enemy, directions[index]);\n                return true;\n            } else {\n                index = Utils.wrap(index + i, 0, directions.length - 1);\n            }\n        }\n        return false;\n    }\n\n    /**\n     * Funzione usata per spostare il nemico in modo casuale se il giocatore si trova fuori dall'area quadrata,\n     * altrimenti segue il percorso minore per raggiungere il giocatore. Usa {@link #moveRandom(Enemy)} per il\n     * movimento random.\n     *\n     * @param enemy       nemico da spostare\n     * @param rangeWander lato dell'area del quadrato\n     * @return true se si sposta, false altrimenti\n     */\n    public synchronized boolean wanderChase(Enemy enemy, int rangeWander) {\n        // muoviti verso il player se si trova dentro il tuo campo visivo\n        Player player = findPlayerInSquareRange(enemy, rangeWander);\n        if (player != null) {\n            return chase(enemy);\n        }\n        // muoviti in modo casuale\n        return moveRandom(enemy);\n    }\n\n    /**\n     * Funzione usata per spostare il nemico in modo casuale se il giocatore si trova fuori dall'area quadrata,\n     * altrimenti segue il percorso minore per raggiungere il giocatore. Usa {@link #moveRandomPlus(Enemy)} per il\n     * movimento random.\n     *\n     * @param enemy       nemico da spostare\n     * @param rangeWander lato dell'area del quadrato\n     * @return true se si sposta, false altrimenti\n     */\n    public synchronized boolean wanderChasePlus(Enemy enemy, int rangeWander) {\n        // muoviti verso il player se si trova dentro il tuo campo visivo\n        Player player = findPlayerInSquareRange(enemy, rangeWander);\n        if (player != null) {\n            return chase(enemy);\n        }\n        // muoviti in modo casuale\n        return moveRandomPlus(enemy);\n    }\n\n    /**\n     * Funzione usata per spostare segundo il percorso minore per raggiungere il giocatore.\n     *\n     * @param enemy nemico da spostare.\n     * @return true se si sposta, false altrimenti.\n     */\n    public synchronized boolean chase(Enemy enemy) {\n        AStar aStar = new AStar(this);\n        List<Vector2<Integer>> path = aStar.find(enemy, player);\n        if (path != null) {\n            if (isSafeToCross(path.get(1))) {\n                moveDynamicEntity(enemy, path.get(1));\n                return true;\n            }\n        }\n        return moveRandom(enemy);\n    }\n\n    public synchronized void removeEntityOnTop(Entity entity) {\n        entity.setToDraw(false);\n        chamber.get(entity.getRow()).get(entity.getCol()).removeLast();\n    }\n\n    public synchronized void addEntityOnTop(Entity entity) {\n        chamber.get(entity.getRow()).get(entity.getCol()).addLast(entity);\n        if (!entity.isToDraw()) {\n            entity.setToDraw(true);\n            addEntityToDraw(entity, entity.getLayer());\n        }\n    }\n\n    public synchronized Entity getEntityOnTop(int row, int col) { return chamber.get(row).get(col).getLast(); }\n\n    public synchronized Entity getEntityOnTop(Vector2<Integer> vector2) {\n        return chamber.get(vector2.first).get(vector2.second).getLast();\n    }\n\n    public synchronized Entity getEntityOnTop(Entity entity) {\n        return getEntityOnTop(new Vector2<>(entity.getRow(), entity.getCol()));\n    }\n\n    public synchronized Entity getEntityBelowTheTop(Entity entity) {\n        List<Entity> entities = chamber.get(entity.getRow()).get(entity.getCol());\n        int index = entities.size() - 2;\n        return index >= 0 ? entities.get(index) : null;\n    }\n\n    public synchronized List<List<List<Entity>>> getChamber() { return Collections.unmodifiableList(chamber); }\n\n    public boolean isInitialized() { return init; }\n\n//    public void show() {\n//        System.out.println();\n//        for (List<List<Entity>> r : chamber) {\n//            for (List<Entity> c : r) {\n//                Entity onTop = getEntityOnTop(c);\n//                if (onTop != null) {\n//                    String a = onTop.toString();\n//                    System.out.print(\" | \" + a.charAt(0) + a.charAt(1));\n//                }\n//                else {\n//                    System.out.print(\" | NULL\");\n//                }\n//            }\n//            System.out.println(\" |\");\n//        }\n//        System.out.println();\n//\n//        System.out.println(\"Nemici rimanenti: \" + enemies);\n//        System.out.println();\n//    }\n\n    public int getNRows() {\n        return nRows;\n    }\n\n    public int getNCols() {\n        return nCols;\n    }\n\n    public Player getPlayer() { return this.player; }\n\n    public void setPlayer(Player player) { this.player = player; }\n\n    public void addEnemy(Enemy enemy) { this.enemies.add(enemy); }\n\n    public List<Enemy> getEnemies() { return this.enemies; }\n\n    public void addTraps(Trap trap) { traps.add(trap); }\n\n    public List<Trap> getTraps() { return traps; }\n\n    public synchronized void addProjectile(Projectile projectile) { projectiles.add(projectile); }\n\n    public synchronized List<Projectile> getProjectiles() { return projectiles; }\n\n    public void addEntityToDraw(Entity entity, int layer) {\n        drawOrderChamber.add(entity, layer);\n    }\n\n    public List<Layer> getDrawOrderChamber() { return Collections.unmodifiableList(drawOrderChamber.getDrawOrder()); }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/chevy/model/chamber/Chamber.java b/src/chevy/model/chamber/Chamber.java
+--- a/src/chevy/model/chamber/Chamber.java	
++++ b/src/chevy/model/chamber/Chamber.java	
+@@ -480,6 +480,27 @@
+         return moveRandom(enemy);
+     }
+ 
++//    public void show() {
++//        System.out.println();
++//        for (List<List<Entity>> r : chamber) {
++//            for (List<Entity> c : r) {
++//                Entity onTop = getEntityOnTop(c);
++//                if (onTop != null) {
++//                    String a = onTop.toString();
++//                    System.out.print(" | " + a.charAt(0) + a.charAt(1));
++//                }
++//                else {
++//                    System.out.print(" | NULL");
++//                }
++//            }
++//            System.out.println(" |");
++//        }
++//        System.out.println();
++//
++//        System.out.println("Nemici rimanenti: " + enemies);
++//        System.out.println();
++//    }
++
+     public synchronized void removeEntityOnTop(Entity entity) {
+         entity.setToDraw(false);
+         chamber.get(entity.getRow()).get(entity.getCol()).removeLast();

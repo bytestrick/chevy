@@ -32,7 +32,9 @@ public class ChamberManager {
      * @return L'istanza Singleton di ChamberManager
      */
     public static ChamberManager getInstance() {
-        if (instance == null) instance = new ChamberManager();
+        if (instance == null) {
+            instance = new ChamberManager();
+        }
         return instance;
     }
 

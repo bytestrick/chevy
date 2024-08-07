@@ -27,7 +27,9 @@ public class SpikedFloorController {
     }
 
     public void playerInInteraction(SpikedFloor spikedFloor) {
-        playerController.handleInteraction(InteractionType.TRAP, spikedFloor);
+        if (!spikedFloor.isSafeToCross()) {
+            playerController.handleInteraction(InteractionType.TRAP, spikedFloor);
+        }
     }
 
     /**
@@ -36,15 +38,15 @@ public class SpikedFloorController {
      * @param spikedFloor il pavimento spinato da aggiornare
      */
     public void update(SpikedFloor spikedFloor) {
-        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.ACTIVATED)) {
+        if (spikedFloor.checkAndChangeState(SpikedFloor.State.ACTIVATED)) {
             spikedFloor.activated();
         }
 
-        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.DISABLED)) {
+        if (spikedFloor.checkAndChangeState(SpikedFloor.State.DISABLED)) {
             spikedFloor.disabled();
         }
 
-        if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.DAMAGE)) {
+        if (spikedFloor.checkAndChangeState(SpikedFloor.State.DAMAGE)) {
             Entity entity = chamber.getEntityOnTop(spikedFloor);
             if (entity instanceof Player) {
                 playerController.handleInteraction(InteractionType.TRAP, spikedFloor);

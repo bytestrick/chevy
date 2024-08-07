@@ -3,14 +3,8 @@ package chevy.model.entity.stateMachine;
 import chevy.utils.Log;
 
 /**
- * La classe StateMachine rappresenta una macchina a stati finiti (FSM - Finite GlobalState Machine)
- * che gestisce le transizioni tra i diversi stati.
- * Questa classe consente di definire un comportamento strutturato in cui un entità dinamica può trovarsi
- * in uno e un solo stato alla volta, cambiando stato in risposta a determinati eventi o condizioni.
- * Prima di usare la macchina a stati finiti è necessario definire uno stato di partenza. Successivamente è
- * possibile cambiare stato attraverso il metodo checkAndChangeState(), oppure usando in modo combinato
- * il metodo canChange() e changeState(). Se si usa solo changeState() non si controlla che lo stato corrente
- * sia finito.
+ * La StateMachine è una macchina a stati finiti (FSM - Finite State Machine) che gestisce le transizioni tra i
+ * diversi stati.
  */
 public class StateMachine {
     private GlobalState currentGlobalState;
@@ -19,11 +13,11 @@ public class StateMachine {
     private boolean usedWithCanChange = false;
     private String stateMachineName; // solo per capire di chi è la stampa
 
-
-    public StateMachine() {}
+    public StateMachine() { }
 
     /**
      * Cambia lo stato corrente della macchina a stati.
+     *
      * @param state L'enumerazione dello stato a cui passare.
      * @return true se lo stato è cambiato con successo, false altrimenti.
      */
@@ -39,8 +33,9 @@ public class StateMachine {
             logMessage += stateMachineName + ": " + currentGlobalState;
         }
 
-        if (!usedWithCanChange)
+        if (!usedWithCanChange) {
             nextGlobalState = currentGlobalState.findLinkedState(state);
+        }
 
         if (nextGlobalState != null) {
             previousGlobalState = currentGlobalState;
@@ -67,6 +62,7 @@ public class StateMachine {
 
     /**
      * Controlla se è possibile cambiare lo stato corrente della macchina a stati.
+     *
      * @param state L'enumerazione dello stato a cui passare.
      * @return true se è possibile cambiare lo stato, false altrimenti.
      */
@@ -86,6 +82,7 @@ public class StateMachine {
 
     /**
      * Controlla se è possibile cambiare lo stato corrente e, in caso affermativo, cambia lo stato.
+     *
      * @param state L'enumerazione dello stato a cui passare.
      * @return true se lo stato è cambiato con successo, false altrimenti.
      */
@@ -111,7 +108,6 @@ public class StateMachine {
     }
 
     public synchronized GlobalState getPreviousState() { return previousGlobalState; }
-
 
     public void setInitialState(GlobalState startGlobalState) {
         this.currentGlobalState = startGlobalState;

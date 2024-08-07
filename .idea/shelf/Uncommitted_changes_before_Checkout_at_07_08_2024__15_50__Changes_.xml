@@ -1,0 +1,14 @@
+<changelist name="Uncommitted_changes_before_Checkout_at_07_08_2024,_15_50_[Changes]" date="1723038681281" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_07_08_2024,_15_50_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 07/08/2024, 15.50 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="src/res/chambers/chamber0/layer1.png" />
+    <option name="AFTER_PATH" value="src/res/chambers/chamber0/layer1.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_07_08_2024,_15_50_[Changes]/layer1.png" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="src/res/chambers/chamber0/layer1-ninja.png" />
+    <option name="AFTER_PATH" value="src/res/chambers/chamber0/layer1-powerups.png" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_07_08_2024,_15_50_[Changes]/layer1-powerups.png" />
+  </binary>
+</changelist>

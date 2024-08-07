@@ -1,0 +1,89 @@
+Index: src/chevy/view/entities/animated/trap/SpikedFloorView.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chevy.view.entities.animated.trap;\n\nimport chevy.model.entity.stateMachine.CommonStates;\nimport chevy.model.entity.staticEntity.environment.traps.SpikedFloor;\nimport chevy.utils.Vector2;\nimport chevy.view.animation.AnimatedSprite;\nimport chevy.view.entities.animated.AnimatedEntityView;\n\nimport java.awt.image.BufferedImage;\n\npublic class SpikedFloorView extends AnimatedEntityView {\n    private static final String SPIKED_FLOOR_PATH = \"/assets/traps/spikedFloor/\";\n    private final Vector2<Double> position;\n    private final SpikedFloor spikedFloor;\n\n    public SpikedFloorView(SpikedFloor spikedFloor) {\n        this.spikedFloor = spikedFloor;\n        position = new Vector2<>((double) spikedFloor.getCol(), (double) spikedFloor.getRow());\n\n        initAnimation();\n    }\n\n    private void initAnimation() {\n        Vector2<Integer> offset = new Vector2<>(0, -7);\n        createAnimation(SpikedFloor.EnumState.DISABLED, 0, 1,\n                spikedFloor.getState(SpikedFloor.EnumState.DISABLED).getDuration(), offset, 1, SPIKED_FLOOR_PATH +\n                        \"disabled\", \".png\");\n\n        createAnimation(SpikedFloor.EnumState.ACTIVATED, 0, 2,\n                spikedFloor.getState(SpikedFloor.EnumState.ACTIVATED).getDuration(), offset, 1, SPIKED_FLOOR_PATH +\n                        \"active\", \".png\");\n\n        createAnimation(SpikedFloor.EnumState.DAMAGE, 0, 1,\n                spikedFloor.getState(SpikedFloor.EnumState.DAMAGE).getDuration(), offset, 1, SPIKED_FLOOR_PATH +\n                        \"damage\", \".png\");\n    }\n\n    public Vector2<Integer> getOffset() {\n        CommonStates currentState = spikedFloor.getCurrentState();\n        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, 0);\n        return currentAnimatedSprite.getOffset();\n    }\n\n    @Override\n    public BufferedImage getCurrentFrame() {\n        CommonStates currentEnumState = spikedFloor.getCurrentState();\n        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, 0);\n\n        if (currentAnimatedSprite != null) {\n            if (!currentAnimatedSprite.isRunning()) {\n                currentAnimatedSprite.restart();\n            }\n            return currentAnimatedSprite.getCurrentFrame();\n        }\n        return null;\n    }\n\n    @Override\n    public Vector2<Double> getCurrentPosition() {\n        return position;\n    }\n\n    @Override\n    public void remove() {\n        deleteAnimations();\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/chevy/view/entities/animated/trap/SpikedFloorView.java b/src/chevy/view/entities/animated/trap/SpikedFloorView.java
+--- a/src/chevy/view/entities/animated/trap/SpikedFloorView.java	
++++ b/src/chevy/view/entities/animated/trap/SpikedFloorView.java	
+@@ -1,6 +1,6 @@
+ package chevy.view.entities.animated.trap;
+ 
+-import chevy.model.entity.stateMachine.CommonStates;
++import chevy.model.entity.stateMachine.CommonState;
+ import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
+ import chevy.utils.Vector2;
+ import chevy.view.animation.AnimatedSprite;
+@@ -10,41 +10,38 @@
+ 
+ public class SpikedFloorView extends AnimatedEntityView {
+     private static final String SPIKED_FLOOR_PATH = "/assets/traps/spikedFloor/";
+-    private final Vector2<Double> position;
+     private final SpikedFloor spikedFloor;
+ 
+     public SpikedFloorView(SpikedFloor spikedFloor) {
+         this.spikedFloor = spikedFloor;
+-        position = new Vector2<>((double) spikedFloor.getCol(), (double) spikedFloor.getRow());
++        this.currentViewPosition = new Vector2<>((double) spikedFloor.getCol(), (double) spikedFloor.getRow());
+ 
+         initAnimation();
+     }
+ 
+     private void initAnimation() {
+         Vector2<Integer> offset = new Vector2<>(0, -7);
+-        createAnimation(SpikedFloor.EnumState.DISABLED, 0, 1,
+-                spikedFloor.getState(SpikedFloor.EnumState.DISABLED).getDuration(), offset, 1, SPIKED_FLOOR_PATH +
+-                        "disabled", ".png");
++        
++        final float disabledDuration = spikedFloor.getState(SpikedFloor.State.DISABLED).getDuration();
++        createAnimation(SpikedFloor.State.DISABLED, 0, 1, disabledDuration, offset, 1, SPIKED_FLOOR_PATH + "disabled", ".png");
+ 
+-        createAnimation(SpikedFloor.EnumState.ACTIVATED, 0, 2,
+-                spikedFloor.getState(SpikedFloor.EnumState.ACTIVATED).getDuration(), offset, 1, SPIKED_FLOOR_PATH +
+-                        "active", ".png");
++        final float activatedDuration = spikedFloor.getState(SpikedFloor.State.ACTIVATED).getDuration();
++        createAnimation(SpikedFloor.State.ACTIVATED, 0, 2, activatedDuration, offset, 1, SPIKED_FLOOR_PATH + "active", ".png");
+ 
+-        createAnimation(SpikedFloor.EnumState.DAMAGE, 0, 1,
+-                spikedFloor.getState(SpikedFloor.EnumState.DAMAGE).getDuration(), offset, 1, SPIKED_FLOOR_PATH +
+-                        "damage", ".png");
++        final float damageDuration = spikedFloor.getState(SpikedFloor.State.DAMAGE).getDuration();
++        createAnimation(SpikedFloor.State.DAMAGE, 0, 1, damageDuration, offset, 1, SPIKED_FLOOR_PATH + "damage", ".png");
+     }
+ 
+     public Vector2<Integer> getOffset() {
+-        CommonStates currentState = spikedFloor.getCurrentState();
++        CommonState currentState = spikedFloor.getCurrentState();
+         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, 0);
+         return currentAnimatedSprite.getOffset();
+     }
+ 
+     @Override
+     public BufferedImage getCurrentFrame() {
+-        CommonStates currentEnumState = spikedFloor.getCurrentState();
+-        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, 0);
++        CommonState currentState = spikedFloor.getCurrentState();
++        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, 0);
+ 
+         if (currentAnimatedSprite != null) {
+             if (!currentAnimatedSprite.isRunning()) {
+@@ -56,12 +53,12 @@
+     }
+ 
+     @Override
+-    public Vector2<Double> getCurrentPosition() {
+-        return position;
++    public Vector2<Double> getCurrentViewPosition() {
++        return currentViewPosition;
+     }
+ 
+     @Override
+-    public void remove() {
+-        deleteAnimations();
++    public void wasRemoved() {
++        super.deleteAnimations();
+     }
+ }
+\ No newline at end of file

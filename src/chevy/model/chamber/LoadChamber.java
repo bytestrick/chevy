@@ -64,7 +64,7 @@ public class LoadChamber {
 
             for (int i = 0; i < nRows; ++i) {
                 for (int j = 0; j < nCols; ++j) {
-                    Color color = new Color((chamberImage.getRGB(j, i)));
+                    Color color = new Color(chamberImage.getRGB(j, i));
                     int r = color.getRed();
                     if (r != 0) {
                         Entity entity = EntityFromColor.get(r, i, j);
