@@ -1,12 +1,14 @@
 package chevy.control.projectileController;
 
-import chevy.control.InteractionTypes;
+import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dinamicEntity.projectile.Arrow;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
 
 /**
  * Gestisce le interazioni e gli aggiornamenti dei proiettili nel gioco, delegando la gestione specifica a controller
@@ -39,9 +41,9 @@ public class ProjectileController {
      * @param subject     l'entità che avvia l'interazione
      * @param object      l'entità che subisce l'interazione
      */
-    public void handleInteraction(InteractionTypes interaction, DynamicEntity subject, DynamicEntity object) {
+    public void handleInteraction(InteractionType interaction, DynamicEntity subject, Projectile object) {
         switch (interaction) {
-            case PLAYER_IN -> playerInInteraction((Player) subject, (Projectile) object);
+            case PLAYER_IN -> playerInInteraction((Player) subject, object);
             case UPDATE -> updateProjectile((Projectile) subject);
         }
     }
@@ -55,9 +57,9 @@ public class ProjectileController {
      */
     private void playerInInteraction(Player player, Projectile projectile) {
         switch (projectile.getSpecificType()) {
-            case Projectile.Type.ARROW -> arrowController.playerInInteraction(projectile);
-            case Projectile.Type.SLIME_SHOT -> slimeShotController.playerInInteraction(projectile);
-            default -> { }
+            case Projectile.Type.ARROW -> arrowController.playerInInteraction((Arrow) projectile);
+            case Projectile.Type.SLIME_SHOT -> slimeShotController.playerInInteraction((SlimeShot) projectile);
+            default -> {}
         }
     }
 
@@ -69,9 +71,9 @@ public class ProjectileController {
      */
     public synchronized void updateProjectile(Projectile projectile) {
         switch (projectile.getSpecificType()) {
-            case Projectile.Type.ARROW -> arrowController.update(projectile);
-            case Projectile.Type.SLIME_SHOT -> slimeShotController.update(projectile);
-            default -> { }
+            case Projectile.Type.ARROW -> arrowController.update((Arrow) projectile);
+            case Projectile.Type.SLIME_SHOT -> slimeShotController.update((SlimeShot) projectile);
+            default -> {}
         }
     }
 }

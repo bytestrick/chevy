@@ -2,8 +2,7 @@ package chevy.view.entities.animated.enemy;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
-import chevy.model.entity.stateMachine.CommonStates;
-import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolation;
@@ -18,46 +17,46 @@ public class BigSlimeView extends AnimatedEntityView {
     public BigSlimeView(BigSlime bigSlime) {
         super();
         this.bigSlime = bigSlime;
-        this.currentPosition = new Vector2<>((double) bigSlime.getCol(), (double) bigSlime.getRow());
-        currentState = bigSlime.getState(bigSlime.getCurrentState());
+        this.currentViewPosition = new Vector2<>((double) bigSlime.getCol(), (double) bigSlime.getRow());
+        currentGlobalState = bigSlime.getState(bigSlime.getCurrentState());
 
         float duration = bigSlime.getState(bigSlime.getCurrentState()).getDuration();
-        moveInterpolationX = new Interpolation(currentPosition.first, bigSlime.getCol(), duration,
-                Interpolation.Types.EASE_OUT_SINE);
-        moveInterpolationY = new Interpolation(currentPosition.second, bigSlime.getRow(), duration,
-                Interpolation.Types.EASE_OUT_SINE);
+        moveInterpolationX = new Interpolation(currentViewPosition.first, bigSlime.getCol(), duration,
+                Interpolation.Type.EASE_OUT_SINE);
+        moveInterpolationY = new Interpolation(currentViewPosition.second, bigSlime.getRow(), duration,
+                Interpolation.Type.EASE_OUT_SINE);
 
         initAnimation();
     }
 
     private void initAnimation() {
         // Idle
-        float idleDuration = bigSlime.getState(BigSlime.States.IDLE).getDuration();
-        createAnimation(BigSlime.States.IDLE, 0, 4, true, 2, idleDuration, BIG_SLIME_RESOURCES + "idle", ".png");
+        float idleDuration = bigSlime.getState(BigSlime.State.IDLE).getDuration();
+        createAnimation(BigSlime.State.IDLE, 0, 4, true, 2, idleDuration, BIG_SLIME_RESOURCES + "idle", ".png");
 
         // Move
-        float moveDuration = bigSlime.getState(BigSlime.States.MOVE).getDuration();
-        createAnimation(BigSlime.States.MOVE, 0, 4, moveDuration, BIG_SLIME_RESOURCES + "move", ".png");
+        float moveDuration = bigSlime.getState(BigSlime.State.MOVE).getDuration();
+        createAnimation(BigSlime.State.MOVE, 0, 4, moveDuration, BIG_SLIME_RESOURCES + "move", ".png");
 
         // Attack
-        float attackDuration = bigSlime.getState(BigSlime.States.ATTACK).getDuration();
-        createAnimation(BigSlime.States.ATTACK, 0, 4, attackDuration, BIG_SLIME_RESOURCES + "attack/up", ".png");
-        createAnimation(BigSlime.States.ATTACK, 1, 4, attackDuration, BIG_SLIME_RESOURCES + "attack/down", ".png");
-        createAnimation(BigSlime.States.ATTACK, 2, 4, attackDuration, BIG_SLIME_RESOURCES + "attack/right", ".png");
-        createAnimation(BigSlime.States.ATTACK, 3, 4, attackDuration, BIG_SLIME_RESOURCES + "attack/left", ".png");
+        float attackDuration = bigSlime.getState(BigSlime.State.ATTACK).getDuration();
+        createAnimation(BigSlime.State.ATTACK, 0, 4, attackDuration, BIG_SLIME_RESOURCES + "attack/up", ".png");
+        createAnimation(BigSlime.State.ATTACK, 1, 4, attackDuration, BIG_SLIME_RESOURCES + "attack/down", ".png");
+        createAnimation(BigSlime.State.ATTACK, 2, 4, attackDuration, BIG_SLIME_RESOURCES + "attack/right", ".png");
+        createAnimation(BigSlime.State.ATTACK, 3, 4, attackDuration, BIG_SLIME_RESOURCES + "attack/left", ".png");
 
         // Hit
-        float hitDuration = bigSlime.getState(BigSlime.States.HIT).getDuration();
-        createAnimation(BigSlime.States.HIT, 0, 1, hitDuration, BIG_SLIME_RESOURCES + "hit", ".png");
+        float hitDuration = bigSlime.getState(BigSlime.State.HIT).getDuration();
+        createAnimation(BigSlime.State.HIT, 0, 1, hitDuration, BIG_SLIME_RESOURCES + "hit", ".png");
 
         // Dead
-        float deadDuration = bigSlime.getState(BigSlime.States.DEAD).getDuration();
-        createAnimation(BigSlime.States.DEAD, 0, 4, deadDuration, BIG_SLIME_RESOURCES + "dead", ".png");
+        float deadDuration = bigSlime.getState(BigSlime.State.DEAD).getDuration();
+        createAnimation(BigSlime.State.DEAD, 0, 4, deadDuration, BIG_SLIME_RESOURCES + "dead", ".png");
     }
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonStates currentState = bigSlime.getCurrentState();
+        CommonState currentState = bigSlime.getCurrentState();
         int type = getAnimationType(currentState);
 
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, type);
@@ -71,10 +70,10 @@ public class BigSlimeView extends AnimatedEntityView {
         return null;
     }
 
-    private int getAnimationType(CommonStates currentState) {
+    private int getAnimationType(CommonState currentState) {
         DirectionsModel currentDirection = bigSlime.getDirection();
         return switch (currentState) {
-            case BigSlime.States.ATTACK -> switch (currentDirection) {
+            case BigSlime.State.ATTACK -> switch (currentDirection) {
                 case UP -> 0;
                 case DOWN -> 1;
                 case RIGHT -> 2;
@@ -85,25 +84,25 @@ public class BigSlimeView extends AnimatedEntityView {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition() {
-        if (currentState.isFinished()) {
-            currentState = bigSlime.getState(bigSlime.getCurrentState());
+    public Vector2<Double> getCurrentViewPosition() {
+        if (currentGlobalState.isFinished()) {
+            currentGlobalState = bigSlime.getState(bigSlime.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
-            float duration = currentState.getDuration();
-            moveInterpolationX.changeStart(currentPosition.first);
+            float duration = currentGlobalState.getDuration();
+            moveInterpolationX.changeStart(currentViewPosition.first);
             moveInterpolationX.changeEnd(bigSlime.getCol());
             moveInterpolationX.changeDuration(duration);
             moveInterpolationX.restart();
-            moveInterpolationY.changeStart(currentPosition.second);
+            moveInterpolationY.changeStart(currentViewPosition.second);
             moveInterpolationY.changeEnd(bigSlime.getRow());
             moveInterpolationY.changeDuration(duration);
             moveInterpolationY.restart();
             firstTimeInState = false;
         }
 
-        currentPosition.changeFirst(moveInterpolationX.getValue());
-        currentPosition.changeSecond(moveInterpolationY.getValue());
-        return currentPosition;
+        currentViewPosition.changeFirst(moveInterpolationX.getValue());
+        currentViewPosition.changeSecond(moveInterpolationY.getValue());
+        return currentViewPosition;
     }
 }

@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionTypes;
+import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
@@ -45,7 +45,7 @@ public class ZombieController {
     public void playerInInteraction(Player player, Zombie zombie) {
         switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, lo Zombie viene danneggiato in base al danno del giocatore.
-            case Player.States.ATTACK -> {
+            case Player.State.ATTACK -> {
                 zombie.setDirection(DirectionsModel.positionToDirection(player, zombie));
                 hitZombie(zombie, -1 * player.getDamage());
             }
@@ -59,37 +59,37 @@ public class ZombieController {
      * @param zombie lo Zombie da aggiornare
      */
     public void update(Zombie zombie) {
-        if (!zombie.isAlive()) {
-            if (zombie.getState(Zombie.States.DEAD).isFinished()) {
+        if (zombie.isDead()) {
+            if (zombie.getState(Zombie.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(zombie);
                 zombie.removeToUpdate();
                 return;
             }
-        } else if (zombie.getHealth() <= 0 && zombie.checkAndChangeState(Zombie.States.DEAD)) {
+        } else if (zombie.getHealth() <= 0 && zombie.checkAndChangeState(Zombie.State.DEAD)) {
             zombie.kill();
         }
 
-        if (zombie.canChange(Zombie.States.MOVE)) {
+        if (zombie.canChange(Zombie.State.MOVE)) {
             DirectionsModel direction = chamber.getHitDirectionPlayer(zombie);
             if (direction == null) {
                 // Se non c'è un giocatore nelle vicinanze, lo Zombie vaga casualmente.
                 if (chamber.wanderChase(zombie, 4)) {
-                    zombie.changeState(Zombie.States.MOVE);
+                    zombie.changeState(Zombie.State.MOVE);
                 }
-            } else if (zombie.canAttack() && zombie.getState(Zombie.States.ATTACK).isFinished()) {
+            } else if (zombie.canAttack() && zombie.getState(Zombie.State.ATTACK).isFinished()) {
                 Entity entity = chamber.getNearEntityOnTop(zombie, direction);
                 if (entity instanceof Player) {
-                    playerController.handleInteraction(InteractionTypes.ENEMY, zombie);
+                    playerController.handleInteraction(InteractionType.ENEMY, zombie);
                     zombie.setCanAttack(false);
                 }
-            } else if (zombie.canChange(Zombie.States.ATTACK)) {
+            } else if (zombie.canChange(Zombie.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(zombie, direction);
-                if (entity instanceof Player && zombie.changeState(Zombie.States.ATTACK)) {
+                if (entity instanceof Player && zombie.changeState(Zombie.State.ATTACK)) {
                     zombie.setCanAttack(true);
                 }
             }
         }
-        zombie.checkAndChangeState(Zombie.States.IDLE);
+        zombie.checkAndChangeState(Zombie.State.IDLE);
     }
 
     /**
@@ -110,7 +110,7 @@ public class ZombieController {
      * @param damage il danno da applicare
      */
     private void hitZombie(Zombie zombie, int damage) {
-        if (zombie.changeState(Zombie.States.HIT)) {
+        if (zombie.changeState(Zombie.State.HIT)) {
             zombie.changeHealth(damage);
         }
     }

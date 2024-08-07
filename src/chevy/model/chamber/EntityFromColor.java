@@ -1,6 +1,9 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.*;
+import chevy.model.entity.collectable.powerUp.Agility;
+import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
@@ -89,8 +92,15 @@ public class EntityFromColor {
     private static final int BEETLE = 146;
     private static final int SKELETON = 145;
 
-    //
-    private static final int NULL = 0;
+    // Collectable
+    private static final int HEALTH = 10;
+    private static final int COIN = 11;
+    private static final int KEY = 12;
+    // Collectable: Power Up
+    private static final int AGILITY = 13;
+
+    // ---
+    private static final int NULL = 0; // assenza di colore rosso
 
     public static Entity get(int r, int row, int col) {
         Vector2<Integer> startPosition = new Vector2<>(row, col);
@@ -167,6 +177,13 @@ public class EntityFromColor {
             case BIG_SLIME -> new BigSlime(startPosition);
             case BEETLE -> new Beetle(startPosition);
             case SKELETON -> new Skeleton(startPosition);
+
+            // Collectable
+            case HEALTH -> new Health(startPosition);
+            case COIN -> new Coin(startPosition);
+            case KEY -> new Key(startPosition);
+            // Collectable: Power Up
+            case AGILITY -> new Agility(startPosition);
 
             // ---
             case NULL -> null;

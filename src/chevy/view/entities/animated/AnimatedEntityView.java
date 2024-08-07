@@ -1,7 +1,7 @@
 package chevy.view.entities.animated;
 
-import chevy.model.entity.stateMachine.CommonStates;
-import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Image;
 import chevy.utils.Log;
 import chevy.utils.Pair;
@@ -15,31 +15,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AnimatedEntityView extends EntityView {
-    private final Map<Pair<CommonStates, Integer>, AnimatedSprite> animations;
+    private final Map<Pair<CommonState, Integer>, AnimatedSprite> animations;
     protected Interpolation moveInterpolationX;
     protected Interpolation moveInterpolationY;
-    protected Vector2<Double> currentPosition;
-    protected State currentState;
+    protected Vector2<Double> currentViewPosition;
+    protected GlobalState currentGlobalState;
     protected boolean firstTimeInState = false;
 
     public AnimatedEntityView() {
         animations = new HashMap<>();
     }
 
-    protected void createAnimation(CommonStates enumStates, int type, int nFrame, float secDurationFrame,
+    protected void createAnimation(CommonState enumStates, int type, int nFrame, float secDurationFrame,
                                    String folderPath, String extension) {
         createAnimation(enumStates, type, nFrame, false, 1, secDurationFrame, new Vector2<>(0, 0), 1f, folderPath,
                 extension);
     }
 
-    protected void createAnimation(CommonStates enumStates, int type, int nFrame, float secDurationFrame,
+    protected void createAnimation(CommonState enumStates, int type, int nFrame, float secDurationFrame,
                                    Vector2<Integer> offset, float scale, String folderPath, String extension) {
         createAnimation(enumStates, type, nFrame, false, 1, secDurationFrame, offset, scale, folderPath, extension);
     }
 
-    protected void createAnimation(CommonStates enumStates, int type, int nFrame, boolean loop, int times,
+    protected void createAnimation(CommonState enumStates, int type, int nFrame, boolean loop, int times,
                                    float animationDuration, String folderPath, String extension) {
-        if (!loop) times = 1;
+        if (!loop) {
+            times = 1;
+        }
         createAnimation(enumStates, type, nFrame, loop, times, animationDuration, new Vector2<>(0, 0), 1f, folderPath
                 , extension);
     }
@@ -56,7 +58,7 @@ public abstract class AnimatedEntityView extends EntityView {
      * @param folderPath        percorso della cartella dove sono contenuti i frame
      * @param extension         estensione comune dei frame
      */
-    protected void createAnimation(CommonStates enumStates, int type, int nFrame, boolean loop, int times,
+    protected void createAnimation(CommonState enumStates, int type, int nFrame, boolean loop, int times,
                                    float animationDuration, Vector2<Integer> offset, float scale, String folderPath,
                                    String extension) {
         AnimatedSprite animatedSprite = new AnimatedSprite(new Pair<>(enumStates, type), nFrame,
@@ -71,7 +73,7 @@ public abstract class AnimatedEntityView extends EntityView {
         addAnimation(animation.getAnimationTypes(), animation);
     }
 
-    protected void addAnimation(Pair<CommonStates, Integer> animationTypes, AnimatedSprite animatedSprite) {
+    protected void addAnimation(Pair<CommonState, Integer> animationTypes, AnimatedSprite animatedSprite) {
         if (animations.containsKey(animationTypes)) {
             Log.warn("L'animazione " + animationTypes + " è già presente");
         } else {
@@ -80,13 +82,13 @@ public abstract class AnimatedEntityView extends EntityView {
     }
 
     protected void deleteAnimations() {
-        for (Pair<CommonStates, Integer> key : animations.keySet()) {
+        for (Pair<CommonState, Integer> key : animations.keySet()) {
             animations.get(key).delete();
         }
     }
 
-    protected AnimatedSprite getAnimatedSprite(CommonStates enumStates, int type) {
-        Pair<CommonStates, Integer> animationTypes = new Pair<>(enumStates, type);
+    protected AnimatedSprite getAnimatedSprite(CommonState state, int type) {
+        Pair<CommonState, Integer> animationTypes = new Pair<>(state, type);
         return animations.get(animationTypes);
     }
 
@@ -101,6 +103,4 @@ public abstract class AnimatedEntityView extends EntityView {
     }
 
     public abstract BufferedImage getCurrentFrame();
-
-    public abstract Vector2<Double> getCurrentPosition();
 }

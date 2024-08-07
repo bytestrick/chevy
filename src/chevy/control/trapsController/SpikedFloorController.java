@@ -1,6 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.control.InteractionTypes;
+import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
@@ -27,7 +27,7 @@ public class SpikedFloorController {
     }
 
     public void playerInInteraction(SpikedFloor spikedFloor) {
-        playerController.handleInteraction(InteractionTypes.TRAP, spikedFloor);
+        playerController.handleInteraction(InteractionType.TRAP, spikedFloor);
     }
 
     /**
@@ -47,10 +47,10 @@ public class SpikedFloorController {
         if (spikedFloor.checkAndChangeState(SpikedFloor.EnumState.DAMAGE)) {
             Entity entity = chamber.getEntityOnTop(spikedFloor);
             if (entity instanceof Player) {
-                playerController.handleInteraction(InteractionTypes.TRAP, spikedFloor);
+                playerController.handleInteraction(InteractionType.TRAP, spikedFloor);
             }
             if (entity instanceof Enemy enemy) {
-                enemyController.handleInteraction(InteractionTypes.TRAP, spikedFloor, enemy);
+                enemyController.handleInteraction(InteractionType.TRAP, spikedFloor, enemy);
             }
         }
     }

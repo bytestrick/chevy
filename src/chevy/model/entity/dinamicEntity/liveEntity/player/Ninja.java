@@ -1,18 +1,18 @@
 package chevy.model.entity.dinamicEntity.liveEntity.player;
 
-import chevy.model.entity.stateMachine.CommonStates;
-import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class Ninja extends Player {
-    private final State idle = new State(States.IDLE );
-    private final State move = new State(States.MOVE, speed);
-    private final State attack = new State(States.ATTACK, 0.04f);
-    private final State hit = new State(States.HIT, .2f);
-    private final State dead = new State(States.DEAD);
-    private final State glide = new State(States.GLIDE, speed, true);
-    private final State sludge = new State(States.SLUDGE, speed);
-    private final State fall = new State(States.FALL);
+    private final GlobalState idle = new GlobalState(State.IDLE );
+    private final GlobalState move = new GlobalState(State.MOVE, speed);
+    private final GlobalState attack = new GlobalState(State.ATTACK, 0.04f);
+    private final GlobalState hit = new GlobalState(State.HIT, .2f);
+    private final GlobalState dead = new GlobalState(State.DEAD);
+    private final GlobalState glide = new GlobalState(State.GLIDE, speed, true);
+    private final GlobalState sludge = new GlobalState(State.SLUDGE, speed);
+    private final GlobalState fall = new GlobalState(State.FALL);
 
     public Ninja(Vector2<Integer> initPosition) {
         super(initPosition, Type.NINJA);
@@ -56,8 +56,8 @@ public class Ninja extends Player {
     }
 
     @Override
-    public synchronized State getState(CommonStates state) {
-        return switch ((Player.States) state) {
+    public synchronized GlobalState getState(CommonState state) {
+        return switch ((State) state) {
             case IDLE -> idle;
             case ATTACK -> attack;
             case MOVE -> move;

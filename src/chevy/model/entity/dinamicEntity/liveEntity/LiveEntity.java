@@ -1,6 +1,6 @@
 package chevy.model.entity.dinamicEntity.liveEntity;
 
-import chevy.model.entity.EntityCommonEnumTypes;
+import chevy.model.entity.CommonEntityType;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
@@ -40,20 +40,20 @@ public abstract class LiveEntity extends DynamicEntity {
 
     public synchronized void changeShield(int value) { this.shield += value; }
 
-    public synchronized boolean isAlive() { return alive; }
+    public synchronized boolean isDead() { return !alive; }
 
     public synchronized boolean isFlying() { return flying; }
 
     @Override
-    public EntityCommonEnumTypes getSpecificType() { return type; }
+    public CommonEntityType getSpecificType() { return type; }
 
     @Override
-    public EntityCommonEnumTypes getGenericType() { return super.getSpecificType(); }
+    public CommonEntityType getGenericType() { return super.getSpecificType(); }
 
     @Override
     public String toString() { return type.toString(); }
 
-    public enum Type implements EntityCommonEnumTypes {
+    public enum Type implements CommonEntityType {
         PLAYER, ENEMY
     }
 }

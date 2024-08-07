@@ -65,7 +65,7 @@ public class GroundView extends EntityView {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition() {
+    public Vector2<Double> getCurrentViewPosition() {
         position.changeFirst((double) ground.getCol());
         position.changeSecond((double) ground.getRow());
         return position;

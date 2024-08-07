@@ -1,0 +1,9 @@
+package chevy.model.entity.collectable.powerUp;
+
+import chevy.utils.Vector2;
+
+public class LongSword extends PowerUp {
+    public LongSword(Vector2<Integer> initVelocity) {
+        super(initVelocity, Type.LONG_SWORD);
+    }
+}

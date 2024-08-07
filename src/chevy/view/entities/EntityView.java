@@ -1,14 +1,13 @@
 package chevy.view.entities;
 
-import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.utils.Vector2;
 
 import java.awt.image.BufferedImage;
 
 public abstract class EntityView {
-//    protected boolean flipped = false;
+    protected Vector2<Double> currentViewPosition;
 
-    public EntityView() { }
+    public EntityView() {}
 
     public Vector2<Integer> getOffset() {
         return new Vector2<>(0, 0);
@@ -20,5 +19,7 @@ public abstract class EntityView {
 
     public abstract BufferedImage getCurrentFrame();
 
-    public abstract Vector2<Double> getCurrentPosition();
+    public abstract Vector2<Double> getCurrentViewPosition();
+
+    public void wasRemoved() {}
 }

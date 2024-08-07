@@ -1,6 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.control.InteractionTypes;
+import chevy.control.InteractionType;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -34,7 +34,7 @@ public class TrapsUpdateController implements Update {
      */
     private void addEnemies() {
         for (Trap trap : trapsToAdd) {
-            if (trap.isMustBeUpdated()) {
+            if (trap.canRemoveToUpdate()) {
                 traps.add(trap);
             }
         }
@@ -52,7 +52,7 @@ public class TrapsUpdateController implements Update {
 
         // Itera attraverso la lista dei nemici per aggiornarli e rimuove quelli che devono essere rimossi.
         for (Trap trap : traps) {
-            trapsController.handleInteraction(InteractionTypes.UPDATE, trap, null);
+            trapsController.handleInteraction(InteractionType.UPDATE, trap, null);
         }
     }
 

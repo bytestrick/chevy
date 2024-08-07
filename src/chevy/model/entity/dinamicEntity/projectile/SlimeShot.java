@@ -1,21 +1,20 @@
 package chevy.model.entity.dinamicEntity.projectile;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.stateMachine.CommonStates;
-import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class SlimeShot extends Projectile {
-    public final State start = new State(States.START, 0.5f);
-    public final State loop = new State(States.LOOP, 1f, true);
-    public final State end = new State(States.END, 0.5f);
-
+    public final GlobalState start = new GlobalState(SlimeShot.State.START, 0.5f);
+    public final GlobalState loop = new GlobalState(SlimeShot.State.LOOP, 1f, true);
+    public final GlobalState end = new GlobalState(SlimeShot.State.END, 0.5f);
     public SlimeShot(Vector2<Integer> initPosition, DirectionsModel direction, float advanceTimer) {
-        super(initPosition, Projectile.Type.SLIME_SHOT, direction, advanceTimer);
+        super(initPosition, Projectile.Type.SLIME_SHOT, direction);
 
         this.maxDamage = 3;
         this.minDamage = 2;
-        this.layer = 2;
+        this.drawLayer = 2;
 
         initStateMachine();
     }
@@ -30,12 +29,16 @@ public class SlimeShot extends Projectile {
     }
 
     @Override
-    public State getState(CommonStates commonEnumStates) {
-        States projectileState = (States) commonEnumStates;
+    public GlobalState getState(CommonState commonEnumStates) {
+        Projectile.State projectileState = (Projectile.State) commonEnumStates;
         return switch (projectileState) {
             case START -> start;
             case LOOP -> loop;
             case END -> end;
         };
+    }
+
+    public enum State implements CommonState {
+        START, LOOP, END;
     }
 }

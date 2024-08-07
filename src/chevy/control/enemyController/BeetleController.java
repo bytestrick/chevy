@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionTypes;
+import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
@@ -47,7 +47,7 @@ public class BeetleController {
     public void playerInInteraction(Player player, Beetle beetle) {
         switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, il Beetle viene danneggiato in base al danno del giocatore.
-            case Player.States.ATTACK -> {
+            case Player.State.ATTACK -> {
                 beetle.setDirection(DirectionsModel.positionToDirection(player, beetle));
                 hitBeetle(beetle, -1 * player.getDamage());
             }
@@ -74,47 +74,54 @@ public class BeetleController {
      */
     public void update(Beetle beetle) {
         // Se il Beetle non è vivo e il suo stato "DEAD" è terminato, viene rimosso dalla stanza.
-        if (!beetle.isAlive()) {
-            if (beetle.getState(Beetle.States.DEAD).isFinished()) {
+        if (beetle.isDead()) {
+            if (beetle.getState(Beetle.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(beetle);
                 beetle.removeToUpdate();
                 return;
             }
-        } else if (beetle.getHealth() <= 0 && beetle.checkAndChangeState(Beetle.States.DEAD)) {
+        } else if (beetle.getHealth() <= 0 && beetle.checkAndChangeState(Beetle.State.DEAD)) {
             // Se la salute del Beetle è zero o inferiore, cambia lo stato del Beetle a "DEAD".
             beetle.kill();
         }
 
         // Se il Beetle può cambiare lo stato a "MOVE", cerca il giocatore nelle vicinanze.
-        if (beetle.canChange(Beetle.States.MOVE)) {
+        if (beetle.canChange(Beetle.State.MOVE)) {
             DirectionsModel direction = chamber.getHitDirectionPlayer(beetle, 3);
             // Se trova il giocatore, inizia l'inseguimento (chasing).
             if (direction == null) {
                 beetle.setCanAttack(false);
                 if (chamber.chase(beetle)) {
-                    beetle.changeState(Beetle.States.MOVE);
+                    beetle.changeState(Beetle.State.MOVE);
                 }
-            } else if (beetle.canAttack() && beetle.getState(Beetle.States.ATTACK).isFinished()) {
-                playerController.handleInteraction(InteractionTypes.ENEMY, beetle);
+            } else if (beetle.canAttack() && beetle.getState(Beetle.State.ATTACK).isFinished()) {
+                playerController.handleInteraction(InteractionType.ENEMY, beetle);
                 beetle.setCanAttack(false);
-            } else if (beetle.canChange(Beetle.States.ATTACK)) {
+            } else if (beetle.canChange(Beetle.State.ATTACK)) {
                 // Se può cambiare lo stato a "ATTACK", cerca di attaccare il giocatore.
-                for (int distance = 3; distance > 0; --distance) {
+                for (int distance = 1; distance <= 3; ++distance) {
                     Entity entity = chamber.getNearEntityOnTop(beetle, direction, distance);
-                    if (distance > 1 && entity instanceof Player && beetle.changeState(Beetle.States.ATTACK)) {
-                        Projectile slimeShot = new SlimeShot(new Vector2<>(beetle.getRow(), beetle.getCol()),
-                                direction, 1f);
+                    // muoviti in modo casuale, non sparare, se tra te è il player c'è un ostacolo che non può essere attraversato
+                    if (!(entity instanceof Player) && !entity.isCrossable()) {
+                        if (beetle.checkAndChangeState(Beetle.State.MOVE)) {
+                            chamber.moveRandomPlus(beetle);
+                        }
+                        break;
+                    }
+
+                    if (distance > 1 && entity instanceof Player && beetle.changeState(Beetle.State.ATTACK)) {
+                        Projectile slimeShot = new SlimeShot(new Vector2<>(beetle.getRow(), beetle.getCol()), direction, 1f);
                         chamber.addProjectile(slimeShot);
                         chamber.addEntityOnTop(slimeShot);
                         break;
-                    } else if (distance == 1 && entity instanceof Player && beetle.changeState(Beetle.States.ATTACK)) {
+                    } else if (distance == 1 && entity instanceof Player && beetle.changeState(Beetle.State.ATTACK)) {
                         beetle.setCanAttack(true);
                     }
                 }
             }
         }
         // Se nessun'altra azione è possibile, il Beetle cambia lo stato a "IDLE"
-        beetle.checkAndChangeState(Beetle.States.IDLE);
+        beetle.checkAndChangeState(Beetle.State.IDLE);
     }
 
     /**
@@ -139,7 +146,7 @@ public class BeetleController {
      * @param damage la quantità di danno da applicare
      */
     private void hitBeetle(Beetle beetle, int damage) {
-        if (beetle.changeState(Beetle.States.HIT)) {
+        if (beetle.changeState(Beetle.State.HIT)) {
             beetle.changeHealth(damage);
         }
     }

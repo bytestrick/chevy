@@ -1,15 +1,15 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.stateMachine.CommonStates;
-import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class Wraith extends Enemy {
-    private final State idle = new State(States.IDLE, 0.8f);
-    private final State move = new State(States.MOVE, 0.5f);
-    private final State attack = new State(States.ATTACK, 0.5f);
-    private final State hit = new State(States.HIT, 0.15f);
-    private final State dead = new State(States.DEAD, 0.3f);
+    private final GlobalState idle = new GlobalState(State.IDLE, 0.8f);
+    private final GlobalState move = new GlobalState(State.MOVE, 0.5f);
+    private final GlobalState attack = new GlobalState(State.ATTACK, 0.5f);
+    private final GlobalState hit = new GlobalState(State.HIT, 0.15f);
+    private final GlobalState dead = new GlobalState(State.DEAD, 0.3f);
 
     public Wraith(Vector2<Integer> initPosition) {
         super(initPosition, Type.WRAITH);
@@ -38,8 +38,8 @@ public class Wraith extends Enemy {
     }
 
     @Override
-    public synchronized State getState(CommonStates commonEnumStates) {
-        States wraithState = (States) commonEnumStates;
+    public synchronized GlobalState getState(CommonState commonEnumStates) {
+        State wraithState = (State) commonEnumStates;
         return switch (wraithState) {
             case MOVE -> move;
             case ATTACK -> attack;
@@ -49,7 +49,7 @@ public class Wraith extends Enemy {
         };
     }
 
-    public enum States implements CommonStates {
+    public enum State implements CommonState {
         MOVE, ATTACK, HIT, DEAD, IDLE
     }
 }

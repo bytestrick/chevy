@@ -23,7 +23,7 @@ public class SludgeController {
      * @param player il giocatore che interagisce con la melma
      */
     public void playerInInteraction(Player player, Sludge sludge) {
-        player.changeState(Player.States.SLUDGE);
+        player.changeState(Player.State.SLUDGE);
     }
 
     /**
@@ -34,7 +34,7 @@ public class SludgeController {
      */
     public void playerInteraction(Player player, Sludge sludge) {
         if (sludge.getNMoveToUnlock() <= 0) {
-            player.changeState(Player.States.IDLE);
+            player.changeState(Player.State.IDLE);
             chamber.findAndRemoveEntity(sludge, false);
         } else {
             sludge.decreaseNMoveToUnlock();

@@ -14,9 +14,9 @@ public class GameLoop implements Runnable {
     public GameLoop() {
         Thread loop = new Thread(this);
         loop.setPriority(Thread.NORM_PRIORITY);
+        this.isRunning = true;
         loop.start();
         Log.info("Game loop avviato");
-        this.isRunning = true;
     }
 
     @Override
@@ -39,7 +39,6 @@ public class GameLoop implements Runnable {
             lastTime = System.currentTimeMillis();
 
             UpdateManager.update(delta);
-            // render
             RenderManager.render(delta);
             Toolkit.getDefaultToolkit().sync();
         }

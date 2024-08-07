@@ -14,8 +14,11 @@ public class TotemController {
     }
 
     public void update(Totem totem) {
-        Projectile arrow = new Arrow(new Vector2<>(totem.getRow(), totem.getCol()), totem.getDirectionShot());
-        chamber.addProjectile(arrow);
-        chamber.addEntityOnTop(arrow);
+        if (totem.checkAndChangeState(Totem.EnumState.SHOT)) {
+            Arrow arrow = new Arrow(new Vector2<>(totem.getRow(), totem.getCol()), totem.getDirectionShot());
+            chamber.addProjectile(arrow);
+            chamber.addEntityOnTop(arrow);
+        }
+        totem.checkAndChangeState(Totem.EnumState.RELOAD);
     }
 }

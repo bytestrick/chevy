@@ -1,34 +1,29 @@
 package chevy.control;
 
+import chevy.control.collectableController.PowerUpTextVisualizerController;
 import chevy.model.chamber.ChamberManager;
-import chevy.view.GameView;
+import chevy.view.Window;
 
 /**
  * Gestisce l'interazione tra il model e la view.
  * Inizializza il controller della stanza e il listener della tastiera.
  */
 public class GameController {
-    /**
-     * Riferimento alla vista di gioco.
-     */
-    private final GameView gameView;
-    /**
-     * Riferimento al listener della tastiera.
-     */
+    private final Window window;
     private final KeyboardListener keyboardListener;
 
-    /**
-     * @param gameView  riferimento alla vista di gioco
-     */
-    public GameController(GameView gameView) {
-        this.gameView = gameView;
-        this.keyboardListener = new KeyboardListener(gameView);
+    public GameController(Window window) {
+        this.window = window;
+        this.keyboardListener = new KeyboardListener(window);
 
         // collega al chamberView la stanza (con le entità ordinate in base al layer) da disegnare
-        this.gameView.getWindow().getGamePanel().getChamberView().setDrawOrder(ChamberManager.getInstance().getCurrentChamber().getDrawOrderChamber());
+        this.window.getGamePanel().getChamberView().setDrawOrder(ChamberManager.getInstance().getCurrentChamber().getDrawOrderChamber());
 
         // inizializzazione del controller della stanza
-        ChamberController chamberController = new ChamberController(ChamberManager.getInstance().getCurrentChamber());
+        PowerUpTextVisualizerController powerUpTextVisualizerController = new PowerUpTextVisualizerController(
+                this.window.getGamePanel().getPowerUpTextVisualizerController()
+        );
+        ChamberController chamberController = new ChamberController(ChamberManager.getInstance().getCurrentChamber(), powerUpTextVisualizerController);
         keyboardListener.setChamber(chamberController);
     }
 }

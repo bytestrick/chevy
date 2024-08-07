@@ -13,12 +13,16 @@ public class RenderManager {
 
 
     public static void addToRender(Render r) {
-        toAdd.add(r);
+        synchronized (toAdd) {
+            toAdd.add(r);
+        }
     }
 
     public static void render(double delta) {
-        renderList.addAll(toAdd);
-        toAdd.clear();
+        synchronized (toAdd) {
+            renderList.addAll(toAdd);
+            toAdd.clear();
+        }
 
         Iterator<Render> it = renderList.iterator();
         while (it.hasNext()) {

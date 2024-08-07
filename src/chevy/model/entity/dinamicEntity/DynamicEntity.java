@@ -1,17 +1,19 @@
 package chevy.model.entity.dinamicEntity;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.EntityCommonEnumTypes;
+import chevy.model.entity.CommonEntityType;
 import chevy.utils.Vector2;
 
 public abstract class DynamicEntity extends Entity {
     private final Type type;
     protected DirectionsModel direction = DirectionsModel.getRandom();
-    private boolean canRemove = false;
+    private final boolean canRemove = false;
 
     public DynamicEntity(Vector2<Integer> initPosition, Type type) {
         super(initPosition, Entity.Type.DYNAMIC);
         this.type = type;
+
+        this.mustBeUpdate = true;
     }
 
     public void changePosition(Vector2<Integer> velocity) {
@@ -22,20 +24,16 @@ public abstract class DynamicEntity extends Entity {
 
     public void setDirection(DirectionsModel direction) { this.direction = direction; }
 
-    public void removeToUpdate() { canRemove = true; }
-
-    public boolean canRemoveToUpdate() { return canRemove; }
+    @Override
+    public CommonEntityType getSpecificType() { return type; }
 
     @Override
-    public EntityCommonEnumTypes getSpecificType() { return type; }
-
-    @Override
-    public EntityCommonEnumTypes getGenericType() { return super.getSpecificType(); }
+    public CommonEntityType getGenericType() { return super.getSpecificType(); }
 
     @Override
     public String toString() { return "DYNAMIC ENTITY"; }
 
-    public enum Type implements EntityCommonEnumTypes {
+    public enum Type implements CommonEntityType {
         LIVE_ENTITY, PROJECTILE;
     }
 }
