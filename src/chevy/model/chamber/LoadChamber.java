@@ -1,27 +1,24 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.EntityCommonEnumTypes;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.stateMachine.CommonEnumStates;
 import chevy.model.entity.staticEntity.environment.Environment;
-import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
-import chevy.model.entity.staticEntity.environment.traps.Totem;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.utils.Log;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 /**
- * La classe LoadChamber si occupa del caricamento delle stanze (Chamber) del gioco.
+ * Carica le Chamber del gioco.
  * Utilizza le immagini per determinare la disposizione delle entità all'interno di ogni stanza.
  */
 public class LoadChamber {
@@ -31,28 +28,28 @@ public class LoadChamber {
 
     /**
      * Carica un'immagine di una stanza.
-     * @param nChamber Il numero della stanza da caricare.
-     * @param layer Strato dell'immagine da caricare.
-     * @return L'immagine della stanza, o null se l'immagine non può essere caricata.
+     *
+     * @param nChamber il numero della stanza da caricare
+     * @param layer    strato dell'immagine da caricare
+     * @return l'immagine della stanza, o null se l'immagine non può essere caricata
      */
     private static BufferedImage loadImage(int nChamber, int layer) {
         String chamberPath = CHAMBER_PATH + nChamber + LAYER_FILE + layer + LAYER_FILE_EXTENSION;
         BufferedImage chamberImage = null;
         try {
             chamberImage = ImageIO.read(new File(chamberPath));
-        }
-        catch (IOException ignored) {
-            System.out.print("[x] " + chamberPath);
-            System.out.println(": il layer" + layer + ".png non è stato caricato");
+        } catch (IOException ignored) {
+            Log.warn(chamberPath + ": il layer" + layer + ".png non è stato caricato");
         }
         return chamberImage;
     }
 
     /**
      * Carica una stanza nel gioco.
+     *
      * @param nChamber Il numero della stanza da caricare.
-     * @param chamber La stanza in cui caricare le entità.
-     * @return true se la stanza è stata caricata correttamente, false altrimenti.
+     * @param chamber  La stanza in cui caricare le entità.
+     * @return true se la stanza è stata caricata correttamente, false altrimenti
      */
     public static boolean loadChamber(int nChamber, Chamber chamber) {
         int layer = 0;
@@ -71,6 +68,7 @@ public class LoadChamber {
                     int r = color.getRed();
                     if (r != 0) {
                         Entity entity = EntityFromColor.get(r, i, j);
+                        assert entity != null;
                         chamber.addEntityOnTop(entity);
                         switch (entity.getGenericType()) {
                             case Environment.Type.TRAP -> chamber.addTraps((Trap) entity);
@@ -79,7 +77,7 @@ public class LoadChamber {
                             case LiveEntity.Type.PLAYER -> chamber.setPlayer((Player) entity);
                             case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
                                     chamber.addCollectable((Collectable) entity);
-                            default -> {}
+                            default -> { }
                         }
                     }
                 }

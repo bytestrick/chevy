@@ -1,11 +1,11 @@
 package chevy.model.entity.staticEntity.environment;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.EntityCommonEnumTypes;
+import chevy.model.entity.CommonEntityType;
 import chevy.utils.Vector2;
 
 public abstract class Environment extends Entity {
-    public enum Type implements EntityCommonEnumTypes {
+    public enum Type implements CommonEntityType {
         GROUND,
         WALL,
         STAIR,
@@ -25,12 +25,12 @@ public abstract class Environment extends Entity {
 
 
     @Override
-    public EntityCommonEnumTypes getSpecificType() {
+    public CommonEntityType getSpecificType() {
         return type;
     }
 
     @Override
-    public EntityCommonEnumTypes getGenericType() {
+    public CommonEntityType getGenericType() {
         return super.getSpecificType();
     }
 

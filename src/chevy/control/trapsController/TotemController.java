@@ -9,11 +9,9 @@ import chevy.utils.Vector2;
 public class TotemController {
     private final Chamber chamber;
 
-
     public TotemController(Chamber chamber) {
         this.chamber = chamber;
     }
-
 
     public void update(Totem totem) {
         if (totem.checkAndChangeState(Totem.EnumState.SHOT)) {

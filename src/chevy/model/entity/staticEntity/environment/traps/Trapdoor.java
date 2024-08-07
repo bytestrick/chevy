@@ -1,18 +1,18 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
-import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class Trapdoor extends Trap {
-    public enum EnumState implements CommonEnumStates {
+    public enum EnumState implements CommonState {
         IDLE,
         OPEN,
         DAMAGE
     }
-    private final State idle = new State(EnumState.IDLE);
-    private final State open = new State(EnumState.OPEN, 0.4f);
-    private final State damage = new State(EnumState.DAMAGE);
+    private final GlobalState idle = new GlobalState(EnumState.IDLE);
+    private final GlobalState open = new GlobalState(EnumState.OPEN, 0.4f);
+    private final GlobalState damage = new GlobalState(EnumState.DAMAGE);
 
 
     public Trapdoor(Vector2<Integer> initVelocity) {
@@ -39,7 +39,7 @@ public class Trapdoor extends Trap {
         safeToCross = false;
     }
 
-    public synchronized State getState(CommonEnumStates commonEnumStates) {
+    public synchronized GlobalState getState(CommonState commonEnumStates) {
         EnumState trapdoorState = (EnumState) commonEnumStates;
         return switch (trapdoorState) {
             case IDLE -> idle;

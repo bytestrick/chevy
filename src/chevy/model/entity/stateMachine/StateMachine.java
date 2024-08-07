@@ -1,7 +1,9 @@
 package chevy.model.entity.stateMachine;
 
+import chevy.utils.Log;
+
 /**
- * La classe StateMachine rappresenta una macchina a stati finiti (FSM - Finite State Machine)
+ * La classe StateMachine rappresenta una macchina a stati finiti (FSM - Finite GlobalState Machine)
  * che gestisce le transizioni tra i diversi stati.
  * Questa classe consente di definire un comportamento strutturato in cui un entità dinamica può trovarsi
  * in uno e un solo stato alla volta, cambiando stato in risposta a determinati eventi o condizioni.
@@ -11,9 +13,9 @@ package chevy.model.entity.stateMachine;
  * sia finito.
  */
 public class StateMachine {
-    private State currentState;
-    private State previousState;
-    private State nextState;
+    private GlobalState currentGlobalState;
+    private GlobalState previousGlobalState;
+    private GlobalState nextGlobalState;
     private boolean usedWithCanChange = false;
     private String stateMachineName; // solo per capire di chi è la stampa
 
@@ -25,37 +27,40 @@ public class StateMachine {
      * @param state L'enumerazione dello stato a cui passare.
      * @return true se lo stato è cambiato con successo, false altrimenti.
      */
-    public synchronized boolean changeState(CommonEnumStates state) {
-        if (currentState == null) {
-            System.out.println("[x] Non è presente uno stato iniziale");
+    public synchronized boolean changeState(CommonState state) {
+        if (currentGlobalState == null) {
+            Log.error("Non è presente uno stato iniziale");
             return false;
         }
 
         // solo per la stampa
-        if (stateMachineName != null)
-            System.out.print(stateMachineName + ": " + currentState);
+        String logMessage = "";
+        if (stateMachineName != null) {
+            logMessage += stateMachineName + ": " + currentGlobalState;
+        }
 
         if (!usedWithCanChange)
-            nextState = currentState.findLinkedState(state);
+            nextGlobalState = currentGlobalState.findLinkedState(state);
 
-        if (nextState != null) {
-            previousState = currentState;
-            currentState = nextState;
+        if (nextGlobalState != null) {
+            previousGlobalState = currentGlobalState;
+            currentGlobalState = nextGlobalState;
 
             // solo per la stampa
             if (stateMachineName != null) {
-                System.out.println(" -> " + nextState);
+                Log.info(logMessage + " -> " + nextGlobalState);
             }
 
-            previousState.stopStateTimer();
-            currentState.startStateTimer();
-            nextState = null;
+            previousGlobalState.stopStateTimer();
+            currentGlobalState.startStateTimer();
+            nextGlobalState = null;
             return true;
         }
 
         // solo per la stampa
-        if (stateMachineName != null)
-            System.out.println();
+        if (stateMachineName != null) {
+            Log.info(logMessage);
+        }
 
         return false;
     }
@@ -65,18 +70,18 @@ public class StateMachine {
      * @param state L'enumerazione dello stato a cui passare.
      * @return true se è possibile cambiare lo stato, false altrimenti.
      */
-    public synchronized boolean canChange(CommonEnumStates state) {
-        if (currentState == null) {
-            System.out.println("[x] Non è presente uno stato iniziale");
+    public synchronized boolean canChange(CommonState state) {
+        if (currentGlobalState == null) {
+            Log.error("Non è presente uno stato iniziale");
             return false;
         }
 
-        nextState = currentState.findLinkedState(state);
-        if (nextState == null) {
+        nextGlobalState = currentGlobalState.findLinkedState(state);
+        if (nextGlobalState == null) {
             return false;
         }
 
-        return currentState.isFinished();
+        return currentGlobalState.isFinished();
     }
 
     /**
@@ -84,7 +89,7 @@ public class StateMachine {
      * @param state L'enumerazione dello stato a cui passare.
      * @return true se lo stato è cambiato con successo, false altrimenti.
      */
-    public synchronized boolean checkAndChangeState(CommonEnumStates state) {
+    public synchronized boolean checkAndChangeState(CommonState state) {
         if (canChange(state)) {
             usedWithCanChange = true;
             changeState(state);
@@ -95,22 +100,22 @@ public class StateMachine {
     }
 
     public synchronized boolean changeToPreviousState() {
-        return changeState(previousState.getStateEnum());
+        return changeState(previousGlobalState.getState());
     }
 
-    public synchronized State getCurrentState() {
-        if (currentState == null) {
-            System.out.println("[x] Non è presente uno stato iniziale");
+    public synchronized GlobalState getCurrentState() {
+        if (currentGlobalState == null) {
+            Log.error("Non è presente uno stato iniziale");
         }
-        return currentState;
+        return currentGlobalState;
     }
 
-    public synchronized State getPreviousState() { return previousState; }
+    public synchronized GlobalState getPreviousState() { return previousGlobalState; }
 
 
-    public void setInitialState(State startState) {
-        this.currentState = startState;
-        this.currentState.startStateTimer();
+    public void setInitialState(GlobalState startGlobalState) {
+        this.currentGlobalState = startGlobalState;
+        this.currentGlobalState.startStateTimer();
     }
 
     // solo per la stampa

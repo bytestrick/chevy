@@ -13,7 +13,7 @@ public class KeyController {
 
 
     public void playerInInteraction(Key key) {
-        if (key.changeState(Key.EnumState.COLLECTED)) {
+        if (key.changeState(Key.State.COLLECTED)) {
             key.collect();
             chamber.findAndRemoveEntity(key);
         }
@@ -21,7 +21,7 @@ public class KeyController {
 
     public void update(Key key) {
         if (key.isCollected()) {
-            if (key.getState(Key.EnumState.COLLECTED).isFinished()) {
+            if (key.getState(Key.State.COLLECTED).isFinished()) {
                 key.setToDraw(false);
                 key.removeToUpdate();
             }

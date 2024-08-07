@@ -1,30 +1,31 @@
 package chevy.service;
 
 import chevy.settings.GameSettings;
+import chevy.utils.Log;
 
-import java.awt.*;
+import java.awt.Toolkit;
 
 /**
- * Thread che permette al gioco di aggiornarsi
+ * Il thread che aggiorna il gioco.
  */
 public class GameLoop implements Runnable {
-    private boolean isRunning = false;
-
+    private boolean isRunning;
 
     public GameLoop() {
         Thread loop = new Thread(this);
         loop.setPriority(Thread.NORM_PRIORITY);
         this.isRunning = true;
         loop.start();
+        Log.info("Game loop avviato");
     }
-
 
     @Override
     public void run() {
         long lastTime = System.currentTimeMillis();
 
         while (isRunning) {
-            final long timeToWait = GameSettings.FRAME_TARGET_TIME - (System.currentTimeMillis() - lastTime); // si toglie al timeToWait (durata ideale del frame) il tempo perso a fare l'update e il render
+            // Si toglie al timeToWait (durata ideale del frame) il tempo perso a fare l'update e il render.
+            final long timeToWait = GameSettings.FRAME_TARGET_TIME - (System.currentTimeMillis() - lastTime);
 
             if (timeToWait > 0 && timeToWait <= GameSettings.FRAME_TARGET_TIME) {
                 try {
@@ -37,8 +38,6 @@ public class GameLoop implements Runnable {
             final double delta = (System.currentTimeMillis() - lastTime) / 1000.0d; // conversione in secondi
             lastTime = System.currentTimeMillis();
 
-//             System.out.print("\r delta:  " + delta + "\t");
-
             UpdateManager.update(delta);
             RenderManager.render(delta);
             Toolkit.getDefaultToolkit().sync();
@@ -48,5 +47,8 @@ public class GameLoop implements Runnable {
     /**
      * Termina l'aggiornamento del gioco
      */
-    public void stopLoop() { this.isRunning = false; }
+    public void stopLoop() {
+        this.isRunning = false;
+        Log.info("Game loop terminato");
+    }
 }

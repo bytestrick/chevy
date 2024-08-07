@@ -11,19 +11,15 @@ import java.util.List;
  * Utilizza una lista di Layer, ognuno dei quali contiene un insieme di entità da disegnare.
  */
 public class LayerManager {
-    /**
-     * Lista di Layer che rappresenta l'ordine di disegno delle entità.
-     */
     private final List<Layer> drawOrder;
-
 
     public LayerManager() {
         this.drawOrder = new LinkedList<>();
     }
 
-
     /**
      * Trova un Layer specifico nella lista. Se il Layer non esiste, lo crea e lo aggiunge alla lista.
+     *
      * @param nLayer priorità di ridisegno del livello da trovare.
      * @return ll Layer trovato o creato.
      */
@@ -41,6 +37,7 @@ public class LayerManager {
 
     /**
      * Aggiunge un'entità a un Layer specifico.
+     *
      * @param entity L'entità da aggiungere.
      * @param nLayer Il numero del Layer a cui aggiungere l'entità.
      */

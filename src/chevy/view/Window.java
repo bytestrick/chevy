@@ -1,9 +1,13 @@
 package chevy.view;
 
 import chevy.settings.WindowSettings;
+import chevy.utils.Log;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -11,13 +15,11 @@ public class Window extends JFrame {
     public static final Dimension size = new Dimension(WindowSettings.WINDOW_WIDTH, WindowSettings.WINDOW_HEIGHT);
     private final GamePanel gamePanel;
 
-
     public Window(boolean resizable) {
         setTitle("Chevy");
 
         setSize(size);
         setLocationRelativeTo(null);
-        setBackground(Color.DARK_GRAY);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -31,10 +33,12 @@ public class Window extends JFrame {
         SwingUtilities.invokeLater(() -> {
             WindowSettings.SIZE_TOP_BAR = getInsets().top;
             setResizable(resizable);
-            if (resizable)
+            if (resizable) {
                 makeResponsive();
-            System.out.println("Start window size: " + size);
+            }
         });
+
+        Log.info(size.toString());
     }
 
     private void makeResponsive() {

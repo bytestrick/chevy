@@ -1,12 +1,12 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import chevy.model.entity.EntityCommonEnumTypes;
+import chevy.model.entity.CommonEntityType;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.utils.Vector2;
 
 public abstract class Trap extends Environment {
     protected boolean canHitFlingEntity;
-    public enum Type implements EntityCommonEnumTypes {
+    public enum Type implements CommonEntityType {
         SLUDGE,
         VOID,
         SPIKED_FLOOR,
@@ -26,12 +26,12 @@ public abstract class Trap extends Environment {
 
 
     @Override
-    public EntityCommonEnumTypes getSpecificType() {
+    public CommonEntityType getSpecificType() {
         return type;
     }
 
     @Override
-    public EntityCommonEnumTypes getGenericType() {
+    public CommonEntityType getGenericType() {
         return super.getSpecificType();
     }
 

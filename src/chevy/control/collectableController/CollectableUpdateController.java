@@ -1,6 +1,6 @@
 package chevy.control.collectableController;
 
-import chevy.control.InteractionTypes;
+import chevy.control.InteractionType;
 import chevy.model.entity.collectable.Collectable;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -52,18 +52,9 @@ public class CollectableUpdateController implements Update {
         Iterator<Collectable> it = collectables.iterator();
         while (it.hasNext()) {
             Collectable collectable = it.next();
-            collectableController.handleInteraction(InteractionTypes.UPDATE, collectable, null);
+            collectableController.handleInteraction(InteractionType.UPDATE, collectable, null);
             if (collectable.canRemoveToUpdate())
                 it.remove();
         }
-    }
-
-    /**
-     * Verifica se l'aggiornamento è terminato, ovvero se non ci sono più collezionabili da aggiornare.
-     * @return true se la lista dei collezionabili è vuota, false altrimenti.
-     */
-    @Override
-    public boolean updateIsEnd() {
-        return collectables.isEmpty();
     }
 }
