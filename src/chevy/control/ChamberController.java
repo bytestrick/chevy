@@ -14,8 +14,8 @@ import chevy.model.chamber.Chamber;
 import java.awt.event.KeyEvent;
 
 /**
- * La classe ChamberController gestisce l'interazione tra il giocatore e la stanza di gioco.
- * Questa classe si occupa di inizializzare i controller per il giocatore, i nemici, le trappole e i proiettili.
+ * Gestisce l'interazione tra il giocatore e la stanza di gioco.
+ * Inizializza i controller per il giocatore, i nemici, le trappole e i proiettili.
  */
 public class ChamberController {
     /**
@@ -26,14 +26,17 @@ public class ChamberController {
     /**
      * Inizializza il controller della stanza con i riferimenti alla stanza di gioco.
      * Crea i controller per il giocatore, i nemici, le trappole e i proiettili.
+     *
      * @param chamber riferimento alla stanza di gioco
      */
     public ChamberController(Chamber chamber, PowerUpTextVisualizerController powerUpTextVisualizerController) {
         this.playerController = new PlayerController(chamber);
         EnemyController enemyController = new EnemyController(chamber, playerController);
         TrapsController trapsController = new TrapsController(chamber, playerController, enemyController);
-        ProjectileController projectileController = new ProjectileController(chamber, playerController, enemyController);
-        CollectableController collectableController = new CollectableController(chamber, playerController, powerUpTextVisualizerController);
+        CollectableController collectableController = new CollectableController(chamber, playerController,
+            powerUpTextVisualizerController);
+        ProjectileController projectileController = new ProjectileController(chamber, playerController,
+                enemyController);
 
         playerController.setEnemyController(enemyController);
         playerController.setTrapController(trapsController);
@@ -47,6 +50,7 @@ public class ChamberController {
 
     /**
      * Gestisce gli eventi di pressione dei tasti delegandoli al controller del giocatore.
+     *
      * @param keyEvent l'evento di pressione del tasto
      */
     public void keyPressed(KeyEvent keyEvent) {

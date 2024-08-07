@@ -1,22 +1,23 @@
 package chevy.model.entity.dinamicEntity.liveEntity.player;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
-import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class Knight extends Player {
-    private final State idle = new State(EnumState.IDLE);
-    private final State move = new State(EnumState.MOVE, speed);
-    private final State attack = new State(EnumState.ATTACK);
-    private final State hit = new State(EnumState.HIT, 0.1f);
-    private final State dead = new State(EnumState.DEAD);
-    private final State glide = new State(EnumState.GLIDE, speed, true);
-    private final State sludge = new State(EnumState.SLUDGE, speed);
-    private final State fall = new State(EnumState.FALL, speed);
-
+    private final GlobalState idle = new GlobalState(State.IDLE );
+    private final GlobalState move = new GlobalState(State.MOVE, speed);
+    private final GlobalState attack = new GlobalState(State.ATTACK, .4f);
+    private final GlobalState hit = new GlobalState(State.HIT, .2f);
+    private final GlobalState dead = new GlobalState(State.DEAD, 2f);
+    private final GlobalState glide = new GlobalState(State.GLIDE, speed, true);
+    private final GlobalState sludge = new GlobalState(State.SLUDGE, speed);
+    private final GlobalState fall = new GlobalState(State.FALL);
 
     public Knight(Vector2<Integer> initPosition) {
         super(initPosition, Type.KNIGHT);
+
+        this.speed = 0.2f;
         this.health = 100;
         this.shield = 2;
         this.maxDamage = 7;
@@ -24,7 +25,6 @@ public class Knight extends Player {
 
         initStateMachine();
     }
-
 
     private void initStateMachine() {
         idle.linkState(move);
@@ -56,9 +56,8 @@ public class Knight extends Player {
     }
 
     @Override
-    public synchronized State getState(CommonEnumStates commonEnumStates) {
-        Player.EnumState playerState = (Player.EnumState) commonEnumStates;
-        return switch (playerState) {
+    public synchronized GlobalState getState(CommonState state) {
+        return switch ((State) state) {
             case IDLE -> idle;
             case ATTACK -> attack;
             case MOVE -> move;

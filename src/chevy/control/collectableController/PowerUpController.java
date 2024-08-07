@@ -16,7 +16,7 @@ public class PowerUpController {
 
 
     public void playerInInteraction(Player player, PowerUp powerUp) {
-        if (powerUp.changeState(PowerUp.EnumState.COLLECTED)) {
+        if (powerUp.changeState(PowerUp.State.COLLECTED)) {
             powerUp.collect();
             chamber.findAndRemoveEntity(powerUp);
             powerUpTextVisualizerController.hide();
@@ -26,20 +26,20 @@ public class PowerUpController {
 
     public void update(PowerUp powerUp) {
         if (powerUp.isCollected()) {
-            if (powerUp.getState(PowerUp.EnumState.COLLECTED).isFinished()) {
+            if (powerUp.getState(PowerUp.State.COLLECTED).isFinished()) {
                 powerUp.setToDraw(false);
                 powerUp.removeToUpdate();
             }
         }
         else {
             if (chamber.getHitDirectionPlayer(powerUp) != null) {
-                if (powerUp.changeState(PowerUp.EnumState.SELECTED))
+                if (powerUp.changeState(PowerUp.State.SELECTED))
                     powerUpTextVisualizerController.show(powerUp);
             }
-            else if (powerUp.checkAndChangeState(PowerUp.EnumState.DESELECTED)) {
+            else if (powerUp.checkAndChangeState(PowerUp.State.DESELECTED)) {
                     powerUpTextVisualizerController.hide();
             }
-            powerUp.checkAndChangeState(PowerUp.EnumState.IDLE);
+            powerUp.checkAndChangeState(PowerUp.State.IDLE);
         }
     }
 }

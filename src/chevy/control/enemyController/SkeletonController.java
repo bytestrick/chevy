@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionTypes;
+import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
@@ -9,11 +9,12 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.utils.Log;
 
 /**
- * La classe SkeletonController è responsabile della gestione del comportamento e delle interazioni
- * del nemico Skeleton all'interno del gioco. Gestisce come lo Skeleton risponde agli attacchi del giocatore,
- * ai colpi dei proiettili e coordina il suo stato e i suoi movimenti.
+ * Gestisce il comportamento e le interazioni del nemico Skeleton all'interno del gioco.
+ * Gestisce come lo Skeleton risponde agli attacchi del giocatore, ai colpi dei proiettili e coordina il suo stato e
+ * i suoi movimenti.
  */
 public class SkeletonController {
     /**
@@ -27,8 +28,7 @@ public class SkeletonController {
     private final PlayerController playerController;
 
     /**
-     * Inizializza il controller con i riferimenti alla stanza di gioco e al controller del giocatore.
-     * @param chamber riferimento della stanza
+     * @param chamber          riferimento della stanza di gioco
      * @param playerController riferimento al controller del giocatore
      */
     public SkeletonController(Chamber chamber, PlayerController playerController) {
@@ -38,67 +38,66 @@ public class SkeletonController {
 
     /**
      * Gestisce le interazioni dello Skeleton con il giocatore.
-     * @param player il giocatore che interagisce con lo Skeleton.
-     * @param skeleton lo Skeleton che subisce l'interazione.
+     *
+     * @param player   il giocatore che interagisce con lo Skeleton
+     * @param skeleton lo Skeleton che subisce l'interazione
      */
     public void playerInInteraction(Player player, Skeleton skeleton) {
-        switch (player.getCurrentEumState()) {
+        switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, lo Skeleton viene danneggiato in base al danno del giocatore.
-            case Player.EnumState.ATTACK -> {
+            case Player.State.ATTACK -> {
                 hitSkeleton(skeleton, -1 * player.getDamage());
                 skeleton.setDirection(DirectionsModel.positionToDirection(player, skeleton));
             }
-            default -> System.out.println("[!] Lo SkeletonController non gestisce questa azione: " + player.getCurrentEumState());
+            default -> Log.warn("Lo SkeletonController non gestisce questa azione: " + player.getCurrentState());
         }
     }
 
     /**
      * Aggiorna lo stato dello Skeleton a ogni ciclo di gioco.
-     * @param skeleton lo Skeleton da aggiornare.
+     *
+     * @param skeleton lo Skeleton da aggiornare
      */
     public void update(Skeleton skeleton) {
         // Gestione della morte
-        if (!skeleton.isAlive()) {
-            if (skeleton.getState(Skeleton.EnumState.DEAD).isFinished()) {
+        if (skeleton.isDead()) {
+            if (skeleton.getState(Skeleton.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(skeleton);
                 skeleton.removeToUpdate();
                 return;
             }
-        }
-        else if (skeleton.getHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.EnumState.DEAD)) {
+        } else if (skeleton.getHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.State.DEAD)) {
             skeleton.kill();
         }
 
         // Gestione del movimento/attacco
-        if (skeleton.canChange(Skeleton.EnumState.MOVE)) {
+        if (skeleton.canChange(Skeleton.State.MOVE)) {
             DirectionsModel direction = chamber.getHitDirectionPlayer(skeleton);
             if (direction == null) {
                 if (chamber.chase(skeleton)) {
-                    skeleton.changeState(Skeleton.EnumState.MOVE);
+                    skeleton.changeState(Skeleton.State.MOVE);
                 }
-            }
-            else if (skeleton.canAttack() && skeleton.getState(Skeleton.EnumState.ATTACK).isFinished()) {
+            } else if (skeleton.canAttack() && skeleton.getState(Skeleton.State.ATTACK).isFinished()) {
                 Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
                 if (entity instanceof Player) {
-                    playerController.handleInteraction(InteractionTypes.ENEMY, skeleton);
+                    playerController.handleInteraction(InteractionType.ENEMY, skeleton);
                     skeleton.setCanAttack(false);
                 }
-            }
-            else if (skeleton.canChange(Skeleton.EnumState.ATTACK)) {
+            } else if (skeleton.canChange(Skeleton.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
-                if (entity instanceof Player && skeleton.changeState(Skeleton.EnumState.ATTACK)) {
+                if (entity instanceof Player && skeleton.changeState(Skeleton.State.ATTACK)) {
                     skeleton.setCanAttack(true);
                 }
             }
         }
-
-        skeleton.checkAndChangeState(Skeleton.EnumState.IDLE);
+        skeleton.checkAndChangeState(Skeleton.State.IDLE);
     }
 
     /**
      * Gestisce le interazioni dello Skeleton con i proiettili.
-     * @param projectile il proiettile che colpisce lo Skeleton.
-     * @param skeleton lo Skeleton che subisce l'interazione.
+     *
+     * @param projectile il proiettile che colpisce lo Skeleton
+     * @param skeleton   lo Skeleton che subisce l'interazione
      */
     public void projectileInteraction(Projectile projectile, Skeleton skeleton) {
         skeleton.setDirection(DirectionsModel.positionToDirection(projectile, skeleton));
@@ -107,12 +106,14 @@ public class SkeletonController {
 
     /**
      * Applica danno allo Skeleton e aggiorna il suo stato.
-     * @param skeleton lo Skeleton che subisce il danno.
-     * @param damage il danno da applicare.
+     *
+     * @param skeleton lo Skeleton che subisce il danno
+     * @param damage   il danno da applicare
      */
     private void hitSkeleton(Skeleton skeleton, int damage) {
-        if (skeleton.changeState(Skeleton.EnumState.HIT))
+        if (skeleton.changeState(Skeleton.State.HIT)) {
             skeleton.changeHealth(damage);
+        }
     }
 
     public void trapInteraction(Trap trap, Skeleton skeleton) {
@@ -120,7 +121,7 @@ public class SkeletonController {
             case Trap.Type.SPIKED_FLOOR -> {
                 hitSkeleton(skeleton, -1 * trap.getDamage());
             }
-            default -> {}
+            default -> { }
         }
     }
 }

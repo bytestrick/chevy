@@ -1,23 +1,15 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
-import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class BigSlime extends Enemy {
-    public enum EnumState implements CommonEnumStates {
-        MOVE,
-        ATTACK,
-        HIT,
-        DEAD,
-        IDLE
-    }
-    private final State idle = new State(EnumState.IDLE, 0.7f);
-    private final State move = new State(EnumState.MOVE, 0.5f);
-    private final State attack = new State(EnumState.ATTACK, 0.5f);
-    private final State hit = new State(EnumState.HIT, 0.2f);
-    private final State dead = new State(EnumState.DEAD, 0.3f);
-
+    private final GlobalState idle = new GlobalState(State.IDLE, 0.7f);
+    private final GlobalState move = new GlobalState(State.MOVE, 0.5f);
+    private final GlobalState attack = new GlobalState(State.ATTACK, 0.5f);
+    private final GlobalState hit = new GlobalState(State.HIT, 0.2f);
+    private final GlobalState dead = new GlobalState(State.DEAD, 0.3f);
 
     public BigSlime(Vector2<Integer> initPosition) {
         super(initPosition, Type.BIG_SLIME);
@@ -27,7 +19,6 @@ public class BigSlime extends Enemy {
 
         initStateMachine();
     }
-
 
     private void initStateMachine() {
         stateMachine.setStateMachineName("Big slime");
@@ -45,8 +36,8 @@ public class BigSlime extends Enemy {
     }
 
     @Override
-    public synchronized State getState(CommonEnumStates commonEnumStates) {
-        EnumState bigSlimeState = (EnumState) commonEnumStates;
+    public synchronized GlobalState getState(CommonState commonEnumStates) {
+        State bigSlimeState = (State) commonEnumStates;
         return switch (bigSlimeState) {
             case MOVE -> move;
             case ATTACK -> attack;
@@ -54,5 +45,9 @@ public class BigSlime extends Enemy {
             case DEAD -> dead;
             case IDLE -> idle;
         };
+    }
+
+    public enum State implements CommonState {
+        MOVE, ATTACK, HIT, DEAD, IDLE
     }
 }

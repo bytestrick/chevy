@@ -1,25 +1,17 @@
 package chevy.model.entity.collectable;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
-import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class Key extends Collectable {
-    public enum EnumState implements CommonEnumStates {
-        IDLE,
-        COLLECTED
-    }
-
-    private final State idle = new State(EnumState.IDLE, 1.8f);
-    private final State collected = new State(EnumState.COLLECTED, 0.8f);
-
-
+    private final GlobalState idle = new GlobalState(State.IDLE, 1.8f);
+    private final GlobalState collected = new GlobalState(State.COLLECTED, 0.8f);
     public Key(Vector2<Integer> initPosition) {
         super(initPosition, Type.KEY);
 
         initStateMachine();
     }
-
 
     private void initStateMachine() {
         this.stateMachine.setStateMachineName("Key");
@@ -28,11 +20,15 @@ public class Key extends Collectable {
         idle.linkState(collected);
     }
 
-    public synchronized State getState(CommonEnumStates commonEnumStates) {
-        EnumState keyEnumState = (EnumState) commonEnumStates;
-        return switch (keyEnumState) {
+    public synchronized GlobalState getState(CommonState commonState) {
+        State keyState = (State) commonState;
+        return switch (keyState) {
             case IDLE -> idle;
             case COLLECTED -> collected;
         };
+    }
+
+    public enum State implements CommonState {
+        IDLE, COLLECTED
     }
 }

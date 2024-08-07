@@ -1,23 +1,13 @@
 package chevy.model.entity.dinamicEntity;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.EntityCommonEnumTypes;
-import chevy.model.entity.stateMachine.CommonEnumStates;
-import chevy.model.entity.stateMachine.State;
-import chevy.model.entity.stateMachine.StateMachine;
+import chevy.model.entity.CommonEntityType;
 import chevy.utils.Vector2;
 
 public abstract class DynamicEntity extends Entity {
-    public enum Type implements EntityCommonEnumTypes {
-        LIVE_ENTITY,
-        PROJECTILE;
-
-
-    }
     private final Type type;
-
     protected DirectionsModel direction = DirectionsModel.getRandom();
-
+    private final boolean canRemove = false;
 
     public DynamicEntity(Vector2<Integer> initPosition, Type type) {
         super(initPosition, Entity.Type.DYNAMIC);
@@ -26,31 +16,24 @@ public abstract class DynamicEntity extends Entity {
         this.mustBeUpdate = true;
     }
 
-
     public void changePosition(Vector2<Integer> velocity) {
         this.position.change(velocity);
     }
 
-    public DirectionsModel getDirection() {
-        return direction;
-    }
+    public DirectionsModel getDirection() { return direction; }
 
-    public void setDirection(DirectionsModel direction) {
-        this.direction = direction;
-    }
+    public void setDirection(DirectionsModel direction) { this.direction = direction; }
 
     @Override
-    public EntityCommonEnumTypes getSpecificType() {
-        return type;
-    }
+    public CommonEntityType getSpecificType() { return type; }
 
     @Override
-    public EntityCommonEnumTypes getGenericType() {
-        return super.getSpecificType();
-    }
+    public CommonEntityType getGenericType() { return super.getSpecificType(); }
 
     @Override
-    public String toString() {
-        return "DYNAMIC ENTITY";
+    public String toString() { return "DYNAMIC ENTITY"; }
+
+    public enum Type implements CommonEntityType {
+        LIVE_ENTITY, PROJECTILE;
     }
 }

@@ -1,12 +1,11 @@
 package chevy.control.trapsController;
 
-import chevy.control.InteractionTypes;
 import chevy.control.PlayerController;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 
 /**
- * Controller per gestire le interazioni del giocatore con il pavimento ghiacciato nel gioco.
+ * Gestisce le interazioni del giocatore con il pavimento ghiacciato nel gioco.
  */
 public class IcyFloorController {
     private final PlayerController playerController;
@@ -20,15 +19,16 @@ public class IcyFloorController {
 
     /**
      * Gestisce l'interazione del giocatore con il pavimento ghiacciato.
-     * @param player il giocatore che interagisce con il pavimento ghiacciato
+     *
+     * @param player   il giocatore che interagisce con il pavimento ghiacciato
      * @param icyFloor il pavimento ghiacciato calpestato dal giocatore
      */
     public void playerInInteraction(Player player, IcyFloor icyFloor) {
-        player.changeState(Player.EnumState.GLIDE);
+        player.changeState(Player.State.GLIDE);
     }
 
     public void playerOutInteraction(Player player, IcyFloor icyFloor) {
-        player.changeState(Player.EnumState.GLIDE);
+        player.changeState(Player.State.GLIDE);
     }
 
     public void update(IcyFloor icyFloor) {

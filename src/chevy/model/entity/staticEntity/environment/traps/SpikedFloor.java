@@ -1,18 +1,18 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
-import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class SpikedFloor extends Trap {
-    public enum EnumState implements CommonEnumStates {
+    public enum EnumState implements CommonState {
         ACTIVATED,
         DAMAGE,
         DISABLED
     }
-    private final State activated = new State(EnumState.ACTIVATED, 0.2f);
-    private final State disabled = new State(EnumState.DISABLED, 3f);
-    private final State damage = new State(EnumState.DAMAGE, 0.8f);
+    private final GlobalState activated = new GlobalState(EnumState.ACTIVATED, 0.2f);
+    private final GlobalState disabled = new GlobalState(EnumState.DISABLED, 3f);
+    private final GlobalState damage = new GlobalState(EnumState.DAMAGE, 0.8f);
 
 
     public SpikedFloor(Vector2<Integer> initVelocity) {
@@ -43,7 +43,7 @@ public class SpikedFloor extends Trap {
         safeToCross = true;
     }
 
-    public synchronized State getState(CommonEnumStates commonEnumStates) {
+    public synchronized GlobalState getState(CommonState commonEnumStates) {
         EnumState spikedFloorState = (EnumState) commonEnumStates;
         return switch (spikedFloorState) {
             case ACTIVATED -> activated;

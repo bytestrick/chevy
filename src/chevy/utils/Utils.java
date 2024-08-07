@@ -1,11 +1,11 @@
 package chevy.utils;
 
 public class Utils {
-
     /**
      * Questa funzione prende un valore e un intervallo definito da min e max, e restituisce un valore equivalente
      * all’interno di quell’intervallo. Se il valore fornito è al di fuori dell’intervallo, la funzione lo “avvolge”
      * per riportarlo all’interno dell’intervallo.
+     *
      * @param value valore da "avvolgere"
      * @param min valore minimo di ritorno
      * @param max valore massimo di ritorno

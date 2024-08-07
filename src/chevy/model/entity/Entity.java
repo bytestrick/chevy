@@ -1,33 +1,26 @@
 package chevy.model.entity;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
-import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.GlobalState;
 import chevy.model.entity.stateMachine.StateMachine;
+import chevy.utils.Log;
 import chevy.utils.Vector2;
 
 import java.util.Random;
 import java.util.UUID;
 
-
 public abstract class Entity {
-    private final UUID ID = UUID.randomUUID();
     protected final Vector2<Integer> position;
+    protected final StateMachine stateMachine = new StateMachine();
+    private final UUID ID = UUID.randomUUID();
+    private final Type type;
     protected int maxDamage;
     protected int minDamage;
     protected boolean safeToCross;
     protected boolean crossable;
-
     protected int drawLayer;
-    private boolean toDraw;
-    protected final StateMachine stateMachine = new StateMachine();
     protected boolean mustBeUpdate = false;
-    public enum Type implements EntityCommonEnumTypes {
-        DYNAMIC,
-        ENVIRONMENT,
-        COLLECTABLE
-    }
-    private final Type type;
-
+    private boolean toDraw;
 
     public Entity(Vector2<Integer> initPosition, Type type) {
         this.position = initPosition;
@@ -40,8 +33,7 @@ public abstract class Entity {
         this.toDraw = false;
     }
 
-
-    public boolean isToDraw() {
+    public boolean toDraw() {
         return toDraw;
     }
 
@@ -54,9 +46,9 @@ public abstract class Entity {
         return random.nextInt(minDamage, maxDamage + 1);
     }
 
-    public EntityCommonEnumTypes getSpecificType() { return type; }
+    public CommonEntityType getSpecificType() { return type; }
 
-    public EntityCommonEnumTypes getGenericType() { return null; }
+    public CommonEntityType getGenericType() { return null; }
 
     public final int getRow() { return position.first; }
 
@@ -65,9 +57,9 @@ public abstract class Entity {
     public boolean isCrossable() { return crossable; }
 
     public boolean isSafeToCross() {
-        if (crossable)
+        if (crossable) {
             return safeToCross;
-
+        }
         return false;
     }
 
@@ -75,20 +67,20 @@ public abstract class Entity {
         return Math.abs(this.drawLayer);
     }
 
-    public State getState(CommonEnumStates commonEnumStates) {
-        System.out.println("[!] La funzione getState() deve essere ridefinita opportunamente nelle classi figlie");
+    public GlobalState getState(CommonState commonEnumStates) {
+        Log.warn("La funzione getState() deve essere ridefinita opportunamente nelle classi figlie");
         return null;
     }
 
-    public boolean changeState(CommonEnumStates state) {
+    public boolean changeState(CommonState state) {
         return stateMachine.changeState(state);
     }
 
-    public boolean canChange(CommonEnumStates state) {
+    public boolean canChange(CommonState state) {
         return stateMachine.canChange(state);
     }
 
-    public boolean checkAndChangeState(CommonEnumStates state) {
+    public boolean checkAndChangeState(CommonState state) {
         return stateMachine.checkAndChangeState(state);
     }
 
@@ -96,18 +88,20 @@ public abstract class Entity {
         return stateMachine.changeToPreviousState();
     }
 
-    public CommonEnumStates getCurrentEumState() {
-        State currentState = stateMachine.getCurrentState();
-        if (currentState == null)
+    public CommonState getCurrentState() {
+        GlobalState currentGlobalState = stateMachine.getCurrentState();
+        if (currentGlobalState == null) {
             return null;
-        return currentState.getStateEnum();
+        }
+        return currentGlobalState.getState();
     }
 
-    public CommonEnumStates getPreviousEnumState() {
-        State previousState = stateMachine.getPreviousState();
-        if (previousState == null)
+    public CommonState getPreviousState() {
+        GlobalState previousGlobalState = stateMachine.getPreviousState();
+        if (previousGlobalState == null) {
             return null;
-        return previousState.getStateEnum();
+        }
+        return previousGlobalState.getState();
     }
 
     public boolean canRemoveToUpdate() {
@@ -118,7 +112,6 @@ public abstract class Entity {
         mustBeUpdate = false;
     }
 
-
     @Override
     public String toString() {
         return "ENTITY";
@@ -126,16 +119,22 @@ public abstract class Entity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Entity entity = (Entity) o;
-
         return ID.equals(entity.ID);
     }
 
     @Override
     public int hashCode() {
         return ID.hashCode();
+    }
+
+    public enum Type implements CommonEntityType {
+        DYNAMIC, ENVIRONMENT, POWER_UP, COLLECTABLE
     }
 }

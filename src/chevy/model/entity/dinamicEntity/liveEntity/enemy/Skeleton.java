@@ -1,26 +1,18 @@
 package chevy.model.entity.dinamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.stateMachine.CommonEnumStates;
-import chevy.model.entity.stateMachine.State;
+import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.GlobalState;
+import chevy.utils.Log;
 import chevy.utils.Vector2;
 
 public class Skeleton extends Enemy {
-    public enum EnumState implements CommonEnumStates {
-        MOVE,
-        ATTACK,
-        HIT,
-        DEAD,
-        IDLE,
-        INVINCIBILITY
-    }
+    private final GlobalState idle = new GlobalState(State.IDLE, 1.8f);
+    private final GlobalState move = new GlobalState(State.MOVE, 0.5f);
+    private final GlobalState attack = new GlobalState(State.ATTACK, 0.5f);
+    private final GlobalState hit = new GlobalState(State.HIT, 0.15f);
+    private final GlobalState dead = new GlobalState(State.DEAD, 0.3f);
+    private final GlobalState invincibility = new GlobalState(State.INVINCIBILITY);
     private boolean invincible = true;
-    private final State idle = new State(EnumState.IDLE, 1.8f);
-    private final State move = new State(EnumState.MOVE, 0.5f);
-    private final State attack = new State(EnumState.ATTACK, 0.5f);
-    private final State hit = new State(EnumState.HIT, 0.15f);
-    private final State dead = new State(EnumState.DEAD, 0.3f);
-    private final State invincibility = new State(EnumState.INVINCIBILITY);
-
 
     public Skeleton(Vector2<Integer> initPosition) {
         super(initPosition, Type.SKELETON);
@@ -31,7 +23,6 @@ public class Skeleton extends Enemy {
 
         initStateMachine();
     }
-
 
     private void initStateMachine() {
         stateMachine.setStateMachineName("Skeleton");
@@ -58,16 +49,16 @@ public class Skeleton extends Enemy {
     public synchronized void changeHealth(int value) {
         if (invincible) {
             invincible = false;
-            System.out.println("[-] Lo SKELETON ha perso la sua invicibilità");
+            Log.warn("Lo SKELETON ha perso la sua invincibilità");
             return;
         }
         super.changeHealth(value);
     }
 
     @Override
-    public synchronized State getState(CommonEnumStates commonEnumStates) {
-        EnumState skeletonEnuk = (EnumState) commonEnumStates;
-        return switch (skeletonEnuk) {
+    public synchronized GlobalState getState(CommonState commonStates) {
+        State skeletonEnum = (State) commonStates;
+        return switch (skeletonEnum) {
             case MOVE -> move;
             case ATTACK -> attack;
             case HIT -> hit;
@@ -75,5 +66,9 @@ public class Skeleton extends Enemy {
             case IDLE -> idle;
             case INVINCIBILITY -> invincibility;
         };
+    }
+
+    public enum State implements CommonState {
+        MOVE, ATTACK, HIT, DEAD, IDLE, INVINCIBILITY
     }
 }

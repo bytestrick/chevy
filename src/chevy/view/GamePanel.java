@@ -1,22 +1,20 @@
 package chevy.view;
 
-import chevy.model.chamber.Chamber;
 import chevy.service.Render;
 import chevy.service.RenderManager;
-import chevy.settings.GameSettings;
 import chevy.settings.WindowSettings;
 import chevy.view.chamber.ChamberView;
-import chevy.view.entityView.entityViewAnimated.collectable.powerUp.PowerUpTextVisualizerView;
+import chevy.view.entities.animated.collectable.powerUp.PowerUpTextVisualizerView;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.KeyListener;
-
 
 public class GamePanel extends JPanel implements Render {
     private final ChamberView chamberView;
     private final PowerUpTextVisualizerView powerUpTextVisualizerView;
-
 
     public GamePanel() {
         this.chamberView = new ChamberView();
@@ -30,7 +28,6 @@ public class GamePanel extends JPanel implements Render {
         RenderManager.addToRender(this);
         setBackground(Color.BLACK);
     }
-
 
     public void addKeyBoardListener(KeyListener keyboardListener) {
         addKeyListener(keyboardListener);
@@ -49,7 +46,6 @@ public class GamePanel extends JPanel implements Render {
     public PowerUpTextVisualizerView getPowerUpTextVisualizerController() {
         return powerUpTextVisualizerView;
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {
