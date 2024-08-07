@@ -3,6 +3,7 @@ package chevy.model.chamber;
 import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.chamber.drawOrder.LayerManager;
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
@@ -40,6 +41,10 @@ public class Chamber {
      * Lista che tiene traccia dei proiettili presenti nella stanza.
      */
     private final List<Projectile> projectiles = new LinkedList<>();
+    /**
+     * Lista che tiene traccia degli oggetti collezionabili presenti nella stanza.
+     */
+    private final List<Collectable> collectables = new LinkedList<>();
     /**
      * Una struttura dati tridimensionale che rappresenta la griglia di gioco.
      * Ogni cella della griglia può contenere una lista di entità.
@@ -487,9 +492,9 @@ public class Chamber {
 
     public synchronized void addEntityOnTop(Entity entity) {
         chamber.get(entity.getRow()).get(entity.getCol()).addLast(entity);
-        if (!entity.isToDraw()) {
+        if (!entity.toDraw()) {
             entity.setToDraw(true);
-            addEntityToDraw(entity, entity.getLayer());
+            addEntityToDraw(entity, entity.getDrawLayer());
         }
     }
 
@@ -556,8 +561,13 @@ public class Chamber {
 
     public synchronized void addProjectile(Projectile projectile) { projectiles.add(projectile); }
 
+    public synchronized void addCollectable(Collectable collectable) { collectables.add(collectable); }
+
+    public synchronized List<Collectable> getCollectables() { return collectables; }
+
     public synchronized List<Projectile> getProjectiles() { return projectiles; }
 
+    // ---
     public void addEntityToDraw(Entity entity, int layer) {
         drawOrderChamber.add(entity, layer);
     }

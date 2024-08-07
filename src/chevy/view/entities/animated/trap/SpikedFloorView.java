@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.trap;
 
-import chevy.model.entity.stateMachine.CommonStates;
+import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -10,12 +10,11 @@ import java.awt.image.BufferedImage;
 
 public class SpikedFloorView extends AnimatedEntityView {
     private static final String SPIKED_FLOOR_PATH = "/assets/traps/spikedFloor/";
-    private final Vector2<Double> position;
     private final SpikedFloor spikedFloor;
 
     public SpikedFloorView(SpikedFloor spikedFloor) {
         this.spikedFloor = spikedFloor;
-        position = new Vector2<>((double) spikedFloor.getCol(), (double) spikedFloor.getRow());
+        this.currentViewPosition = new Vector2<>((double) spikedFloor.getCol(), (double) spikedFloor.getRow());
 
         initAnimation();
     }
@@ -36,14 +35,14 @@ public class SpikedFloorView extends AnimatedEntityView {
     }
 
     public Vector2<Integer> getOffset() {
-        CommonStates currentState = spikedFloor.getCurrentState();
+        CommonState currentState = spikedFloor.getCurrentState();
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, 0);
         return currentAnimatedSprite.getOffset();
     }
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonStates currentEnumState = spikedFloor.getCurrentState();
+        CommonState currentEnumState = spikedFloor.getCurrentState();
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, 0);
 
         if (currentAnimatedSprite != null) {
@@ -56,12 +55,12 @@ public class SpikedFloorView extends AnimatedEntityView {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition() {
-        return position;
+    public Vector2<Double> getCurrentViewPosition() {
+        return currentViewPosition;
     }
 
     @Override
-    public void remove() {
-        deleteAnimations();
+    public void wasRemoved() {
+        super.deleteAnimations();
     }
 }

@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionTypes;
+import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
@@ -45,7 +45,7 @@ public class SkeletonController {
     public void playerInInteraction(Player player, Skeleton skeleton) {
         switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, lo Skeleton viene danneggiato in base al danno del giocatore.
-            case Player.States.ATTACK -> {
+            case Player.State.ATTACK -> {
                 hitSkeleton(skeleton, -1 * player.getDamage());
                 skeleton.setDirection(DirectionsModel.positionToDirection(player, skeleton));
             }
@@ -60,37 +60,37 @@ public class SkeletonController {
      */
     public void update(Skeleton skeleton) {
         // Gestione della morte
-        if (!skeleton.isAlive()) {
-            if (skeleton.getState(Skeleton.States.DEAD).isFinished()) {
+        if (skeleton.isDead()) {
+            if (skeleton.getState(Skeleton.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(skeleton);
                 skeleton.removeToUpdate();
                 return;
             }
-        } else if (skeleton.getHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.States.DEAD)) {
+        } else if (skeleton.getHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.State.DEAD)) {
             skeleton.kill();
         }
 
         // Gestione del movimento/attacco
-        if (skeleton.canChange(Skeleton.States.MOVE)) {
+        if (skeleton.canChange(Skeleton.State.MOVE)) {
             DirectionsModel direction = chamber.getHitDirectionPlayer(skeleton);
             if (direction == null) {
                 if (chamber.chase(skeleton)) {
-                    skeleton.changeState(Skeleton.States.MOVE);
+                    skeleton.changeState(Skeleton.State.MOVE);
                 }
-            } else if (skeleton.canAttack() && skeleton.getState(Skeleton.States.ATTACK).isFinished()) {
+            } else if (skeleton.canAttack() && skeleton.getState(Skeleton.State.ATTACK).isFinished()) {
                 Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
                 if (entity instanceof Player) {
-                    playerController.handleInteraction(InteractionTypes.ENEMY, skeleton);
+                    playerController.handleInteraction(InteractionType.ENEMY, skeleton);
                     skeleton.setCanAttack(false);
                 }
-            } else if (skeleton.canChange(Skeleton.States.ATTACK)) {
+            } else if (skeleton.canChange(Skeleton.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
-                if (entity instanceof Player && skeleton.changeState(Skeleton.States.ATTACK)) {
+                if (entity instanceof Player && skeleton.changeState(Skeleton.State.ATTACK)) {
                     skeleton.setCanAttack(true);
                 }
             }
         }
-        skeleton.checkAndChangeState(Skeleton.States.IDLE);
+        skeleton.checkAndChangeState(Skeleton.State.IDLE);
     }
 
     /**
@@ -111,7 +111,7 @@ public class SkeletonController {
      * @param damage   il danno da applicare
      */
     private void hitSkeleton(Skeleton skeleton, int damage) {
-        if (skeleton.changeState(Skeleton.States.HIT)) {
+        if (skeleton.changeState(Skeleton.State.HIT)) {
             skeleton.changeHealth(damage);
         }
     }

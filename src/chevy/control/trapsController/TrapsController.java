@@ -1,6 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.control.InteractionTypes;
+import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
@@ -35,7 +35,7 @@ public class TrapsController {
         this.sludgeController = new SludgeController(chamber);
         this.icyFloorController = new IcyFloorController(playerController);
         this.voidController = new VoidController(playerController);
-        this.trapdoorController = new TrapdoorController(chamber);
+        this.trapdoorController = new TrapdoorController(chamber, playerController);
         this.spikedFloorController = new SpikedFloorController(chamber, playerController, enemyController);
         this.totemController = new TotemController(chamber);
     }
@@ -47,11 +47,11 @@ public class TrapsController {
      * @param subject     l'entità che avvia l'interazione
      * @param object      l'entità che riceve l'interazione
      */
-    public synchronized void handleInteraction(InteractionTypes interaction, Entity subject, Entity object) {
+    public synchronized void handleInteraction(InteractionType interaction, Entity subject, Trap object) {
         switch (interaction) {
-            case PLAYER_IN -> playerInInteraction((Player) subject, (Trap) object);
-            case PLAYER_OUT -> playerOutInteraction((Player) subject, (Trap) object);
-            case PLAYER -> playerInteraction((Player) subject, (Trap) object);
+            case PLAYER_IN -> playerInInteraction((Player) subject, object);
+            case PLAYER_OUT -> playerOutInteraction((Player) subject, object);
+            case PLAYER -> playerInteraction((Player) subject, object);
             case UPDATE -> updateTraps((Trap) subject);
         }
     }
@@ -81,7 +81,7 @@ public class TrapsController {
             case Trap.Type.SLUDGE -> sludgeController.playerInInteraction(player, (Sludge) trap);
             case Trap.Type.ICY_FLOOR -> icyFloorController.playerInInteraction(player, (IcyFloor) trap);
             case Trap.Type.VOID -> voidController.playerInInteraction(player, (Void) trap);
-            case Trap.Type.TRAPDOOR -> trapdoorController.playerInInteraction(player);
+            case Trap.Type.TRAPDOOR -> trapdoorController.playerInInteraction((Trapdoor) trap);
             case Trap.Type.SPIKED_FLOOR -> spikedFloorController.playerInInteraction((SpikedFloor) trap);
             default -> { }
         }
@@ -110,6 +110,7 @@ public class TrapsController {
             case Trap.Type.SPIKED_FLOOR -> spikedFloorController.update((SpikedFloor) trap);
             case Trap.Type.TOTEM -> totemController.update((Totem) trap);
             case Trap.Type.ICY_FLOOR -> icyFloorController.update((IcyFloor) trap);
+            case Trap.Type.TRAPDOOR -> trapdoorController.update((Trapdoor) trap);
             default -> { }
         }
     }

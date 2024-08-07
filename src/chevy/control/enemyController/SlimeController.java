@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionTypes;
+import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
@@ -45,7 +45,7 @@ public class SlimeController {
     public void playerInInteraction(Player player, Slime slime) {
         switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, lo Slime viene danneggiato in base al danno del giocatore.
-            case Player.States.ATTACK -> {
+            case Player.State.ATTACK -> {
                 slime.setDirection(DirectionsModel.positionToDirection(player, slime));
                 hitSlime(slime, -1 * player.getDamage());
             }
@@ -59,36 +59,36 @@ public class SlimeController {
      * @param slime lo Slime da aggiornare.
      */
     public void update(Slime slime) {
-        if (!slime.isAlive()) {
-            if (slime.getState(Slime.States.DEAD).isFinished()) {
+        if (slime.isDead()) {
+            if (slime.getState(Slime.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(slime);
                 slime.removeToUpdate();
                 return;
             }
-        } else if (slime.getHealth() <= 0 && slime.checkAndChangeState(Slime.States.DEAD)) {
+        } else if (slime.getHealth() <= 0 && slime.checkAndChangeState(Slime.State.DEAD)) {
             slime.kill();
         }
 
-        if (slime.canChange(Slime.States.MOVE)) {
+        if (slime.canChange(Slime.State.MOVE)) {
             DirectionsModel direction = chamber.getHitDirectionPlayer(slime);
             if (direction == null) {
                 if (chamber.moveRandom(slime)) {
-                    slime.changeState(Slime.States.MOVE);
+                    slime.changeState(Slime.State.MOVE);
                 }
-            } else if (slime.canAttack() && slime.getState(Slime.States.ATTACK).isFinished()) {
+            } else if (slime.canAttack() && slime.getState(Slime.State.ATTACK).isFinished()) {
                 Entity entity = chamber.getNearEntityOnTop(slime, direction);
                 if (entity instanceof Player) {
-                    playerController.handleInteraction(InteractionTypes.ENEMY, slime);
+                    playerController.handleInteraction(InteractionType.ENEMY, slime);
                     slime.setCanAttack(false);
                 }
-            } else if (slime.canChange(Slime.States.ATTACK)) {
+            } else if (slime.canChange(Slime.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(slime, direction);
-                if (entity instanceof Player && slime.changeState(Slime.States.ATTACK)) {
+                if (entity instanceof Player && slime.changeState(Slime.State.ATTACK)) {
                     slime.setCanAttack(true);
                 }
             }
         }
-        slime.checkAndChangeState(Slime.States.IDLE);
+        slime.checkAndChangeState(Slime.State.IDLE);
     }
 
     /**
@@ -109,7 +109,7 @@ public class SlimeController {
      * @param damage il danno da applicare
      */
     private void hitSlime(Slime slime, int damage) {
-        if (slime.changeState(Slime.States.HIT)) {
+        if (slime.changeState(Slime.State.HIT)) {
             slime.changeHealth(damage);
         }
     }

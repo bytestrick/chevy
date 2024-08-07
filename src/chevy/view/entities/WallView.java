@@ -1,6 +1,5 @@
 package chevy.view.entities;
 
-import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.staticEntity.environment.Wall;
 import chevy.utils.Image;
 import chevy.utils.Vector2;
@@ -81,7 +80,7 @@ public class WallView extends EntityView {
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition() {
+    public Vector2<Double> getCurrentViewPosition() {
         position.changeFirst((double) wall.getCol());
         position.changeSecond((double) wall.getRow());
         return position;

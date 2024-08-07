@@ -7,7 +7,7 @@ public class WindowSettings {
 
     private static final int MAX_WINDOW_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
     private static final int MAX_WINDOW_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
-    private static final float WINDOW_SCALE = 0.5f; // da 0 a 1
+    private static final float WINDOW_SCALE = 0.8f; // da 0 a 1
 
 
 //    Questo approccio mantiene l'aspect-ratio impostato.
@@ -33,13 +33,7 @@ public class WindowSettings {
         WINDOW_HEIGHT = newHeight;
         WINDOW_WIDTH = newWidth;
 
-        GameSettings.optimalCellHeight = (float) (WINDOW_HEIGHT - SIZE_TOP_BAR) / GameSettings.nTileH;
-        GameSettings.optimalCellWidth = (float) WINDOW_WIDTH / GameSettings.nTileW;
-
-        GameSettings.optimalCellSize = Math.round(Math.min(GameSettings.optimalCellHeight, GameSettings.optimalCellWidth));
-
-        GameSettings.offsetH = Math.max(0, (WINDOW_HEIGHT - SIZE_TOP_BAR - Math.round((float) GameSettings.nTileH * GameSettings.optimalCellSize)) / 2);
-        GameSettings.offsetW = Math.max(0, (WINDOW_WIDTH - Math.round((float) GameSettings.nTileW * GameSettings.optimalCellSize)) / 2);
+        GameSettings.updateValue(GameSettings.nTileW, GameSettings.nTileH);
 
         scaleX = (float) WINDOW_WIDTH / MAX_WINDOW_WIDTH * ASPECT_RATIO_W;
         scaleY = (float) WINDOW_HEIGHT / MAX_WINDOW_HEIGHT * ASPECT_RATIO_H;

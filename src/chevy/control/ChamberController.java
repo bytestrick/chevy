@@ -1,5 +1,8 @@
 package chevy.control;
 
+import chevy.control.collectableController.CollectableController;
+import chevy.control.collectableController.CollectableUpdateController;
+import chevy.control.collectableController.PowerUpTextVisualizerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.control.enemyController.EnemyUpdateController;
 import chevy.control.projectileController.ProjectileController;
@@ -26,19 +29,23 @@ public class ChamberController {
      *
      * @param chamber riferimento alla stanza di gioco
      */
-    public ChamberController(Chamber chamber) {
+    public ChamberController(Chamber chamber, PowerUpTextVisualizerController powerUpTextVisualizerController) {
         this.playerController = new PlayerController(chamber);
         EnemyController enemyController = new EnemyController(chamber, playerController);
         TrapsController trapsController = new TrapsController(chamber, playerController, enemyController);
+        CollectableController collectableController = new CollectableController(chamber, playerController,
+            powerUpTextVisualizerController);
         ProjectileController projectileController = new ProjectileController(chamber, playerController,
                 enemyController);
 
         playerController.setEnemyController(enemyController);
         playerController.setTrapController(trapsController);
         playerController.setProjectileController(projectileController);
+        playerController.setCollectableController(collectableController);
         new EnemyUpdateController(enemyController, chamber.getEnemies());
         new TrapsUpdateController(trapsController, chamber.getTraps());
         new ProjectileUpdateController(projectileController, chamber.getProjectiles());
+        new CollectableUpdateController(collectableController, chamber.getCollectables());
     }
 
     /**

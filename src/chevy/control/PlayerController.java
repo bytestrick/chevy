@@ -1,10 +1,15 @@
 package chevy.control;
 
+import chevy.control.collectableController.CollectableController;
 import chevy.control.enemyController.EnemyController;
 import chevy.control.projectileController.ProjectileController;
 import chevy.control.trapsController.TrapsController;
 import chevy.model.chamber.Chamber;
+import chevy.model.entity.CommonEntityType;
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.Collectable;
+import chevy.model.entity.collectable.Health;
+import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
@@ -15,12 +20,12 @@ import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
+import chevy.utils.Log;
 
 import java.awt.event.KeyEvent;
-
-import static chevy.model.entity.staticEntity.environment.Environment.Type.TRAP;
 
 /**
  * Gestisce le interazioni del giocatore con i nemici, i proiettili e le trappole.
@@ -35,7 +40,7 @@ public class PlayerController implements Update {
     private EnemyController enemyController;
     private TrapsController trapsController;
     private ProjectileController projectileController;
-    private DirectionsModel direction;
+    private CollectableController collectableController;
 
     /**
      * @param chamber riferimento alla stanza di gioco
@@ -46,7 +51,6 @@ public class PlayerController implements Update {
         this.enemyController = null;
         this.trapsController = null;
         this.projectileController = null;
-        this.direction = null;
 
         // Aggiunge il controller del giocatore all'UpdateManager.
         UpdateManager.addToUpdate(this);
@@ -58,7 +62,7 @@ public class PlayerController implements Update {
      * @param keyEvent l'evento di pressione del tasto
      */
     public void keyPressed(KeyEvent keyEvent) {
-        direction = switch (keyEvent.getKeyCode()) {
+        DirectionsModel direction = switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_W -> DirectionsModel.UP;
             case KeyEvent.VK_A -> DirectionsModel.LEFT;
             case KeyEvent.VK_S -> DirectionsModel.DOWN;
@@ -67,7 +71,7 @@ public class PlayerController implements Update {
         };
 
         if (direction != null) {
-            handleInteraction(InteractionTypes.KEYBOARD, direction);
+            handleInteraction(InteractionType.KEYBOARD, direction);
         }
     }
 
@@ -77,12 +81,28 @@ public class PlayerController implements Update {
      * @param interaction il tipo di interazione
      * @param subject     l'oggetto con cui il giocatore interagisce
      */
-    public synchronized void handleInteraction(InteractionTypes interaction, Object subject) {
+    public synchronized void handleInteraction(InteractionType interaction, Object subject) {
         switch (interaction) {
             case KEYBOARD -> keyBoardInteraction((DirectionsModel) subject);
             case ENEMY -> enemyInteraction((Enemy) subject);
             case PROJECTILE -> projectileInteraction((Projectile) subject);
             case TRAP -> trapInteraction((Trap) subject);
+            case COLLECTABLE -> collectableInteraction((Collectable) subject);
+        }
+    }
+
+    /**
+     * Gestisce le interazioni del giocatore con gli oggetti collezionabili.
+     *
+     * @param collectable collezionabile con cui il giocatore interagisce
+     */
+    private void collectableInteraction(Collectable collectable) {
+        Collectable.Type collectableType = (Collectable.Type) collectable.getSpecificType();
+        switch (collectableType) {
+            case HEALTH -> {
+                Health health = (Health) collectable;
+                player.changeHealth(health.getRecoverHealth());
+            }
         }
     }
 
@@ -101,16 +121,20 @@ public class PlayerController implements Update {
      * @param trap la trappola con cui il giocatore interagisce
      */
     private void trapInteraction(Trap trap) {
-        switch (trap.getSpecificType()) {
-            case Trap.Type.VOID -> {
+        Trap.Type trapType = (Trap.Type) trap.getSpecificType();
+        switch (trapType) {
+            case VOID -> {
                 hitPlayer(-1 * trap.getDamage());
-                if (player.isAlive() && chamber.canCross(player, direction.getOpposite())) {
-                    chamber.moveDynamicEntity(player, direction.getOpposite());
-                }
             }
-            case Trap.Type.SPIKED_FLOOR -> {
+            case SPIKED_FLOOR -> {
                 SpikedFloor spikedFloor = (SpikedFloor) trap;
                 hitPlayer(-1 * spikedFloor.getDamage());
+            }
+            case TRAPDOOR -> {
+                Trapdoor trapdoor = (Trapdoor) trap;
+                hitPlayer(-1 * trapdoor.getDamage());
+
+                player.changeState(Player.State.FALL);
             }
             default -> { }
         }
@@ -125,50 +149,61 @@ public class PlayerController implements Update {
     private void keyBoardInteraction(DirectionsModel direction) {
         Entity entityNextCell = chamber.getNearEntityOnTop(player, direction);
         Entity entityCurrentCell = chamber.getEntityBelowTheTop(player);
+        CommonEntityType entityNextCellEnum = entityNextCell.getGenericType();
+        if (entityNextCellEnum == null) entityNextCellEnum = entityNextCell.getSpecificType();
+        CommonEntityType entityCurrentCellEnum = entityCurrentCell.getGenericType();
+        if (entityCurrentCellEnum == null) entityCurrentCellEnum = entityCurrentCell.getSpecificType();
 
         // Player on
-        if (entityCurrentCell != null) {
-            switch (entityCurrentCell.getGenericType()) {
-                case TRAP ->
-                        trapsController.handleInteraction(InteractionTypes.PLAYER, player, (Trap) entityCurrentCell);
+        if (entityNextCellEnum != null) {
+            switch (entityNextCellEnum) {
+                case Environment.Type.TRAP ->
+                        trapsController.handleInteraction(InteractionType.PLAYER, player, (Trap) entityCurrentCell);
                 default -> { }
             }
         }
 
         // Player in
-        if (entityNextCell != null) switch (entityNextCell.getGenericType()) {
-            case LiveEntity.Type.ENEMY -> {
-                if (player.checkAndChangeState(Player.States.ATTACK)) {
-                    enemyController.handleInteraction(InteractionTypes.PLAYER_IN, player, (Enemy) entityNextCell);
+        if (entityNextCellEnum != null) {
+            switch (entityNextCellEnum) {
+                case LiveEntity.Type.ENEMY -> {
+                    if (player.checkAndChangeState(Player.State.ATTACK))
+                        enemyController.handleInteraction(InteractionType.PLAYER_IN, player, (Enemy) entityNextCell);
+                    player.checkAndChangeState(Player.State.IDLE);
                 }
-                player.checkAndChangeState(Player.States.IDLE);
-            }
-            case TRAP -> {
-                if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.States.MOVE)) {
-                    chamber.moveDynamicEntity(player, direction);
-                    trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, entityNextCell);
+                case Environment.Type.TRAP -> {
+                    if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
+                        chamber.moveDynamicEntity(player, direction);
+                        trapsController.handleInteraction(InteractionType.PLAYER_IN, player, (Trap) entityNextCell);
+                    }
                 }
-            }
-            case DynamicEntity.Type.PROJECTILE -> {
-                if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.States.MOVE)) {
-                    chamber.moveDynamicEntity(player, direction);
-                    projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player,
-                            (Projectile) entityNextCell);
+                case DynamicEntity.Type.PROJECTILE -> {
+                    if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
+                        chamber.moveDynamicEntity(player, direction);
+                        projectileController.handleInteraction(InteractionType.PLAYER_IN, player,
+                                (Projectile) entityNextCell);
+                    }
                 }
-            }
-            default -> {
-                if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.States.MOVE)) {
-                    chamber.moveDynamicEntity(player, direction);
+                case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP -> {
+                    if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
+                        chamber.moveDynamicEntity(player, direction);
+                        collectableController.handleInteraction(InteractionType.PLAYER_IN, player,
+                                (Collectable) entityNextCell);
+                    }
+                }
+                default -> {
+                    if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
+                        chamber.moveDynamicEntity(player, direction);
+                    }
                 }
             }
         }
 
         // Player out
-        if (entityCurrentCell != null) {
-            switch (entityCurrentCell.getGenericType()) {
-                case TRAP -> trapsController.handleInteraction(InteractionTypes.PLAYER_OUT, player, entityCurrentCell);
-                default -> { }
-            }
+        if (entityCurrentCellEnum != null) switch (entityCurrentCellEnum) {
+            case Environment.Type.TRAP ->
+                    trapsController.handleInteraction(InteractionType.PLAYER_OUT, player, (Trap) entityCurrentCell);
+            default -> { }
         }
     }
 
@@ -182,12 +217,75 @@ public class PlayerController implements Update {
     }
 
     /**
+     * Aggiorna lo stato del giocatore a ogni ciclo di gioco.
+     *
+     * @param delta il tempo trascorso dall'ultimo aggiornamento
+     */
+    @Override
+    public void update(double delta) {
+        // gestione della morte del player (stato DEAD)
+        if (player.isDead()) {
+            if (player.getState(Player.State.DEAD).isFinished()) {
+                chamber.findAndRemoveEntity(player);
+                player.removeToUpdate();
+                return;
+            }
+        } else if (player.getHealth() <= 0 && player.changeState(Player.State.DEAD)) {
+            player.kill();
+        }
+
+        // gestione dello scivolamento del player (stato GLIDE)
+        if (player.getCurrentState() == Player.State.GLIDE && player.getState(player.getCurrentState()).isFinished() && chamber.canCross(player, player.getDirection()) && chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
+
+            Entity previousEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
+            chamber.moveDynamicEntity(player, player.getDirection());
+            Entity nextEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
+
+            switch (previousEntityBelowTheTop.getGenericType()) {
+                case Environment.Type.TRAP ->
+                        trapsController.handleInteraction(InteractionType.PLAYER_OUT, player,
+                                (Trap) previousEntityBelowTheTop);
+                case DynamicEntity.Type.PROJECTILE ->
+                        projectileController.handleInteraction(InteractionType.PLAYER_IN, player,
+                                (Projectile) previousEntityBelowTheTop);
+                default -> { }
+            }
+            switch (nextEntityBelowTheTop.getGenericType()) {
+                case Environment.Type.TRAP ->
+                        trapsController.handleInteraction(InteractionType.PLAYER_IN, player,
+                                (Trap) nextEntityBelowTheTop);
+                case DynamicEntity.Type.PROJECTILE ->
+                        projectileController.handleInteraction(InteractionType.PLAYER_IN, player,
+                                (Projectile) nextEntityBelowTheTop);
+                default -> { }
+            }
+        }
+
+        // IDLE
+        if (player.getCurrentState() == Player.State.FALL && player.getState(Player.State.FALL).isFinished() && chamber.canCross(player, player.getDirection().getOpposite())) {
+            chamber.moveDynamicEntity(player, player.getDirection().getOpposite());
+            player.checkAndChangeState(Player.State.IDLE);
+        } else if (player.getCurrentState() != Player.State.SLUDGE) {
+            player.checkAndChangeState(Player.State.IDLE);
+        }
+    }
+
+    /**
      * Applica danno al giocatore e cambia il suo stato a "HIT" se possibile.
      *
-     * @param damage la quantità di danno da inferire
+     * @param damage la quantità di danno da applicare
      */
     private void hitPlayer(int damage) {
-        if (player.changeState(Player.States.HIT)) {
+        PowerUp agility = player.getOwnedPowerUp(PowerUp.Type.AGILITY);
+        boolean dodged = false;
+        if (agility != null) {
+            dodged = agility.isOccurring();
+            if (dodged) {
+                Log.info(player + " ha schivato l'attacco");
+            }
+        }
+
+        if (!dodged && player.changeState(Player.State.HIT)) {
             player.changeHealth(damage);
         }
     }
@@ -220,55 +318,14 @@ public class PlayerController implements Update {
      * @param projectileController il controller dei proiettili
      */
     public void setProjectileController(ProjectileController projectileController) {
-        if (this.projectileController == null) this.projectileController = projectileController;
+        if (this.projectileController == null) {
+            this.projectileController = projectileController;
+        }
     }
 
-    /**
-     * Aggiorna lo stato del giocatore a ogni ciclo di gioco.
-     *
-     * @param delta il tempo trascorso dall'ultimo aggiornamento
-     */
-    @Override
-    public void update(double delta) {
-        // gestione della morte del player
-        if (!player.isAlive()) {
-            if (player.getState(Player.States.DEAD).isFinished()) {
-                chamber.removeEntityOnTop(player);
-                player.removeToUpdate();
-                return;
-            }
-        } else if (player.getHealth() <= 0 && player.changeState(Player.States.DEAD)) {
-            player.kill();
-        }
-
-        // gestione dello scivolamento del player
-        if (player.getCurrentState() == Player.States.GLIDE && player.getState(player.getCurrentState()).isFinished() && chamber.canCross(player, direction) && chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
-            Entity previousEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
-            chamber.moveDynamicEntity(player, direction);
-            Entity nextEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
-
-            switch (previousEntityBelowTheTop.getGenericType()) {
-                case Environment.Type.TRAP ->
-                        trapsController.handleInteraction(InteractionTypes.PLAYER_OUT, player,
-                                previousEntityBelowTheTop);
-                case DynamicEntity.Type.PROJECTILE ->
-                        projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player,
-                                (Projectile) previousEntityBelowTheTop);
-                default -> { }
-            }
-            switch (nextEntityBelowTheTop.getGenericType()) {
-                case Environment.Type.TRAP ->
-                        trapsController.handleInteraction(InteractionTypes.PLAYER_IN, player, nextEntityBelowTheTop);
-                case DynamicEntity.Type.PROJECTILE ->
-                        projectileController.handleInteraction(InteractionTypes.PLAYER_IN, player,
-                                (Projectile) nextEntityBelowTheTop);
-                default -> { }
-            }
-        }
-
-        // idle
-        if (player.getCurrentState() != Player.States.SLUDGE) {
-            player.checkAndChangeState(Player.States.IDLE);
+    public void setCollectableController(CollectableController collectableController) {
+        if (this.collectableController == null) {
+            this.collectableController = collectableController;
         }
     }
 }

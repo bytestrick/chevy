@@ -1,19 +1,19 @@
 package chevy.control;
 
-import chevy.view.GameView;
+import chevy.view.Window;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyboardListener implements KeyListener {
-    private final GameView gameView;
+    private final Window window;
     private ChamberController chamberController;
 
-    public KeyboardListener(GameView gameView) {
-        this.gameView = gameView;
+    public KeyboardListener(Window window) {
+        this.window = window;
 
         // connesione delgli eventi da tastiera al GamePanel
-        gameView.getWindow().getGamePanel().addKeyBoardListener(this);
+        window.getGamePanel().addKeyBoardListener(this);
     }
 
     @Override

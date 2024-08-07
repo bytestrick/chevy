@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionTypes;
+import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
@@ -45,7 +45,7 @@ public class BigSlimeController {
     public void playerInInteraction(Player player, BigSlime bigSlime) {
         switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, il BigSlime viene danneggiato in base al danno del giocatore.
-            case Player.States.ATTACK -> {
+            case Player.State.ATTACK -> {
                 bigSlime.setDirection(DirectionsModel.positionToDirection(player, bigSlime));
                 hitBigSlime(bigSlime, -1 * player.getDamage());
             }
@@ -61,38 +61,38 @@ public class BigSlimeController {
      */
     public void update(BigSlime bigSlime) {
         // Gestione della morte del BigSlime
-        if (!bigSlime.isAlive()) {
-            if (bigSlime.getState(BigSlime.States.DEAD).isFinished()) {
+        if (bigSlime.isDead()) {
+            if (bigSlime.getState(BigSlime.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(bigSlime);
                 bigSlime.removeToUpdate();
                 return;
             }
-        } else if (bigSlime.getHealth() <= 0 && bigSlime.checkAndChangeState(BigSlime.States.DEAD)) {
+        } else if (bigSlime.getHealth() <= 0 && bigSlime.checkAndChangeState(BigSlime.State.DEAD)) {
             chamber.spawnSlimeAroundEntity(bigSlime, 2);
             bigSlime.kill();
         }
 
         // Movimento e attacco
-        if (bigSlime.canChange(BigSlime.States.MOVE)) {
+        if (bigSlime.canChange(BigSlime.State.MOVE)) {
             DirectionsModel direction = chamber.getHitDirectionPlayer(bigSlime);
             if (direction == null) {
                 if (chamber.wanderChasePlus(bigSlime, 3)) {
-                    bigSlime.changeState(BigSlime.States.MOVE);
+                    bigSlime.changeState(BigSlime.State.MOVE);
                 }
-            } else if (bigSlime.canAttack() && bigSlime.getState(BigSlime.States.ATTACK).isFinished()) {
+            } else if (bigSlime.canAttack() && bigSlime.getState(BigSlime.State.ATTACK).isFinished()) {
                 Entity entity = chamber.getNearEntityOnTop(bigSlime, direction);
                 if (entity instanceof Player) {
-                    playerController.handleInteraction(InteractionTypes.ENEMY, bigSlime);
+                    playerController.handleInteraction(InteractionType.ENEMY, bigSlime);
                     bigSlime.setCanAttack(false);
                 }
-            } else if (bigSlime.canChange(BigSlime.States.ATTACK)) {
+            } else if (bigSlime.canChange(BigSlime.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(bigSlime, direction);
-                if (entity instanceof Player && bigSlime.changeState(BigSlime.States.ATTACK)) {
+                if (entity instanceof Player && bigSlime.changeState(BigSlime.State.ATTACK)) {
                     bigSlime.setCanAttack(true);
                 }
             }
         }
-        bigSlime.checkAndChangeState(BigSlime.States.IDLE);
+        bigSlime.checkAndChangeState(BigSlime.State.IDLE);
     }
 
     /**
@@ -113,7 +113,7 @@ public class BigSlimeController {
      * @param damage   la quantità di danno da applicare
      */
     private void hitBigSlime(BigSlime bigSlime, int damage) {
-        if (bigSlime.changeState(BigSlime.States.HIT)) {
+        if (bigSlime.changeState(BigSlime.State.HIT)) {
             bigSlime.changeHealth(damage);
         }
     }

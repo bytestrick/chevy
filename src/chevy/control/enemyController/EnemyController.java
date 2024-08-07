@@ -1,10 +1,9 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionTypes;
+import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
@@ -49,13 +48,13 @@ public class EnemyController {
      * @param subject     l'entità che avvia l'interazione
      * @param object      l'entità che subisce l'interazione
      */
-    public synchronized void handleInteraction(InteractionTypes interaction, Entity subject, DynamicEntity object) {
+    public synchronized void handleInteraction(InteractionType interaction, Entity subject, Enemy object) {
         switch (interaction) {
-            case PLAYER_IN -> playerInInteraction((Player) subject, (Enemy) object);
+            case PLAYER_IN -> playerInInteraction((Player) subject, object);
             case UPDATE -> updateEnemy((Enemy) subject);
-            case PROJECTILE -> projectileInteraction((Projectile) subject, (Enemy) object);
-            case TRAP -> trapInteraction((Trap) subject, (Enemy) object);
-            default -> { }
+            case PROJECTILE -> projectileInteraction((Projectile) subject, object);
+            case TRAP -> trapInteraction((Trap) subject, object);
+            default -> {}
         }
     }
 

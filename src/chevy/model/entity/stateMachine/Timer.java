@@ -20,7 +20,7 @@ public class Timer implements Update {
 
 
     public boolean isRunning() {
-        return isRunning || !delete;
+        return isRunning && !delete;
     }
 
     /**

@@ -10,13 +10,13 @@ import chevy.utils.Log;
 public class Interpolation implements Render {
     private double time = 0d; // Tempo trascorso dall'inizio dell'interpolazione.
     private boolean isRunning = false; // Se l'interpolazione è attualmente in esecuzione.
-    private Interpolation.Types type; // Tipo di interpolazione da utilizzare.
+    private Type type; // Tipo di interpolazione da utilizzare.
     private double start; // Valore iniziale dell'interpolazione.
     private double end; // Valore finale dell'interpolazione.
     private float duration; // Durata totale dell'interpolazione.
     private boolean delete = true; // Se l'interpolazione deve essere eliminata.
 
-    public Interpolation(double start, double end, float duration, Interpolation.Types type) {
+    public Interpolation(double start, double end, float duration, Type type) {
         this.start = start;
         this.end = end;
         this.duration = duration;
@@ -42,7 +42,7 @@ public class Interpolation implements Render {
         }
     }
 
-    public static double interpolate(Types type, double b, double t, double a) {
+    public static double interpolate(Type type, double b, double t, double a) {
         return switch (type) {
             case EASE_IN_SINE -> {
                 final double x = 1 - Math.cos((t * Math.PI) / 2);
@@ -260,11 +260,12 @@ public class Interpolation implements Render {
      */
     public void changeDuration(float duration) { this.duration = duration; }
 
-    // TODO: rimuovere se rimane non usato
     /**
+     * TODO: rimuovere se rimane non usato
+     *
      * @param type imposta il tipo di interpolazione
      */
-    public void changeInterpolationType(Types type) { this.type = type; }
+    public void changeInterpolationType(Type type) { this.type = type; }
 
     /**
      * @return true se l'interpolazione è in esecuzione, false altrimenti
@@ -277,7 +278,7 @@ public class Interpolation implements Render {
     @Override
     public boolean renderFinished() { return delete; }
 
-    public enum Types {
+    public enum Type {
         LINEAR, EASE_IN_SINE, EASE_OUT_SINE, EASE_IN_OUT_SINE, EASE_IN_QUAD, EASE_OUT_QUAD, EASE_IN_OUT_QUAD,
         EASE_IN_CUBIC, EASE_OUT_CUBIC, EASE_IN_OUT_CUBIC, EASE_IN_QUART, EASE_OUT_QUART, EASE_IN_OUT_QUART,
         EASE_IN_QUINT, EASE_OUT_QUINT, EASE_IN_OUT_QUINT, EASE_IN_EXPO, EASE_OUT_EXPO, EASE_IN_OUT_EXPO, EASE_IN_CIRC

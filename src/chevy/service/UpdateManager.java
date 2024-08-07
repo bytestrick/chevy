@@ -12,10 +12,11 @@ public class UpdateManager {
     private static final List<Update> toAdd = new LinkedList<>();
 
 
-    public synchronized static void addToUpdate(Update u) {
-        toAdd.add(u);
+    public static void addToUpdate(Update u) {
+        synchronized (toAdd) {
+            toAdd.add(u);
+        }
     }
-
 
     public static void update(double delta) {
         synchronized (toAdd) {

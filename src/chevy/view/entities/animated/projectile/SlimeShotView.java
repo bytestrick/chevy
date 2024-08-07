@@ -1,9 +1,8 @@
 package chevy.view.entities.animated.projectile;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.stateMachine.CommonStates;
-import chevy.utils.Pair;
+import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
+import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolation;
@@ -13,73 +12,78 @@ import java.awt.image.BufferedImage;
 
 public class SlimeShotView extends AnimatedEntityView {
     private static final String SLIME_SHOT_RESOURCES = "/assets/projectile/slimeShot/";
-    private final Projectile slimeShot;
+    private final SlimeShot slimeShot;
 
-    public SlimeShotView(Projectile slimeShot) {
+    public SlimeShotView(SlimeShot slimeShot) {
         super();
         this.slimeShot = slimeShot;
-        this.currentPosition = new Vector2<>((double) slimeShot.getCol(), (double) slimeShot.getRow());
-        currentState = slimeShot.getState(slimeShot.getCurrentState());
+        this.currentViewPosition = new Vector2<>((double) slimeShot.getCol(), (double) slimeShot.getRow());
 
-        float duration = slimeShot.getState(slimeShot.getCurrentState()).getDuration();
-        moveInterpolationX = new Interpolation(currentPosition.first, slimeShot.getCol(), duration,
-                Interpolation.Types.LINEAR);
-        moveInterpolationY = new Interpolation(currentPosition.second, slimeShot.getRow(), duration,
-                Interpolation.Types.LINEAR);
+        final float duration = slimeShot.getState(slimeShot.getCurrentState()).getDuration();
+        currentGlobalState = slimeShot.getState(slimeShot.getCurrentState());
+        moveInterpolationX = new Interpolation(currentViewPosition.first, slimeShot.getCol(), duration,
+                Interpolation.Type.LINEAR);
+        moveInterpolationY = new Interpolation(currentViewPosition.second, slimeShot.getRow(), duration,
+                Interpolation.Type.LINEAR);
 
         initAnimation();
     }
 
     private void initAnimation() {
-        // Start
-        int offset = 16;
-        Vector2<Integer> offsetUp = new Vector2<>(0, -16);
-        createAnimation(Projectile.States.START, 0, 4, false, 1, offsetUp, 1, SLIME_SHOT_RESOURCES + "start/up",
-                ".png");
-        createAnimation(Projectile.States.START, 1, 4, false, 1, new Vector2<>(0, offset), 1, SLIME_SHOT_RESOURCES +
+        // --- START
+        Vector2<Integer> startOffsetUp = new Vector2<>(1, -16);
+        Vector2<Integer> startOffsetDown = new Vector2<>(1, 16);
+        Vector2<Integer> startOffsetRight = new Vector2<>(18, 2);
+        Vector2<Integer> startOffsetLeft = new Vector2<>(-16, 2);
+
+        float durationStart = slimeShot.getState(SlimeShot.State.START).getDuration();
+        float durationLoop = slimeShot.getState(SlimeShot.State.LOOP).getDuration();
+        float durationEnd = slimeShot.getState(SlimeShot.State.END).getDuration();
+
+        createAnimation(SlimeShot.State.START, 0, 4, durationStart, startOffsetUp, 1, SLIME_SHOT_RESOURCES +
+                "start/up", ".png");
+        createAnimation(SlimeShot.State.START, 1, 4, durationStart, startOffsetDown, 1, SLIME_SHOT_RESOURCES +
                 "start/down", ".png");
-        createAnimation(Projectile.States.START, 2, 4, false, 1, new Vector2<>(offset, 0), 1, SLIME_SHOT_RESOURCES +
+        createAnimation(SlimeShot.State.START, 2, 4, durationStart, startOffsetRight, 1, SLIME_SHOT_RESOURCES +
                 "start/right", ".png");
-        createAnimation(Projectile.States.START, 3, 4, false, 1, new Vector2<>(-1 * offset, 0), 1,
-                SLIME_SHOT_RESOURCES + "start/left", ".png");
+        createAnimation(SlimeShot.State.START, 3, 4, durationStart, startOffsetLeft, 1, SLIME_SHOT_RESOURCES +
+                "start/left", ".png");
 
-        // Loop
-        createAnimation(Projectile.States.LOOP, 0, 4, true, 3, SLIME_SHOT_RESOURCES + "loop/up", ".png");
-        createAnimation(Projectile.States.LOOP, 1, 4, true, 3, SLIME_SHOT_RESOURCES + "loop/down", ".png");
-        createAnimation(Projectile.States.LOOP, 2, 4, true, 3, SLIME_SHOT_RESOURCES + "loop/right", ".png");
-        createAnimation(Projectile.States.LOOP, 3, 4, true, 3, SLIME_SHOT_RESOURCES + "loop/left", ".png");
+        // --- LOOP
+        Vector2<Integer> loopEndOffsetUp = new Vector2<>(2, 0);
+        Vector2<Integer> loopEndOffsetDown = new Vector2<>(2, 4);
+        Vector2<Integer> loopEndOffsetRight = new Vector2<>(4, 2);
+        Vector2<Integer> loopEndOffsetLeft = new Vector2<>(0, 2);
 
-        // End
-        createAnimation(Projectile.States.END, 0, 5, false, 1, SLIME_SHOT_RESOURCES + "end", ".png");
-    }
+        createAnimation(SlimeShot.State.LOOP, 0, 4, true, 3, durationLoop, loopEndOffsetUp, 1,
+                SLIME_SHOT_RESOURCES + "loop/up", ".png");
+        createAnimation(SlimeShot.State.LOOP, 1, 4, true, 3, durationLoop, loopEndOffsetDown, 1,
+                SLIME_SHOT_RESOURCES + "loop/down", ".png");
+        createAnimation(SlimeShot.State.LOOP, 2, 4, true, 3, durationLoop, loopEndOffsetRight, 1,
+                SLIME_SHOT_RESOURCES + "loop/right", ".png");
+        createAnimation(SlimeShot.State.LOOP, 3, 4, true, 3, durationLoop, loopEndOffsetLeft, 1,
+                SLIME_SHOT_RESOURCES + "loop/left", ".png");
 
-    private void createAnimation(CommonStates enumStates, int type, int nFrame, boolean loop, int times,
-                                 Vector2<Integer> offset, float scale, String folderPath, String extension) {
-        if (!loop) times = 1;
-        float durationFrame = slimeShot.getState(enumStates).getDuration() / (nFrame * times);
-        AnimatedSprite animatedSprite = new AnimatedSprite(new Pair<>(enumStates, type), nFrame, durationFrame, loop,
-                offset, scale);
-        super.initAnimation(animatedSprite, folderPath, extension);
-    }
-
-    private void createAnimation(CommonStates enumStates, int type, int nFrame, boolean loop, int times,
-                                 String folderPath, String extension) {
-        if (!loop) times = 1;
-        float durationFrame = slimeShot.getState(enumStates).getDuration() / (nFrame * times);
-        AnimatedSprite animatedSprite = new AnimatedSprite(new Pair<>(enumStates, type), nFrame, durationFrame, loop);
-        super.initAnimation(animatedSprite, folderPath, extension);
+        // --- END
+        createAnimation(SlimeShot.State.END, 0, 5, durationEnd, loopEndOffsetUp, 1, SLIME_SHOT_RESOURCES + "end",
+                ".png");
+        createAnimation(SlimeShot.State.END, 1, 5, durationEnd, loopEndOffsetDown, 1, SLIME_SHOT_RESOURCES + "end"
+                , ".png");
+        createAnimation(SlimeShot.State.END, 2, 5, durationEnd, loopEndOffsetRight, 1, SLIME_SHOT_RESOURCES +
+                "end", ".png");
+        createAnimation(SlimeShot.State.END, 3, 5, durationEnd, loopEndOffsetLeft, 1, SLIME_SHOT_RESOURCES + "end"
+                , ".png");
     }
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonStates currentEnumState = slimeShot.getCurrentState();
+        CommonState currentEnumState = slimeShot.getCurrentState();
         int type = getAnimationType(currentEnumState);
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, type);
 
         if (currentAnimatedSprite != null) {
-            if (currentEnumState == Projectile.States.END && currentState.isFinished()) {
+            if (currentEnumState == SlimeShot.State.END && currentGlobalState.isFinished()) {
                 slimeShot.setToDraw(false);
-//                currentAnimatedSprite.stop();
             } else if (!currentAnimatedSprite.isRunning()) {
                 currentAnimatedSprite.start();
             }
@@ -89,56 +93,65 @@ public class SlimeShotView extends AnimatedEntityView {
     }
 
     public Vector2<Integer> getOffset() {
-        CommonStates currentState = slimeShot.getCurrentState();
+        CommonState currentState = slimeShot.getCurrentState();
         int type = getAnimationType(currentState);
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, type);
         return currentAnimatedSprite.getOffset();
     }
 
     public float getScale() {
-        CommonStates currentState = slimeShot.getCurrentState();
+        CommonState currentState = slimeShot.getCurrentState();
         int type = getAnimationType(currentState);
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, type);
         return currentAnimatedSprite.getScale();
     }
 
-    private int getAnimationType(CommonStates currentState) {
+    private int getAnimationType(CommonState currentState) {
         DirectionsModel currentDirection = slimeShot.getDirection();
         return switch (currentState) {
-            case Projectile.States.START, Projectile.States.LOOP -> switch (currentDirection) {
-                case UP -> 0;
-                case DOWN -> 1;
-                case RIGHT -> 2;
-                case LEFT -> 3;
-            };
+            case SlimeShot.State.START, SlimeShot.State.LOOP, SlimeShot.State.END ->
+                    switch (currentDirection) {
+                        case UP -> 0;
+                        case DOWN -> 1;
+                        case RIGHT -> 2;
+                        case LEFT -> 3;
+                    };
             default -> 0;
         };
     }
 
     @Override
-    public Vector2<Double> getCurrentPosition() {
+    public Vector2<Double> getCurrentViewPosition() {
         if (slimeShot.isCollision()) {
-            return currentPosition;
+            return currentViewPosition;
         }
-        if (currentState.isFinished()) {
-            currentState = slimeShot.getState(slimeShot.getCurrentState());
+
+        if (currentGlobalState.isFinished()) {
+            currentGlobalState = slimeShot.getState(slimeShot.getCurrentState());
             firstTimeInState = true;
         } else {
             if (firstTimeInState) {
-                float duration = currentState.getDuration();
-                moveInterpolationX.changeStart(currentPosition.first);
+                float duration = currentGlobalState.getDuration();
+                moveInterpolationX.changeStart(currentViewPosition.first);
                 moveInterpolationX.changeEnd(slimeShot.getCol());
                 moveInterpolationX.changeDuration(duration);
                 moveInterpolationX.restart();
-                moveInterpolationY.changeStart(currentPosition.second);
+                moveInterpolationY.changeStart(currentViewPosition.second);
                 moveInterpolationY.changeEnd(slimeShot.getRow());
                 moveInterpolationY.changeDuration(duration);
                 moveInterpolationY.restart();
                 firstTimeInState = false;
             }
-            currentPosition.changeFirst(moveInterpolationX.getValue());
-            currentPosition.changeSecond(moveInterpolationY.getValue());
+            currentViewPosition.changeFirst(moveInterpolationX.getValue());
+            currentViewPosition.changeSecond(moveInterpolationY.getValue());
         }
-        return currentPosition;
+        return currentViewPosition;
+    }
+
+    @Override
+    public void wasRemoved() {
+        moveInterpolationX.delete();
+        moveInterpolationY.delete();
+        super.deleteAnimations();
     }
 }

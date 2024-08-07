@@ -2,10 +2,7 @@ package chevy.settings;
 
 import chevy.utils.Log;
 
-import java.util.zip.InflaterOutputStream;
-
 import static chevy.utils.Log.Level.INFO;
-import static chevy.utils.Log.Level.WARN;
 
 public class GameSettings {
     public static final int FPS = 60;
@@ -20,28 +17,27 @@ public class GameSettings {
     /**
      * Numero minimo di tile da visualizzare in altezza in ogni momento.
      */
-    public static int nTileH = -1;
+    public static int nTileH = 0;
 
     /**
      * Numero minimo di tile da visualizzare in larghezza in ogni momento.
      */
-    public static int nTileW = -1;
+    public static int nTileW = 0;
 
     /**
      * Altezza ottimale di una cella, considerando l'altezza della finestra.
      */
-    public static float optimalCellHeight =
-            (float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR) / nTileH;
+    public static float optimalCellSizeH = (float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR) / nTileH;
 
     /**
      * Larghezza ottimale di una cella, considerando la larghezza della finestra.
      */
-    public static float optimalCellWidth = (float) WindowSettings.WINDOW_WIDTH / nTileW;
+    public static float optimalCellSizeW = (float) WindowSettings.WINDOW_WIDTH / nTileW;
 
     /**
      * Scale che bisogna applicare a ogni tile per avere il numero di celle in altezza e larghezza desiderato.
      */
-    public static int optimalCellSize = Math.round(Math.min(optimalCellHeight, optimalCellWidth));
+    public static int optimalCellSize = Math.round(Math.min(optimalCellSizeH, optimalCellSizeW));
 
     /**
      * Offset lungo y usato per centrare il contenuto nello schermo.
@@ -63,13 +59,12 @@ public class GameSettings {
         nTileH = newNTileH;
         nTileW = newNTileW;
 
-        optimalCellHeight = (float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR) / nTileH;
-        optimalCellWidth = (float) WindowSettings.WINDOW_WIDTH / GameSettings.nTileW;
+        optimalCellSizeH = (float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR) / nTileH;
+        optimalCellSizeW = (float) WindowSettings.WINDOW_WIDTH / GameSettings.nTileW;
 
-        optimalCellSize = Math.round(Math.min(optimalCellHeight, optimalCellWidth));
+        optimalCellSize = Math.round(Math.min(optimalCellSizeH, optimalCellSizeW));
 
-        offsetH = Math.max(0,
-                (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR - Math.round((float) nTileH * optimalCellSize)) / 2);
-        offsetW = Math.max(0, (WindowSettings.WINDOW_WIDTH - Math.round((float) nTileW * optimalCellSize)) / 2);
+        offsetH = Math.max(0, Math.round((float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR - nTileH * optimalCellSize) / 2));
+        offsetW = Math.max(0, Math.round((float) (WindowSettings.WINDOW_WIDTH - nTileW * optimalCellSize) / 2));
     }
 }
