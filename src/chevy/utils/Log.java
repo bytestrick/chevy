@@ -22,8 +22,7 @@ public class Log {
     }
 
     /**
-     * Livello di verbosità del logging. INFO è il più verboso, ERORR il più terso. OFF disabilita completamente
-     * il logging.
+     * Livello di verbosità del logging. INFO è il più verboso, ERROR il più terso. OFF lo disabilita completamente.
      */
     public enum Level {
         OFF, ERROR, WARN, INFO

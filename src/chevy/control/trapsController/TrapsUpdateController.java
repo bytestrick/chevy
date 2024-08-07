@@ -34,7 +34,7 @@ public class TrapsUpdateController implements Update {
      */
     private void addEnemies() {
         for (Trap trap : trapsToAdd) {
-            if (trap.canRemoveToUpdate()) {
+            if (!trap.canRemoveToUpdate()) {
                 traps.add(trap);
             }
         }

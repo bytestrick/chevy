@@ -30,10 +30,15 @@ public enum DirectionsModel {
         int i = b.first - a.first;
         int j = b.second - a.second;
 
-        if (i == 1 && j == 0) return DOWN;
-        else if (i == -1 && j == 0) return UP;
-        else if (i == 0 && j == 1) return RIGHT;
-        else if (i == 0 && j == -1) return LEFT;
+        if (i == 1 && j == 0) {
+            return DOWN;
+        } else if (i == -1 && j == 0) {
+            return UP;
+        } else if (i == 0 && j == 1) {
+            return RIGHT;
+        } else if (i == 0 && j == -1) {
+            return LEFT;
+        }
         return null;
     }
 

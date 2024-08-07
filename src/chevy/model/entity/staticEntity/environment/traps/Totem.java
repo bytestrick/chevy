@@ -6,14 +6,9 @@ import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class Totem extends Trap {
-    public enum EnumState implements CommonState {
-        SHOT,
-        RELOAD
-    }
     private final DirectionsModel directionShot;
     private final GlobalState shot = new GlobalState(EnumState.SHOT, 3f);
     private final GlobalState reload = new GlobalState(EnumState.RELOAD, 10f);
-
 
     public Totem(Vector2<Integer> initVelocity, DirectionsModel directionShot) {
         super(initVelocity, Type.TOTEM);
@@ -33,7 +28,6 @@ public class Totem extends Trap {
         shot.linkState(reload);
     }
 
-
     public DirectionsModel getDirectionShot() {
         return directionShot;
     }
@@ -45,5 +39,9 @@ public class Totem extends Trap {
             case SHOT -> shot;
             case RELOAD -> reload;
         };
+    }
+
+    public enum EnumState implements CommonState {
+        SHOT, RELOAD
     }
 }

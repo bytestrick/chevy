@@ -14,6 +14,7 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.model.pathFinding.AStar;
 import chevy.settings.GameSettings;
+import chevy.utils.Log;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
@@ -22,6 +23,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 /**
@@ -29,18 +31,10 @@ import java.util.Random;
  * Gestisce l'inizializzazione della griglia di gioco, il posizionamento e il movimento delle entità.
  */
 public class Chamber {
-    /**
-     * Lista che tiene traccia dei nemici presenti nella stanza.
-     */
-    private final List<Enemy> enemies = new LinkedList<>();
-    /**
-     * Lista che tiene traccia delle trappole presenti nella stanza.
-     */
-    private final List<Trap> traps = new LinkedList<>();
-    /**
-     * Lista che tiene traccia dei proiettili presenti nella stanza.
-     */
-    private final List<Projectile> projectiles = new LinkedList<>();
+    private final List<Enemy> enemies = new LinkedList<>(); // Nemici nella stanza
+    private final List<Trap> traps = new LinkedList<>(); // Trappole nella stanza
+    private final List<Projectile> projectiles = new LinkedList<>(); // Proiettili nella stanza
+
     /**
      * Lista che tiene traccia degli oggetti collezionabili presenti nella stanza.
      */
@@ -50,29 +44,11 @@ public class Chamber {
      * Ogni cella della griglia può contenere una lista di entità.
      */
     private List<List<List<Entity>>> chamber;
-    /**
-     * Un gestore degli strati di disegno che mantiene l'ordine in cui le entità
-     * devono essere disegnate sullo schermo.
-     */
-    private LayerManager drawOrderChamber;
-    /**
-     * Numero di righe della griglia di gioco.
-     */
-    private int nRows;
-    /**
-     * Numero di colonne della griglia di gioco.
-     */
-    private int nCols;
-    /**
-     * Indica se il mondo è stato inizializzato.
-     */
-    private boolean init = false;
-    /**
-     * Il giocatore attuale.
-     */
-    private Player player;
-
-    public Chamber() { }
+    private LayerManager drawOrderChamber; // Ordine delle in cui le entità vanno disegnate
+    private int nRows; // Righe della griglia di gioco
+    private int nCols; // Colonne della griglia di gioco
+    private boolean init = false; // Indica se il mondo è stato inizializzato
+    private Player player; // Il giocatore attuale
 
     /**
      * Inizializza la griglia di gioco con le dimensioni specificate e aggiorna le impostazioni di gioco.
@@ -444,7 +420,6 @@ public class Chamber {
         if (player != null) {
             return chase(enemy);
         }
-        // muoviti in modo casuale
         return moveRandom(enemy);
     }
 
@@ -487,7 +462,12 @@ public class Chamber {
 
     public synchronized void removeEntityOnTop(Entity entity) {
         entity.setToDraw(false);
-        chamber.get(entity.getRow()).get(entity.getCol()).removeLast();
+        List<Entity> stack = chamber.get(entity.getRow()).get(entity.getCol());
+        try {
+            stack.removeLast();
+        } catch (NoSuchElementException e) {
+            Log.warn("Chamber.removeEntityOnTop: la cella è vuota.");
+        }
     }
 
     public synchronized void addEntityOnTop(Entity entity) {
@@ -501,7 +481,12 @@ public class Chamber {
     public synchronized Entity getEntityOnTop(int row, int col) { return chamber.get(row).get(col).getLast(); }
 
     public synchronized Entity getEntityOnTop(Vector2<Integer> vector2) {
-        return chamber.get(vector2.first).get(vector2.second).getLast();
+        try {
+            return chamber.get(vector2.first).get(vector2.second).getLast();
+        } catch (NoSuchElementException e) {
+            Log.warn("Tentativo di accedere alla cella (" + vector2.first.toString() + ", " + vector2.second.toString() + ") fallito perché è vuota");
+        }
+        return null;
     }
 
     public synchronized Entity getEntityOnTop(Entity entity) {
@@ -518,34 +503,9 @@ public class Chamber {
 
     public boolean isInitialized() { return init; }
 
-//    public void show() {
-//        System.out.println();
-//        for (List<List<Entity>> r : chamber) {
-//            for (List<Entity> c : r) {
-//                Entity onTop = getEntityOnTop(c);
-//                if (onTop != null) {
-//                    String a = onTop.toString();
-//                    System.out.print(" | " + a.charAt(0) + a.charAt(1));
-//                }
-//                else {
-//                    System.out.print(" | NULL");
-//                }
-//            }
-//            System.out.println(" |");
-//        }
-//        System.out.println();
-//
-//        System.out.println("Nemici rimanenti: " + enemies);
-//        System.out.println();
-//    }
+    public int getNRows() { return nRows; }
 
-    public int getNRows() {
-        return nRows;
-    }
-
-    public int getNCols() {
-        return nCols;
-    }
+    public int getNCols() { return nCols; }
 
     public Player getPlayer() { return this.player; }
 
@@ -567,10 +527,7 @@ public class Chamber {
 
     public synchronized List<Projectile> getProjectiles() { return projectiles; }
 
-    // ---
-    public void addEntityToDraw(Entity entity, int layer) {
-        drawOrderChamber.add(entity, layer);
-    }
+    public void addEntityToDraw(Entity entity, int layer) { drawOrderChamber.add(entity, layer); }
 
     public List<Layer> getDrawOrderChamber() { return Collections.unmodifiableList(drawOrderChamber.getDrawOrder()); }
 }

@@ -21,17 +21,15 @@ public class SpikedFloorView extends AnimatedEntityView {
 
     private void initAnimation() {
         Vector2<Integer> offset = new Vector2<>(0, -7);
-        createAnimation(SpikedFloor.EnumState.DISABLED, 0, 1,
-                spikedFloor.getState(SpikedFloor.EnumState.DISABLED).getDuration(), offset, 1, SPIKED_FLOOR_PATH +
-                        "disabled", ".png");
+        
+        final float disabledDuration = spikedFloor.getState(SpikedFloor.State.DISABLED).getDuration();
+        createAnimation(SpikedFloor.State.DISABLED, 0, 1, disabledDuration, offset, 1, SPIKED_FLOOR_PATH + "disabled", ".png");
 
-        createAnimation(SpikedFloor.EnumState.ACTIVATED, 0, 2,
-                spikedFloor.getState(SpikedFloor.EnumState.ACTIVATED).getDuration(), offset, 1, SPIKED_FLOOR_PATH +
-                        "active", ".png");
+        final float activatedDuration = spikedFloor.getState(SpikedFloor.State.ACTIVATED).getDuration();
+        createAnimation(SpikedFloor.State.ACTIVATED, 0, 2, activatedDuration, offset, 1, SPIKED_FLOOR_PATH + "active", ".png");
 
-        createAnimation(SpikedFloor.EnumState.DAMAGE, 0, 1,
-                spikedFloor.getState(SpikedFloor.EnumState.DAMAGE).getDuration(), offset, 1, SPIKED_FLOOR_PATH +
-                        "damage", ".png");
+        final float damageDuration = spikedFloor.getState(SpikedFloor.State.DAMAGE).getDuration();
+        createAnimation(SpikedFloor.State.DAMAGE, 0, 1, damageDuration, offset, 1, SPIKED_FLOOR_PATH + "damage", ".png");
     }
 
     public Vector2<Integer> getOffset() {
@@ -42,8 +40,8 @@ public class SpikedFloorView extends AnimatedEntityView {
 
     @Override
     public BufferedImage getCurrentFrame() {
-        CommonState currentEnumState = spikedFloor.getCurrentState();
-        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, 0);
+        CommonState currentState = spikedFloor.getCurrentState();
+        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, 0);
 
         if (currentAnimatedSprite != null) {
             if (!currentAnimatedSprite.isRunning()) {

@@ -20,7 +20,7 @@
 - [ ] la gestione dei livelli: passaggio da un livello all'altro (quando si prendono le scale)
 - [ ] salvataggio delle informazioni dei livelli e delle impostazioni (livello bloccato/completato)
 
-- Problemi relativi all'attacco
+- [x] Problemi relativi all'attacco
     - Il giocatore può solo sferrare attacchi quando è adiacente al nemico.
     - Sferrare gli attacchi tramite i tasti usati per il movimento è inusuale.
     - La direzione del giocatore non si aggiorna in base alla direzione

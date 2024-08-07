@@ -6,7 +6,7 @@ import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class Arrow extends Projectile {
-    private final GlobalState loop = new GlobalState(State.LOOP, 1f, true);
+    private final GlobalState loop = new GlobalState(State.LOOP, .2f, true);
     private final GlobalState end = new GlobalState(State.END);
 
     public Arrow(Vector2<Integer> initPosition, DirectionsModel direction) {

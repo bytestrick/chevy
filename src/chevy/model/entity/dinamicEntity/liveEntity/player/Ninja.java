@@ -7,7 +7,7 @@ import chevy.utils.Vector2;
 public class Ninja extends Player {
     private final GlobalState idle = new GlobalState(State.IDLE );
     private final GlobalState move = new GlobalState(State.MOVE, speed);
-    private final GlobalState attack = new GlobalState(State.ATTACK, 0.04f);
+    private final GlobalState attack = new GlobalState(State.ATTACK, 0.4f);
     private final GlobalState hit = new GlobalState(State.HIT, .2f);
     private final GlobalState dead = new GlobalState(State.DEAD);
     private final GlobalState glide = new GlobalState(State.GLIDE, speed, true);

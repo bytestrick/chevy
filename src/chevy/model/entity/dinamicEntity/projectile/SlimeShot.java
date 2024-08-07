@@ -29,9 +29,9 @@ public class SlimeShot extends Projectile {
     }
 
     @Override
-    public GlobalState getState(CommonState commonEnumStates) {
-        Projectile.State projectileState = (Projectile.State) commonEnumStates;
-        return switch (projectileState) {
+    public GlobalState getState(CommonState commonState) {
+        State state = (State) commonState;
+        return switch (state) {
             case START -> start;
             case LOOP -> loop;
             case END -> end;

@@ -25,6 +25,8 @@ public class VoidController {
      * @param v      la trappola Void con cui il giocatore interagisce
      */
     public void playerInInteraction(Player player, Void v) {
-        if (player.changeState(Player.State.FALL)) playerController.handleInteraction(InteractionType.TRAP, v);
+        if (player.changeState(Player.State.FALL)) {
+            playerController.handleInteraction(InteractionType.TRAP, v);
+        }
     }
 }
