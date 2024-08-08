@@ -1,6 +1,7 @@
 package chevy.view.entities.animated.projectile;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
+import chevy.model.entity.dinamicEntity.projectile.Arrow;
 import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Vector2;
@@ -122,29 +123,24 @@ public class SlimeShotView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (slimeShot.isCollision()) {
-            return currentViewPosition;
-        }
-
         if (currentGlobalState.isFinished()) {
             currentGlobalState = slimeShot.getState(slimeShot.getCurrentState());
             firstTimeInState = true;
-        } else {
-            if (firstTimeInState) {
-                float duration = currentGlobalState.getDuration();
-                moveInterpolationX.changeStart(currentViewPosition.first);
-                moveInterpolationX.changeEnd(slimeShot.getCol());
-                moveInterpolationX.changeDuration(duration);
-                moveInterpolationX.restart();
-                moveInterpolationY.changeStart(currentViewPosition.second);
-                moveInterpolationY.changeEnd(slimeShot.getRow());
-                moveInterpolationY.changeDuration(duration);
-                moveInterpolationY.restart();
-                firstTimeInState = false;
-            }
-            currentViewPosition.changeFirst(moveInterpolationX.getValue());
-            currentViewPosition.changeSecond(moveInterpolationY.getValue());
+        } else if (firstTimeInState && currentGlobalState.getState() != SlimeShot.State.END) {
+            float duration = currentGlobalState.getDuration();
+            moveInterpolationX.changeStart(currentViewPosition.first);
+            moveInterpolationX.changeEnd(slimeShot.getCol());
+            moveInterpolationX.changeDuration(duration);
+            moveInterpolationX.restart();
+            moveInterpolationY.changeStart(currentViewPosition.second);
+            moveInterpolationY.changeEnd(slimeShot.getRow());
+            moveInterpolationY.changeDuration(duration);
+            moveInterpolationY.restart();
+            firstTimeInState = false;
         }
+
+        currentViewPosition.changeFirst(moveInterpolationX.getValue());
+        currentViewPosition.changeSecond(moveInterpolationY.getValue());
         return currentViewPosition;
     }
 

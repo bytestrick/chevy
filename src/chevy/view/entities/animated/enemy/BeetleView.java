@@ -46,7 +46,7 @@ public class BeetleView extends AnimatedEntityView {
 
         // Attack
         float attackDuration = beetle.getState(Beetle.State.ATTACK).getDuration();
-        Vector2<Integer> offsetAttack = new Vector2<>(-2, -4);
+        Vector2<Integer> offsetAttack = new Vector2<>(-1, -3);
         float scaleAttack = 1;
         createAnimation(Beetle.State.ATTACK, 0, 4, attackDuration, offsetAttack, scaleAttack, BEETLE_RESOURCES +
                 "attack/up", ".png");

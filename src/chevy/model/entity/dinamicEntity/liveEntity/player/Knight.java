@@ -5,24 +5,32 @@ import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class Knight extends Player {
-    private final GlobalState idle = new GlobalState(State.IDLE );
-    private final GlobalState move = new GlobalState(State.MOVE, speed);
-    private final GlobalState attack = new GlobalState(State.ATTACK, .4f);
-    private final GlobalState hit = new GlobalState(State.HIT, .2f);
-    private final GlobalState dead = new GlobalState(State.DEAD, 2f);
-    private final GlobalState glide = new GlobalState(State.GLIDE, speed, true);
-    private final GlobalState sludge = new GlobalState(State.SLUDGE, speed);
-    private final GlobalState fall = new GlobalState(State.FALL);
+    private final GlobalState idle;
+    private final GlobalState move;
+    private final GlobalState attack;
+    private final GlobalState hit;
+    private final GlobalState dead;
+    private final GlobalState glide;
+    private final GlobalState sludge;
+    private final GlobalState fall;
 
     public Knight(Vector2<Integer> initPosition) {
         super(initPosition, Type.KNIGHT);
 
-        this.speed = 0.2f;
+        this.speed = 0.3f;
         this.health = 100;
         this.shield = 2;
         this.maxDamage = 7;
         this.minDamage = 5;
 
+        this.idle = new GlobalState(State.IDLE);
+        this.move = new GlobalState(State.MOVE, speed);
+        this.attack = new GlobalState(State.ATTACK, .5f);
+        this.hit = new GlobalState(State.HIT, .2f);
+        this.dead = new GlobalState(State.DEAD);
+        this.glide = new GlobalState(State.GLIDE, speed, true);
+        this.sludge = new GlobalState(State.SLUDGE, speed);
+        this.fall = new GlobalState(State.FALL);
         initStateMachine();
     }
 
@@ -43,6 +51,7 @@ public class Knight extends Player {
         move.linkState(attack);
         attack.linkState(idle);
         attack.linkState(move);
+        attack.linkState(hit);
         glide.linkState(idle);
         glide.linkState(fall);
         glide.linkState(hit);
