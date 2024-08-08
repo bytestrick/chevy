@@ -31,11 +31,11 @@ public class ArrowView extends AnimatedEntityView {
 
     private void initAnimation() {
         // Loop
-        float durationLoop = arrow.getState(Arrow.State.LOOP).getDuration();
-        createAnimation(Arrow.State.LOOP, 0, 4, true, 2, durationLoop, ARROW_PATH + "up", ".png");
-        createAnimation(Arrow.State.LOOP, 1, 4, true, 2, durationLoop, ARROW_PATH + "down", ".png");
-        createAnimation(Arrow.State.LOOP, 2, 4, true, 2, durationLoop, ARROW_PATH + "right", ".png");
-        createAnimation(Arrow.State.LOOP, 3, 4, true, 2, durationLoop, ARROW_PATH + "left", ".png");
+        float durationLoop = 0.3f;
+        createAnimation(Arrow.State.LOOP, 0, 4, durationLoop, ARROW_PATH + "up", ".png");
+        createAnimation(Arrow.State.LOOP, 1, 4, durationLoop, ARROW_PATH + "down", ".png");
+        createAnimation(Arrow.State.LOOP, 2, 4, durationLoop, ARROW_PATH + "right", ".png");
+        createAnimation(Arrow.State.LOOP, 3, 4, durationLoop, ARROW_PATH + "left", ".png");
 
         // End
         float durationEnd = arrow.getState(Arrow.State.END).getDuration();
@@ -84,29 +84,24 @@ public class ArrowView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (arrow.isCollision()) {
-            return currentViewPosition;
-        }
-
-        if (!currentGlobalState.isFinished()) {
-            if (firstTimeInState) {
-                float duration = currentGlobalState.getDuration();
-                moveInterpolationX.changeStart(currentViewPosition.first);
-                moveInterpolationX.changeEnd(arrow.getCol());
-                moveInterpolationX.changeDuration(duration);
-                moveInterpolationX.restart();
-                moveInterpolationY.changeStart(currentViewPosition.second);
-                moveInterpolationY.changeEnd(arrow.getRow());
-                moveInterpolationY.changeDuration(duration);
-                moveInterpolationY.restart();
-                firstTimeInState = false;
-            }
-            currentViewPosition.changeFirst(moveInterpolationX.getValue());
-            currentViewPosition.changeSecond(moveInterpolationY.getValue());
-        } else {
+        if (currentGlobalState.isFinished()) {
             currentGlobalState = arrow.getState(arrow.getCurrentState());
             firstTimeInState = true;
+        } else if (firstTimeInState && currentGlobalState.getState() != Arrow.State.END) {
+            float duration = currentGlobalState.getDuration();
+            moveInterpolationX.changeStart(currentViewPosition.first);
+            moveInterpolationX.changeEnd(arrow.getCol());
+            moveInterpolationX.changeDuration(duration);
+            moveInterpolationX.restart();
+            moveInterpolationY.changeStart(currentViewPosition.second);
+            moveInterpolationY.changeEnd(arrow.getRow());
+            moveInterpolationY.changeDuration(duration);
+            moveInterpolationY.restart();
+            firstTimeInState = false;
         }
+
+        currentViewPosition.changeFirst(moveInterpolationX.getValue());
+        currentViewPosition.changeSecond(moveInterpolationY.getValue());
         return currentViewPosition;
     }
 

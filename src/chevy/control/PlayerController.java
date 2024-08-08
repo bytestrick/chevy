@@ -62,6 +62,9 @@ public class PlayerController implements Update {
      * @param keyEvent l'evento di pressione del tasto
      */
     public void keyPressed(KeyEvent keyEvent) {
+        if (player.getCurrentState() == Player.State.GLIDE)
+            return;
+
         final int key = keyEvent.getKeyCode();
 
         final DirectionsModel direction = switch (key) {

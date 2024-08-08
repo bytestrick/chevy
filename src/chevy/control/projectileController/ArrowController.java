@@ -41,7 +41,7 @@ public class ArrowController {
     /**
      * Gestisce le interazioni della freccia con il giocatore.
      *
-     * @param projectile il proiettile (freccia) che interagisce con il giocatore
+     * @param arrow il proiettile (freccia) che interagisce con il giocatore
      */
     public void playerInInteraction(Arrow arrow) {
         if (arrow.changeState(Arrow.State.END)) {
@@ -54,7 +54,7 @@ public class ArrowController {
     /**
      * Aggiorna lo stato della freccia a ogni ciclo di gioco, gestendo la sua posizione e le sue collisioni.
      *
-     * @param projectile il proiettile (freccia) da aggiornare
+     * @param arrow il proiettile (freccia) da aggiornare
      */
     public void update(Arrow arrow) {
         if (arrow.checkAndChangeState(Arrow.State.LOOP)) {
