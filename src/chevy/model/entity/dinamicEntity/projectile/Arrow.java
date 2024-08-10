@@ -7,7 +7,7 @@ import chevy.utils.Vector2;
 
 public class Arrow extends Projectile {
     private final GlobalState loop = new GlobalState(State.LOOP, .2f, true);
-    private final GlobalState end = new GlobalState(State.END);
+    private final GlobalState end = new GlobalState(State.END, .5f);
 
     public Arrow(Vector2<Integer> initPosition, DirectionsModel direction) {
         super(initPosition, Type.ARROW, direction);

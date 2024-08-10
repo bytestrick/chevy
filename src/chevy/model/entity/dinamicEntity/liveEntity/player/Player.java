@@ -12,7 +12,7 @@ import java.util.Map;
 
 public abstract class Player extends LiveEntity {
     private final Type type;
-    protected float speed = 0.1f;
+    protected float speed = 0f;
     protected Map<PowerUp.Type, PowerUp> ownedPowerUp = new HashMap<>();
 
     public Player(Vector2<Integer> initPosition, Type type) {
