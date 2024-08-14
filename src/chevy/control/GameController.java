@@ -21,7 +21,7 @@ public class GameController {
 
         // inizializzazione del controller della stanza
         PowerUpTextVisualizerController powerUpTextVisualizerController = new PowerUpTextVisualizerController(
-                this.window.getGamePanel().getPowerUpTextVisualizerController()
+//                this.window.getGamePanel().getPowerUpTextVisualizerController()
         );
         ChamberController chamberController = new ChamberController(ChamberManager.getInstance().getCurrentChamber(), powerUpTextVisualizerController);
         keyboardListener.setChamber(chamberController);

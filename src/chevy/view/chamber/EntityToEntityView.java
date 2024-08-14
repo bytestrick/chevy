@@ -36,7 +36,6 @@ import chevy.view.entities.WallView;
 import chevy.view.entities.animated.collectable.CoinView;
 import chevy.view.entities.animated.collectable.HealthView;
 import chevy.view.entities.animated.collectable.KeyView;
-import chevy.view.entities.animated.collectable.powerUp.PowerUpView;
 import chevy.view.entities.animated.enemy.BeetleView;
 import chevy.view.entities.animated.enemy.BigSlimeView;
 import chevy.view.entities.animated.enemy.SkeletonView;
@@ -306,16 +305,16 @@ public class EntityToEntityView {
                 }
                 yield trapView;
             }
-            case Collectable.Type.POWER_UP -> {
-                PowerUpView powerUpView = null;
-                if (entityView.containsKey(entity)) {
-                    powerUpView = (PowerUpView) entityView.get(entity);
-                } else {
-                    powerUpView = new PowerUpView((PowerUp) entity);
-                    entityView.put(entity, powerUpView);
-                }
-                yield powerUpView;
-            }
+//            case Collectable.Type.POWER_UP -> {
+//                PowerUpView powerUpView = null;
+//                if (entityView.containsKey(entity)) {
+//                    powerUpView = (PowerUpView) entityView.get(entity);
+//                } else {
+//                    powerUpView = new PowerUpView((PowerUp) entity);
+//                    entityView.put(entity, powerUpView);
+//                }
+//                yield powerUpView;
+//            }
             default -> null;
         };
     }
