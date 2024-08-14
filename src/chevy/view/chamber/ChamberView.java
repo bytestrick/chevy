@@ -2,14 +2,16 @@ package chevy.view.chamber;
 
 import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.entity.Entity;
+import chevy.service.Render;
+import chevy.service.RenderManager;
 import chevy.settings.GameSettings;
 import chevy.utils.Image;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
 import chevy.view.entities.EntityView;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
@@ -17,18 +19,23 @@ import java.util.List;
 /**
  * Gestisce il disegno a schermo della stanza
  */
-public class ChamberView {
+public class ChamberView extends JPanel implements Render {
     private static final boolean DRAW_COLLISIONS = false;
     private static final BufferedImage NULL_IMAGE = Image.load("/assets/null.png");
     // colori per la visualizzazione della collisione
     private static final Color bg = new Color(31, 205, 242, 80);
     private List<Layer> drawOrder;
 
-    private List<Layer> drawOrderChamber;
 
-    public ChamberView() { }
+    public ChamberView() {
+        setOpaque(false);
+        RenderManager.addToRender(this);
+    }
 
-    public void draw(Graphics g) {
+
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         if (drawOrder == null) return;
 
         for (Layer layer : drawOrder) {
@@ -91,5 +98,11 @@ public class ChamberView {
 
     public void setDrawOrder(List<Layer> drawOrder) {
         this.drawOrder = drawOrder;
+    }
+
+
+    @Override
+    public void render(double delta) {
+        repaint();
     }
 }

@@ -21,6 +21,7 @@ public class Image {
             image = ImageIO.read(Objects.requireNonNull(Image.class.getResource(path)));
         } catch (IOException | NullPointerException e) {
             Log.error("Immagine '" + path + "' non trovata.");
+            e.printStackTrace();
             System.exit(1);
         }
         return image;
