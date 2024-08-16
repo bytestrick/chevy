@@ -1,5 +1,6 @@
 package chevy.control.trapsController;
 
+import chevy.Sound;
 import chevy.control.PlayerController;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
@@ -25,10 +26,12 @@ public class IcyFloorController {
      */
     public void playerInInteraction(Player player, IcyFloor icyFloor) {
         player.changeState(Player.State.GLIDE);
+
     }
 
     public void playerOutInteraction(Player player, IcyFloor icyFloor) {
         player.changeState(Player.State.GLIDE);
+        Sound.getInstance().play(Sound.Effect.SLIDE);
     }
 
     public void update(IcyFloor icyFloor) {

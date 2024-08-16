@@ -7,7 +7,8 @@ import chevy.view.Window;
 
 public class Main {
     public static void main(String[] args) {
-        new GameController(new Window(true));
+        Window window = new Window(true);
+        new GameController(window);
         new GameLoop();
         Log.info("Avvio");
     }
