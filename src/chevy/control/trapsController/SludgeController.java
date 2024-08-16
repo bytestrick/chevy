@@ -1,5 +1,6 @@
 package chevy.control.trapsController;
 
+import chevy.Sound;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.Sludge;
@@ -24,6 +25,7 @@ public class SludgeController {
      */
     public void playerInInteraction(Player player, Sludge sludge) {
         player.changeState(Player.State.SLUDGE);
+        Sound.getInstance().play(Sound.Effect.MUD);
     }
 
     /**
@@ -37,6 +39,7 @@ public class SludgeController {
             player.changeState(Player.State.IDLE);
             chamber.findAndRemoveEntity(sludge, false);
         } else {
+            Sound.getInstance().play(Sound.Effect.MUD);
             sludge.decreaseNMoveToUnlock();
         }
     }

@@ -1,5 +1,6 @@
 package chevy.control;
 
+import chevy.Sound;
 import chevy.control.collectableController.PowerUpTextVisualizerController;
 import chevy.model.chamber.ChamberManager;
 import chevy.view.Window;
@@ -25,5 +26,7 @@ public class GameController {
         );
         ChamberController chamberController = new ChamberController(ChamberManager.getInstance().getCurrentChamber(), powerUpTextVisualizerController);
         keyboardListener.setChamber(chamberController);
+
+        Sound.getInstance().startMusic();
     }
 }

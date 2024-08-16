@@ -28,6 +28,7 @@ public class GameLoop implements Runnable {
             final long timeToWait = GameSettings.FRAME_TARGET_TIME - (System.currentTimeMillis() - lastTime);
 
             if (timeToWait > 0 && timeToWait <= GameSettings.FRAME_TARGET_TIME) {
+                // FIXME: sostituire Thread.sleep con Object.wait(long timeoutMillis)
                 try {
                     Thread.sleep(timeToWait);
                 } catch (InterruptedException e) {

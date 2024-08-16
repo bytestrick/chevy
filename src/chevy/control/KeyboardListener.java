@@ -12,7 +12,7 @@ public class KeyboardListener implements KeyListener {
     public KeyboardListener(Window window) {
         this.window = window;
 
-        // connesione delgli eventi da tastiera al GamePanel
+        // Connesione degli eventi da tastiera al GamePanel
         window.getGamePanel().addKeyBoardListener(this);
     }
 
