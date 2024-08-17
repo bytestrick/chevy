@@ -21,10 +21,10 @@ public class Sound {
     private final Clip[] effects = new Clip[Effect.values().length];
     private final Clip[] songs = new Clip[Song.values().length];
     private final Object musicMutex = new Object();
-    private float effectGainPercent = .8f;
-    private float musicGainPercent = .4f;
     private boolean musicPlaying = false;
     private boolean musicWorkerRunning = false;
+    private float effectGainPercent = .8f; // valore predefinito volume effetti
+    private float musicGainPercent = .4f; // valore predefinito volume musica
 
     private Sound() {
         Log.info(getClass() + ": inizializzazione");
@@ -188,7 +188,7 @@ public class Sound {
         HUMAN_DEATH, ARROW_SWOOSH, WIN, CLAW_HIT, PUNCH, BLADE_SLASH, SPIKE, ARCHER_FOOTSTEPS, NINJA_FOOTSTEPS,
         KNIGHT_FOOTSTEPS, ZOMBIE_BITE, ZOMBIE_CHOCKING, ZOMBIE_HIT, SKELETON_HIT, SKELETON_DISASSEMBLED,
         SKELETON_ATTACK, SLIDE, SLIME_HIT, SLIME_DEATH, ROBOTIC_INSECT, BEETLE_ATTACK, BEETLE_DEATH, GHOST_ATTACK,
-        GHOST_HIT, GHOST_DEATH, MUD
+        GHOST_HIT, GHOST_DEATH, MUD, COIN, KEY_EQUIPPED, POWER_UP_TEXT_VISUALIZER, HEALTH_POTION
     }
 
     public enum Song {
