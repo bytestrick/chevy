@@ -12,30 +12,25 @@ public class GameLoop implements Runnable {
     private boolean isRunning;
 
     public GameLoop() {
-        Thread loop = new Thread(this);
-        loop.setPriority(Thread.NORM_PRIORITY);
-        this.isRunning = true;
-        loop.start();
-        Log.info("Game loop avviato");
+        isRunning = true;
+        Thread.ofPlatform().priority(Thread.MAX_PRIORITY).name("Game Loop").start(this);
     }
 
     @Override
     public void run() {
+        Log.info(Thread.currentThread().getName() + " avviato");
         long lastTime = System.currentTimeMillis();
-
         while (isRunning) {
-            // Si toglie al timeToWait (durata ideale del frame) il tempo perso a fare l'update e il render.
             final long timeToWait = GameSettings.FRAME_TARGET_TIME - (System.currentTimeMillis() - lastTime);
-
             if (timeToWait > 0 && timeToWait <= GameSettings.FRAME_TARGET_TIME) {
-                // FIXME: sostituire Thread.sleep con Object.wait(long timeoutMillis)
                 try {
-                    Thread.sleep(timeToWait);
+                    synchronized (this) {
+                        wait(timeToWait);
+                    }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
-
             final double delta = (System.currentTimeMillis() - lastTime) / 1000.0d; // conversione in secondi
             lastTime = System.currentTimeMillis();
 
@@ -43,13 +38,13 @@ public class GameLoop implements Runnable {
             RenderManager.render(delta);
             Toolkit.getDefaultToolkit().sync();
         }
+        Log.info(Thread.currentThread().getName() + " terminato");
     }
 
     /**
      * Termina l'aggiornamento del gioco
      */
     public void stopLoop() {
-        this.isRunning = false;
-        Log.info("Game loop terminato");
+        isRunning = false;
     }
 }
