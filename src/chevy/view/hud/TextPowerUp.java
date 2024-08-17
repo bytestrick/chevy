@@ -5,7 +5,7 @@ import javax.swing.text.*;
 import java.awt.*;
 
 import chevy.utils.Fontt;
-import component.NoCaret;
+import chevy.view.component.NoCaret;
 
 public class TextPowerUp extends JPanel {
     private static final String FONT_PATH = "/fonts/";
@@ -18,6 +18,10 @@ public class TextPowerUp extends JPanel {
     private Color colorDescription = new Color(255, 255, 255, 255);;
     private Font font;
     private JTextPane textPane = new JTextPane();
+
+    private final StyledDocument doc = textPane.getStyledDocument();
+    private final Style titleStyle = doc.addStyle("TitleStyle", null);
+    private final Style descriptionStyle = doc.addStyle("DescriptionStyle", null);
 
     public TextPowerUp() {
         setOpaque(true);
@@ -33,18 +37,15 @@ public class TextPowerUp extends JPanel {
         textPane.setOpaque(false);
         textPane.setEditable(false);
         textPane.setCaret(new NoCaret());
-        StyledDocument doc = textPane.getStyledDocument();
 
         setFont(FONT_PATH + "PixelatedPusab.ttf");
 
         // Creazione di stili per il titolo e la descrizione
-        Style titleStyle = doc.addStyle("TitleStyle", null);
         StyleConstants.setAlignment(titleStyle, StyleConstants.ALIGN_CENTER);
         StyleConstants.setForeground(titleStyle, colorTitle); // Colore del testo
         StyleConstants.setFontSize(titleStyle, titleFontSize); // Dimensione del font
         StyleConstants.setBold(titleStyle, true); // Grassetto
 
-        Style descriptionStyle = doc.addStyle("DescriptionStyle", null);
         StyleConstants.setAlignment(descriptionStyle, StyleConstants.ALIGN_CENTER);
         StyleConstants.setForeground(descriptionStyle, colorDescription);
         StyleConstants.setFontFamily(descriptionStyle, font.getFamily());
@@ -58,6 +59,7 @@ public class TextPowerUp extends JPanel {
         }
         catch (BadLocationException e) {
             System.out.println("ERRORE");
+            e.printStackTrace();
         }
 
         springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, textPane, 0, SpringLayout.HORIZONTAL_CENTER, this);
@@ -101,4 +103,18 @@ public class TextPowerUp extends JPanel {
         this.font = Fontt.load(path);
         textPane.setFont(font);
     }
+
+    public void windowResized(float scale) {
+        int newTitleFontSize = Math.max(1, (int) (titleFontSize * scale));
+        int newDescriptionFontSize = Math.max(1, (int) (descriptionFontSize * scale));
+
+        MutableAttributeSet attr = new SimpleAttributeSet();
+        StyleConstants.setFontSize(attr, newTitleFontSize);
+        doc.setCharacterAttributes(0, title.length(), attr, false);
+        StyleConstants.setFontSize(attr, newDescriptionFontSize);
+        doc.setCharacterAttributes(title.length(), doc.getLength(), attr, false);
+    }
+
+
+
 }

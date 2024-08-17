@@ -1,35 +1,51 @@
 package chevy.view.component;
 
+import chevy.settings.WindowSettings;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class CounterBar extends JPanel {
     private int counter = 0;
     private final JLabel text = new JLabel(String.valueOf(counter), SwingConstants.RIGHT);
-    private final String[] texture = new String[9];
     private final MyPanelUI ui;
-    private Component rightSpace = Box.createHorizontalStrut(0);
-    private float scale;
+    private int rightSpace = 0;
+    private final Dimension dimension;
+    private final SpringLayout springLayout;
+    private Font font;
+    private int fontSize = 13;
+    private float scale = 1f;
+
+
+    public CounterBar(Dimension dimension) {
+        this(dimension, 1f);
+    }
 
     public CounterBar(Dimension dimension, float scale) {
         this.scale = scale;
+        this.dimension = dimension;
 
         setOpaque(false);
-        ui = new MyPanelUI(null, scale);
+        ui = new MyPanelUI(null, scale * WindowSettings.scale);
         setUI(ui);
 
-        setMaximumSize(dimension);
-        setPreferredSize(dimension);
-        setMinimumSize(dimension);
+        setDimension(WindowSettings.scale);
 
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        springLayout = new SpringLayout();
+        setLayout(springLayout);
+        setConstraints(WindowSettings.scale);
 
+        font = text.getFont();
+        font = font.deriveFont(fontSize * WindowSettings.scale);
         text.setMaximumSize(getMaximumSize());
         text.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         add(Box.createHorizontalGlue());
         add(text);
-        add(rightSpace);
+    }
+
+    public void setRightSpace(int rightSpace) {
+        this.rightSpace = rightSpace;
     }
 
     public void setTexture(int i, String path) {
@@ -38,10 +54,27 @@ public class CounterBar extends JPanel {
         repaint();
     }
 
-    public void setRightSpace(int with) {
-        rightSpace = Box.createHorizontalStrut(with);
-        add(rightSpace, getComponentCount() - 1);
-        revalidate();
-        repaint();
+    private void setDimension(float scale) {
+        Dimension dimensionScaled = new Dimension(
+                (int) (dimension.getWidth() * scale),
+                (int) (dimension.height * scale)
+        );
+        setMaximumSize(dimensionScaled);
+        setPreferredSize(dimensionScaled);
+        setMinimumSize(dimensionScaled);
+    }
+
+    private void setConstraints(float scale) {
+        springLayout.putConstraint(SpringLayout.EAST, text, -((int) (rightSpace * scale) + ui.getWidth(MyPanelUI.BAR_R)), SpringLayout.EAST, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, text, 0, SpringLayout.VERTICAL_CENTER, this);
+    }
+
+    public void windowResized(float scale) {
+        scale = scale * this.scale;
+
+        ui.setScale(scale);
+        font = font.deriveFont(fontSize * scale);
+        setConstraints(scale);
+        setDimension(scale);
     }
 }

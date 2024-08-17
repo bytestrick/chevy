@@ -1,32 +1,29 @@
 package chevy.view.hud;
 
+import chevy.settings.WindowSettings;
+
 import javax.swing.*;
 
 public class HUD extends JPanel {
-    private final CoinBar coinBar = new CoinBar();
-    private final KeyBar keyBar = new KeyBar();
-    private final PlayerInfo playerInfo = new PlayerInfo();
-    private final TextPowerUp textPowerUp = new TextPowerUp();
+    private final CoinBar coinBar;
+    private final KeyBar keyBar;
+    private final PlayerInfo playerInfo;
+    private final TextPowerUp textPowerUp;
+    private final SpringLayout springLayout;
+    private int borderMargin = 10;
+    private int componentMargin = 5;
 
-    public HUD() {
+
+    public HUD(float scale) {
+        coinBar = new CoinBar(32, 7, scale);
+        keyBar = new KeyBar(20, 7, scale);
+        playerInfo = new PlayerInfo(scale);
+        textPowerUp = new TextPowerUp();
+        springLayout = new SpringLayout();
+
         setOpaque(false);
-        SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
-
-        int borderMargin = 10;
-        int componentMargin = 5;
-
-        springLayout.putConstraint(SpringLayout.NORTH, coinBar, borderMargin, SpringLayout.NORTH, this);
-        springLayout.putConstraint(SpringLayout.EAST, coinBar, -borderMargin, SpringLayout.EAST, this);
-
-        springLayout.putConstraint(SpringLayout.NORTH, keyBar, componentMargin, SpringLayout.SOUTH, coinBar);
-        springLayout.putConstraint(SpringLayout.EAST, keyBar, -borderMargin, SpringLayout.EAST, this);
-
-        springLayout.putConstraint(SpringLayout.NORTH, playerInfo, borderMargin, SpringLayout.NORTH, this);
-        springLayout.putConstraint(SpringLayout.WEST, playerInfo, borderMargin, SpringLayout.WEST, this);
-
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, textPowerUp, 0, SpringLayout.HORIZONTAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, textPowerUp, 0, SpringLayout.VERTICAL_CENTER, this);
+        setConstraints(WindowSettings.scale);
 
         add(textPowerUp);
         add(playerInfo);
@@ -34,5 +31,30 @@ public class HUD extends JPanel {
         add(keyBar);
 
         textPowerUp.setVisible(false);
+    }
+
+    private void setConstraints(float scale) {
+        int borderMarginScaled = (int) (borderMargin * scale);
+        int componentMarginScaled = (int) (componentMargin * scale);
+
+        springLayout.putConstraint(SpringLayout.NORTH, coinBar, borderMarginScaled, SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.EAST, coinBar, -borderMarginScaled, SpringLayout.EAST, this);
+
+        springLayout.putConstraint(SpringLayout.NORTH, keyBar, componentMarginScaled, SpringLayout.SOUTH, coinBar);
+        springLayout.putConstraint(SpringLayout.EAST, keyBar, -borderMarginScaled, SpringLayout.EAST, this);
+
+        springLayout.putConstraint(SpringLayout.NORTH, playerInfo, borderMarginScaled, SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.WEST, playerInfo, borderMarginScaled, SpringLayout.WEST, this);
+
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, textPowerUp, 0, SpringLayout.HORIZONTAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, textPowerUp, 0, SpringLayout.VERTICAL_CENTER, this);
+    }
+
+    public void windowResized(float scale) {
+        coinBar.windowResized(scale);
+        keyBar.windowResized(scale);
+        playerInfo.windowResized(scale);
+        textPowerUp.windowResized(scale);
+        setConstraints(scale);
     }
 }
