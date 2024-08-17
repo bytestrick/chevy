@@ -1,5 +1,6 @@
 package chevy.control.enemyController;
 
+import chevy.Sound;
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
@@ -69,6 +70,7 @@ public class BigSlimeController {
             }
         } else if (bigSlime.getHealth() <= 0 && bigSlime.checkAndChangeState(BigSlime.State.DEAD)) {
             chamber.spawnSlimeAroundEntity(bigSlime, 2);
+            Sound.getInstance().play(Sound.Effect.SLIME_DEATH);
             bigSlime.kill();
         }
 
@@ -82,12 +84,14 @@ public class BigSlimeController {
             } else if (bigSlime.canAttack() && bigSlime.getState(BigSlime.State.ATTACK).isFinished()) {
                 Entity entity = chamber.getNearEntityOnTop(bigSlime, direction);
                 if (entity instanceof Player) {
+                    Sound.getInstance().play(Sound.Effect.SLIME_HIT);
                     playerController.handleInteraction(InteractionType.ENEMY, bigSlime);
                     bigSlime.setCanAttack(false);
                 }
             } else if (bigSlime.canChange(BigSlime.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(bigSlime, direction);
                 if (entity instanceof Player && bigSlime.changeState(BigSlime.State.ATTACK)) {
+                    Sound.getInstance().play(Sound.Effect.SLIME_HIT);
                     bigSlime.setCanAttack(true);
                 }
             }
@@ -114,6 +118,7 @@ public class BigSlimeController {
      */
     private void hitBigSlime(BigSlime bigSlime, int damage) {
         if (bigSlime.changeState(BigSlime.State.HIT)) {
+            Sound.getInstance().play(Sound.Effect.SLIME_HIT);
             bigSlime.changeHealth(damage);
         }
     }
