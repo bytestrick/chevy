@@ -1,5 +1,6 @@
 package chevy.control.enemyController;
 
+import chevy.Sound;
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
@@ -46,6 +47,7 @@ public class SkeletonController {
         switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, lo Skeleton viene danneggiato in base al danno del giocatore.
             case Player.State.ATTACK -> {
+                Sound.getInstance().play(Sound.Effect.SKELETON_HIT);
                 hitSkeleton(skeleton, -1 * player.getDamage());
                 skeleton.setDirection(DirectionsModel.positionToDirection(player, skeleton));
             }
@@ -67,6 +69,7 @@ public class SkeletonController {
                 return;
             }
         } else if (skeleton.getHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.State.DEAD)) {
+            Sound.getInstance().play(Sound.Effect.SKELETON_DISASSEMBLED);
             skeleton.kill();
         }
 
@@ -80,12 +83,14 @@ public class SkeletonController {
             } else if (skeleton.canAttack() && skeleton.getState(Skeleton.State.ATTACK).isFinished()) {
                 Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
                 if (entity instanceof Player) {
+                    Sound.getInstance().play(Sound.Effect.SKELETON_HIT);
                     playerController.handleInteraction(InteractionType.ENEMY, skeleton);
                     skeleton.setCanAttack(false);
                 }
             } else if (skeleton.canChange(Skeleton.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
                 if (entity instanceof Player && skeleton.changeState(Skeleton.State.ATTACK)) {
+                    Sound.getInstance().play(Sound.Effect.SKELETON_HIT);
                     skeleton.setCanAttack(true);
                 }
             }

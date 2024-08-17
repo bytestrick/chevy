@@ -1,5 +1,6 @@
 package chevy.control.trapsController;
 
+import chevy.Sound;
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
@@ -47,6 +48,7 @@ public class SpikedFloorController {
         }
 
         if (spikedFloor.checkAndChangeState(SpikedFloor.State.DAMAGE)) {
+            Sound.getInstance().play(Sound.Effect.SPIKE);
             Entity entity = chamber.getEntityOnTop(spikedFloor);
             if (entity instanceof Player) {
                 playerController.handleInteraction(InteractionType.TRAP, spikedFloor);
