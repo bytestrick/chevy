@@ -1,6 +1,7 @@
 package chevy.view.component;
 
 
+import chevy.settings.WindowSettings;
 import chevy.utils.Image;
 
 import javax.swing.*;
@@ -9,9 +10,9 @@ import java.awt.image.BufferedImage;
 
 public class ImageVisualizer extends JComponent {
     private BufferedImage image;
+    private float scale = 1f;
     private int width;
     private int height;
-    private float scale = 1f;
 
     public ImageVisualizer() {}
 
@@ -34,9 +35,11 @@ public class ImageVisualizer extends JComponent {
     public void setImage(BufferedImage image, float scale) {
         setOpaque(false);
         this.image = image;
-        width = (int) (image.getWidth() / this.scale * scale);
-        height = (int) (image.getHeight() / this.scale * scale);
         this.scale = scale;
+
+        width = (int) (scale * image.getWidth() * WindowSettings.scale);
+        height = (int) (scale * image.getHeight() * WindowSettings.scale);
+
         setDimension();
     }
 
@@ -53,10 +56,11 @@ public class ImageVisualizer extends JComponent {
     }
 
     private void setDimension() {
-        Dimension dimension = new Dimension(width, height);
-        setMaximumSize(dimension);
-        setPreferredSize(dimension);
-        setMinimumSize(dimension);
+        Dimension newDimension = new Dimension(width, height);
+        setMaximumSize(newDimension);
+        setPreferredSize(newDimension);
+        setMinimumSize(newDimension);
+        revalidate();
         repaint();
     }
 
@@ -66,5 +70,13 @@ public class ImageVisualizer extends JComponent {
 
         if (image != null)
             g.drawImage(image, 0 , 0, width, height, null);
+    }
+
+    public void windowResized(float scale) {
+        scale = scale * this.scale;
+
+        width = (int) (scale * image.getWidth());
+        height = (int) (scale * image.getHeight());
+        setDimension();
     }
 }

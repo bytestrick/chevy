@@ -1,13 +1,12 @@
 package chevy.view.component;
 
 
+import chevy.settings.WindowSettings;
 import chevy.utils.Image;
 
 import javax.swing.*;
-import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.ParameterizedType;
 
 public class ProgressBar extends JPanel {
     private BufferedImage image;
@@ -33,13 +32,13 @@ public class ProgressBar extends JPanel {
 
         setOpaque(false);
         containerImage.setOpaque(false);
-        ui = new MyPanelUI(null, scale);
+        ui = new MyPanelUI(null, scale * WindowSettings.scale);
         setUI(ui);
 
         setLayout(springLayout);
         containerImage.setLayout(new BoxLayout(containerImage, BoxLayout.X_AXIS));
 
-        setDimension();
+        setDimension(scale * WindowSettings.scale);
         add(containerImage);
     }
 
@@ -49,19 +48,19 @@ public class ProgressBar extends JPanel {
         springLayout.putConstraint(SpringLayout.WEST, containerImage, ui.getWidth(MyPanelUI.BAR_L), SpringLayout.WEST, this);
     }
 
-    private void setDimension() {
+    private void setDimension(float scale) {
         int width = 0;
-        int height = ui.getHeight(MyPanelUI.BAR_T) + ui.getHeight(MyPanelUI.BAR_B) + ui.getHeight(MyPanelUI.CENTER);;
+        int height = ui.getHeight(MyPanelUI.BAR_T) + ui.getHeight(MyPanelUI.BAR_B) + ui.getHeight(MyPanelUI.CENTER);
 
         if (image == null)
             width = ui.getWidth(MyPanelUI.BAR_L) + ui.getWidth(MyPanelUI.BAR_R);
         else
             width = (int) (maxValue * image.getWidth() * scale) + ui.getWidth(MyPanelUI.BAR_L) + ui.getWidth(MyPanelUI.BAR_R);
 
-        Dimension dimension = new Dimension(width, height);
-        setMaximumSize(dimension);
-        setPreferredSize(dimension);
-        setMinimumSize(dimension);
+        Dimension newDimension = new Dimension(width, height);
+        setMaximumSize(newDimension);
+        setPreferredSize(newDimension);
+        setMinimumSize(newDimension);
         setConstraints();
 
         revalidate();
@@ -82,20 +81,29 @@ public class ProgressBar extends JPanel {
 
     public void setTexture(int i, String path) {
         ui.setTexture(i, path);
-        setDimension();
+        setDimension(scale * WindowSettings.scale);
     }
 
     public void setStepTexture(String path) {
         image = Image.load(path);
         int n = containerImage.getComponentCount();
-
         for (int i = 0; i < maxValue; ++i) {
             if (i < n)
                 containerImage.remove(i);
-            containerImage.add(new ImageVisualizer(image, scale), i);
+            containerImage.add(new ImageVisualizer(image), i);
         }
 
-        setDimension();
+        setDimension(scale * WindowSettings.scale);
+    }
+
+    public void windowResized(float scale) {
+        scale *= this.scale;
+        ui.setScale(scale);
+        for (int i = 0; i < containerImage.getComponentCount(); ++i) {
+            ImageVisualizer im = (ImageVisualizer) containerImage.getComponent(i);
+            im.windowResized(scale);
+        }
+        setDimension(scale);
     }
 }
 

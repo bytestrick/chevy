@@ -1,4 +1,4 @@
-package component;
+package chevy.view.component;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.text.Caret;

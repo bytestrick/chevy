@@ -16,9 +16,9 @@ public class Log {
     }
 
     public static void info(String message) {
-        if (GameSettings.logLevel.compareTo(Level.INFO) >= 0) {
-            System.out.println("\033[90;1m[i]\033[0m " + message);
-        }
+//        if (GameSettings.logLevel.compareTo(Level.INFO) >= 0) {
+//            System.out.println("\033[90;1m[i]\033[0m " + message);
+//        }
     }
 
     /**
