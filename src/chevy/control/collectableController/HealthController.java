@@ -1,5 +1,6 @@
 package chevy.control.collectableController;
 
+import chevy.Sound;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Health;
 
@@ -14,6 +15,7 @@ public class HealthController {
 
     public void playerInInteraction(Health health) {
         if (health.changeState(Health.State.COLLECTED)) {
+            Sound.getInstance().play(Sound.Effect.HEALTH_POTION);
             health.collect();
             chamber.findAndRemoveEntity(health);
         }
