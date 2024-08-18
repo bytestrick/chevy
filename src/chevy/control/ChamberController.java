@@ -2,7 +2,6 @@ package chevy.control;
 
 import chevy.control.collectableController.CollectableController;
 import chevy.control.collectableController.CollectableUpdateController;
-import chevy.control.collectableController.PowerUpTextController;
 import chevy.control.enemyController.EnemyController;
 import chevy.control.enemyController.EnemyUpdateController;
 import chevy.control.hudController.HUDController;
@@ -10,8 +9,9 @@ import chevy.control.projectileController.ProjectileController;
 import chevy.control.projectileController.ProjectileUpdateController;
 import chevy.control.trapsController.TrapsController;
 import chevy.control.trapsController.TrapsUpdateController;
+import chevy.model.HUD;
 import chevy.model.chamber.Chamber;
-import chevy.view.hud.HUD;
+import chevy.view.hud.HUDView;
 
 import java.awt.event.KeyEvent;
 
@@ -32,13 +32,13 @@ public class ChamberController {
      *
      * @param chamber riferimento alla stanza di gioco
      */
-    public ChamberController(Chamber chamber, HUD hud) {
+    public ChamberController(Chamber chamber, HUDView hudView) {
         this.chamber = chamber;
         this.playerController = new PlayerController(chamber);
         EnemyController enemyController = new EnemyController(chamber, playerController);
         TrapsController trapsController = new TrapsController(chamber, playerController, enemyController);
-        CollectableController collectableController = new CollectableController(chamber, playerController,
-                hud.getPowerUpText());
+        HUDController hudController = new HUDController(new HUD(), hudView);
+        CollectableController collectableController = new CollectableController(chamber, playerController, hudController);
         ProjectileController projectileController = new ProjectileController(chamber, playerController,
                 enemyController);
 
@@ -46,7 +46,7 @@ public class ChamberController {
         playerController.setTrapController(trapsController);
         playerController.setProjectileController(projectileController);
         playerController.setCollectableController(collectableController);
-        playerController.setHUDController(new HUDController(hud));
+        playerController.setHUDController(hudController);
         new EnemyUpdateController(enemyController, chamber.getEnemies());
         new TrapsUpdateController(trapsController, chamber.getTraps());
         new ProjectileUpdateController(projectileController, chamber.getProjectiles());

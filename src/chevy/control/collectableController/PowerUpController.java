@@ -1,18 +1,18 @@
 package chevy.control.collectableController;
 
+import chevy.control.hudController.HUDController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.view.hud.PowerUpText;
 
 public class PowerUpController {
     private final Chamber chamber;
-    private final PowerUpText powerUpText;
+    private final HUDController hudController;
 
 
-    public PowerUpController(Chamber chamber, PowerUpText powerUpText) {
+    public PowerUpController(Chamber chamber, HUDController hudController) {
         this.chamber = chamber;
-        this.powerUpText = powerUpText;
+        this.hudController = hudController;
     }
 
 
@@ -20,7 +20,7 @@ public class PowerUpController {
         if (powerUp.changeState(PowerUp.State.COLLECTED)) {
             powerUp.collect();
             chamber.findAndRemoveEntity(powerUp);
-            powerUpText.mHide();
+            hudController.hidePowerUpText();
             player.acquirePowerUp((PowerUp.Type) powerUp.getSpecificType(), powerUp);
         }
     }
@@ -35,10 +35,10 @@ public class PowerUpController {
         else {
             if (chamber.getHitDirectionPlayer(powerUp) != null) {
                 if (powerUp.changeState(PowerUp.State.SELECTED))
-                    powerUpText.show(powerUp);
+                    hudController.PowerUpText(powerUp);
             }
             else if (powerUp.checkAndChangeState(PowerUp.State.DESELECTED)) {
-                powerUpText.mHide();
+                hudController.hidePowerUpText();
             }
             powerUp.checkAndChangeState(PowerUp.State.IDLE);
         }

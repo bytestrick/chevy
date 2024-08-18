@@ -2,6 +2,7 @@ package chevy.control.collectableController;
 
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
+import chevy.control.hudController.HUDController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.Coin;
@@ -10,7 +11,6 @@ import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.view.hud.HUD;
 import chevy.view.hud.PowerUpText;
 
 
@@ -20,16 +20,18 @@ public class CollectableController {
     private final HealthController healthController;
     private final KeyController keyController;
     private final PowerUpController powerUpController;
+    private final HUDController hudController;
     private final Chamber chamber;
 
 
-    public CollectableController(Chamber chamber, PlayerController playerController, PowerUpText powerUpText) {
+    public CollectableController(Chamber chamber, PlayerController playerController, HUDController hudController) {
         this.chamber = chamber;
         this.playerController = playerController;
-        this.keyController = new KeyController(chamber);
+        this.hudController = hudController;
+        this.keyController = new KeyController(chamber, hudController);
         this.healthController = new HealthController(chamber);
-        this.coinController = new CoinController(chamber);
-        this.powerUpController = new PowerUpController(chamber, powerUpText);
+        this.coinController = new CoinController(chamber, hudController);
+        this.powerUpController = new PowerUpController(chamber, hudController);
     }
 
 

@@ -54,6 +54,10 @@ public class CounterBar extends JPanel {
         repaint();
     }
 
+    public void setText(String text) {
+        this.text.setText(text);
+    }
+
     private void setDimension(float scale) {
         Dimension dimensionScaled = new Dimension(
                 (int) (dimension.getWidth() * scale),

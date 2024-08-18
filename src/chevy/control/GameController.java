@@ -2,7 +2,7 @@ package chevy.control;
 
 import chevy.model.chamber.ChamberManager;
 import chevy.view.Window;
-import chevy.view.hud.HUD;
+import chevy.view.hud.HUDView;
 
 /**
  * Gestisce l'interazione tra il model e la view.
@@ -20,10 +20,10 @@ public class GameController {
         this.window.getGamePanel().getChamberView().setDrawOrder(ChamberManager.getInstance().getCurrentChamber().getDrawOrderChamber());
 
         // inizializzazione del controller della stanza
-        HUD hud = this.window.getGamePanel().getHud();
-        ChamberController chamberController = new ChamberController(ChamberManager.getInstance().getCurrentChamber(), hud);
+        HUDView hudView = this.window.getGamePanel().getHud();
+        ChamberController chamberController = new ChamberController(ChamberManager.getInstance().getCurrentChamber(), hudView);
         keyboardListener.setChamber(chamberController);
 
-        hud.getPlayerInfo().setPlayer(chamberController.getChamber().getPlayer());
+        hudView.getPlayerInfo().setPlayer(chamberController.getChamber().getPlayer());
     }
 }

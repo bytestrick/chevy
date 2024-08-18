@@ -26,7 +26,6 @@ import chevy.service.Update;
 import chevy.service.UpdateManager;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
-import chevy.view.hud.HUD;
 
 import java.awt.event.KeyEvent;
 

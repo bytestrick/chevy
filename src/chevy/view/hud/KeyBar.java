@@ -16,4 +16,7 @@ public class KeyBar extends CounterBar {
         setTexture(MyPanelUI.CENTER, KEY_BAR_PATH + "centerPanel.png");
     }
 
+    public void setKey(int value) {
+        setText(String.valueOf(value));
+    }
 }

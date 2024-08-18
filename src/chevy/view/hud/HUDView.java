@@ -1,11 +1,10 @@
 package chevy.view.hud;
 
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.settings.WindowSettings;
 
 import javax.swing.*;
 
-public class HUD extends JPanel {
+public class HUDView extends JPanel {
     private final CoinBar coinBar;
     private final KeyBar keyBar;
     private final PlayerInfo playerInfo;
@@ -15,7 +14,7 @@ public class HUD extends JPanel {
     private int componentMargin = 5;
 
 
-    public HUD(float scale) {
+    public HUDView(float scale) {
         coinBar = new CoinBar(32, 7, scale);
         keyBar = new KeyBar(20, 7, scale);
         playerInfo = new PlayerInfo(scale);
@@ -65,5 +64,13 @@ public class HUD extends JPanel {
 
     public PlayerInfo getPlayerInfo() {
         return playerInfo;
+    }
+
+    public CoinBar getCoinBar() {
+        return coinBar;
+    }
+
+    public KeyBar getKeyBar() {
+        return keyBar;
     }
 }
