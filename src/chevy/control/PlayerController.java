@@ -2,6 +2,7 @@ package chevy.control;
 
 import chevy.control.collectableController.CollectableController;
 import chevy.control.enemyController.EnemyController;
+import chevy.control.hudController.HUDController;
 import chevy.control.projectileController.ProjectileController;
 import chevy.control.trapsController.TrapsController;
 import chevy.model.chamber.Chamber;
@@ -25,6 +26,7 @@ import chevy.service.Update;
 import chevy.service.UpdateManager;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
+import chevy.view.hud.HUD;
 
 import java.awt.event.KeyEvent;
 
@@ -41,6 +43,7 @@ public class PlayerController implements Update {
     private TrapsController trapsController;
     private ProjectileController projectileController;
     private CollectableController collectableController;
+    private HUDController hudController;
 
     /**
      * @param chamber riferimento alla stanza di gioco
@@ -316,6 +319,8 @@ public class PlayerController implements Update {
 
         if (!dodged && player.changeState(Player.State.HIT)) {
             player.changeHealth(damage);
+            hudController.changeHealth(player.getHealth());
+            hudController.changeShield(player.getShield());
         }
     }
 
@@ -355,6 +360,12 @@ public class PlayerController implements Update {
     public void setCollectableController(CollectableController collectableController) {
         if (this.collectableController == null) {
             this.collectableController = collectableController;
+        }
+    }
+
+    public void setHUDController(HUDController hudController) {
+        if (this.hudController == null) {
+            this.hudController = hudController;
         }
     }
 }

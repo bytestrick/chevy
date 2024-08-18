@@ -3,13 +3,14 @@ package chevy.view.component;
 
 import chevy.settings.WindowSettings;
 import chevy.utils.Image;
+import chevy.utils.Log;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ProgressBar extends JPanel {
-    private BufferedImage image;
+    private BufferedImage stepTexture;
     private int maxValue;
     private int value;
     private float scale;
@@ -26,8 +27,6 @@ public class ProgressBar extends JPanel {
     }
 
     public ProgressBar(int value, int maxValue, float scale) {
-        this.value = value;
-        this.maxValue = maxValue;
         this.scale = scale;
 
         setOpaque(false);
@@ -38,8 +37,18 @@ public class ProgressBar extends JPanel {
         setLayout(springLayout);
         containerImage.setLayout(new BoxLayout(containerImage, BoxLayout.X_AXIS));
 
-        setDimension(scale * WindowSettings.scale);
+        setMaxValue(maxValue);
         add(containerImage);
+    }
+
+    public void setMaxValue(int maxValue) {
+        if (maxValue <= 0) return;
+
+        this.maxValue = maxValue;
+        this.value = this.maxValue;
+
+        addStep();
+        setDimension(scale * WindowSettings.scale);
     }
 
     private void setConstraints() {
@@ -52,10 +61,10 @@ public class ProgressBar extends JPanel {
         int width = 0;
         int height = ui.getHeight(MyPanelUI.BAR_T) + ui.getHeight(MyPanelUI.BAR_B) + ui.getHeight(MyPanelUI.CENTER);
 
-        if (image == null)
+        if (stepTexture == null)
             width = ui.getWidth(MyPanelUI.BAR_L) + ui.getWidth(MyPanelUI.BAR_R);
         else
-            width = (int) (maxValue * image.getWidth() * scale) + ui.getWidth(MyPanelUI.BAR_L) + ui.getWidth(MyPanelUI.BAR_R);
+            width = (int) (maxValue * stepTexture.getWidth() * scale) + ui.getWidth(MyPanelUI.BAR_L) + ui.getWidth(MyPanelUI.BAR_R);
 
         Dimension newDimension = new Dimension(width, height);
         setMaximumSize(newDimension);
@@ -69,14 +78,18 @@ public class ProgressBar extends JPanel {
 
     public void setValue(int value) {
         int increment = value - this.value;
+        if (increment > containerImage.getComponentCount())
+            return;
         int step = Math.abs(increment);
-        if (increment > 0)
-            for (int i = 1; i <= step; ++i)
-                containerImage.getComponent(this.value + i).setVisible(true);
-        else
-            for (int i = 1; i <= step; ++i)
-                containerImage.getComponent(this.value - i).setVisible(false);
-        this.value = value;
+        SwingUtilities.invokeLater(() -> {
+            if (increment > 0)
+                for (int i = 1; i <= step; ++i)
+                    containerImage.getComponent(this.value + i).setVisible(true);
+            else
+                for (int i = 1; i <= step; ++i)
+                    containerImage.getComponent(this.value - i).setVisible(false);
+            this.value = value;
+        });
     }
 
     public void setTexture(int i, String path) {
@@ -85,23 +98,37 @@ public class ProgressBar extends JPanel {
     }
 
     public void setStepTexture(String path) {
-        image = Image.load(path);
+        stepTexture = Image.load(path);
+    }
+
+    private void addStep() {
+        if (stepTexture == null) {
+            Log.warn("Non è presente nessuna texture per lo step");
+            return;
+        }
+
         int n = containerImage.getComponentCount();
         for (int i = 0; i < maxValue; ++i) {
             if (i < n)
                 containerImage.remove(i);
-            containerImage.add(new ImageVisualizer(image), i);
+            containerImage.add(new ImageVisualizer(stepTexture, scale), i);
         }
 
         setDimension(scale * WindowSettings.scale);
     }
 
+    public int getValue() {
+        return value;
+    }
+
     public void windowResized(float scale) {
+        float scale2 = scale;
         scale *= this.scale;
+
         ui.setScale(scale);
         for (int i = 0; i < containerImage.getComponentCount(); ++i) {
             ImageVisualizer im = (ImageVisualizer) containerImage.getComponent(i);
-            im.windowResized(scale);
+            im.windowResized(scale2); // lo scale del componente è già applicato all'inserimento (riga 114)
         }
         setDimension(scale);
     }

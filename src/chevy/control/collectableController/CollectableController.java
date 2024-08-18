@@ -10,6 +10,8 @@ import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.view.hud.HUD;
+import chevy.view.hud.PowerUpText;
 
 
 public class CollectableController {
@@ -21,13 +23,13 @@ public class CollectableController {
     private final Chamber chamber;
 
 
-    public CollectableController(Chamber chamber, PlayerController playerController, PowerUpTextVisualizerController powerUpTextVisualizerController) {
+    public CollectableController(Chamber chamber, PlayerController playerController, PowerUpText powerUpText) {
         this.chamber = chamber;
         this.playerController = playerController;
         this.keyController = new KeyController(chamber);
         this.healthController = new HealthController(chamber);
         this.coinController = new CoinController(chamber);
-        this.powerUpController = new PowerUpController(chamber, powerUpTextVisualizerController);
+        this.powerUpController = new PowerUpController(chamber, powerUpText);
     }
 
 

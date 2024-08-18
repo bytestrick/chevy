@@ -2,11 +2,11 @@ package chevy.control.collectableController;
 
 import chevy.model.entity.collectable.powerUp.PowerUp;
 
-public class PowerUpTextVisualizerController {
+public class PowerUpTextController {
 //    private final PowerUpTextVisualizerView powerUpTextVisualizerView;
 
 
-//    public PowerUpTextVisualizerController(PowerUpTextVisualizerView powerUpTextVisualizerView) {
+//    public PowerUpTextController(PowerUpTextController powerUpTextController) {
 //        this.powerUpTextVisualizerView = powerUpTextVisualizerView;
 //    }
 

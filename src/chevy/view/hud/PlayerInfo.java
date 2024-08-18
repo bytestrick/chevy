@@ -1,5 +1,7 @@
 package chevy.view.hud;
 
+import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,9 +17,9 @@ public class PlayerInfo extends JPanel {
         JPanel barContainer = new JPanel();
         barContainer.setOpaque(false);
 
-        healthBar = new HealthBar(10, scale);
-        shieldBar = new ShieldBar(8, scale);
-        attackBar = new AttackBar(5, scale);
+        healthBar = new HealthBar(0, scale);
+        shieldBar = new ShieldBar(0, scale);
+        attackBar = new AttackBar(0, scale);
         playerFrame = new PlayerFrame(new Dimension(24, 24), scale);
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -42,6 +44,25 @@ public class PlayerInfo extends JPanel {
         shieldBar.windowResized(scale);
         attackBar.windowResized(scale);
         playerFrame.windowResized(scale);
+    }
+
+    public void setPlayer(Player player) {
+        healthBar.setMaxValue(player.getHealth());
+        shieldBar.setMaxValue(player.getShield());
+        attackBar.setMaxValue(player.getMaxDamage());
+        attackBar.setText("ATK: " + player.getMinDamage() + " ~ " + player.getMaxDamage());
+    }
+
+    public HealthBar getHealthBar() {
+        return healthBar;
+    }
+
+    public ShieldBar getShieldBar() {
+        return shieldBar;
+    }
+
+    public AttackBar getAttackBar() {
+        return attackBar;
     }
 }
 

@@ -46,6 +46,9 @@ public abstract class Entity {
         return random.nextInt(minDamage, maxDamage + 1);
     }
 
+    public int getMaxDamage() { return maxDamage; }
+    public int getMinDamage() { return minDamage; }
+
     public CommonEntityType getSpecificType() { return type; }
 
     public CommonEntityType getGenericType() { return null; }

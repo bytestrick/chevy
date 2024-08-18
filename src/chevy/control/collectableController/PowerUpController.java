@@ -3,15 +3,16 @@ package chevy.control.collectableController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.view.hud.PowerUpText;
 
 public class PowerUpController {
     private final Chamber chamber;
-    private final PowerUpTextVisualizerController powerUpTextVisualizerController;
+    private final PowerUpText powerUpText;
 
 
-    public PowerUpController(Chamber chamber, PowerUpTextVisualizerController powerUpTextVisualizerController) {
+    public PowerUpController(Chamber chamber, PowerUpText powerUpText) {
         this.chamber = chamber;
-        this.powerUpTextVisualizerController = powerUpTextVisualizerController;
+        this.powerUpText = powerUpText;
     }
 
 
@@ -19,7 +20,7 @@ public class PowerUpController {
         if (powerUp.changeState(PowerUp.State.COLLECTED)) {
             powerUp.collect();
             chamber.findAndRemoveEntity(powerUp);
-            powerUpTextVisualizerController.hide();
+            powerUpText.mHide();
             player.acquirePowerUp((PowerUp.Type) powerUp.getSpecificType(), powerUp);
         }
     }
@@ -34,10 +35,10 @@ public class PowerUpController {
         else {
             if (chamber.getHitDirectionPlayer(powerUp) != null) {
                 if (powerUp.changeState(PowerUp.State.SELECTED))
-                    powerUpTextVisualizerController.show(powerUp);
+                    powerUpText.show(powerUp);
             }
             else if (powerUp.checkAndChangeState(PowerUp.State.DESELECTED)) {
-                    powerUpTextVisualizerController.hide();
+                powerUpText.mHide();
             }
             powerUp.checkAndChangeState(PowerUp.State.IDLE);
         }
