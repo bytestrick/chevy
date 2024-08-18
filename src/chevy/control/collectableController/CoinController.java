@@ -1,20 +1,24 @@
 package chevy.control.collectableController;
 
+import chevy.control.hudController.HUDController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Coin;
 
 public class CoinController {
     private final Chamber chamber;
+    private final HUDController hudController;
 
 
-    public CoinController(Chamber chamber) {
+    public CoinController(Chamber chamber, HUDController hudController) {
         this.chamber = chamber;
+        this.hudController = hudController;
     }
 
 
     public void playerInInteraction(Coin coin) {
         if (coin.changeState(Coin.State.COLLECTED)) {
             coin.collect();
+            hudController.addCoin(1);
             chamber.findAndRemoveEntity(coin);
         }
     }

@@ -15,4 +15,8 @@ public class CoinBar extends CounterBar {
         setTexture(MyPanelUI.BAR_R, COIN_BAR_PATH + "rightBar.png");
         setTexture(MyPanelUI.CENTER, COIN_BAR_PATH + "centerPanel.png");
     }
+
+    public void setCoin(int value) {
+        setText(String.valueOf(value));
+    }
 }
