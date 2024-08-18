@@ -17,6 +17,7 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Arrow;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
@@ -64,9 +65,9 @@ public class PlayerController implements Update {
      * @param keyEvent l'evento di pressione del tasto
      */
     public void keyPressed(KeyEvent keyEvent) {
-        if (player.getCurrentState() == Player.State.GLIDE) {
+        CommonState currentPlayerState = player.getCurrentState();
+        if (currentPlayerState == Player.State.DEAD || currentPlayerState == Player.State.GLIDE)
             return;
-        }
 
         final int key = keyEvent.getKeyCode();
 
@@ -257,7 +258,7 @@ public class PlayerController implements Update {
         // gestione della morte del player (stato DEAD)
         if (player.isDead()) {
             if (player.getState(Player.State.DEAD).isFinished()) {
-                chamber.findAndRemoveEntity(player);
+                chamber.findAndRemoveEntity(player, false);
                 player.removeToUpdate();
                 return;
             }
