@@ -34,8 +34,10 @@ public class HUDController {
 
     public void addKey(int value) {
         hud.addKey(value);
-        hudView.getKeyBar().setKey(hud.getCoin());
+        hudView.getKeyBar().setKey(hud.getKey());
     }
+
+    // ----
 
     public void hidePowerUpText() {
         hudView.getPowerUpText().mHide();
