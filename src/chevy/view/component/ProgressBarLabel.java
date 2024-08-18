@@ -19,6 +19,7 @@ public class ProgressBarLabel extends JPanel {
         setOpaque(false);
         progressBar = new ProgressBar(value, maxValue, scale);
 
+        label.setForeground(Color.WHITE);
         label.setText(String.valueOf(value));
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -37,6 +38,10 @@ public class ProgressBarLabel extends JPanel {
 
     public void setStepTexture(String path) {
         progressBar.setStepTexture(path);
+    }
+
+    public void setMaxValue(int maxValue) {
+        progressBar.setMaxValue(maxValue);
     }
 
     public void setText(String text) {

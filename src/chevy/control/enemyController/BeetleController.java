@@ -6,6 +6,7 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
@@ -90,13 +91,10 @@ public class BeetleController {
             DirectionsModel direction = chamber.getHitDirectionPlayer(beetle, 3);
             // Se trova il giocatore, inizia l'inseguimento (chasing).
             if (direction == null) {
-                beetle.setCanAttack(false);
                 if (chamber.chase(beetle)) {
+                    beetle.setCanAttack(false);
                     beetle.changeState(Beetle.State.MOVE);
                 }
-            } else if (beetle.canAttack() && beetle.getState(Beetle.State.ATTACK).isFinished()) {
-                playerController.handleInteraction(InteractionType.ENEMY, beetle);
-                beetle.setCanAttack(false);
             } else if (beetle.canChange(Beetle.State.ATTACK)) {
                 // Se può cambiare lo stato a "ATTACK", cerca di attaccare il giocatore.
                 for (int distance = 1; distance <= 3; ++distance) {
@@ -120,8 +118,21 @@ public class BeetleController {
                 }
             }
         }
-        // Se nessun'altra azione è possibile, il Beetle cambia lo stato a "IDLE"
-        beetle.checkAndChangeState(Beetle.State.IDLE);
+
+        if (beetle.canAttack() && beetle.getState(Beetle.State.ATTACK).isFinished()) {
+            DirectionsModel direction = chamber.getHitDirectionPlayer(beetle);
+            if (direction != null) {
+                Entity entity = chamber.getNearEntityOnTop(beetle, direction);
+                if (entity instanceof Player) {
+                    playerController.handleInteraction(InteractionType.ENEMY, beetle);
+                    beetle.setCanAttack(false);
+                }
+            }
+        }
+
+        if (beetle.checkAndChangeState(Beetle.State.IDLE)) {
+            beetle.setCanAttack(false);
+        }
     }
 
     /**

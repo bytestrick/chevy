@@ -2,14 +2,16 @@ package chevy.control;
 
 import chevy.control.collectableController.CollectableController;
 import chevy.control.collectableController.CollectableUpdateController;
-import chevy.control.collectableController.PowerUpTextVisualizerController;
+import chevy.control.collectableController.PowerUpTextController;
 import chevy.control.enemyController.EnemyController;
 import chevy.control.enemyController.EnemyUpdateController;
+import chevy.control.hudController.HUDController;
 import chevy.control.projectileController.ProjectileController;
 import chevy.control.projectileController.ProjectileUpdateController;
 import chevy.control.trapsController.TrapsController;
 import chevy.control.trapsController.TrapsUpdateController;
 import chevy.model.chamber.Chamber;
+import chevy.view.hud.HUD;
 
 import java.awt.event.KeyEvent;
 
@@ -22,6 +24,7 @@ public class ChamberController {
      * Riferimento al controller del giocatore.
      */
     private final PlayerController playerController;
+    private final Chamber chamber;
 
     /**
      * Inizializza il controller della stanza con i riferimenti alla stanza di gioco.
@@ -29,12 +32,13 @@ public class ChamberController {
      *
      * @param chamber riferimento alla stanza di gioco
      */
-    public ChamberController(Chamber chamber, PowerUpTextVisualizerController powerUpTextVisualizerController) {
+    public ChamberController(Chamber chamber, HUD hud) {
+        this.chamber = chamber;
         this.playerController = new PlayerController(chamber);
         EnemyController enemyController = new EnemyController(chamber, playerController);
         TrapsController trapsController = new TrapsController(chamber, playerController, enemyController);
         CollectableController collectableController = new CollectableController(chamber, playerController,
-            powerUpTextVisualizerController);
+                hud.getPowerUpText());
         ProjectileController projectileController = new ProjectileController(chamber, playerController,
                 enemyController);
 
@@ -42,6 +46,7 @@ public class ChamberController {
         playerController.setTrapController(trapsController);
         playerController.setProjectileController(projectileController);
         playerController.setCollectableController(collectableController);
+        playerController.setHUDController(new HUDController(hud));
         new EnemyUpdateController(enemyController, chamber.getEnemies());
         new TrapsUpdateController(trapsController, chamber.getTraps());
         new ProjectileUpdateController(projectileController, chamber.getProjectiles());
@@ -55,5 +60,9 @@ public class ChamberController {
      */
     public void keyPressed(KeyEvent keyEvent) {
         playerController.keyPressed(keyEvent);
+    }
+
+    public Chamber getChamber() {
+        return chamber;
     }
 }

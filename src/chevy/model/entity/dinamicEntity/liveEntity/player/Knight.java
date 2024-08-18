@@ -18,8 +18,8 @@ public class Knight extends Player {
         super(initPosition, Type.KNIGHT);
 
         this.speed = 0.3f;
-        this.health = 100;
-        this.shield = 2;
+        this.health = 10;
+        this.shield = 5;
         this.maxDamage = 7;
         this.minDamage = 5;
 

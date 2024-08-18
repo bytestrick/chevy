@@ -71,25 +71,34 @@ public class ZombieController {
 
         if (zombie.canChange(Zombie.State.MOVE)) {
             DirectionsModel direction = chamber.getHitDirectionPlayer(zombie);
+            // Se non c'è un giocatore nelle vicinanze, lo Zombie vaga casualmente.
             if (direction == null) {
-                // Se non c'è un giocatore nelle vicinanze, lo Zombie vaga casualmente.
                 if (chamber.wanderChase(zombie, 4)) {
                     zombie.changeState(Zombie.State.MOVE);
                 }
-            } else if (zombie.canAttack() && zombie.getState(Zombie.State.ATTACK).isFinished()) {
+            }
+            else if (zombie.changeState(Zombie.State.ATTACK)) {
+                Entity entity = chamber.getNearEntityOnTop(zombie, direction);
+                if (entity instanceof Player) {
+                    zombie.setCanAttack(true);
+                }
+            }
+        }
+
+        if (zombie.canAttack() && zombie.getState(Zombie.State.ATTACK).isFinished()) {
+            DirectionsModel direction = chamber.getHitDirectionPlayer(zombie);
+            if (direction != null) {
                 Entity entity = chamber.getNearEntityOnTop(zombie, direction);
                 if (entity instanceof Player) {
                     playerController.handleInteraction(InteractionType.ENEMY, zombie);
                     zombie.setCanAttack(false);
                 }
-            } else if (zombie.canChange(Zombie.State.ATTACK)) {
-                Entity entity = chamber.getNearEntityOnTop(zombie, direction);
-                if (entity instanceof Player && zombie.changeState(Zombie.State.ATTACK)) {
-                    zombie.setCanAttack(true);
-                }
             }
         }
-        zombie.checkAndChangeState(Zombie.State.IDLE);
+
+        if (zombie.checkAndChangeState(Zombie.State.IDLE)) {
+            zombie.setCanAttack(false);
+        }
     }
 
     /**

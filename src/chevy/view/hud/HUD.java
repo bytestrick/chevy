@@ -1,5 +1,6 @@
 package chevy.view.hud;
 
+import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.settings.WindowSettings;
 
 import javax.swing.*;
@@ -8,7 +9,7 @@ public class HUD extends JPanel {
     private final CoinBar coinBar;
     private final KeyBar keyBar;
     private final PlayerInfo playerInfo;
-    private final TextPowerUp textPowerUp;
+    private final PowerUpText powerUpText;
     private final SpringLayout springLayout;
     private int borderMargin = 10;
     private int componentMargin = 5;
@@ -18,19 +19,19 @@ public class HUD extends JPanel {
         coinBar = new CoinBar(32, 7, scale);
         keyBar = new KeyBar(20, 7, scale);
         playerInfo = new PlayerInfo(scale);
-        textPowerUp = new TextPowerUp();
+        powerUpText = new PowerUpText();
         springLayout = new SpringLayout();
 
         setOpaque(false);
         setLayout(springLayout);
         setConstraints(WindowSettings.scale);
 
-        add(textPowerUp);
+        add(powerUpText);
         add(playerInfo);
         add(coinBar);
         add(keyBar);
 
-        textPowerUp.setVisible(false);
+        powerUpText.setVisible(false);
     }
 
     private void setConstraints(float scale) {
@@ -46,15 +47,23 @@ public class HUD extends JPanel {
         springLayout.putConstraint(SpringLayout.NORTH, playerInfo, borderMarginScaled, SpringLayout.NORTH, this);
         springLayout.putConstraint(SpringLayout.WEST, playerInfo, borderMarginScaled, SpringLayout.WEST, this);
 
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, textPowerUp, 0, SpringLayout.HORIZONTAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, textPowerUp, 0, SpringLayout.VERTICAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, powerUpText, 0, SpringLayout.HORIZONTAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, powerUpText, 0, SpringLayout.VERTICAL_CENTER, this);
     }
 
     public void windowResized(float scale) {
         coinBar.windowResized(scale);
         keyBar.windowResized(scale);
         playerInfo.windowResized(scale);
-        textPowerUp.windowResized(scale);
+        powerUpText.windowResized(scale);
         setConstraints(scale);
+    }
+
+    public PowerUpText getPowerUpText() {
+        return powerUpText;
+    }
+
+    public PlayerInfo getPlayerInfo() {
+        return playerInfo;
     }
 }

@@ -6,6 +6,7 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -74,11 +75,6 @@ public class SlimeController {
             if (direction == null) {
                 if (chamber.moveRandom(slime)) {
                     slime.changeState(Slime.State.MOVE);
-                }
-            } else if (slime.canAttack() && slime.getState(Slime.State.ATTACK).isFinished()) {
-                Entity entity = chamber.getNearEntityOnTop(slime, direction);
-                if (entity instanceof Player) {
-                    playerController.handleInteraction(InteractionType.ENEMY, slime);
                     slime.setCanAttack(false);
                 }
             } else if (slime.canChange(Slime.State.ATTACK)) {
@@ -88,7 +84,21 @@ public class SlimeController {
                 }
             }
         }
-        slime.checkAndChangeState(Slime.State.IDLE);
+
+        if (slime.canAttack() && slime.getState(Slime.State.ATTACK).isFinished()) {
+            DirectionsModel direction = chamber.getHitDirectionPlayer(slime);
+            if (direction != null) {
+                Entity entity = chamber.getNearEntityOnTop(slime, direction);
+                if (entity instanceof Player) {
+                    playerController.handleInteraction(InteractionType.ENEMY, slime);
+                    slime.setCanAttack(false);
+                }
+            }
+        }
+
+        if (slime.checkAndChangeState(Slime.State.IDLE)) {
+            slime.setCanAttack(false);
+        }
     }
 
     /**

@@ -62,14 +62,10 @@ public class ChamberView extends JPanel implements Render {
                         Vector2<Integer> offset = entityView.getOffset();
                         float scale = entityView.getScale();
                         BufferedImage image = entityView.getCurrentFrame();
-                        if (image == null) {
-                            image = NULL_IMAGE;
-                        }
+                        if (image == null) image = NULL_IMAGE;
 
                         float offsetX = (float) offset.first / GameSettings.SIZE_TILE;
-                        if (offset.first == 0) {
-                            offsetX = 0;
-                        }
+                        if (offset.first == 0) offsetX = 0;
                         int positionX =
                                 (int) ((entityViewPosition.first + offsetX) * GameSettings.optimalCellSize * scale + GameSettings.offsetW);
 

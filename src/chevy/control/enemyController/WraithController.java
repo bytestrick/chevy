@@ -6,6 +6,7 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -74,11 +75,6 @@ public class WraithController {
             if (direction == null) {
                 if (chamber.moveRandomPlus(wraith)) {
                     wraith.changeState(Wraith.State.MOVE);
-                }
-            } else if (wraith.canAttack() && wraith.getState(Wraith.State.ATTACK).isFinished()) {
-                Entity entity = chamber.getNearEntityOnTop(wraith, direction);
-                if (entity instanceof Player) {
-                    playerController.handleInteraction(InteractionType.ENEMY, wraith);
                     wraith.setCanAttack(false);
                 }
             } else if (wraith.canChange(Wraith.State.ATTACK)) {
@@ -88,7 +84,21 @@ public class WraithController {
                 }
             }
         }
-        wraith.checkAndChangeState(Wraith.State.IDLE);
+
+        if (wraith.canAttack() && wraith.getState(Wraith.State.ATTACK).isFinished()) {
+            DirectionsModel direction = chamber.getHitDirectionPlayer(wraith);
+            if (direction != null) {
+                Entity entity = chamber.getNearEntityOnTop(wraith, direction);
+                if (entity instanceof Player) {
+                    playerController.handleInteraction(InteractionType.ENEMY, wraith);
+                    wraith.setCanAttack(false);
+                }
+            }
+        }
+
+        if (wraith.checkAndChangeState(Wraith.State.IDLE)) {
+            wraith.setCanAttack(false);
+        }
     }
 
     /**

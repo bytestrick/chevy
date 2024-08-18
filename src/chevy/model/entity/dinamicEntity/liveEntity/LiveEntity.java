@@ -21,13 +21,25 @@ public abstract class LiveEntity extends DynamicEntity {
 
     public synchronized void changeHealth(int value) {
         String logMessage = "Vita " + this + ": " + health;
+        String logMessage2 = "Scudo " + this + ": " + shield;
 
-        this.health += value;
-        if (health <= 0) {
-            this.health = 0;
+        if (health > 0) {
+            shield += value;
+            if (shield < 0) {
+                value = shield;
+                shield = 0;
+            }
         }
 
-        Log.info(logMessage + " -> " + health);
+        if (shield <= 0) {
+            health += value;
+            if (health <= 0) {
+                health = 0;
+            }
+        }
+
+
+        Log.info(logMessage + " -> " + health + "\n    " + logMessage2 + " -> " + shield);
     }
 
     public synchronized void kill() {
@@ -37,6 +49,10 @@ public abstract class LiveEntity extends DynamicEntity {
     }
 
     public synchronized int getHealth() { return health; }
+
+    public int getShield() {
+        return shield;
+    }
 
     public synchronized void changeShield(int value) { this.shield += value; }
 

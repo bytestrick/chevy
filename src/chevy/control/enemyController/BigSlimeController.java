@@ -6,6 +6,7 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -78,11 +79,6 @@ public class BigSlimeController {
             if (direction == null) {
                 if (chamber.wanderChasePlus(bigSlime, 3)) {
                     bigSlime.changeState(BigSlime.State.MOVE);
-                }
-            } else if (bigSlime.canAttack() && bigSlime.getState(BigSlime.State.ATTACK).isFinished()) {
-                Entity entity = chamber.getNearEntityOnTop(bigSlime, direction);
-                if (entity instanceof Player) {
-                    playerController.handleInteraction(InteractionType.ENEMY, bigSlime);
                     bigSlime.setCanAttack(false);
                 }
             } else if (bigSlime.canChange(BigSlime.State.ATTACK)) {
@@ -92,7 +88,21 @@ public class BigSlimeController {
                 }
             }
         }
-        bigSlime.checkAndChangeState(BigSlime.State.IDLE);
+
+        if (bigSlime.canAttack() && bigSlime.getState(BigSlime.State.ATTACK).isFinished()) {
+            DirectionsModel direction = chamber.getHitDirectionPlayer(bigSlime);
+            if (direction != null) {
+                Entity entity = chamber.getNearEntityOnTop(bigSlime, direction);
+                if (entity instanceof Player) {
+                    playerController.handleInteraction(InteractionType.ENEMY, bigSlime);
+                    bigSlime.setCanAttack(false);
+                }
+            }
+        }
+
+        if (bigSlime.checkAndChangeState(BigSlime.State.IDLE)) {
+            bigSlime.setCanAttack(false);
+        }
     }
 
     /**

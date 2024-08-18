@@ -6,6 +6,7 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -76,21 +77,30 @@ public class SkeletonController {
             if (direction == null) {
                 if (chamber.chase(skeleton)) {
                     skeleton.changeState(Skeleton.State.MOVE);
-                }
-            } else if (skeleton.canAttack() && skeleton.getState(Skeleton.State.ATTACK).isFinished()) {
-                Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
-                if (entity instanceof Player) {
-                    playerController.handleInteraction(InteractionType.ENEMY, skeleton);
                     skeleton.setCanAttack(false);
                 }
-            } else if (skeleton.canChange(Skeleton.State.ATTACK)) {
+            }else if (skeleton.canChange(Skeleton.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
                 if (entity instanceof Player && skeleton.changeState(Skeleton.State.ATTACK)) {
                     skeleton.setCanAttack(true);
                 }
             }
         }
-        skeleton.checkAndChangeState(Skeleton.State.IDLE);
+
+        if (skeleton.canAttack() && skeleton.getState(Skeleton.State.ATTACK).isFinished()) {
+            DirectionsModel direction = chamber.getHitDirectionPlayer(skeleton);
+            if (direction != null) {
+                Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
+                if (entity instanceof Player) {
+                    playerController.handleInteraction(InteractionType.ENEMY, skeleton);
+                    skeleton.setCanAttack(false);
+                }
+            }
+        }
+
+        if (skeleton.checkAndChangeState(Skeleton.State.IDLE)) {
+            skeleton.setCanAttack(false);
+        }
     }
 
     /**
