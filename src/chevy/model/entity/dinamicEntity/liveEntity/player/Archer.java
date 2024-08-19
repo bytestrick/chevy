@@ -18,8 +18,10 @@ public class Archer extends Player {
         super(initPosition, Type.ARCHER);
 
         this.speed = .2f;
-        this.health = 80;
+        this.health = 8;
+        this.currentHealth = health;
         this.shield = 0;
+        this.currentShield = shield;
         this.maxDamage = 10;
         this.minDamage = 6;
 

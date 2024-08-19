@@ -92,19 +92,23 @@ public class PowerUpText extends JPanel {
     }
 
     public void show(PowerUp powerUp) {
-        name = powerUp.getName();
-        description = powerUp.getDescription();
-        write();
-        setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            name = powerUp.getName();
+            description = powerUp.getDescription();
+            write();
+            setVisible(true);
+        });
     }
 
     public void mHide() {
-        setVisible(false);
-        try {
-            doc.remove(0, doc.getLength());
-        } catch (BadLocationException e) {
-            throw new RuntimeException(e);
-        }
+        SwingUtilities.invokeLater(() -> {
+            setVisible(false);
+            try {
+                doc.remove(0, doc.getLength());
+            } catch (BadLocationException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void windowResized(float scale) {

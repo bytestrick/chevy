@@ -63,9 +63,10 @@ public class ZombieController {
             if (zombie.getState(Zombie.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(zombie);
                 zombie.removeToUpdate();
+                chamber.spawnItem(zombie);
                 return;
             }
-        } else if (zombie.getHealth() <= 0 && zombie.checkAndChangeState(Zombie.State.DEAD)) {
+        } else if (zombie.getCurrentHealth() <= 0 && zombie.checkAndChangeState(Zombie.State.DEAD)) {
             zombie.kill();
         }
 
@@ -120,7 +121,7 @@ public class ZombieController {
      */
     private void hitZombie(Zombie zombie, int damage) {
         if (zombie.changeState(Zombie.State.HIT)) {
-            zombie.changeHealth(damage);
+            zombie.decreaseHealthShield(damage);
         }
     }
 

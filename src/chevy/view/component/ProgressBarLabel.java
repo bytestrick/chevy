@@ -44,6 +44,10 @@ public class ProgressBarLabel extends JPanel {
         progressBar.setMaxValue(maxValue);
     }
 
+    public int getMaxValue() {
+        return progressBar.getMaxValue();
+    }
+
     public void setText(String text) {
         label.setText(text);
     }

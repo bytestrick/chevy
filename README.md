@@ -59,28 +59,27 @@ Possibili cose da evitare: non implementare i power up e le chest.
 ### Entities
 - Static entities:
   - PowerUp:
-    - Thunderbolt: Fulmini colpiscono periodicamente tutti i nemici. 
-    - Holy Shield: Riduce i danni in arrivo dopo essere stati colpiti.
-    - Vampire Fangs: chance di recuperare 1HP durante un attacco.
-    - Angel Ring: il giocatore viene rianimato quando muore per cause diverse dalla caduta.
-    - Swift Boots: Incrementa la velocità di movimento.
-    - Long Sword: Incrementa il danno da spada di 5.
-    - God's Ice: Conegela periodicamente i nemici.
-    - Ignition: Gli attacchi hanno la possibilità di incendiare i nemici.
-    - Coin of Greed: I nemici rilasciano più monete.
-    - Hot Heart: Incrementa gli HP al massimo.
-    - Cold Heart: Incrementa lo scudo di 3.
-    - Gorgon's Poison: Elimini i nemici con un colpo, ma gli HP decrementano ad 1 permanentemente.
-    - Stone Boots: Le trappole chiodate non hanno effetto.
-    - Broken Arrows: Le freccie non ti infliggono danno.
-    - Agility: Possibilità di evitare un attacco.
-    - Hedgehog Spines: Riflette una parte di danno al tuo aguzzino.
-    - Cat Claw: Aumenta la velocità d'attacco.
-    - Slime Piece: Il danno d'attacco aumenta di 8, ma dopo la morte i nemici generano piccoli slime.
-    - Gold Arrow: Aumenta il danno delle frecce di 2.
-    - Milk: +2 HP
-    - Carrot: +1 HP
-    - Piece of Bone: +5 scudi.
+    - [x] Holy Shield: Riduce i danni in arrivo dopo essere stati colpiti.
+    - [x] Vampire Fangs: Possibilità del 15% di recuperare 1HP durante un attacco.
+    - [x] Angel Ring: il giocatore viene rianimato quando muore (utilizzabile per una volta).
+    - [x] Hot Heart: Incrementa gli HP di 3.
+    - [x] Gold Arrow: Aumenta il danno delle frecce di 2.
+    - [x] Cold Heart: Incrementa lo scudo di 3.
+    - [x] Broken Arrows: Le frecce non ti infliggono danno.
+    - [x] Agility: Possibilità di evitare un attacco.
+    - [x] Long Sword: Incrementa il danno da spada di 2.
+    - [x] Stone Boots: Le trappole chiodate non hanno effetto.
+    - 
+    - [ ] Swift Boots: Incrementa la velocità di movimento.
+    - [ ] Ignition: Gli attacchi hanno la possibilità di incendiare i nemici.
+    - [ ] Coin of Greed: I nemici rilasciano più monete.
+    - [ ] Gorgon's Poison: Elimini i nemici con un colpo, ma la vita decrementano ad 1 permanentemente.
+    - [ ] Slime Piece: Il danno d'attacco aumenta di 3, ma dopo la morte i nemici generano piccoli slime.
+    - 
+    - [ ] God's Ice: Congela periodicamente i nemici. ~
+    - [ ] Hedgehog Spines: Riflette una parte di danno al tuo aguzzino. ~
+    - [ ] Cat Claw: Aumenta la velocità d'attacco. ~
+    - [ ] Thunderbolt: Fulmini colpiscono periodicamente tutti i nemici. ~
   - Environment:
     - Ground
     - Walls
@@ -89,7 +88,7 @@ Possibili cose da evitare: non implementare i power up e le chest.
     - Chest: genera un powerUp randomico.
     - Trap:
       - Sludge: Blocca il giocatore di un movimento e poi scompare.
-      - Void: Se il gioctore ci finisce dentro precipita.
+      - Void: Se il giocatore ci finisce dentro precipita.
       - Spiked floor: Dal pavimento spuntano periodicamente dei chiodi, infliggendo danno a chiunque si trovi sopra.
       - Trapdoor: Pezzo di legno sospeso nel vuoto, cade dopo un po' che ci stai sopra.
       - Totem: Spara periodicamente una freccia.
@@ -106,7 +105,7 @@ Possibili cose da evitare: non implementare i power up e le chest.
     - Bat: si muove a caso. 2 HP, danno 2-3
     - Zombie: segue il player.
     - Wizard: si allinea nella riga del player per poi sparare una palla di fuoco che viaggio in linea retta.
-    - Skeleton: segue il player, grazie al suo schudo resiste al primo attacco (non perde vita).
+    - Skeleton: segue il player, grazie al suo scudo resiste al primo attacco (non perde vita).
     - Big Slime: segue il player, alla morte genera due slime più piccoli nelle caselle confinanti, se disponibili.
     - Slime: si muovono nella direzione del player se il player si trova vicino ad un tot di blocchi.
     - Frog: Grazie alla sua lingua è in grado di colpire il player da un blocco di distanza.

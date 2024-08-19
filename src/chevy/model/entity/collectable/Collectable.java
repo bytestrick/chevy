@@ -33,7 +33,6 @@ public abstract class Collectable extends Entity {
         return collected;
     }
 
-
     @Override
     public CommonEntityType getSpecificType() {
         return type;

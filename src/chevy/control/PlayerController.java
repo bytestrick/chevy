@@ -9,7 +9,9 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
+import chevy.model.entity.collectable.powerUp.HolyShield;
 import chevy.model.entity.collectable.powerUp.PowerUp;
+import chevy.model.entity.collectable.powerUp.VampireFangs;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
@@ -44,6 +46,7 @@ public class PlayerController implements Update {
     private ProjectileController projectileController;
     private CollectableController collectableController;
     private HUDController hudController;
+    private boolean updateFinished = false;
 
     /**
      * @param chamber riferimento alla stanza di gioco
@@ -111,7 +114,7 @@ public class PlayerController implements Update {
         switch (collectableType) {
             case HEALTH -> {
                 Health health = (Health) collectable;
-                player.changeHealth(health.getRecoverHealth());
+                player.increaseCurrentHealth(health.getRecoverHealth());
             }
         }
     }
@@ -129,7 +132,14 @@ public class PlayerController implements Update {
      * @param projectile il proiettile con cui il giocatore interagisce
      */
     private void projectileInteraction(Projectile projectile) {
-        hitPlayer(-1 * projectile.getDamage());
+        boolean canHit = true;
+        if (projectile instanceof Arrow) {
+            PowerUp brokenArrow = player.getOwnedPowerUp(PowerUp.Type.BROKEN_ARROWS);
+            if (brokenArrow != null)
+                canHit = !brokenArrow.canUse();
+        }
+        if (canHit)
+            hitPlayer(-1 * projectile.getDamage());
     }
 
     /**
@@ -185,15 +195,20 @@ public class PlayerController implements Update {
                         }
                     }
                     case ARCHER -> { // Spara freccia
-                        Totem totem = new Totem(new Vector2<>(player.getRow(), player.getCol()), player.getDirection());
-                        Arrow arrow = new Arrow(new Vector2<>(totem.getRow(), totem.getCol()), totem.getDirectionShot());
+                        Arrow arrow = new Arrow(new Vector2<>(player.getRow(), player.getCol()), direction);
                         chamber.addProjectile(arrow);
                         chamber.addEntityOnTop(arrow);
                     }
                 }
+
+                VampireFangs vampireFangs = (VampireFangs) player.getOwnedPowerUp(PowerUp.Type.VAMPIRE_FANGS);
+                if (vampireFangs != null && vampireFangs.canUse()) {
+                    player.increaseCurrentHealth(vampireFangs.getRecoveryHealth());
+                    hudController.changeHealth(player.getCurrentHealth());
+                }
             }
-            player.checkAndChangeState(Player.State.IDLE);
-        } else {
+        }
+        else {
             switch (entityNextCell.getGenericType()) {
                 case LiveEntity.Type.ENEMY -> {
                     // Attacco automatico sferrato camminando contro un nemico.
@@ -260,10 +275,22 @@ public class PlayerController implements Update {
             if (player.getState(Player.State.DEAD).isFinished()) {
                 chamber.findAndRemoveEntity(player, false);
                 player.removeToUpdate();
+                updateFinished = true;
                 return;
             }
-        } else if (player.getHealth() <= 0 && player.changeState(Player.State.DEAD)) {
-            player.kill();
+        } else if (player.getCurrentHealth() <= 0) {
+            PowerUp angelRing = player.getOwnedPowerUp(PowerUp.Type.ANGEL_RING);
+            boolean canKill = true;
+            if (angelRing != null)
+                canKill = !angelRing.canUse(); // se puoi usarlo non uccidere il player
+
+            if (canKill && player.changeState(Player.State.DEAD))
+                player.kill();
+            else {
+                int health = player.getHealth();
+                player.increaseCurrentHealth(health);
+                hudController.changeHealth(health);
+            }
         }
 
         // gestione dello scivolamento del player (stato GLIDE)
@@ -302,6 +329,10 @@ public class PlayerController implements Update {
         }
     }
 
+    public boolean updateFinished() {
+        return updateFinished;
+    }
+
     /**
      * Applica danno al giocatore e cambia il suo stato a "HIT" se possibile.
      *
@@ -311,16 +342,21 @@ public class PlayerController implements Update {
         PowerUp agility = player.getOwnedPowerUp(PowerUp.Type.AGILITY);
         boolean dodged = false;
         if (agility != null) {
-            dodged = agility.isOccurring();
+            dodged = agility.canUse();
             if (dodged) {
                 Log.info(player + " ha schivato l'attacco");
             }
         }
 
+        HolyShield holyShield = (HolyShield) player.getOwnedPowerUp(PowerUp.Type.HOLY_SHIELD);
+        int reduceDamage = 0;
+        if (holyShield != null && holyShield.canUse())
+            reduceDamage = (int) (damage * holyShield.getReduceDamage());
+
         if (!dodged && player.changeState(Player.State.HIT)) {
-            player.changeHealth(damage);
-            hudController.changeHealth(player.getHealth());
-            hudController.changeShield(player.getShield());
+            player.decreaseHealthShield(damage - reduceDamage);
+            hudController.changeHealth(player.getCurrentHealth());
+            hudController.changeShield(player.getCurrentShield());
         }
     }
 

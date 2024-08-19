@@ -4,6 +4,7 @@ import chevy.model.entity.CommonEntityType;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.stateMachine.GlobalState;
+import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
 import java.util.Random;
@@ -17,6 +18,7 @@ public abstract class PowerUp extends Collectable {
     protected String name = "No name";
     protected String description = "No description";
     protected int occurringPercentage = 0;
+    protected int inStock = -1; // quantità infinita
 
     public PowerUp(Vector2<Integer> initVelocity, Type type) {
         super(initVelocity, Collectable.Type.POWER_UP);
@@ -56,8 +58,15 @@ public abstract class PowerUp extends Collectable {
         };
     }
 
-    public boolean isOccurring() {
-        return new Random().nextInt(1, 100) < occurringPercentage;
+    private boolean isOutOfStock() {
+        return inStock != 0;
+    }
+
+    public boolean canUse() {
+        boolean b = isOutOfStock() && Utils.isOccurring(occurringPercentage);
+        if (b)
+            inStock -= 1;
+        return b;
     }
 
     @Override

@@ -4,14 +4,17 @@ import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.Coin;
+import chevy.model.entity.collectable.Health;
+import chevy.model.entity.collectable.Key;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.utils.Log;
+import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
 /**
@@ -79,9 +82,10 @@ public class BeetleController {
             if (beetle.getState(Beetle.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(beetle);
                 beetle.removeToUpdate();
+                chamber.spawnItem(beetle);
                 return;
             }
-        } else if (beetle.getHealth() <= 0 && beetle.checkAndChangeState(Beetle.State.DEAD)) {
+        } else if (beetle.getCurrentHealth() <= 0 && beetle.checkAndChangeState(Beetle.State.DEAD)) {
             // Se la salute del Beetle è zero o inferiore, cambia lo stato del Beetle a "DEAD".
             beetle.kill();
         }
@@ -158,7 +162,7 @@ public class BeetleController {
      */
     private void hitBeetle(Beetle beetle, int damage) {
         if (beetle.changeState(Beetle.State.HIT)) {
-            beetle.changeHealth(damage);
+            beetle.decreaseHealthShield(damage);
         }
     }
 }

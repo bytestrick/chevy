@@ -16,6 +16,7 @@ public class Wraith extends Enemy {
 
         this.flying = true;
         this.health = 3;
+        this.currentHealth = health;
         this.maxDamage = 2;
         this.minDamage = 1;
 
