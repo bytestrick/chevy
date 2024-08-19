@@ -2,6 +2,7 @@ package chevy.model.entity.collectable;
 
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.stateMachine.GlobalState;
+import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
 import java.util.Random;
@@ -18,7 +19,7 @@ public class Coin extends Collectable {
         initStateMachine();
     }
 
-    private int getValue() {
+    public int getValue() {
         return new Random().nextInt(minValue, maxValue);
     }
 

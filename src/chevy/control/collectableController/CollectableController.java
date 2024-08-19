@@ -29,7 +29,7 @@ public class CollectableController {
         this.playerController = playerController;
         this.hudController = hudController;
         this.keyController = new KeyController(chamber, hudController);
-        this.healthController = new HealthController(chamber);
+        this.healthController = new HealthController(hudController, chamber);
         this.coinController = new CoinController(chamber, hudController);
         this.powerUpController = new PowerUpController(chamber, hudController);
     }
@@ -55,7 +55,7 @@ public class CollectableController {
      */
     private void playerInInteraction(Player player, Collectable collectable) {
         switch (collectable.getSpecificType()) {
-            case Collectable.Type.HEALTH -> healthController.playerInInteraction((Health) collectable);
+            case Collectable.Type.HEALTH -> healthController.playerInInteraction(player, (Health) collectable);
             case Collectable.Type.COIN -> coinController.playerInInteraction((Coin) collectable);
             case Collectable.Type.KEY -> keyController.playerInInteraction((Key) collectable);
             default -> {}

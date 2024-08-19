@@ -14,6 +14,7 @@ public class Beetle extends Enemy {
     public Beetle(Vector2<Integer> initPosition) {
         super(initPosition, Type.BEETLE);
         this.health = 10;
+        this.currentHealth = health;
         this.maxDamage = 5;
         this.minDamage = 3;
         this.drawLayer = 3;

@@ -5,6 +5,8 @@ import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.powerUp.PowerUp;
+import chevy.model.entity.collectable.powerUp.StoneBoots;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
@@ -26,9 +28,10 @@ public class SpikedFloorController {
         this.enemyController = enemyController;
     }
 
-    public void playerInInteraction(SpikedFloor spikedFloor) {
+    public void playerInInteraction(Player player, SpikedFloor spikedFloor) {
         if (!spikedFloor.isSafeToCross()) {
-            playerController.handleInteraction(InteractionType.TRAP, spikedFloor);
+            if (canHitPlayer(player))
+                playerController.handleInteraction(InteractionType.TRAP, spikedFloor);
         }
     }
 
@@ -48,12 +51,17 @@ public class SpikedFloorController {
 
         if (spikedFloor.checkAndChangeState(SpikedFloor.State.DAMAGE)) {
             Entity entity = chamber.getEntityOnTop(spikedFloor);
-            if (entity instanceof Player) {
+            if (entity instanceof Player player && canHitPlayer(player)) {
                 playerController.handleInteraction(InteractionType.TRAP, spikedFloor);
             }
             if (entity instanceof Enemy enemy) {
                 enemyController.handleInteraction(InteractionType.TRAP, spikedFloor, enemy);
             }
         }
+    }
+
+    private boolean canHitPlayer(Player player) {
+        StoneBoots stoneBoots = (StoneBoots) player.getOwnedPowerUp(PowerUp.Type.STONE_BOOTS);
+        return stoneBoots == null || !stoneBoots.canUse();
     }
 }

@@ -2,6 +2,7 @@ package chevy.control.hudController;
 
 import chevy.model.HUD;
 import chevy.model.entity.collectable.powerUp.PowerUp;
+import chevy.view.hud.AttackBar;
 import chevy.view.hud.HUDView;
 import chevy.view.hud.HealthBar;
 import chevy.view.hud.ShieldBar;
@@ -26,6 +27,30 @@ public class HUDController {
         if (shieldBar.getValue() != shield)
             shieldBar.setValue(shield);
     }
+
+    public void changeMaxShield(int value, int maxShield) {
+        ShieldBar shieldBar = hudView.getPlayerInfo().getShieldBar();
+        if (shieldBar.getMaxValue() != maxShield)
+            shieldBar.setMaxValue(value, maxShield);
+    }
+
+    public void changeMaxHealth(int value, int maxHealth) {
+        HealthBar healthBar = hudView.getPlayerInfo().getHealthBar();
+        if (healthBar.getMaxValue() != maxHealth)
+            healthBar.setMaxValue(value, maxHealth);
+    }
+
+    public void changeMaxAttack(int maxDamage) {
+        AttackBar attackBar = hudView.getPlayerInfo().getAttackBar();
+        if (attackBar.getMaxValue() != maxDamage)
+            attackBar.setMaxValue(maxDamage);
+    }
+
+    public void setTextAttackBar(String text) {
+        hudView.getPlayerInfo().getAttackBar().setText(text);
+    }
+
+    // ----
 
     public void addCoin(int value) {
         hud.addCoin(value);

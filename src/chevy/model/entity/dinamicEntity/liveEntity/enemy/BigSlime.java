@@ -14,6 +14,7 @@ public class BigSlime extends Enemy {
     public BigSlime(Vector2<Integer> initPosition) {
         super(initPosition, Type.BIG_SLIME);
         this.health = 10;
+        this.currentHealth = health;
         this.maxDamage = 3;
         this.minDamage = 2;
 

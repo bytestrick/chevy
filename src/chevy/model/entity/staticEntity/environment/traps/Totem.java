@@ -8,7 +8,7 @@ import chevy.utils.Vector2;
 public class Totem extends Trap {
     private final DirectionsModel directionShot;
     private final GlobalState shot = new GlobalState(EnumState.SHOT, 3f);
-    private final GlobalState reload = new GlobalState(EnumState.RELOAD, 10f);
+    private final GlobalState reload = new GlobalState(EnumState.RELOAD, 5f);
 
     public Totem(Vector2<Integer> initVelocity, DirectionsModel directionShot) {
         super(initVelocity, Type.TOTEM);

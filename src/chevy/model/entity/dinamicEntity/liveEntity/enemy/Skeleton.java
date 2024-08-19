@@ -18,6 +18,7 @@ public class Skeleton extends Enemy {
         super(initPosition, Type.SKELETON);
 
         this.health = 5;
+        this.currentHealth = health;
         this.maxDamage = 4;
         this.minDamage = 1;
 
@@ -46,13 +47,13 @@ public class Skeleton extends Enemy {
     }
 
     @Override
-    public synchronized void changeHealth(int value) {
+    public synchronized void decreaseHealthShield(int value) {
         if (invincible) {
             invincible = false;
             Log.warn("Lo SKELETON ha perso la sua invincibilità");
             return;
         }
-        super.changeHealth(value);
+        super.decreaseHealthShield(value);
     }
 
     @Override

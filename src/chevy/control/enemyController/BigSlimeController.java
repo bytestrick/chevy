@@ -6,7 +6,6 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -66,9 +65,10 @@ public class BigSlimeController {
             if (bigSlime.getState(BigSlime.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(bigSlime);
                 bigSlime.removeToUpdate();
+                chamber.spawnItem(bigSlime);
                 return;
             }
-        } else if (bigSlime.getHealth() <= 0 && bigSlime.checkAndChangeState(BigSlime.State.DEAD)) {
+        } else if (bigSlime.getCurrentHealth() <= 0 && bigSlime.checkAndChangeState(BigSlime.State.DEAD)) {
             chamber.spawnSlimeAroundEntity(bigSlime, 2);
             bigSlime.kill();
         }
@@ -124,7 +124,7 @@ public class BigSlimeController {
      */
     private void hitBigSlime(BigSlime bigSlime, int damage) {
         if (bigSlime.changeState(BigSlime.State.HIT)) {
-            bigSlime.changeHealth(damage);
+            bigSlime.decreaseHealthShield(damage);
         }
     }
 

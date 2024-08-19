@@ -6,7 +6,6 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -64,9 +63,10 @@ public class SlimeController {
             if (slime.getState(Slime.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(slime);
                 slime.removeToUpdate();
+                chamber.spawnItem(slime);
                 return;
             }
-        } else if (slime.getHealth() <= 0 && slime.checkAndChangeState(Slime.State.DEAD)) {
+        } else if (slime.getCurrentHealth() <= 0 && slime.checkAndChangeState(Slime.State.DEAD)) {
             slime.kill();
         }
 
@@ -120,7 +120,7 @@ public class SlimeController {
      */
     private void hitSlime(Slime slime, int damage) {
         if (slime.changeState(Slime.State.HIT)) {
-            slime.changeHealth(damage);
+            slime.decreaseHealthShield(damage);
         }
     }
 

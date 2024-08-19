@@ -3,7 +3,10 @@ package chevy.model.chamber;
 import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.chamber.drawOrder.LayerManager;
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.Coin;
 import chevy.model.entity.collectable.Collectable;
+import chevy.model.entity.collectable.Health;
+import chevy.model.entity.collectable.Key;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
@@ -338,6 +341,30 @@ public class Chamber {
                         addEntityOnTop(slime);
                         --nSlime;
                     }
+                }
+            }
+        }
+    }
+
+    public void spawnItem(Enemy enemy) {
+        if (enemy.canDrop()) {
+            Collectable.Type collectableType = enemy.getDrop();
+            if (collectableType == null) return;
+            switch (collectableType) {
+                case COIN -> {
+                    Coin coin = new Coin(new Vector2<>(enemy.getRow(), enemy.getCol()));
+                    addEntityOnTop(coin);
+                    addCollectable(coin);
+                }
+                case HEALTH -> {
+                    Health health = new Health(new Vector2<>(enemy.getRow(), enemy.getCol()));
+                    addEntityOnTop(health);
+                    addCollectable(health);
+                }
+                case KEY -> {
+                    Key key = new Key(new Vector2<>(enemy.getRow(), enemy.getCol()));
+                    addEntityOnTop(key);
+                    addCollectable(key);
                 }
             }
         }

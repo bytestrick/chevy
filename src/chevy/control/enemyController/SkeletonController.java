@@ -6,7 +6,6 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -65,9 +64,10 @@ public class SkeletonController {
             if (skeleton.getState(Skeleton.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(skeleton);
                 skeleton.removeToUpdate();
+                chamber.spawnItem(skeleton);
                 return;
             }
-        } else if (skeleton.getHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.State.DEAD)) {
+        } else if (skeleton.getCurrentHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.State.DEAD)) {
             skeleton.kill();
         }
 
@@ -122,7 +122,7 @@ public class SkeletonController {
      */
     private void hitSkeleton(Skeleton skeleton, int damage) {
         if (skeleton.changeState(Skeleton.State.HIT)) {
-            skeleton.changeHealth(damage);
+            skeleton.decreaseHealthShield(damage);
         }
     }
 

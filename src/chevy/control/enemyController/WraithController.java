@@ -6,7 +6,6 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -64,9 +63,10 @@ public class WraithController {
             if (wraith.getState(Wraith.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(wraith);
                 wraith.removeToUpdate();
+                chamber.spawnItem(wraith);
                 return;
             }
-        } else if (wraith.getHealth() <= 0 && wraith.checkAndChangeState(Wraith.State.DEAD)) {
+        } else if (wraith.getCurrentHealth() <= 0 && wraith.checkAndChangeState(Wraith.State.DEAD)) {
             wraith.kill();
         }
 
@@ -120,7 +120,7 @@ public class WraithController {
      */
     private void hitWraith(Wraith wraith, int damage) {
         if (wraith.changeState(Wraith.State.HIT)) {
-            wraith.changeHealth(damage);
+            wraith.decreaseHealthShield(damage);
         }
     }
 

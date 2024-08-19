@@ -18,8 +18,10 @@ public class Ninja extends Player {
         super(initPosition, Type.NINJA);
 
         this.speed = 0.1f;
-        this.health = 60;
+        this.health = 6;
+        this.currentHealth = health;
         this.shield = 0;
+        this.currentShield = shield;
         this.maxDamage = 8;
         this.minDamage = 6;
 

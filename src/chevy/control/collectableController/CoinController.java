@@ -18,7 +18,7 @@ public class CoinController {
     public void playerInInteraction(Coin coin) {
         if (coin.changeState(Coin.State.COLLECTED)) {
             coin.collect();
-            hudController.addCoin(1);
+            hudController.addCoin(coin.getValue());
             chamber.findAndRemoveEntity(coin);
         }
     }

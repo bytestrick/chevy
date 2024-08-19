@@ -42,10 +42,14 @@ public class ProgressBar extends JPanel {
     }
 
     public void setMaxValue(int maxValue) {
+        setMaxValue(maxValue, maxValue);
+    }
+
+    public void setMaxValue(int value, int maxValue) {
         if (maxValue <= 0) return;
 
         this.maxValue = maxValue;
-        this.value = this.maxValue;
+        this.value = value;
 
         addStep();
         setDimension(scale * WindowSettings.scale);
@@ -80,14 +84,14 @@ public class ProgressBar extends JPanel {
         int increment = value - this.value;
         if (increment > containerImage.getComponentCount())
             return;
-        int step = Math.abs(increment);
+
         SwingUtilities.invokeLater(() -> {
             if (increment > 0)
-                for (int i = 1; i <= step; ++i)
+                for (int i = 0; i < increment; ++i)
                     containerImage.getComponent(this.value + i).setVisible(true);
             else
-                for (int i = 1; i <= step; ++i)
-                    containerImage.getComponent(this.value - i).setVisible(false);
+                for (int i = increment; i < 0; ++i)
+                    containerImage.getComponent(this.value + i).setVisible(false);
             this.value = value;
         });
     }
@@ -107,11 +111,13 @@ public class ProgressBar extends JPanel {
             return;
         }
 
-        int n = containerImage.getComponentCount();
+        int nComponents = containerImage.getComponentCount();
         for (int i = 0; i < maxValue; ++i) {
-            if (i < n)
+            if (i < nComponents)
                 containerImage.remove(i);
             containerImage.add(new ImageVisualizer(stepTexture, scale), i);
+            if (i >= value)
+                containerImage.getComponent(i).setVisible(false);
         }
 
         setDimension(scale * WindowSettings.scale);
@@ -119,6 +125,10 @@ public class ProgressBar extends JPanel {
 
     public int getValue() {
         return value;
+    }
+
+    public int getMaxValue() {
+        return maxValue;
     }
 
     public void windowResized(float scale) {
