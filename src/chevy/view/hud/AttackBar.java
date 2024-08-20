@@ -23,6 +23,7 @@ public class AttackBar extends ProgressBarLabel {
         setTexture(MyPanelUI.BAR_R, PROGRESS_BAR_PATH + "rightBar.png");
         setTexture(MyPanelUI.CENTER, PROGRESS_BAR_PATH + "centerPanel.png");
         setStepTexture(ATTACK_BAR_PATH + "step.png");
-        setText("ATK: 5 ~ 10");
+        setFont("fonts/upheaval/upheavtt.ttf");
+        setFontSize(8);
     }
 }

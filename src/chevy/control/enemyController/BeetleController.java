@@ -87,6 +87,7 @@ public class BeetleController {
             }
         } else if (beetle.getCurrentHealth() <= 0 && beetle.checkAndChangeState(Beetle.State.DEAD)) {
             // Se la salute del Beetle è zero o inferiore, cambia lo stato del Beetle a "DEAD".
+            chamber.spawnSlime(beetle); // power up
             beetle.kill();
         }
 

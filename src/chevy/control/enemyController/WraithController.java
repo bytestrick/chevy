@@ -67,6 +67,7 @@ public class WraithController {
                 return;
             }
         } else if (wraith.getCurrentHealth() <= 0 && wraith.checkAndChangeState(Wraith.State.DEAD)) {
+            chamber.spawnSlime(wraith); // power up
             wraith.kill();
         }
 

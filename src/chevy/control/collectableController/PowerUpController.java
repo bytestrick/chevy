@@ -3,6 +3,7 @@ package chevy.control.collectableController;
 import chevy.control.hudController.HUDController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.powerUp.*;
+import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Arrow;
@@ -49,7 +50,36 @@ public class PowerUpController {
                 player.changeMinDamage(player.getMinDamage() + longSword.getIncreaseDamage());
                 player.changeMaxDamage(player.getMaxDamage() + longSword.getIncreaseDamage());
                 hudController.changeMaxAttack(player.getMaxDamage());
-                hudController.setTextAttackBar("ATK: " + player.getMinDamage() + " ~ " + player.getMaxDamage());
+                hudController.setTextAttackBar(player.getMinDamage() + " ~ " + player.getMaxDamage());
+            }
+
+            CoinOfGreed coinOfGreed = (CoinOfGreed) player.getOwnedPowerUp(PowerUp.Type.COIN_OF_GREED);
+            if (coinOfGreed != null && coinOfGreed.canUse()) {
+                int currentPercentage = Enemy.getDropPercentage(0);
+                int increaseValue = (int) (currentPercentage * coinOfGreed.getIncreaseDropPercentage());
+                Enemy.changeDropPercentage(0, currentPercentage + increaseValue);
+            }
+
+            HealingFlood healingFlood = (HealingFlood) player.getOwnedPowerUp(PowerUp.Type.HEALING_FLOOD);
+            if (healingFlood != null && healingFlood.canUse()) {
+                int currentPercentage = Enemy.getDropPercentage(2);
+                int increaseValue = (int) (currentPercentage * healingFlood.getIncreaseDropPercentage());
+                Enemy.changeDropPercentage(2, currentPercentage + increaseValue);
+            }
+
+            KeySKeeper keySKeeper = (KeySKeeper) player.getOwnedPowerUp(PowerUp.Type.KEY_S_KEEPER);
+            if (keySKeeper != null && keySKeeper.canUse()) {
+                int currentPercentage = Enemy.getDropPercentage(1);
+                int increaseValue = (int) (currentPercentage * keySKeeper.getIncreaseDropPercentage());
+                Enemy.changeDropPercentage(1, currentPercentage + increaseValue);
+            }
+
+            SlimePiece slimePiece = (SlimePiece) player.getOwnedPowerUp(PowerUp.Type.SLIME_PIECE);
+            if (slimePiece != null && slimePiece.canUse()) {
+                player.changeMinDamage(player.getMinDamage() + slimePiece.getDamageIncrease());
+                player.changeMaxDamage(player.getMaxDamage() + slimePiece.getDamageIncrease());
+                hudController.changeMaxAttack(player.getMaxDamage());
+                hudController.setTextAttackBar(player.getMinDamage() + " ~ " + player.getMaxDamage());
             }
         }
     }

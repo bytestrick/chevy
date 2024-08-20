@@ -68,6 +68,7 @@ public class SkeletonController {
                 return;
             }
         } else if (skeleton.getCurrentHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.State.DEAD)) {
+            chamber.spawnSlime(skeleton); // power up
             skeleton.kill();
         }
 

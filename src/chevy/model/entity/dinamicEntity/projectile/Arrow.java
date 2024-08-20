@@ -15,7 +15,6 @@ public class Arrow extends Projectile {
 
         this.maxDamage = 1 + ADD_DAMAGE;
         this.minDamage = 1 + ADD_DAMAGE;
-        this.drawLayer = 2;
 
         initStateMachine();
     }

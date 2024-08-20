@@ -10,7 +10,7 @@ import chevy.utils.Fontt;
 import chevy.view.component.NoCaret;
 
 public class PowerUpText extends JPanel {
-    private static final String FONT_PATH = "/fonts/PixelatedPusab.ttf";
+    private static final String FONT_PATH = "fonts/PixelatedPusab.ttf";
     private static final int TITLE_FONT_SIZE = 24;
     private static final int DESCRIPTION_FONT_SIZE = 16;
     private static final Color COLOR_BG = new Color(0, 0, 0, 180);
