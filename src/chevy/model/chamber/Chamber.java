@@ -7,6 +7,8 @@ import chevy.model.entity.collectable.Coin;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
+import chevy.model.entity.collectable.powerUp.PowerUp;
+import chevy.model.entity.collectable.powerUp.SlimePiece;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
@@ -346,6 +348,8 @@ public class Chamber {
         }
     }
 
+    // ---- power up
+
     public void spawnItem(Enemy enemy) {
         if (enemy.canDrop()) {
             Collectable.Type collectableType = enemy.getDrop();
@@ -369,6 +373,15 @@ public class Chamber {
             }
         }
     }
+
+    public void spawnSlime(Enemy enemy) {
+        SlimePiece slimePiece = (SlimePiece) player.getOwnedPowerUp(PowerUp.Type.SLIME_PIECE);
+        if (slimePiece != null && slimePiece.canUse()) {
+            spawnSlimeAroundEntity(enemy, slimePiece.getNSlime());
+        }
+    }
+
+    // ----
 
     /**
      * Cerca il giocatore in un intervallo quadrato attorno a un'entità.

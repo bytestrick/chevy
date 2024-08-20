@@ -103,9 +103,9 @@ public class EntityFromColor {
     private static final int CAT_CLAW = 16;
     private static final int COIN_OF_GREED = 17;
     private static final int COLD_HEART = 18;
-    private static final int GOD_S_ICE = 19;
+    private static final int HOBNAIL_BOOTS = 19;
     private static final int GOLD_ARROW = 20;
-    private static final int GORGON_S_POTION = 21;
+    private static final int KEY_S_KEEPER = 21;
     private static final int HEDGEHOG_SPINES = 22;
     private static final int HOLY_SHIELD = 23;
     private static final int HOT_HEARTH = 24;
@@ -115,7 +115,7 @@ public class EntityFromColor {
     private static final int SLIME_PIECE = 28;
     private static final int STONE_BOOTS = 29;
     private static final int SWIFT_BOOTS = 30;
-    private static final int THUNDERBOLT = 31;
+    private static final int HEALING_FLOOD = 31;
     private static final int VANPIRE_FNAGS = 32;
 
 
@@ -213,6 +213,12 @@ public class EntityFromColor {
             case VANPIRE_FNAGS -> new VampireFangs(startPosition);
             case LONG_SWORD -> new LongSword(startPosition);
             case STONE_BOOTS -> new StoneBoots(startPosition);
+            case COIN_OF_GREED -> new CoinOfGreed(startPosition);
+            case HEALING_FLOOD -> new HealingFlood(startPosition);
+            case KEY_S_KEEPER -> new KeySKeeper(startPosition);
+            case HOBNAIL_BOOTS -> new HobnailBoots(startPosition);
+            case HEDGEHOG_SPINES -> new HedgehogSpines(startPosition);
+            case SLIME_PIECE -> new SlimePiece(startPosition);
 
             // ---
             case NULL -> null;

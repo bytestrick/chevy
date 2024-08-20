@@ -14,6 +14,8 @@ public class KeyBar extends CounterBar {
         setTexture(MyPanelUI.BAR_L, KEY_BAR_PATH + "key/leftBar.png");
         setTexture(MyPanelUI.BAR_R, KEY_BAR_PATH + "rightBar.png");
         setTexture(MyPanelUI.CENTER, KEY_BAR_PATH + "centerPanel.png");
+        setFont("fonts/upheaval/upheavtt.ttf");
+        setFontSize(8);
     }
 
     public void setKey(int value) {

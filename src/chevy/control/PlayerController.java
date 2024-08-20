@@ -9,6 +9,7 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
+import chevy.model.entity.collectable.powerUp.HedgehogSpines;
 import chevy.model.entity.collectable.powerUp.HolyShield;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.collectable.powerUp.VampireFangs;
@@ -260,7 +261,26 @@ public class PlayerController implements Update {
      * @param enemy il nemico con cui il giocatore interagisce
      */
     private void enemyInteraction(Enemy enemy) {
-        hitPlayer(-1 * enemy.getDamage());
+        HedgehogSpines hedgehogSpines = (HedgehogSpines) player.getOwnedPowerUp(PowerUp.Type.HEDGEHOG_SPINES);
+        int partialDamage = 0;
+        int damage = enemy.getDamage();
+        if (hedgehogSpines != null && hedgehogSpines.canUse()) {
+            partialDamage = damage - (int) (damage * hedgehogSpines.getDamagePercentage());
+
+            // cambia il danno del player in modo da infliggere solo la parte di danno
+            int minDamage = player.getMinDamage();
+            int maxDamage = player.getMaxDamage();
+            player.changeMinDamage(partialDamage);
+            player.changeMaxDamage(partialDamage);
+
+            player.changeState(Player.State.ATTACK);
+            enemyController.handleInteraction(InteractionType.PLAYER_IN, player, enemy);
+
+            player.changeMinDamage(minDamage);
+            player.changeMaxDamage(maxDamage);
+        }
+
+        hitPlayer(-1 * (damage - partialDamage));
     }
 
     /**
@@ -316,6 +336,9 @@ public class PlayerController implements Update {
                 case DynamicEntity.Type.PROJECTILE ->
                         projectileController.handleInteraction(InteractionType.PLAYER_IN, player,
                                 (Projectile) nextEntityBelowTheTop);
+                case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
+                        collectableController.handleInteraction(InteractionType.PLAYER_IN, player,
+                                (Collectable) nextEntityBelowTheTop);
                 default -> { }
             }
         }

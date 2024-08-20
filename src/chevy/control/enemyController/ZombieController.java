@@ -67,6 +67,7 @@ public class ZombieController {
                 return;
             }
         } else if (zombie.getCurrentHealth() <= 0 && zombie.checkAndChangeState(Zombie.State.DEAD)) {
+            chamber.spawnSlime(zombie); // power up
             zombie.kill();
         }
 

@@ -28,13 +28,13 @@ public abstract class Enemy extends LiveEntity {
     };
     private final Type type;
     protected boolean canAttack = false;
-    protected int dropProbability = 50;
+    protected int dropProbability = 100;
 
     public Enemy(Vector2<Integer> initPosition, Type type) {
         super(initPosition, LiveEntity.Type.ENEMY);
         this.type = type;
 
-        this.drawLayer = 4;
+        this.drawLayer = 2;
     }
 
     /**
@@ -57,6 +57,14 @@ public abstract class Enemy extends LiveEntity {
         if (index == -1)
             return null;
         return DROPPABLE_COLLECTABLE[index];
+    }
+
+    public static void changeDropPercentage(int i, int newDropPercentage) {
+        DROPPABLE_COLLECTABLE_PROB[i] = Math.clamp(newDropPercentage, 0, 100);
+    }
+
+    public static int getDropPercentage(int i) {
+        return DROPPABLE_COLLECTABLE_PROB[i];
     }
 
     @Override

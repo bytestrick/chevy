@@ -11,7 +11,7 @@ public class Fontt {
     public static Font load(String path) {
         Font font = null;
         try {
-            InputStream is = Fontt.class.getResourceAsStream(path);
+            InputStream is = Fontt.class.getResourceAsStream("/" + path);
             font = Font.createFont(Font.TRUETYPE_FONT, is);
         } catch (IOException | FontFormatException e) {
             Log.error("Font '" + path + "' non trovato.");

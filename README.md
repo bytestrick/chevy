@@ -59,27 +59,22 @@ Possibili cose da evitare: non implementare i power up e le chest.
 ### Entities
 - Static entities:
   - PowerUp:
-    - [x] Holy Shield: Riduce i danni in arrivo dopo essere stati colpiti.
-    - [x] Vampire Fangs: Possibilità del 15% di recuperare 1HP durante un attacco.
-    - [x] Angel Ring: il giocatore viene rianimato quando muore (utilizzabile per una volta).
-    - [x] Hot Heart: Incrementa gli HP di 3.
-    - [x] Gold Arrow: Aumenta il danno delle frecce di 2.
-    - [x] Cold Heart: Incrementa lo scudo di 3.
-    - [x] Broken Arrows: Le frecce non ti infliggono danno.
     - [x] Agility: Possibilità di evitare un attacco.
+    - [x] Angel Ring: il giocatore viene rianimato quando muore (utilizzabile per una volta).
+    - [x] Broken Arrows: Le frecce non ti infliggono danno.
+    - [x] Coin of Greed: I nemici aumentano la probabilità di rilasciare monete del 30%.
+    - [x] Cold Heart: Incrementa lo scudo di 3.
+    - [x] Gold Arrow: Aumenta il danno delle frecce di 2.
+    - [x] Healing Flood: I nemici aumentano la probabilità di rilasciare pozioni di cura del 30%.
+    - [x] Hedgehog Spines: Probabilità del 50% di riflettere il 20% di danno al tuo aguzzino.
+    - [x] Hobnail Boots: Aumenta la presa sul ghiaccio impedendo di scivolarci sopra.
+    - [x] Holy Shield: Riduce i danni in arrivo dopo essere stati colpiti.
+    - [x] Hot Heart: Incrementa gli HP di 3.
+    - [x] Key's Keeper: I nemici aumentano la probabilità di rilasciare chiavi del 30%.
     - [x] Long Sword: Incrementa il danno da spada di 2.
+    - [x] Slime Piece: Il danno d'attacco aumenta di 5, ma dopo la morte i nemici generano piccoli slime. I piccoli slime non generano altri slime.
     - [x] Stone Boots: Le trappole chiodate non hanno effetto.
-    - 
-    - [ ] Swift Boots: Incrementa la velocità di movimento.
-    - [ ] Ignition: Gli attacchi hanno la possibilità di incendiare i nemici.
-    - [ ] Coin of Greed: I nemici rilasciano più monete.
-    - [ ] Gorgon's Poison: Elimini i nemici con un colpo, ma la vita decrementano ad 1 permanentemente.
-    - [ ] Slime Piece: Il danno d'attacco aumenta di 3, ma dopo la morte i nemici generano piccoli slime.
-    - 
-    - [ ] God's Ice: Congela periodicamente i nemici. ~
-    - [ ] Hedgehog Spines: Riflette una parte di danno al tuo aguzzino. ~
-    - [ ] Cat Claw: Aumenta la velocità d'attacco. ~
-    - [ ] Thunderbolt: Fulmini colpiscono periodicamente tutti i nemici. ~
+    - [x] Vampire Fangs: Possibilità del 15% di recuperare 1HP durante un attacco.
   - Environment:
     - Ground
     - Walls

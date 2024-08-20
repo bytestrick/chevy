@@ -50,7 +50,7 @@ public class PlayerInfo extends JPanel {
         healthBar.setMaxValue(player.getCurrentHealth());
         shieldBar.setMaxValue(player.getCurrentShield());
         attackBar.setMaxValue(player.getMaxDamage());
-        attackBar.setText("ATK: " + player.getMinDamage() + " ~ " + player.getMaxDamage());
+        attackBar.setText(player.getMinDamage() + " ~ " + player.getMaxDamage());
     }
 
     public HealthBar getHealthBar() {

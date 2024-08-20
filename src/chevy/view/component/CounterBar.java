@@ -1,6 +1,7 @@
 package chevy.view.component;
 
 import chevy.settings.WindowSettings;
+import chevy.utils.Fontt;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +40,7 @@ public class CounterBar extends JPanel {
         font = font.deriveFont(fontSize * WindowSettings.scale);
         text.setMaximumSize(getMaximumSize());
         text.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        text.setAlignmentY(Component.CENTER_ALIGNMENT);
 
         add(Box.createHorizontalGlue());
         add(text);
@@ -52,6 +54,21 @@ public class CounterBar extends JPanel {
         ui.setTexture(i, path);
         revalidate();
         repaint();
+    }
+
+    public void setFontSize(int value) {
+        fontSize = value;
+        resizeFont();
+    }
+
+    public void setFont(String path) {
+        font = Fontt.load(path);
+        resizeFont();
+    }
+
+    private void resizeFont() {
+        font = font.deriveFont(fontSize * WindowSettings.scale);
+        text.setFont(font);
     }
 
     public void setText(String text) {
@@ -77,7 +94,7 @@ public class CounterBar extends JPanel {
         scale = scale * this.scale;
 
         ui.setScale(scale);
-        font = font.deriveFont(fontSize * scale);
+        resizeFont();
         setConstraints(scale);
         setDimension(scale);
     }
