@@ -93,8 +93,9 @@ public class PowerUpController {
         }
         else {
             if (chamber.getHitDirectionPlayer(powerUp) != null) {
-                if (powerUp.changeState(PowerUp.State.SELECTED))
+                if (powerUp.changeState(PowerUp.State.SELECTED)) {
                     hudController.PowerUpText(powerUp);
+                }
             }
             else if (powerUp.checkAndChangeState(PowerUp.State.DESELECTED)) {
                 hudController.hidePowerUpText();

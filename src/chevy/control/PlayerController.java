@@ -1,5 +1,6 @@
 package chevy.control;
 
+import chevy.Sound;
 import chevy.control.collectableController.CollectableController;
 import chevy.control.enemyController.EnemyController;
 import chevy.control.projectileController.ProjectileController;
@@ -68,8 +69,9 @@ public class PlayerController implements Update {
      */
     public void keyPressed(KeyEvent keyEvent) {
         CommonState currentPlayerState = player.getCurrentState();
-        if (currentPlayerState == Player.State.DEAD || currentPlayerState == Player.State.GLIDE)
+        if (currentPlayerState == Player.State.DEAD || currentPlayerState == Player.State.GLIDE) {
             return;
+        }
 
         final int key = keyEvent.getKeyCode();
 
@@ -134,11 +136,13 @@ public class PlayerController implements Update {
         boolean canHit = true;
         if (projectile instanceof Arrow) {
             PowerUp brokenArrow = player.getOwnedPowerUp(PowerUp.Type.BROKEN_ARROWS);
-            if (brokenArrow != null)
+            if (brokenArrow != null) {
                 canHit = !brokenArrow.canUse();
+            }
         }
-        if (canHit)
+        if (canHit) {
             hitPlayer(-1 * projectile.getDamage());
+        }
     }
 
     /**
@@ -164,6 +168,14 @@ public class PlayerController implements Update {
         }
     }
 
+    private void playerMoveSound(Player player) {
+        Sound.getInstance().play(switch (player.getSpecificType()) {
+            case ARCHER -> Sound.Effect.ARCHER_FOOTSTEPS;
+            case NINJA -> Sound.Effect.NINJA_FOOTSTEPS;
+            case KNIGHT -> Sound.Effect.KNIGHT_FOOTSTEPS;
+        });
+    }
+
     /**
      * Gestisce le interazioni della tastiera con il giocatore, gestendo i movimenti del giocatore e
      * le interazioni con le entità nelle celle adiacenti.
@@ -171,7 +183,6 @@ public class PlayerController implements Update {
      * @param direction la direzione in cui il giocatore si muove
      */
     private void keyBoardInteraction(DirectionsModel direction, boolean attack) {
-        Entity entityNextCell = chamber.getNearEntityOnTop(player, direction);
         Entity entityCurrentCell = chamber.getEntityBelowTheTop(player);
 
         // Player on
@@ -180,6 +191,7 @@ public class PlayerController implements Update {
             default -> { }
         }
 
+        Entity entityNextCell = chamber.getNearEntityOnTop(player, direction);
         // Player in
         if (attack) {
             // Attacco libero
@@ -189,12 +201,19 @@ public class PlayerController implements Update {
                 }
                 switch (player.getSpecificType()) {
                     case Player.Type.KNIGHT, Player.Type.NINJA -> {
+                        if (player.getSpecificType() == Player.Type.NINJA) {
+                            Sound.getInstance().play(Sound.Effect.PUNCH);
+                        } else {
+                            Sound.getInstance().play(Sound.Effect.BLADE_SLASH);
+                        }
                         if (entityNextCell.getGenericType() == LiveEntity.Type.ENEMY) {
-                            enemyController.handleInteraction(InteractionType.PLAYER_IN, player, (Enemy) entityNextCell);
+                            enemyController.handleInteraction(InteractionType.PLAYER_IN, player,
+                                    (Enemy) entityNextCell);
                         }
                     }
                     case ARCHER -> { // Spara freccia
-                        Arrow arrow = new Arrow(new Vector2<>(player.getRow(), player.getCol()), direction);
+                        Arrow arrow = new Arrow(new Vector2<>(player.getRow(), player.getCol()), player.getDirection());
+                        Sound.getInstance().play(Sound.Effect.ARROW_SWOOSH);
                         chamber.addProjectile(arrow);
                         chamber.addEntityOnTop(arrow);
                     }
@@ -215,18 +234,25 @@ public class PlayerController implements Update {
                         if (player.getDirection() != direction) {
                             player.setDirection(direction);
                         }
+                        switch (player.getSpecificType()) {
+                            case Player.Type.NINJA -> Sound.getInstance().play(Sound.Effect.PUNCH);
+                            case Player.Type.ARCHER -> Sound.getInstance().play(Sound.Effect.ARROW_SWOOSH);
+                            case Player.Type.KNIGHT -> Sound.getInstance().play(Sound.Effect.BLADE_SLASH);
+                        }
                         enemyController.handleInteraction(InteractionType.PLAYER_IN, player, (Enemy) entityNextCell);
                     }
                     player.checkAndChangeState(Player.State.IDLE);
                 }
                 case TRAP -> {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
+                        playerMoveSound(player);
                         chamber.moveDynamicEntity(player, direction);
                         trapsController.handleInteraction(InteractionType.PLAYER_IN, player, (Trap) entityNextCell);
                     }
                 }
                 case DynamicEntity.Type.PROJECTILE -> {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
+                        playerMoveSound(player);
                         chamber.moveDynamicEntity(player, direction);
                         projectileController.handleInteraction(InteractionType.PLAYER_IN, player,
                                 (Projectile) entityNextCell);
@@ -234,12 +260,15 @@ public class PlayerController implements Update {
                 }
                 case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP -> {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
+                        playerMoveSound(player);
                         chamber.moveDynamicEntity(player, direction);
-                        collectableController.handleInteraction(InteractionType.PLAYER_IN, player, (Collectable) entityNextCell);
+                        collectableController.handleInteraction(InteractionType.PLAYER_IN, player,
+                                (Collectable) entityNextCell);
                     }
                 }
                 default -> {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
+                        playerMoveSound(player);
                         chamber.moveDynamicEntity(player, direction);
                     }
                 }
@@ -248,7 +277,8 @@ public class PlayerController implements Update {
 
         // Player out
         switch (entityCurrentCell.getGenericType()) {
-            case TRAP -> trapsController.handleInteraction(InteractionType.PLAYER_OUT, player, (Trap) entityCurrentCell);
+            case TRAP ->
+                    trapsController.handleInteraction(InteractionType.PLAYER_OUT, player, (Trap) entityCurrentCell);
             default -> { }
         }
     }
@@ -299,12 +329,14 @@ public class PlayerController implements Update {
         } else if (player.getCurrentHealth() <= 0) {
             PowerUp angelRing = player.getOwnedPowerUp(PowerUp.Type.ANGEL_RING);
             boolean canKill = true;
-            if (angelRing != null)
+            if (angelRing != null) {
                 canKill = !angelRing.canUse(); // se puoi usarlo non uccidere il player
+            }
 
-            if (canKill && player.changeState(Player.State.DEAD))
+            if (canKill && player.changeState(Player.State.DEAD)) {
+                Sound.getInstance().play(Sound.Effect.HUMAN_DEATH);
                 player.kill();
-            else {
+            } else {
                 int health = player.getHealth();
                 player.increaseCurrentHealth(health);
                 hudController.changeHealth(health);
@@ -371,8 +403,9 @@ public class PlayerController implements Update {
 
         HolyShield holyShield = (HolyShield) player.getOwnedPowerUp(PowerUp.Type.HOLY_SHIELD);
         int reduceDamage = 0;
-        if (holyShield != null && holyShield.canUse())
+        if (holyShield != null && holyShield.canUse()) {
             reduceDamage = (int) (damage * holyShield.getReduceDamage());
+        }
 
         if (!dodged && player.changeState(Player.State.HIT)) {
             player.decreaseHealthShield(damage - reduceDamage);

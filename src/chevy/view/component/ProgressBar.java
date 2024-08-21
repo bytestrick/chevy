@@ -46,7 +46,9 @@ public class ProgressBar extends JPanel {
     }
 
     public void setMaxValue(int value, int maxValue) {
-        if (maxValue <= 0) return;
+        if (maxValue <= 0) {
+            return;
+        }
 
         this.maxValue = maxValue;
         this.value = value;
@@ -65,10 +67,11 @@ public class ProgressBar extends JPanel {
         int width = 0;
         int height = ui.getHeight(MyPanelUI.BAR_T) + ui.getHeight(MyPanelUI.BAR_B) + ui.getHeight(MyPanelUI.CENTER);
 
-        if (stepTexture == null)
+        if (stepTexture == null) {
             width = ui.getWidth(MyPanelUI.BAR_L) + ui.getWidth(MyPanelUI.BAR_R);
-        else
+        } else {
             width = (int) (maxValue * stepTexture.getWidth() * scale) + ui.getWidth(MyPanelUI.BAR_L) + ui.getWidth(MyPanelUI.BAR_R);
+        }
 
         Dimension newDimension = new Dimension(width, height);
         setMaximumSize(newDimension);
@@ -82,16 +85,20 @@ public class ProgressBar extends JPanel {
 
     public void setValue(int value) {
         int increment = value - this.value;
-        if (increment > containerImage.getComponentCount())
+        if (increment > containerImage.getComponentCount()) {
             return;
+        }
 
         SwingUtilities.invokeLater(() -> {
-            if (increment > 0)
-                for (int i = 0; i < increment; ++i)
+            if (increment > 0) {
+                for (int i = 0; i < increment; ++i) {
                     containerImage.getComponent(this.value + i).setVisible(true);
-            else
-                for (int i = increment; i < 0; ++i)
+                }
+            } else {
+                for (int i = increment; i < 0; ++i) {
                     containerImage.getComponent(this.value + i).setVisible(false);
+                }
+            }
             this.value = value;
         });
     }
@@ -113,11 +120,13 @@ public class ProgressBar extends JPanel {
 
         int nComponents = containerImage.getComponentCount();
         for (int i = 0; i < maxValue; ++i) {
-            if (i < nComponents)
+            if (i < nComponents) {
                 containerImage.remove(i);
+            }
             containerImage.add(new ImageVisualizer(stepTexture, scale), i);
-            if (i >= value)
+            if (i >= value) {
                 containerImage.getComponent(i).setVisible(false);
+            }
         }
 
         setDimension(scale * WindowSettings.scale);

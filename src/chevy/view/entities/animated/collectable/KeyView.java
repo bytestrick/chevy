@@ -47,7 +47,9 @@ public class KeyView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (key.getCurrentState().equals(Key.State.COLLECTED)) moveInterpolationY.start();
+        if (key.getCurrentState().equals(Key.State.COLLECTED)) {
+            moveInterpolationY.start();
+        }
         currentViewPosition.second = moveInterpolationY.getValue();
         return currentViewPosition;
     }

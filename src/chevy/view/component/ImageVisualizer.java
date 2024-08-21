@@ -68,8 +68,9 @@ public class ImageVisualizer extends JComponent {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (image != null)
+        if (image != null) {
             g.drawImage(image, 0 , 0, width, height, null);
+        }
     }
 
     public void windowResized(float scale) {

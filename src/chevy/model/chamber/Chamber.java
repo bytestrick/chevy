@@ -72,8 +72,9 @@ public class Chamber {
         chamber = new ArrayList<>(nRow);
         for (int i = 0; i < nRow; ++i) {
             List<List<Entity>> row = new LinkedList<>();
-            for (int j = 0; j < nCol; ++j)
+            for (int j = 0; j < nCol; ++j) {
                 row.add(new LinkedList<>());
+            }
             chamber.add(row);
         }
 
@@ -200,7 +201,9 @@ public class Chamber {
      */
     public synchronized Entity getNearEntityOnTop(DynamicEntity dynamicEntity, DirectionsModel direction,
                                                   int distanceCell) {
-        if (direction == null || dynamicEntity == null) return null;
+        if (direction == null || dynamicEntity == null) {
+            return null;
+        }
 
         Vector2<Integer> vector2 = new Vector2<>(dynamicEntity.getRow() + direction.row() * distanceCell,
                 dynamicEntity.getCol() + direction.col() * distanceCell);
@@ -356,7 +359,9 @@ public class Chamber {
     public synchronized void spawnCollectable(Enemy enemy) {
         if (enemy.canDrop()) {
             Collectable.Type collectableType = enemy.getDrop();
-            if (collectableType == null) return;
+            if (collectableType == null) {
+                return;
+            }
             switch (collectableType) {
                 case COIN -> {
                     Coin coin = new Coin(new Vector2<>(enemy.getRow(), enemy.getCol()));
@@ -397,7 +402,9 @@ public class Chamber {
                             chest.getCol() + randomJ);
                     if (canSpawn(spawnPosition)) {
                         Collectable.Type collectableType = chest.getDrop();
-                        if (collectableType == null) return;
+                        if (collectableType == null) {
+                            return;
+                        }
                         switch (collectableType) {
                             case COIN -> {
                                 Coin coin = new Coin(spawnPosition);

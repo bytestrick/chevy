@@ -16,15 +16,18 @@ public class ChestController {
 
     public void update(Chest chest) {
         if (chamber.getHitDirectionPlayer(chest) != null) {
-            if (chest.checkAndChangeState(Chest.State.OPEN))
-                if (chest.isFirstOpen())
+            if (chest.checkAndChangeState(Chest.State.OPEN)) {
+                if (chest.isFirstOpen()) {
                     chamber.spawnCollectableAroundChest(chest, chest.getSpawnQuantity());
+                }
+            }
             if (hudController.getKey() > 0 && chest.checkAndChangeState(Chest.State.UNLOCK)) {
                 hudController.addKey(-1);
             }
         }
-        else
+        else {
             chest.checkAndChangeState(Chest.State.CLOSE);
+        }
 
         chest.checkAndChangeState(Chest.State.IDLE_LOCKED);
         chest.checkAndChangeState(Chest.State.IDLE_UNLOCKED);
