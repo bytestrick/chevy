@@ -72,13 +72,15 @@ public class Chest extends Environment {
         int index = Utils.isOccurring(DROPPABLE_COLLECTABLE_PROB);
 
         if (index == 3) {
-            if (onePowerUp)
+            if (onePowerUp) {
                 index = -1;
-            else
+            } else {
                 onePowerUp = true;
+            }
         }
-        if (index == -1)
+        if (index == -1) {
             return getDrop();
+        }
 
         return DROPPABLE_COLLECTABLE[index];
     }

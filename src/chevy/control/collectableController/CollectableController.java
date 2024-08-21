@@ -59,8 +59,9 @@ public class CollectableController {
             case Collectable.Type.KEY -> keyController.playerInInteraction((Key) collectable);
             default -> {}
         }
-        if (collectable.getGenericType() == Collectable.Type.POWER_UP)
+        if (collectable.getGenericType() == Collectable.Type.POWER_UP) {
             powerUpController.playerInInteraction(player, (PowerUp) collectable);
+        }
     }
 
     private void update(Entity subject) {
@@ -70,7 +71,8 @@ public class CollectableController {
             case Collectable.Type.KEY -> keyController.update((Key) subject);
             default -> {}
         }
-        if (subject.getGenericType() == Collectable.Type.POWER_UP)
+        if (subject.getGenericType() == Collectable.Type.POWER_UP) {
             powerUpController.update((PowerUp) subject);
+        }
     }
 }

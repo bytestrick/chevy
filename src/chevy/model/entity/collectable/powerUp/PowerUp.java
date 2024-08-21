@@ -88,8 +88,9 @@ public abstract class PowerUp extends Collectable {
 
     public boolean canUse() {
         boolean use = isOutOfStock() && Utils.isOccurring(occurringPercentage);
-        if (use && inStock > 0)
+        if (use && inStock > 0) {
             inStock -= 1;
+        }
         return use;
     }
 

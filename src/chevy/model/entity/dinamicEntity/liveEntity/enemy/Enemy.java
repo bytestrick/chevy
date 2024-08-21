@@ -54,8 +54,9 @@ public abstract class Enemy extends LiveEntity {
 
     public Collectable.Type getDrop() {
         int index = Utils.isOccurring(DROPPABLE_COLLECTABLE_PROB);
-        if (index == -1)
+        if (index == -1) {
             return null;
+        }
         return DROPPABLE_COLLECTABLE[index];
     }
 

@@ -1,6 +1,7 @@
 package chevy.control.collectableController;
 
 import chevy.control.HUDController;
+import chevy.Sound;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
@@ -19,6 +20,7 @@ public class HealthController {
     public void playerInInteraction(Player player, Health health) {
         if (health.changeState(Health.State.COLLECTED)) {
             player.increaseCurrentHealth(health.getRecoverHealth());
+            Sound.getInstance().play(Sound.Effect.HEALTH_POTION);
             health.collect();
             hudController.changeHealth(player.getCurrentHealth());
             chamber.findAndRemoveEntity(health);

@@ -48,7 +48,9 @@ public class CoinView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (coin.getCurrentState() == Coin.State.COLLECTED) moveInterpolationY.start();
+        if (coin.getCurrentState() == Coin.State.COLLECTED) {
+            moveInterpolationY.start();
+        }
         currentViewPosition.second = moveInterpolationY.getValue();
         return currentViewPosition;
     }

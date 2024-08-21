@@ -36,7 +36,9 @@ public class ChamberView extends JPanel implements Render {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (drawOrder == null) return;
+        if (drawOrder == null) {
+            return;
+        }
 
         for (Layer layer : drawOrder) {
             Iterator<Entity> it = layer.getLayer().iterator();
@@ -62,15 +64,21 @@ public class ChamberView extends JPanel implements Render {
                         Vector2<Integer> offset = entityView.getOffset();
                         float scale = entityView.getScale();
                         BufferedImage image = entityView.getCurrentFrame();
-                        if (image == null) image = NULL_IMAGE;
+                        if (image == null) {
+                            image = NULL_IMAGE;
+                        }
 
                         float offsetX = (float) offset.first / GameSettings.SIZE_TILE;
-                        if (offset.first == 0) offsetX = 0;
+                        if (offset.first == 0) {
+                            offsetX = 0;
+                        }
                         int positionX =
                                 (int) ((entityViewPosition.first + offsetX) * GameSettings.optimalCellSize * scale + GameSettings.offsetW);
 
                         float offsetY = (float) offset.second / GameSettings.SIZE_TILE;
-                        if (offset.second == 0) offsetY = 0;
+                        if (offset.second == 0) {
+                            offsetY = 0;
+                        }
                         int positionY =
                                 (int) ((entityViewPosition.second + offsetY) * GameSettings.optimalCellSize * scale + GameSettings.offsetH);
 

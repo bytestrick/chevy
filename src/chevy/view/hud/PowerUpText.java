@@ -4,9 +4,11 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 
+import chevy.Sound;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.settings.WindowSettings;
 import chevy.utils.Fontt;
+import chevy.utils.Log;
 import chevy.view.component.NoCaret;
 
 public class PowerUpText extends JPanel {
@@ -85,7 +87,7 @@ public class PowerUpText extends JPanel {
             doc.insertString(doc.getLength(), description, descriptionStyle);
             doc.setParagraphAttributes(doc.getLength() - description.length(), description.length(), descriptionStyle, false);
         } catch (BadLocationException e) {
-            e.printStackTrace();
+            Log.warn("Tentativo di scrittura in una posizione invalida: " + e.getMessage());
         }
         revalidate();
         repaint();
@@ -93,6 +95,7 @@ public class PowerUpText extends JPanel {
 
     public void show(PowerUp powerUp) {
         SwingUtilities.invokeLater(() -> {
+            Sound.getInstance().play(Sound.Effect.POWER_UP_UI);
             name = powerUp.getName();
             description = powerUp.getDescription();
             write();

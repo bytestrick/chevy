@@ -1,5 +1,6 @@
 package chevy.control;
 
+import chevy.Sound;
 import chevy.model.chamber.ChamberManager;
 import chevy.view.Window;
 import chevy.view.hud.HUDView;
@@ -25,5 +26,6 @@ public class GameController {
         keyboardListener.setChamber(chamberController);
 
         hudView.getPlayerInfo().setPlayer(chamberController.getChamber().getPlayer());
+        Sound.getInstance().startMusic();
     }
 }

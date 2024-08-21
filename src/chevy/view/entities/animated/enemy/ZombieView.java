@@ -90,8 +90,11 @@ public class ZombieView extends AnimatedEntityView {
                 case LEFT -> 3;
             };
             case Zombie.State.DEAD -> {
-                if (currentDirection == DirectionsModel.RIGHT) yield 1;
-                else yield 0;
+                if (currentDirection == DirectionsModel.RIGHT) {
+                    yield 1;
+                } else {
+                    yield 0;
+                }
             }
             default -> 0;
         };

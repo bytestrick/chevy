@@ -53,8 +53,9 @@ public class CollectableUpdateController implements Update {
         while (it.hasNext()) {
             Collectable collectable = it.next();
             collectableController.handleInteraction(InteractionType.UPDATE, collectable, null);
-            if (collectable.canRemoveToUpdate())
+            if (collectable.canRemoveToUpdate()) {
                 it.remove();
+            }
         }
     }
 }

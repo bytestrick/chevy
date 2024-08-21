@@ -33,8 +33,9 @@ public abstract class LiveEntity extends DynamicEntity {
                 value = currentShield;
                 currentShield = 0;
             }
-            else
+            else {
                 value = 0;
+            }
         }
         if (currentShield <= 0) {
             currentHealth += value;
