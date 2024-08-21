@@ -65,35 +65,46 @@ public class ZombieController {
             if (zombie.getState(Zombie.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(zombie);
                 zombie.removeToUpdate();
+                chamber.spawnCollectable(zombie);
                 return;
             }
-        } else if (zombie.getHealth() <= 0 && zombie.checkAndChangeState(Zombie.State.DEAD)) {
+        } else if (zombie.getCurrentHealth() <= 0 && zombie.checkAndChangeState(Zombie.State.DEAD)) {
             Sound.getInstance().play(Sound.Effect.ZOMBIE_CHOCKING);
+            chamber.spawnSlime(zombie); // power up
             zombie.kill();
         }
 
         if (zombie.canChange(Zombie.State.MOVE)) {
             DirectionsModel direction = chamber.getHitDirectionPlayer(zombie);
+            // Se non c'è un giocatore nelle vicinanze, lo Zombie vaga casualmente.
             if (direction == null) {
-                // Se non c'è un giocatore nelle vicinanze, lo Zombie vaga casualmente.
                 if (chamber.wanderChase(zombie, 4)) {
                     zombie.changeState(Zombie.State.MOVE);
                 }
-            } else if (zombie.canAttack() && zombie.getState(Zombie.State.ATTACK).isFinished()) {
+            }
+            else if (zombie.changeState(Zombie.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(zombie, direction);
                 if (entity instanceof Player) {
-                    playerController.handleInteraction(InteractionType.ENEMY, zombie);
-                    zombie.setCanAttack(false);
-                }
-            } else if (zombie.canChange(Zombie.State.ATTACK)) {
-                Entity entity = chamber.getNearEntityOnTop(zombie, direction);
-                if (entity instanceof Player && zombie.changeState(Zombie.State.ATTACK)) {
-                    Sound.getInstance().play(Sound.Effect.ZOMBIE_BITE);
                     zombie.setCanAttack(true);
                 }
             }
         }
-        zombie.checkAndChangeState(Zombie.State.IDLE);
+
+        if (zombie.canAttack() && zombie.getState(Zombie.State.ATTACK).isFinished()) {
+            DirectionsModel direction = chamber.getHitDirectionPlayer(zombie);
+            if (direction != null) {
+                Entity entity = chamber.getNearEntityOnTop(zombie, direction);
+                if (entity instanceof Player) {
+                    Sound.getInstance().play(Sound.Effect.ZOMBIE_BITE);
+                    playerController.handleInteraction(InteractionType.ENEMY, zombie);
+                    zombie.setCanAttack(false);
+                }
+            }
+        }
+
+        if (zombie.checkAndChangeState(Zombie.State.IDLE)) {
+            zombie.setCanAttack(false);
+        }
     }
 
     /**
@@ -115,7 +126,7 @@ public class ZombieController {
      */
     private void hitZombie(Zombie zombie, int damage) {
         if (zombie.changeState(Zombie.State.HIT)) {
-            zombie.changeHealth(damage);
+            zombie.decreaseHealthShield(damage);
         }
     }
 

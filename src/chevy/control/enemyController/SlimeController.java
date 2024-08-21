@@ -65,9 +65,10 @@ public class SlimeController {
             if (slime.getState(Slime.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(slime);
                 slime.removeToUpdate();
+                chamber.spawnCollectable(slime);
                 return;
             }
-        } else if (slime.getHealth() <= 0 && slime.checkAndChangeState(Slime.State.DEAD)) {
+        } else if (slime.getCurrentHealth() <= 0 && slime.checkAndChangeState(Slime.State.DEAD)) {
             Sound.getInstance().play(Sound.Effect.SLIME_DEATH);
             slime.kill();
         }
@@ -77,12 +78,6 @@ public class SlimeController {
             if (direction == null) {
                 if (chamber.moveRandom(slime)) {
                     slime.changeState(Slime.State.MOVE);
-                }
-            } else if (slime.canAttack() && slime.getState(Slime.State.ATTACK).isFinished()) {
-                Entity entity = chamber.getNearEntityOnTop(slime, direction);
-                if (entity instanceof Player) {
-                    Sound.getInstance().play(Sound.Effect.SLIME_HIT);
-                    playerController.handleInteraction(InteractionType.ENEMY, slime);
                     slime.setCanAttack(false);
                 }
             } else if (slime.canChange(Slime.State.ATTACK)) {
@@ -94,7 +89,21 @@ public class SlimeController {
                 }
             }
         }
-        slime.checkAndChangeState(Slime.State.IDLE);
+
+        if (slime.canAttack() && slime.getState(Slime.State.ATTACK).isFinished()) {
+            DirectionsModel direction = chamber.getHitDirectionPlayer(slime);
+            if (direction != null) {
+                Entity entity = chamber.getNearEntityOnTop(slime, direction);
+                if (entity instanceof Player) {
+                    playerController.handleInteraction(InteractionType.ENEMY, slime);
+                    slime.setCanAttack(false);
+                }
+            }
+        }
+
+        if (slime.checkAndChangeState(Slime.State.IDLE)) {
+            slime.setCanAttack(false);
+        }
     }
 
     /**
@@ -116,7 +125,7 @@ public class SlimeController {
      */
     private void hitSlime(Slime slime, int damage) {
         if (slime.changeState(Slime.State.HIT)) {
-            slime.changeHealth(damage);
+            slime.decreaseHealthShield(damage);
         }
     }
 

@@ -4,6 +4,7 @@ import chevy.model.entity.CommonEntityType;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.stateMachine.GlobalState;
+import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
 import java.util.Random;
@@ -17,12 +18,37 @@ public abstract class PowerUp extends Collectable {
     protected String name = "No name";
     protected String description = "No description";
     protected int occurringPercentage = 0;
+    protected int inStock = -1; // quantità infinita
+
 
     public PowerUp(Vector2<Integer> initVelocity, Type type) {
         super(initVelocity, Collectable.Type.POWER_UP);
         this.type = type;
 
         initStaticMachine();
+    }
+
+    public static PowerUp getPowerUp(Vector2<Integer> position) {
+        return switch (Type.getRandom()) {
+            case HOLY_SHIELD -> new HolyShield(position);
+            case VAMPIRE_FANGS -> new VampireFangs(position);
+            case ANGEL_RING -> new AngelRing(position);
+            case LONG_SWORD -> new LongSword(position);
+            case HOBNAIL_BOOTS -> new HobnailBoots(position);
+            case COIN_OF_GREED -> new CoinOfGreed(position);
+            case HOT_HEART -> new HotHeart(position);
+            case COLD_HEART -> new ColdHeart(position);
+            case STONE_BOOTS -> new StoneBoots(position);
+            case BROKEN_ARROWS -> new BrokenArrows(position);
+            case AGILITY -> new Agility(position);
+            case HEDGEHOG_SPINES -> new HedgehogSpines(position);
+            case SLIME_PIECE -> new SlimePiece(position);
+            case PIECE_OF_BONE -> new PieceOfBone(position);
+            case GOLD_ARROW -> new GoldArrow(position);
+            case HEALING_FLOOD -> new HealingFlood(position);
+            case KEY_S_KEEPER -> new KeySKeeper(position);
+
+        };
     }
 
     private void initStaticMachine() {
@@ -56,8 +82,16 @@ public abstract class PowerUp extends Collectable {
         };
     }
 
-    public boolean isOccurring() {
-        return new Random().nextInt(1, 100) < occurringPercentage;
+    private boolean isOutOfStock() {
+        return inStock != 0;
+    }
+
+    public boolean canUse() {
+        boolean use = isOutOfStock() && Utils.isOccurring(occurringPercentage);
+        if (use && inStock > 0) {
+            inStock -= 1;
+        }
+        return use;
     }
 
     @Override
@@ -74,11 +108,12 @@ public abstract class PowerUp extends Collectable {
     public String toString() { return type.toString(); }
 
     public enum Type implements CommonEntityType {
-        THUNDERBOLT, HOLY_SHIELD, VAMPIRE_FANGS, ANGEL_RING, SWIFT_BOOTS, LONG_SWORD, GOD_S_ICE, IGNITION,
-        COIN_OF_GREED, HOT_HEART, COLD_HEART, GORGON_S_POISON, STONE_BOOTS, BROKEN_ARROWS, AGILITY, HEDGEHOG_SPINES,
-        CAT_CLAW, SLIME_PIECE, PIECE_OF_BONE, GOLD_ARROW;
+        HOLY_SHIELD, VAMPIRE_FANGS, ANGEL_RING, LONG_SWORD, HOBNAIL_BOOTS,
+        COIN_OF_GREED, HOT_HEART, COLD_HEART, STONE_BOOTS, BROKEN_ARROWS, AGILITY, HEDGEHOG_SPINES,
+        SLIME_PIECE, PIECE_OF_BONE, GOLD_ARROW, HEALING_FLOOD, KEY_S_KEEPER;
 
-        public Type getRandom() {
+
+        public static Type getRandom() {
             Type[] types = values();
             Random random = new Random();
             return types[random.nextInt(types.length)];

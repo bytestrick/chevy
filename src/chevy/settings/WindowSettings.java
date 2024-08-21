@@ -22,6 +22,7 @@ public class WindowSettings {
             Math.round((float) (MAX_WINDOW_SIZE * ASPECT_RATIO_W) / ASPECT_RATIO_H);
     public static float scaleX = (float) WINDOW_WIDTH / MAX_WINDOW_WIDTH; // fattore di scala per x
     public static float scaleY = (float) WINDOW_HEIGHT / MAX_WINDOW_HEIGHT; // fattore di scala per y
+    public static float scale = Math.min(scaleX, scaleY);
 
 
 //    Questo approccio mantiene l'aspect-ratio dello schermo
@@ -37,5 +38,6 @@ public class WindowSettings {
 
         scaleX = (float) WINDOW_WIDTH / MAX_WINDOW_WIDTH * ASPECT_RATIO_W;
         scaleY = (float) WINDOW_HEIGHT / MAX_WINDOW_HEIGHT * ASPECT_RATIO_H;
+        scale = Math.min(scaleX, scaleY);
     }
 }

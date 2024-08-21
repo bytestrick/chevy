@@ -6,15 +6,15 @@ import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class Arrow extends Projectile {
+    private static int ADD_DAMAGE = 0;
     private final GlobalState loop = new GlobalState(State.LOOP, .2f, true);
     private final GlobalState end = new GlobalState(State.END, .5f);
 
     public Arrow(Vector2<Integer> initPosition, DirectionsModel direction) {
         super(initPosition, Type.ARROW, direction);
 
-        this.maxDamage = 1;
-        this.minDamage = 1;
-        this.drawLayer = 2;
+        this.maxDamage = 1 + ADD_DAMAGE;
+        this.minDamage = 1 + ADD_DAMAGE;
 
         initStateMachine();
     }
@@ -36,5 +36,9 @@ public class Arrow extends Projectile {
 
     public enum State implements CommonState {
         LOOP, END
+    }
+
+    public static void changeAddDamage(int value) {
+        ADD_DAMAGE = value;
     }
 }

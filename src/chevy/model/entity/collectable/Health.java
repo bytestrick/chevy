@@ -27,7 +27,9 @@ public class Health extends Collectable {
     }
 
     public int getRecoverHealth() {
-        if (isCollected()) return 0;
+        if (isCollected()) {
+            return 0;
+        }
 
         return recoverHealth;
     }

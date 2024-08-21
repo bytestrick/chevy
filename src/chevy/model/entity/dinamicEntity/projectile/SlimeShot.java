@@ -14,7 +14,6 @@ public class SlimeShot extends Projectile {
 
         this.maxDamage = 3;
         this.minDamage = 2;
-        this.drawLayer = 2;
 
         initStateMachine();
     }

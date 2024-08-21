@@ -1,31 +1,36 @@
 package chevy.view;
 
-import chevy.service.Render;
-import chevy.service.RenderManager;
 import chevy.settings.WindowSettings;
 import chevy.view.chamber.ChamberView;
-import chevy.view.entities.animated.collectable.powerUp.PowerUpTextVisualizerView;
+import chevy.view.hud.HUDView;
 
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
+import javax.swing.*;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.event.KeyListener;
 
-public class GamePanel extends JPanel implements Render {
+public class GamePanel extends JPanel {
     private final ChamberView chamberView;
-    private final PowerUpTextVisualizerView powerUpTextVisualizerView;
+    private final HUDView hudView;
 
     public GamePanel() {
         this.chamberView = new ChamberView();
-        this.powerUpTextVisualizerView = new PowerUpTextVisualizerView();
+        this.hudView = new HUDView(1.5f);
 
-        setLayout(new BorderLayout());
+        SpringLayout springLayout = new SpringLayout();
+        setLayout(springLayout);
 
-        powerUpTextVisualizerView.setVisible(false);
-        add(powerUpTextVisualizerView, BorderLayout.CENTER);
+        springLayout.putConstraint(SpringLayout.NORTH, chamberView, 0, SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.EAST, chamberView, 0, SpringLayout.EAST, this);
+        springLayout.putConstraint(SpringLayout.WEST, chamberView, 0, SpringLayout.WEST, this);
+        springLayout.putConstraint(SpringLayout.SOUTH, chamberView, 0, SpringLayout.SOUTH, this);
 
-        RenderManager.addToRender(this);
+        springLayout.putConstraint(SpringLayout.NORTH, hudView, 0, SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.EAST, hudView, 0, SpringLayout.EAST, this);
+        springLayout.putConstraint(SpringLayout.WEST, hudView, 0, SpringLayout.WEST, this);
+        springLayout.putConstraint(SpringLayout.SOUTH, hudView, 0, SpringLayout.SOUTH, this);
+
+        add(hudView);
+        add(chamberView);
         setBackground(Color.BLACK);
     }
 
@@ -36,25 +41,14 @@ public class GamePanel extends JPanel implements Render {
 
     public void windowResized() {
         float scale = Math.min(WindowSettings.scaleX, WindowSettings.scaleY);
-        powerUpTextVisualizerView.resizeFont(scale);
+        hudView.windowResized(scale);
     }
 
     public ChamberView getChamberView() {
         return chamberView;
     }
 
-    public PowerUpTextVisualizerView getPowerUpTextVisualizerController() {
-        return powerUpTextVisualizerView;
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        chamberView.draw(g);
-    }
-
-    @Override
-    public void render(double delta) {
-        repaint();
+    public HUDView getHud() {
+        return hudView;
     }
 }

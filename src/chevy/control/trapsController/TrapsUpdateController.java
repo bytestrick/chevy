@@ -19,7 +19,7 @@ public class TrapsUpdateController implements Update {
 
     /**
      * @param trapsController il controller delle trappole per gestire gli aggiornamenti delle trappole
-     * @param traps           la lista delle trappole da aggiornare
+     * @param traps la lista delle trappole da aggiornare
      */
     public TrapsUpdateController(TrapsController trapsController, List<Trap> traps) {
         this.trapsController = trapsController;
@@ -32,7 +32,7 @@ public class TrapsUpdateController implements Update {
      * Aggiunge le trappole alla lista degli aggiornamenti se devono essere aggiornate
      * e svuota la lista temporanea.
      */
-    private void addEnemies() {
+    private void addTraps() {
         for (Trap trap : trapsToAdd) {
             if (!trap.canRemoveToUpdate()) {
                 traps.add(trap);
@@ -43,14 +43,12 @@ public class TrapsUpdateController implements Update {
 
     /**
      * Esegue l'aggiornamento delle trappole.
-     *
      * @param delta tempo trascorso dall'ultimo aggiornamento
      */
     @Override
     public void update(double delta) {
-        addEnemies();
+        addTraps();
 
-        // Itera attraverso la lista dei nemici per aggiornarli e rimuove quelli che devono essere rimossi.
         for (Trap trap : traps) {
             trapsController.handleInteraction(InteractionType.UPDATE, trap, null);
         }
@@ -58,7 +56,6 @@ public class TrapsUpdateController implements Update {
 
     /**
      * Verifica se gli aggiornamenti delle trappole sono terminati.
-     *
      * @return true se non ci sono più trappole da aggiornare, altrimenti false
      */
     @Override

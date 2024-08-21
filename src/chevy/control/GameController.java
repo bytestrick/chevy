@@ -1,9 +1,9 @@
 package chevy.control;
 
 import chevy.Sound;
-import chevy.control.collectableController.PowerUpTextVisualizerController;
 import chevy.model.chamber.ChamberManager;
 import chevy.view.Window;
+import chevy.view.hud.HUDView;
 
 /**
  * Gestisce l'interazione tra il model e la view.
@@ -21,12 +21,11 @@ public class GameController {
         this.window.getGamePanel().getChamberView().setDrawOrder(ChamberManager.getInstance().getCurrentChamber().getDrawOrderChamber());
 
         // inizializzazione del controller della stanza
-        PowerUpTextVisualizerController powerUpTextVisualizerController = new PowerUpTextVisualizerController(
-                this.window.getGamePanel().getPowerUpTextVisualizerController()
-        );
-        ChamberController chamberController = new ChamberController(ChamberManager.getInstance().getCurrentChamber(), powerUpTextVisualizerController);
+        HUDView hudView = this.window.getGamePanel().getHud();
+        ChamberController chamberController = new ChamberController(ChamberManager.getInstance().getCurrentChamber(), hudView);
         keyboardListener.setChamber(chamberController);
 
+        hudView.getPlayerInfo().setPlayer(chamberController.getChamber().getPlayer());
         Sound.getInstance().startMusic();
     }
 }

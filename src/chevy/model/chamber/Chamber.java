@@ -3,13 +3,20 @@ package chevy.model.chamber;
 import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.chamber.drawOrder.LayerManager;
 import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.Coin;
 import chevy.model.entity.collectable.Collectable;
+import chevy.model.entity.collectable.Health;
+import chevy.model.entity.collectable.Key;
+import chevy.model.entity.collectable.powerUp.PowerUp;
+import chevy.model.entity.collectable.powerUp.SlimePiece;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.DynamicEntity;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.staticEntity.environment.Chest;
+import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.model.pathFinding.AStar;
@@ -39,6 +46,7 @@ public class Chamber {
      * Lista che tiene traccia degli oggetti collezionabili presenti nella stanza.
      */
     private final List<Collectable> collectables = new LinkedList<>();
+    private final List<Environment> environments = new LinkedList<>();
     /**
      * Una struttura dati tridimensionale che rappresenta la griglia di gioco.
      * Ogni cella della griglia può contenere una lista di entità.
@@ -64,8 +72,9 @@ public class Chamber {
         chamber = new ArrayList<>(nRow);
         for (int i = 0; i < nRow; ++i) {
             List<List<Entity>> row = new LinkedList<>();
-            for (int j = 0; j < nCol; ++j)
+            for (int j = 0; j < nCol; ++j) {
                 row.add(new LinkedList<>());
+            }
             chamber.add(row);
         }
 
@@ -192,7 +201,9 @@ public class Chamber {
      */
     public synchronized Entity getNearEntityOnTop(DynamicEntity dynamicEntity, DirectionsModel direction,
                                                   int distanceCell) {
-        if (direction == null || dynamicEntity == null) return null;
+        if (direction == null || dynamicEntity == null) {
+            return null;
+        }
 
         Vector2<Integer> vector2 = new Vector2<>(dynamicEntity.getRow() + direction.row() * distanceCell,
                 dynamicEntity.getCol() + direction.col() * distanceCell);
@@ -342,6 +353,88 @@ public class Chamber {
             }
         }
     }
+
+    // ---- power up
+
+    public synchronized void spawnCollectable(Enemy enemy) {
+        if (enemy.canDrop()) {
+            Collectable.Type collectableType = enemy.getDrop();
+            if (collectableType == null) {
+                return;
+            }
+            switch (collectableType) {
+                case COIN -> {
+                    Coin coin = new Coin(new Vector2<>(enemy.getRow(), enemy.getCol()));
+                    addEntityOnTop(coin);
+                    addCollectable(coin);
+                }
+                case HEALTH -> {
+                    Health health = new Health(new Vector2<>(enemy.getRow(), enemy.getCol()));
+                    addEntityOnTop(health);
+                    addCollectable(health);
+                }
+                case KEY -> {
+                    Key key = new Key(new Vector2<>(enemy.getRow(), enemy.getCol()));
+                    addEntityOnTop(key);
+                    addCollectable(key);
+                }
+            }
+        }
+    }
+
+    public synchronized void spawnSlime(Enemy enemy) {
+        SlimePiece slimePiece = (SlimePiece) player.getOwnedPowerUp(PowerUp.Type.SLIME_PIECE);
+        if (slimePiece != null && slimePiece.canUse()) {
+            spawnSlimeAroundEntity(enemy, slimePiece.getNSlime());
+        }
+    }
+
+    public void spawnCollectableAroundChest(Chest chest, int nSpawn) {
+        int f = (int) System.currentTimeMillis(); // fattore che randomizza la posizione
+
+        for (int i = 0; i < 3 && nSpawn > 0; ++i) {
+            for (int j = 0; j < 3 && nSpawn > 0; ++j) {
+                int randomI = Utils.wrap(f + i, -1, 1);
+                int randomJ = Utils.wrap(f + j, -1, 1);
+
+                if (randomI != 0 || randomJ != 0) {
+                    Vector2<Integer> spawnPosition = new Vector2<>(chest.getRow() + randomI,
+                            chest.getCol() + randomJ);
+                    if (canSpawn(spawnPosition)) {
+                        Collectable.Type collectableType = chest.getDrop();
+                        if (collectableType == null) {
+                            return;
+                        }
+                        switch (collectableType) {
+                            case COIN -> {
+                                Coin coin = new Coin(spawnPosition);
+                                addEntityOnTop(coin);
+                                addCollectable(coin);
+                            }
+                            case HEALTH -> {
+                                Health health = new Health(spawnPosition);
+                                addEntityOnTop(health);
+                                addCollectable(health);
+                            }
+                            case KEY -> {
+                                Key key = new Key(spawnPosition);
+                                addEntityOnTop(key);
+                                addCollectable(key);
+                            }
+                            case POWER_UP -> {
+                                PowerUp powerUp = PowerUp.getPowerUp(spawnPosition);
+                                addEntityOnTop(powerUp);
+                                addCollectable(powerUp);
+                            }
+                        }
+                        --nSpawn;
+                    }
+                }
+            }
+        }
+    }
+
+    // ----
 
     /**
      * Cerca il giocatore in un intervallo quadrato attorno a un'entità.
@@ -521,11 +614,15 @@ public class Chamber {
 
     public synchronized void addProjectile(Projectile projectile) { projectiles.add(projectile); }
 
+    public synchronized List<Projectile> getProjectiles() { return projectiles; }
+
     public synchronized void addCollectable(Collectable collectable) { collectables.add(collectable); }
 
     public synchronized List<Collectable> getCollectables() { return collectables; }
 
-    public synchronized List<Projectile> getProjectiles() { return projectiles; }
+    public void addEnvironment(Environment environment) { environments.add(environment); }
+
+    public List<Environment> getEnvironment() { return environments; }
 
     public void addEntityToDraw(Entity entity, int layer) { drawOrderChamber.add(entity, layer); }
 

@@ -109,7 +109,9 @@ public class GlobalState {
      * @return true se lo stato è terminato, false altrimenti.
      */
     public boolean isFinished() {
-        if (timer == null) return true;
+        if (timer == null) {
+            return true;
+        }
 
         return !timer.isRunning();
     }

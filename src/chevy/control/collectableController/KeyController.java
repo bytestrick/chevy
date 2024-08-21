@@ -1,15 +1,18 @@
 package chevy.control.collectableController;
 
+import chevy.control.HUDController;
 import chevy.Sound;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Key;
 
 public class KeyController {
     private final Chamber chamber;
+    private final HUDController hudController;
 
 
-    public KeyController(Chamber chamber) {
+    public KeyController(Chamber chamber, HUDController hudController) {
         this.chamber = chamber;
+        this.hudController = hudController;
     }
 
 
@@ -17,6 +20,7 @@ public class KeyController {
         if (key.changeState(Key.State.COLLECTED)) {
             Sound.getInstance().play(Sound.Effect.KEY_EQUIPPED);
             key.collect();
+            hudController.addKey(1);
             chamber.findAndRemoveEntity(key);
         }
     }

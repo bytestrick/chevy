@@ -18,7 +18,7 @@ public abstract class Projectile extends DynamicEntity {
         this.direction = direction;
         this.crossable = true;
         this.safeToCross = false;
-        this.drawLayer = 1;
+        this.drawLayer = 4;
     }
 
     public boolean isCollision() { return collision; }

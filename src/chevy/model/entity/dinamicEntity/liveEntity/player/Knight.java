@@ -4,6 +4,8 @@ import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
+import java.util.Random;
+
 public class Knight extends Player {
     private final GlobalState idle;
     private final GlobalState move;
@@ -17,9 +19,11 @@ public class Knight extends Player {
     public Knight(Vector2<Integer> initPosition) {
         super(initPosition, Type.KNIGHT);
 
-        this.speed = 0.3f;
-        this.health = 100;
-        this.shield = 2;
+        this.speed = .3f;
+        this.health = 10;
+        this.currentHealth = health;
+        this.shield = 5;
+        this.currentShield = shield;
         this.maxDamage = 7;
         this.minDamage = 5;
 
@@ -27,7 +31,7 @@ public class Knight extends Player {
         this.move = new GlobalState(State.MOVE, speed);
         this.attack = new GlobalState(State.ATTACK, .5f);
         this.hit = new GlobalState(State.HIT, .2f);
-        this.dead = new GlobalState(State.DEAD);
+        this.dead = new GlobalState(State.DEAD, .3f);
         this.glide = new GlobalState(State.GLIDE, speed, true);
         this.sludge = new GlobalState(State.SLUDGE, speed);
         this.fall = new GlobalState(State.FALL);
