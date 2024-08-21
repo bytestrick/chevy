@@ -54,7 +54,7 @@ Le classi dentro il package `entity` sono tutte funzionanti (a patto di bug) tra
 - `entity/StaticEntity/PowerUp`
   - nessun `powerUp` é stato implementato
 
-Possibili cose da evitare: non implementare i power up e le chest.
+Possibili cose da evitare: non implementare i power up e le chests.
 
 ### Entities
 - Static entities:

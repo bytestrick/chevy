@@ -65,7 +65,7 @@ public class BigSlimeController {
             if (bigSlime.getState(BigSlime.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(bigSlime);
                 bigSlime.removeToUpdate();
-                chamber.spawnItem(bigSlime);
+                chamber.spawnCollectable(bigSlime);
                 return;
             }
         } else if (bigSlime.getCurrentHealth() <= 0 && bigSlime.checkAndChangeState(BigSlime.State.DEAD)) {

@@ -2,7 +2,6 @@ package chevy.control;
 
 import chevy.control.collectableController.CollectableController;
 import chevy.control.enemyController.EnemyController;
-import chevy.control.hudController.HUDController;
 import chevy.control.projectileController.ProjectileController;
 import chevy.control.trapsController.TrapsController;
 import chevy.model.chamber.Chamber;
@@ -23,7 +22,6 @@ import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
-import chevy.model.entity.staticEntity.environment.traps.Totem;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.service.Update;

@@ -15,6 +15,8 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.staticEntity.environment.Chest;
+import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.model.pathFinding.AStar;
@@ -44,6 +46,7 @@ public class Chamber {
      * Lista che tiene traccia degli oggetti collezionabili presenti nella stanza.
      */
     private final List<Collectable> collectables = new LinkedList<>();
+    private final List<Environment> environments = new LinkedList<>();
     /**
      * Una struttura dati tridimensionale che rappresenta la griglia di gioco.
      * Ogni cella della griglia può contenere una lista di entità.
@@ -350,7 +353,7 @@ public class Chamber {
 
     // ---- power up
 
-    public void spawnItem(Enemy enemy) {
+    public synchronized void spawnCollectable(Enemy enemy) {
         if (enemy.canDrop()) {
             Collectable.Type collectableType = enemy.getDrop();
             if (collectableType == null) return;
@@ -374,10 +377,53 @@ public class Chamber {
         }
     }
 
-    public void spawnSlime(Enemy enemy) {
+    public synchronized void spawnSlime(Enemy enemy) {
         SlimePiece slimePiece = (SlimePiece) player.getOwnedPowerUp(PowerUp.Type.SLIME_PIECE);
         if (slimePiece != null && slimePiece.canUse()) {
             spawnSlimeAroundEntity(enemy, slimePiece.getNSlime());
+        }
+    }
+
+    public void spawnCollectableAroundChest(Chest chest, int nSpawn) {
+        int f = (int) System.currentTimeMillis(); // fattore che randomizza la posizione
+
+        for (int i = 0; i < 3 && nSpawn > 0; ++i) {
+            for (int j = 0; j < 3 && nSpawn > 0; ++j) {
+                int randomI = Utils.wrap(f + i, -1, 1);
+                int randomJ = Utils.wrap(f + j, -1, 1);
+
+                if (randomI != 0 || randomJ != 0) {
+                    Vector2<Integer> spawnPosition = new Vector2<>(chest.getRow() + randomI,
+                            chest.getCol() + randomJ);
+                    if (canSpawn(spawnPosition)) {
+                        Collectable.Type collectableType = chest.getDrop();
+                        if (collectableType == null) return;
+                        switch (collectableType) {
+                            case COIN -> {
+                                Coin coin = new Coin(spawnPosition);
+                                addEntityOnTop(coin);
+                                addCollectable(coin);
+                            }
+                            case HEALTH -> {
+                                Health health = new Health(spawnPosition);
+                                addEntityOnTop(health);
+                                addCollectable(health);
+                            }
+                            case KEY -> {
+                                Key key = new Key(spawnPosition);
+                                addEntityOnTop(key);
+                                addCollectable(key);
+                            }
+                            case POWER_UP -> {
+                                PowerUp powerUp = PowerUp.getPowerUp(spawnPosition);
+                                addEntityOnTop(powerUp);
+                                addCollectable(powerUp);
+                            }
+                        }
+                        --nSpawn;
+                    }
+                }
+            }
         }
     }
 
@@ -561,11 +607,15 @@ public class Chamber {
 
     public synchronized void addProjectile(Projectile projectile) { projectiles.add(projectile); }
 
+    public synchronized List<Projectile> getProjectiles() { return projectiles; }
+
     public synchronized void addCollectable(Collectable collectable) { collectables.add(collectable); }
 
     public synchronized List<Collectable> getCollectables() { return collectables; }
 
-    public synchronized List<Projectile> getProjectiles() { return projectiles; }
+    public void addEnvironment(Environment environment) { environments.add(environment); }
+
+    public List<Environment> getEnvironment() { return environments; }
 
     public void addEntityToDraw(Entity entity, int layer) { drawOrderChamber.add(entity, layer); }
 

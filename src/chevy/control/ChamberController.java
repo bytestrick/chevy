@@ -1,10 +1,11 @@
 package chevy.control;
 
+import chevy.control.environmentController.EnvironmentController;
 import chevy.control.collectableController.CollectableController;
 import chevy.control.collectableController.CollectableUpdateController;
 import chevy.control.enemyController.EnemyController;
 import chevy.control.enemyController.EnemyUpdateController;
-import chevy.control.hudController.HUDController;
+import chevy.control.environmentController.EnvironmentUpdateController;
 import chevy.control.projectileController.ProjectileController;
 import chevy.control.projectileController.ProjectileUpdateController;
 import chevy.control.trapsController.TrapsController;
@@ -41,6 +42,7 @@ public class ChamberController {
         CollectableController collectableController = new CollectableController(chamber, playerController, hudController);
         ProjectileController projectileController = new ProjectileController(chamber, playerController,
                 enemyController);
+        EnvironmentController environmentController = new EnvironmentController(chamber, hudController);
 
         playerController.setEnemyController(enemyController);
         playerController.setTrapController(trapsController);
@@ -51,6 +53,7 @@ public class ChamberController {
         new TrapsUpdateController(trapsController, chamber.getTraps());
         new ProjectileUpdateController(projectileController, chamber.getProjectiles());
         new CollectableUpdateController(collectableController, chamber.getCollectables());
+        new EnvironmentUpdateController(environmentController, chamber.getEnvironment());
     }
 
     /**

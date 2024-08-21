@@ -1,6 +1,6 @@
 package chevy.control.collectableController;
 
-import chevy.control.hudController.HUDController;
+import chevy.control.HUDController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Key;
 

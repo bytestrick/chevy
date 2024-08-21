@@ -2,7 +2,7 @@ package chevy.control.collectableController;
 
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
-import chevy.control.hudController.HUDController;
+import chevy.control.HUDController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.Coin;
@@ -11,7 +11,6 @@ import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.view.hud.PowerUpText;
 
 
 public class CollectableController {

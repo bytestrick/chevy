@@ -1,4 +1,4 @@
-package chevy.control.hudController;
+package chevy.control;
 
 import chevy.model.HUD;
 import chevy.model.entity.collectable.powerUp.PowerUp;
@@ -60,6 +60,10 @@ public class HUDController {
     public void addKey(int value) {
         hud.addKey(value);
         hudView.getKeyBar().setKey(hud.getKey());
+    }
+
+    public int getKey() {
+        return hud.getKey();
     }
 
     // ----

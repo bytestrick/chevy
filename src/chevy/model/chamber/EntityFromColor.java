@@ -13,6 +13,7 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Archer;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
+import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Ground;
 import chevy.model.entity.staticEntity.environment.Wall;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
@@ -100,23 +101,22 @@ public class EntityFromColor {
     private static final int AGILITY = 13;
     private static final int ANGEL_RING = 14;
     private static final int BROKEN_ARROWS = 15;
-    private static final int CAT_CLAW = 16;
-    private static final int COIN_OF_GREED = 17;
-    private static final int COLD_HEART = 18;
-    private static final int HOBNAIL_BOOTS = 19;
-    private static final int GOLD_ARROW = 20;
-    private static final int KEY_S_KEEPER = 21;
-    private static final int HEDGEHOG_SPINES = 22;
-    private static final int HOLY_SHIELD = 23;
-    private static final int HOT_HEARTH = 24;
-    private static final int IGNITION = 25;
-    private static final int LONG_SWORD = 26;
-    private static final int PIECE_OF_BONE = 27;
-    private static final int SLIME_PIECE = 28;
-    private static final int STONE_BOOTS = 29;
-    private static final int SWIFT_BOOTS = 30;
-    private static final int HEALING_FLOOD = 31;
-    private static final int VANPIRE_FNAGS = 32;
+    private static final int COIN_OF_GREED = 16;
+    private static final int COLD_HEART = 17;
+    private static final int HOBNAIL_BOOTS = 18;
+    private static final int GOLD_ARROW = 19;
+    private static final int KEY_S_KEEPER = 20;
+    private static final int HEDGEHOG_SPINES = 21;
+    private static final int HOLY_SHIELD = 22;
+    private static final int HOT_HEARTH = 23;
+    private static final int LONG_SWORD = 24;
+    private static final int SLIME_PIECE = 25;
+    private static final int STONE_BOOTS = 26;
+    private static final int HEALING_FLOOD = 27;
+    private static final int VANPIRE_FNAGS = 28;
+
+    // Chest
+    private static final int CHEST = 50;
 
 
     // ---
@@ -219,6 +219,9 @@ public class EntityFromColor {
             case HOBNAIL_BOOTS -> new HobnailBoots(startPosition);
             case HEDGEHOG_SPINES -> new HedgehogSpines(startPosition);
             case SLIME_PIECE -> new SlimePiece(startPosition);
+
+            // ---
+            case CHEST -> new Chest(startPosition);
 
             // ---
             case NULL -> null;
