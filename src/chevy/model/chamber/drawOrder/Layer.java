@@ -40,7 +40,7 @@ public class Layer implements Comparable<Layer> {
      * Poi svuota la lista di entità da aggiungere.
      * @return la lista di entità nel livello
      */
-    public List<Entity> getLayer() {
+    public synchronized List<Entity> getLayer() {
         layer.addAll(entitiesToAdd);
         entitiesToAdd.clear();
         return layer;
@@ -50,7 +50,7 @@ public class Layer implements Comparable<Layer> {
      * Aggiunge un'entità all Layer.
      * @param entity l'entità da aggiungere
      */
-    public void add(Entity entity) {
+    public synchronized void add(Entity entity) {
         entitiesToAdd.addLast(entity);
     }
 

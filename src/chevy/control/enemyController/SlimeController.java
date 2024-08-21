@@ -63,7 +63,7 @@ public class SlimeController {
             if (slime.getState(Slime.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(slime);
                 slime.removeToUpdate();
-                chamber.spawnItem(slime);
+                chamber.spawnCollectable(slime);
                 return;
             }
         } else if (slime.getCurrentHealth() <= 0 && slime.checkAndChangeState(Slime.State.DEAD)) {
