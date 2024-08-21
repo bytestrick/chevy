@@ -20,7 +20,7 @@ public abstract class Collectable extends Entity {
 
         this.mustBeUpdate = true;
         this.crossable = true;
-        this.safeToCross = true;
+        this.safeToCross = false;
         this.drawLayer = 3;
     }
 
@@ -32,7 +32,6 @@ public abstract class Collectable extends Entity {
     public boolean isCollected() {
         return collected;
     }
-
 
     @Override
     public CommonEntityType getSpecificType() {

@@ -2,6 +2,8 @@ package chevy.control.trapsController;
 
 import chevy.Sound;
 import chevy.control.PlayerController;
+import chevy.model.entity.collectable.powerUp.HobnailBoots;
+import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 
@@ -25,17 +27,26 @@ public class IcyFloorController {
      * @param icyFloor il pavimento ghiacciato calpestato dal giocatore
      */
     public void playerInInteraction(Player player, IcyFloor icyFloor) {
-        player.changeState(Player.State.GLIDE);
-
+        if (canChangeInGlide(player)) {
+            Sound.getInstance().play(Sound.Effect.SLIDE);
+            player.changeState(Player.State.GLIDE);
+        }
     }
 
     public void playerOutInteraction(Player player, IcyFloor icyFloor) {
-        player.changeState(Player.State.GLIDE);
-        Sound.getInstance().play(Sound.Effect.SLIDE);
+        if (canChangeInGlide(player)) {
+            Sound.getInstance().play(Sound.Effect.SLIDE);
+            player.changeState(Player.State.GLIDE);
+        }
     }
 
     public void update(IcyFloor icyFloor) {
         icyFloor.checkAndChangeState(IcyFloor.EnumState.ICY_FLOOR);
         icyFloor.checkAndChangeState(IcyFloor.EnumState.ICY_FLOOR_SPARKLING);
+    }
+
+    private boolean canChangeInGlide(Player player) {
+        HobnailBoots hobnailBoots = (HobnailBoots) player.getOwnedPowerUp(PowerUp.Type.HOBNAIL_BOOTS);
+        return hobnailBoots == null || !hobnailBoots.canUse();
     }
 }

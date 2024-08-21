@@ -65,9 +65,11 @@ public class WraithController {
             if (wraith.getState(Wraith.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(wraith);
                 wraith.removeToUpdate();
+                chamber.spawnCollectable(wraith);
                 return;
             }
-        } else if (wraith.getHealth() <= 0 && wraith.checkAndChangeState(Wraith.State.DEAD)) {
+        } else if (wraith.getCurrentHealth() <= 0 && wraith.checkAndChangeState(Wraith.State.DEAD)) {
+            chamber.spawnSlime(wraith); // power up
             Sound.getInstance().play(Sound.Effect.GHOST_DEATH);
             wraith.kill();
         }
@@ -77,12 +79,6 @@ public class WraithController {
             if (direction == null) {
                 if (chamber.moveRandomPlus(wraith)) {
                     wraith.changeState(Wraith.State.MOVE);
-                }
-            } else if (wraith.canAttack() && wraith.getState(Wraith.State.ATTACK).isFinished()) {
-                Entity entity = chamber.getNearEntityOnTop(wraith, direction);
-                if (entity instanceof Player) {
-                    Sound.getInstance().play(Sound.Effect.GHOST_ATTACK);
-                    playerController.handleInteraction(InteractionType.ENEMY, wraith);
                     wraith.setCanAttack(false);
                 }
             } else if (wraith.canChange(Wraith.State.ATTACK)) {
@@ -93,7 +89,22 @@ public class WraithController {
                 }
             }
         }
-        wraith.checkAndChangeState(Wraith.State.IDLE);
+
+        if (wraith.canAttack() && wraith.getState(Wraith.State.ATTACK).isFinished()) {
+            DirectionsModel direction = chamber.getHitDirectionPlayer(wraith);
+            if (direction != null) {
+                Entity entity = chamber.getNearEntityOnTop(wraith, direction);
+                if (entity instanceof Player) {
+                    Sound.getInstance().play(Sound.Effect.GHOST_ATTACK);
+                    playerController.handleInteraction(InteractionType.ENEMY, wraith);
+                    wraith.setCanAttack(false);
+                }
+            }
+        }
+
+        if (wraith.checkAndChangeState(Wraith.State.IDLE)) {
+            wraith.setCanAttack(false);
+        }
     }
 
     /**
@@ -115,7 +126,7 @@ public class WraithController {
      */
     private void hitWraith(Wraith wraith, int damage) {
         if (wraith.changeState(Wraith.State.HIT)) {
-            wraith.changeHealth(damage);
+            wraith.decreaseHealthShield(damage);
         }
     }
 

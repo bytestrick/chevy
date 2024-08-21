@@ -25,12 +25,18 @@ public class Vector2<T extends Number> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Vector2<?> vector2 = (Vector2<?>) o;
 
-        if (!first.equals(vector2.first)) return false;
+        if (!first.equals(vector2.first)) {
+            return false;
+        }
         return second.equals(vector2.second);
     }
 

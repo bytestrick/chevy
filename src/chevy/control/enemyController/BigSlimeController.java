@@ -66,9 +66,10 @@ public class BigSlimeController {
             if (bigSlime.getState(BigSlime.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(bigSlime);
                 bigSlime.removeToUpdate();
+                chamber.spawnCollectable(bigSlime);
                 return;
             }
-        } else if (bigSlime.getHealth() <= 0 && bigSlime.checkAndChangeState(BigSlime.State.DEAD)) {
+        } else if (bigSlime.getCurrentHealth() <= 0 && bigSlime.checkAndChangeState(BigSlime.State.DEAD)) {
             chamber.spawnSlimeAroundEntity(bigSlime, 2);
             Sound.getInstance().play(Sound.Effect.SLIME_DEATH);
             bigSlime.kill();
@@ -80,12 +81,6 @@ public class BigSlimeController {
             if (direction == null) {
                 if (chamber.wanderChasePlus(bigSlime, 3)) {
                     bigSlime.changeState(BigSlime.State.MOVE);
-                }
-            } else if (bigSlime.canAttack() && bigSlime.getState(BigSlime.State.ATTACK).isFinished()) {
-                Entity entity = chamber.getNearEntityOnTop(bigSlime, direction);
-                if (entity instanceof Player) {
-                    Sound.getInstance().play(Sound.Effect.SLIME_HIT);
-                    playerController.handleInteraction(InteractionType.ENEMY, bigSlime);
                     bigSlime.setCanAttack(false);
                 }
             } else if (bigSlime.canChange(BigSlime.State.ATTACK)) {
@@ -96,7 +91,22 @@ public class BigSlimeController {
                 }
             }
         }
-        bigSlime.checkAndChangeState(BigSlime.State.IDLE);
+
+        if (bigSlime.canAttack() && bigSlime.getState(BigSlime.State.ATTACK).isFinished()) {
+            DirectionsModel direction = chamber.getHitDirectionPlayer(bigSlime);
+            if (direction != null) {
+                Entity entity = chamber.getNearEntityOnTop(bigSlime, direction);
+                if (entity instanceof Player) {
+                    Sound.getInstance().play(Sound.Effect.SLIME_HIT);
+                    playerController.handleInteraction(InteractionType.ENEMY, bigSlime);
+                    bigSlime.setCanAttack(false);
+                }
+            }
+        }
+
+        if (bigSlime.checkAndChangeState(BigSlime.State.IDLE)) {
+            bigSlime.setCanAttack(false);
+        }
     }
 
     /**
@@ -118,8 +128,8 @@ public class BigSlimeController {
      */
     private void hitBigSlime(BigSlime bigSlime, int damage) {
         if (bigSlime.changeState(BigSlime.State.HIT)) {
+            bigSlime.decreaseHealthShield(damage);
             Sound.getInstance().play(Sound.Effect.SLIME_HIT);
-            bigSlime.changeHealth(damage);
         }
     }
 

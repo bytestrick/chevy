@@ -46,6 +46,11 @@ public abstract class Entity {
         return random.nextInt(minDamage, maxDamage + 1);
     }
 
+    public void changeMinDamage(int minDamage) { this.minDamage = minDamage; }
+    public void changeMaxDamage(int maxDamage) { this.maxDamage = maxDamage; }
+    public int getMaxDamage() { return maxDamage; }
+    public int getMinDamage() { return minDamage; }
+
     public CommonEntityType getSpecificType() { return type; }
 
     public CommonEntityType getGenericType() { return null; }
@@ -135,6 +140,6 @@ public abstract class Entity {
     }
 
     public enum Type implements CommonEntityType {
-        DYNAMIC, ENVIRONMENT, POWER_UP, COLLECTABLE
+        DYNAMIC, ENVIRONMENT, COLLECTABLE
     }
 }

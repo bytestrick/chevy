@@ -66,9 +66,11 @@ public class SkeletonController {
             if (skeleton.getState(Skeleton.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(skeleton);
                 skeleton.removeToUpdate();
+                chamber.spawnCollectable(skeleton);
                 return;
             }
-        } else if (skeleton.getHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.State.DEAD)) {
+        } else if (skeleton.getCurrentHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.State.DEAD)) {
+            chamber.spawnSlime(skeleton); // power up
             Sound.getInstance().play(Sound.Effect.SKELETON_DISASSEMBLED);
             skeleton.kill();
         }
@@ -79,15 +81,9 @@ public class SkeletonController {
             if (direction == null) {
                 if (chamber.chase(skeleton)) {
                     skeleton.changeState(Skeleton.State.MOVE);
-                }
-            } else if (skeleton.canAttack() && skeleton.getState(Skeleton.State.ATTACK).isFinished()) {
-                Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
-                if (entity instanceof Player) {
-                    Sound.getInstance().play(Sound.Effect.SKELETON_HIT);
-                    playerController.handleInteraction(InteractionType.ENEMY, skeleton);
                     skeleton.setCanAttack(false);
                 }
-            } else if (skeleton.canChange(Skeleton.State.ATTACK)) {
+            }else if (skeleton.canChange(Skeleton.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
                 if (entity instanceof Player && skeleton.changeState(Skeleton.State.ATTACK)) {
                     Sound.getInstance().play(Sound.Effect.SKELETON_HIT);
@@ -95,7 +91,22 @@ public class SkeletonController {
                 }
             }
         }
-        skeleton.checkAndChangeState(Skeleton.State.IDLE);
+
+        if (skeleton.canAttack() && skeleton.getState(Skeleton.State.ATTACK).isFinished()) {
+            DirectionsModel direction = chamber.getHitDirectionPlayer(skeleton);
+            if (direction != null) {
+                Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
+                if (entity instanceof Player) {
+                    Sound.getInstance().play(Sound.Effect.SKELETON_HIT);
+                    playerController.handleInteraction(InteractionType.ENEMY, skeleton);
+                    skeleton.setCanAttack(false);
+                }
+            }
+        }
+
+        if (skeleton.checkAndChangeState(Skeleton.State.IDLE)) {
+            skeleton.setCanAttack(false);
+        }
     }
 
     /**
@@ -117,7 +128,7 @@ public class SkeletonController {
      */
     private void hitSkeleton(Skeleton skeleton, int damage) {
         if (skeleton.changeState(Skeleton.State.HIT)) {
-            skeleton.changeHealth(damage);
+            skeleton.decreaseHealthShield(damage);
         }
     }
 

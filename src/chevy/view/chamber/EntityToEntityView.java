@@ -20,6 +20,7 @@ import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Arrow;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
+import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.Ground;
 import chevy.model.entity.staticEntity.environment.Wall;
@@ -33,10 +34,11 @@ import chevy.view.entities.EntityView;
 import chevy.view.entities.GroundView;
 import chevy.view.entities.TrapView;
 import chevy.view.entities.WallView;
+import chevy.view.entities.animated.ChestView;
 import chevy.view.entities.animated.collectable.CoinView;
 import chevy.view.entities.animated.collectable.HealthView;
 import chevy.view.entities.animated.collectable.KeyView;
-import chevy.view.entities.animated.collectable.powerUp.PowerUpView;
+import chevy.view.entities.animated.collectable.PowerUpView;
 import chevy.view.entities.animated.enemy.BeetleView;
 import chevy.view.entities.animated.enemy.BigSlimeView;
 import chevy.view.entities.animated.enemy.SkeletonView;
@@ -268,6 +270,18 @@ public class EntityToEntityView {
                 yield keyView;
             }
             default -> null;
+
+            // Chest
+            case Environment.Type.CHEST -> {
+                ChestView chestView = null;
+                if (entityView.containsKey(entity)) {
+                    chestView = (ChestView) entityView.get(entity);
+                } else {
+                    chestView = new ChestView((Chest) entity);
+                    entityView.put(entity, chestView);
+                }
+                yield chestView;
+            }
         };
     }
 

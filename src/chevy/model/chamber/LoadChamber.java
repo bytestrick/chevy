@@ -77,6 +77,7 @@ public class LoadChamber {
                             case LiveEntity.Type.PLAYER -> chamber.setPlayer((Player) entity);
                             case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
                                     chamber.addCollectable((Collectable) entity);
+                            case Entity.Type.ENVIRONMENT -> chamber.addEnvironment((Environment) entity);
                             default -> { }
                         }
                     }

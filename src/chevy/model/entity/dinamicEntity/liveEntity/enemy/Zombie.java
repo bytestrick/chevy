@@ -14,6 +14,7 @@ public class Zombie extends Enemy {
     public Zombie(Vector2<Integer> initPosition) {
         super(initPosition, Type.ZOMBIE);
         this.health = 10;
+        this.currentHealth = health;
         this.maxDamage = 3;
         this.minDamage = 2;
 

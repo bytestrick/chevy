@@ -81,10 +81,12 @@ public class BeetleController {
             if (beetle.getState(Beetle.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(beetle);
                 beetle.removeToUpdate();
+                chamber.spawnCollectable(beetle);
                 return;
             }
-        } else if (beetle.getHealth() <= 0 && beetle.checkAndChangeState(Beetle.State.DEAD)) {
+        } else if (beetle.getCurrentHealth() <= 0 && beetle.checkAndChangeState(Beetle.State.DEAD)) {
             // Se la salute del Beetle è zero o inferiore, cambia lo stato del Beetle a "DEAD".
+            chamber.spawnSlime(beetle); // power up
             Sound.getInstance().play(Sound.Effect.BEETLE_DEATH);
             beetle.kill();
         }
@@ -94,13 +96,10 @@ public class BeetleController {
             DirectionsModel direction = chamber.getHitDirectionPlayer(beetle, 3);
             // Se trova il giocatore, inizia l'inseguimento (chasing).
             if (direction == null) {
-                beetle.setCanAttack(false);
                 if (chamber.chase(beetle)) {
+                    beetle.setCanAttack(false);
                     beetle.changeState(Beetle.State.MOVE);
                 }
-            } else if (beetle.canAttack() && beetle.getState(Beetle.State.ATTACK).isFinished()) {
-                playerController.handleInteraction(InteractionType.ENEMY, beetle);
-                beetle.setCanAttack(false);
             } else if (beetle.canChange(Beetle.State.ATTACK)) {
                 // Se può cambiare lo stato a "ATTACK", cerca di attaccare il giocatore.
                 for (int distance = 1; distance <= 3; ++distance) {
@@ -125,8 +124,21 @@ public class BeetleController {
                 }
             }
         }
-        // Se nessun'altra azione è possibile, il Beetle cambia lo stato a "IDLE"
-        beetle.checkAndChangeState(Beetle.State.IDLE);
+
+        if (beetle.canAttack() && beetle.getState(Beetle.State.ATTACK).isFinished()) {
+            DirectionsModel direction = chamber.getHitDirectionPlayer(beetle);
+            if (direction != null) {
+                Entity entity = chamber.getNearEntityOnTop(beetle, direction);
+                if (entity instanceof Player) {
+                    playerController.handleInteraction(InteractionType.ENEMY, beetle);
+                    beetle.setCanAttack(false);
+                }
+            }
+        }
+
+        if (beetle.checkAndChangeState(Beetle.State.IDLE)) {
+            beetle.setCanAttack(false);
+        }
     }
 
     /**
@@ -152,7 +164,7 @@ public class BeetleController {
      */
     private void hitBeetle(Beetle beetle, int damage) {
         if (beetle.changeState(Beetle.State.HIT)) {
-            beetle.changeHealth(damage);
+            beetle.decreaseHealthShield(damage);
         }
     }
 }

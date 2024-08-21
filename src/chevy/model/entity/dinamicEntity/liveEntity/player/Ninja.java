@@ -18,8 +18,10 @@ public class Ninja extends Player {
         super(initPosition, Type.NINJA);
 
         this.speed = 0.1f;
-        this.health = 60;
+        this.health = 6;
+        this.currentHealth = health;
         this.shield = 0;
+        this.currentShield = shield;
         this.maxDamage = 8;
         this.minDamage = 6;
 
@@ -27,7 +29,7 @@ public class Ninja extends Player {
         this.move = new GlobalState(State.MOVE, speed);
         this.attack = new GlobalState(State.ATTACK, .5f);
         this.hit = new GlobalState(State.HIT, .2f);
-        this.dead = new GlobalState(State.DEAD);
+        this.dead = new GlobalState(State.DEAD, .3f);
         this.glide = new GlobalState(State.GLIDE, speed, true);
         this.sludge = new GlobalState(State.SLUDGE, speed);
         this.fall = new GlobalState(State.FALL);

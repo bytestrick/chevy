@@ -2,8 +2,7 @@ package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.*;
-import chevy.model.entity.collectable.powerUp.Agility;
-import chevy.model.entity.collectable.powerUp.PowerUp;
+import chevy.model.entity.collectable.powerUp.*;
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
 import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
@@ -14,6 +13,7 @@ import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Archer;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
+import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Ground;
 import chevy.model.entity.staticEntity.environment.Wall;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
@@ -96,8 +96,28 @@ public class EntityFromColor {
     private static final int HEALTH = 10;
     private static final int COIN = 11;
     private static final int KEY = 12;
+
     // Collectable: Power Up
     private static final int AGILITY = 13;
+    private static final int ANGEL_RING = 14;
+    private static final int BROKEN_ARROWS = 15;
+    private static final int COIN_OF_GREED = 16;
+    private static final int COLD_HEART = 17;
+    private static final int HOBNAIL_BOOTS = 18;
+    private static final int GOLD_ARROW = 19;
+    private static final int KEY_S_KEEPER = 20;
+    private static final int HEDGEHOG_SPINES = 21;
+    private static final int HOLY_SHIELD = 22;
+    private static final int HOT_HEARTH = 23;
+    private static final int LONG_SWORD = 24;
+    private static final int SLIME_PIECE = 25;
+    private static final int STONE_BOOTS = 26;
+    private static final int HEALING_FLOOD = 27;
+    private static final int VANPIRE_FNAGS = 28;
+
+    // Chest
+    private static final int CHEST = 50;
+
 
     // ---
     private static final int NULL = 0; // assenza di colore rosso
@@ -184,6 +204,24 @@ public class EntityFromColor {
             case KEY -> new Key(startPosition);
             // Collectable: Power Up
             case AGILITY -> new Agility(startPosition);
+            case ANGEL_RING -> new AngelRing(startPosition);
+            case BROKEN_ARROWS -> new BrokenArrows(startPosition);
+            case COLD_HEART -> new ColdHeart(startPosition);
+            case HOT_HEARTH -> new HotHeart(startPosition);
+            case GOLD_ARROW -> new GoldArrow(startPosition);
+            case HOLY_SHIELD -> new HolyShield(startPosition);
+            case VANPIRE_FNAGS -> new VampireFangs(startPosition);
+            case LONG_SWORD -> new LongSword(startPosition);
+            case STONE_BOOTS -> new StoneBoots(startPosition);
+            case COIN_OF_GREED -> new CoinOfGreed(startPosition);
+            case HEALING_FLOOD -> new HealingFlood(startPosition);
+            case KEY_S_KEEPER -> new KeySKeeper(startPosition);
+            case HOBNAIL_BOOTS -> new HobnailBoots(startPosition);
+            case HEDGEHOG_SPINES -> new HedgehogSpines(startPosition);
+            case SLIME_PIECE -> new SlimePiece(startPosition);
+
+            // ---
+            case CHEST -> new Chest(startPosition);
 
             // ---
             case NULL -> null;

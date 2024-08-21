@@ -2,6 +2,7 @@ package chevy.control.collectableController;
 
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
+import chevy.control.HUDController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.Coin;
@@ -18,16 +19,18 @@ public class CollectableController {
     private final HealthController healthController;
     private final KeyController keyController;
     private final PowerUpController powerUpController;
+    private final HUDController hudController;
     private final Chamber chamber;
 
 
-    public CollectableController(Chamber chamber, PlayerController playerController, PowerUpTextVisualizerController powerUpTextVisualizerController) {
+    public CollectableController(Chamber chamber, PlayerController playerController, HUDController hudController) {
         this.chamber = chamber;
         this.playerController = playerController;
-        this.keyController = new KeyController(chamber);
-        this.healthController = new HealthController(chamber);
-        this.coinController = new CoinController(chamber);
-        this.powerUpController = new PowerUpController(chamber, powerUpTextVisualizerController);
+        this.hudController = hudController;
+        this.keyController = new KeyController(chamber, hudController);
+        this.healthController = new HealthController(hudController, chamber);
+        this.coinController = new CoinController(chamber, hudController);
+        this.powerUpController = new PowerUpController(chamber, hudController);
     }
 
 
@@ -51,7 +54,7 @@ public class CollectableController {
      */
     private void playerInInteraction(Player player, Collectable collectable) {
         switch (collectable.getSpecificType()) {
-            case Collectable.Type.HEALTH -> healthController.playerInInteraction((Health) collectable);
+            case Collectable.Type.HEALTH -> healthController.playerInInteraction(player, (Health) collectable);
             case Collectable.Type.COIN -> coinController.playerInInteraction((Coin) collectable);
             case Collectable.Type.KEY -> keyController.playerInInteraction((Key) collectable);
             default -> {}

@@ -82,7 +82,7 @@ public class TrapsController {
             case Trap.Type.ICY_FLOOR -> icyFloorController.playerInInteraction(player, (IcyFloor) trap);
             case Trap.Type.VOID -> voidController.playerInInteraction(player, (Void) trap);
             case Trap.Type.TRAPDOOR -> trapdoorController.playerInInteraction((Trapdoor) trap);
-            case Trap.Type.SPIKED_FLOOR -> spikedFloorController.playerInInteraction((SpikedFloor) trap);
+            case Trap.Type.SPIKED_FLOOR -> spikedFloorController.playerInInteraction(player, (SpikedFloor) trap);
             default -> { }
         }
     }
