@@ -73,7 +73,7 @@ public class ProgressBarLabel extends JPanel {
     public void setText(String text) {
         label.setText(text);
     }
-    
+
     public void windowResized(float scale) {
         progressBar.windowResized(scale);
         resizeFont();
