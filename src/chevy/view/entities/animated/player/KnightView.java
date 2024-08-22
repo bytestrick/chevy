@@ -32,45 +32,47 @@ public class KnightView extends AnimatedEntityView {
     }
 
     private void initAnimation() {
+        Vector2<Integer> offset = new Vector2<>(-8, -8);
+
         final float idleDuration = 1f;
-        createAnimation(Player.State.IDLE, 0, 2, true, 2, idleDuration, KNIGHT_RESOURCES + "idle/up", ".png");
-        createAnimation(Player.State.IDLE, 1, 2, true, 2, idleDuration, KNIGHT_RESOURCES + "idle/down", ".png");
-        createAnimation(Player.State.IDLE, 2, 2, true, 2, idleDuration, KNIGHT_RESOURCES + "idle/right", ".png");
-        createAnimation(Player.State.IDLE, 3, 2, true, 2, idleDuration, KNIGHT_RESOURCES + "idle/left", ".png");
+        createAnimation(Player.State.IDLE, 0, 2, true, 2, idleDuration, offset, 1, KNIGHT_RESOURCES + "idle/up", ".png");
+        createAnimation(Player.State.IDLE, 1, 2, true, 2, idleDuration, offset, 1, KNIGHT_RESOURCES + "idle/down", ".png");
+        createAnimation(Player.State.IDLE, 2, 2, true, 2, idleDuration, offset, 1, KNIGHT_RESOURCES + "idle/right", ".png");
+        createAnimation(Player.State.IDLE, 3, 2, true, 2, idleDuration, offset, 1, KNIGHT_RESOURCES + "idle/left", ".png");
 
         final float moveDuration = knight.getState(Player.State.MOVE).getDuration();
-        createAnimation(Player.State.MOVE, 0, 4, moveDuration, KNIGHT_RESOURCES + "move/up", ".png");
-        createAnimation(Player.State.MOVE, 1, 4, moveDuration, KNIGHT_RESOURCES + "move/down", ".png");
-        createAnimation(Player.State.MOVE, 2, 4, moveDuration, KNIGHT_RESOURCES + "move/right", ".png");
-        createAnimation(Player.State.MOVE, 3, 4, moveDuration, KNIGHT_RESOURCES + "move/left", ".png");
+        createAnimation(Player.State.MOVE, 0, 8, moveDuration, offset, 1, KNIGHT_RESOURCES + "move/up", ".png");
+        createAnimation(Player.State.MOVE, 1, 8, moveDuration, offset, 1, KNIGHT_RESOURCES + "move/down", ".png");
+        createAnimation(Player.State.MOVE, 2, 8, moveDuration, offset, 1, KNIGHT_RESOURCES + "move/right", ".png");
+        createAnimation(Player.State.MOVE, 3, 8, moveDuration, offset, 1, KNIGHT_RESOURCES + "move/left", ".png");
 
         final float attackDuration = knight.getState(Player.State.ATTACK).getDuration();
-        createAnimation(Player.State.ATTACK, 0, 6, attackDuration, KNIGHT_RESOURCES + "attack/up", ".png");
-        createAnimation(Player.State.ATTACK, 1, 6, attackDuration, KNIGHT_RESOURCES + "attack/down", ".png");
-        createAnimation(Player.State.ATTACK, 2, 6, attackDuration, KNIGHT_RESOURCES + "attack/right", ".png");
-        createAnimation(Player.State.ATTACK, 3, 6, attackDuration, KNIGHT_RESOURCES + "attack/left", ".png");
+        createAnimation(Player.State.ATTACK, 0, 6, attackDuration, offset, 1, KNIGHT_RESOURCES + "attack/up", ".png");
+        createAnimation(Player.State.ATTACK, 1, 6, attackDuration, offset, 1, KNIGHT_RESOURCES + "attack/down", ".png");
+        createAnimation(Player.State.ATTACK, 2, 6, attackDuration, offset, 1, KNIGHT_RESOURCES + "attack/right", ".png");
+        createAnimation(Player.State.ATTACK, 3, 6, attackDuration, offset, 1, KNIGHT_RESOURCES + "attack/left", ".png");
 
         final float hitDuration = knight.getState(Player.State.HIT).getDuration();
-        createAnimation(Player.State.HIT, 0, 1, hitDuration, KNIGHT_RESOURCES + "hit/up", ".png");
-        createAnimation(Player.State.HIT, 1, 1, hitDuration, KNIGHT_RESOURCES + "hit/down", ".png");
-        createAnimation(Player.State.HIT, 2, 1, hitDuration, KNIGHT_RESOURCES + "hit/right", ".png");
-        createAnimation(Player.State.HIT, 3, 1, hitDuration, KNIGHT_RESOURCES + "hit/left", ".png");
+        createAnimation(Player.State.HIT, 0, 1, hitDuration, offset, 1, KNIGHT_RESOURCES + "hit/up", ".png");
+        createAnimation(Player.State.HIT, 1, 1, hitDuration, offset, 1, KNIGHT_RESOURCES + "hit/down", ".png");
+        createAnimation(Player.State.HIT, 2, 1, hitDuration, offset, 1, KNIGHT_RESOURCES + "hit/right", ".png");
+        createAnimation(Player.State.HIT, 3, 1, hitDuration, offset, 1, KNIGHT_RESOURCES + "hit/left", ".png");
 
         final float deadDuration = knight.getState(Player.State.DEAD).getDuration();
-        createAnimation(Player.State.DEAD, 0, 2, deadDuration, KNIGHT_RESOURCES + "dead/left", ".png");
-        createAnimation(Player.State.DEAD, 1, 2, deadDuration, KNIGHT_RESOURCES + "dead/right", ".png");
+        createAnimation(Player.State.DEAD, 0, 8, deadDuration, offset, 1, KNIGHT_RESOURCES + "dead/right", ".png");
+        createAnimation(Player.State.DEAD, 1, 8, deadDuration, offset, 1, KNIGHT_RESOURCES + "dead/left", ".png");
 
         final float sludgeDuration = knight.getState(Player.State.SLUDGE).getDuration();
-        createAnimation(Player.State.SLUDGE, 0, 1, sludgeDuration, KNIGHT_RESOURCES + "idle/right", ".png");
-        createAnimation(Player.State.SLUDGE, 1, 1, sludgeDuration, KNIGHT_RESOURCES + "idle/left", ".png");
+        createAnimation(Player.State.SLUDGE, 0, 1, sludgeDuration, offset, 1, KNIGHT_RESOURCES + "idle/right", ".png");
+        createAnimation(Player.State.SLUDGE, 1, 1, sludgeDuration, offset, 1, KNIGHT_RESOURCES + "idle/left", ".png");
 
         float fallDuration = knight.getState(Player.State.FALL).getDuration();
-        createAnimation(Player.State.FALL, 0, 2, fallDuration, KNIGHT_RESOURCES + "dead/right", ".png");
-        createAnimation(Player.State.FALL, 1, 2, fallDuration, KNIGHT_RESOURCES + "dead/left", ".png");
+        createAnimation(Player.State.FALL, 0, 2, fallDuration, offset, 1, KNIGHT_RESOURCES + "dead/right", ".png");
+        createAnimation(Player.State.FALL, 1, 2, fallDuration, offset, 1, KNIGHT_RESOURCES + "dead/left", ".png");
 
         float glideDuration = knight.getState(Player.State.GLIDE).getDuration();
-        createAnimation(Player.State.GLIDE, 0, 1, glideDuration, KNIGHT_RESOURCES + "idle/right", ".png");
-        createAnimation(Player.State.GLIDE, 1, 1, glideDuration, KNIGHT_RESOURCES + "idle/left", ".png");
+        createAnimation(Player.State.GLIDE, 0, 1, glideDuration, offset, 1, KNIGHT_RESOURCES + "idle/right", ".png");
+        createAnimation(Player.State.GLIDE, 1, 1, glideDuration, offset, 1, KNIGHT_RESOURCES + "idle/left", ".png");
     }
 
     @Override
@@ -109,6 +111,18 @@ public class KnightView extends AnimatedEntityView {
             }
             default -> 0;
         };
+    }
+
+    @Override
+    public Vector2<Integer> getOffset() {
+        CommonState currentState = knight.getCurrentState();
+        int type = getAnimationType(currentState);
+        AnimatedSprite animatedSprite = this.getAnimatedSprite(currentState, type);
+
+        if (animatedSprite != null) {
+            return animatedSprite.getOffset();
+        }
+        return null;
     }
 
     @Override

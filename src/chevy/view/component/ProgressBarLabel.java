@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class ProgressBarLabel extends JPanel {
     private JLabel label = new JLabel();
-    private final Color COLOR_TEXT = new Color(228, 166, 114, 255);
+    private final Color COLOR_TEXT = new Color(255, 255, 255, 255);
     private final ProgressBar progressBar;
     private Font font;
     private int fontSize = 13;

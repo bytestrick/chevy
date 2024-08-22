@@ -14,8 +14,9 @@ public class CoinBar extends CounterBar {
         setTexture(MyPanelUI.BAR_L, COIN_BAR_PATH + "coin/leftBar.png");
         setTexture(MyPanelUI.BAR_R, COIN_BAR_PATH + "rightBar.png");
         setTexture(MyPanelUI.CENTER, COIN_BAR_PATH + "centerPanel.png");
-        setFont("fonts/upheaval/upheavtt.ttf");
-        setFontSize(8);
+        setFont("fonts/superstar_2/superstar_memesbruh03.ttf");
+        setOffsetY(2);
+        setFontSize(10);
     }
 
     public void setCoin(int value) {
