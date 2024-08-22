@@ -16,6 +16,7 @@ public class CounterBar extends JPanel {
     private Font font;
     private int fontSize = 13;
     private float scale = 1f;
+    private int offsetY = 0;
 
 
     public CounterBar(Dimension dimension) {
@@ -87,9 +88,12 @@ public class CounterBar extends JPanel {
 
     private void setConstraints(float scale) {
         springLayout.putConstraint(SpringLayout.EAST, text, -((int) (rightSpace * scale) + ui.getWidth(MyPanelUI.BAR_R)), SpringLayout.EAST, this);
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, text, 0, SpringLayout.VERTICAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, text, offsetY, SpringLayout.VERTICAL_CENTER, this);
     }
 
+    public void setOffsetY(int offsetY) {
+        this.offsetY = offsetY;
+    }
     public void windowResized(float scale) {
         scale = scale * this.scale;
 
