@@ -48,6 +48,7 @@ public class ChamberController {
         playerController.setTrapController(trapsController);
         playerController.setProjectileController(projectileController);
         playerController.setCollectableController(collectableController);
+        playerController.setEnvironmentController(environmentController);
         playerController.setHUDController(hudController);
         new EnemyUpdateController(enemyController, chamber.getEnemies());
         new TrapsUpdateController(trapsController, chamber.getTraps());

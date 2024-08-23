@@ -57,6 +57,7 @@ public class Chamber {
     private int nCols; // Colonne della griglia di gioco
     private boolean init = false; // Indica se il mondo è stato inizializzato
     private Player player; // Il giocatore attuale
+    private int enemyCounter = 0;
 
     /**
      * Inizializza la griglia di gioco con le dimensioni specificate e aggiorna le impostazioni di gioco.
@@ -320,6 +321,7 @@ public class Chamber {
             if (entity.equals(entity2)) {
                 entity.setToDraw(setToDraw);
                 it.remove();
+
                 return true;
             }
         }
@@ -604,7 +606,19 @@ public class Chamber {
 
     public void setPlayer(Player player) { this.player = player; }
 
-    public void addEnemy(Enemy enemy) { this.enemies.add(enemy); }
+    public void addEnemy(Enemy enemy) {
+        this.enemies.add(enemy);
+        ++enemyCounter;
+    }
+
+    public void decreaseEnemyCounter() {
+        if (--enemyCounter < 0)
+            ++enemyCounter;
+    }
+
+    public int getEnemyCounter() {
+        return enemyCounter;
+    }
 
     public List<Enemy> getEnemies() { return this.enemies; }
 

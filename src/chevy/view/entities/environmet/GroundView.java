@@ -1,8 +1,9 @@
-package chevy.view.entities;
+package chevy.view.entities.environmet;
 
 import chevy.model.entity.staticEntity.environment.Ground;
 import chevy.utils.Image;
 import chevy.utils.Vector2;
+import chevy.view.entities.EntityView;
 
 import java.awt.image.BufferedImage;
 

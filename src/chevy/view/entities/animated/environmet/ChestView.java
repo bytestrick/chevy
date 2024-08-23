@@ -1,9 +1,10 @@
-package chevy.view.entities.animated;
+package chevy.view.entities.animated.environmet;
 
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
+import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 

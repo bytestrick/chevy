@@ -6,6 +6,7 @@ import chevy.service.Update;
 import chevy.service.UpdateManager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class EnvironmentUpdateController implements Update {
@@ -45,7 +46,13 @@ public class EnvironmentUpdateController implements Update {
     public void update(double delta) {
         addEnvironment();
 
-        for (Environment environment : environments) {
+        Iterator<Environment> it = environments.iterator();
+        while (it.hasNext()) {
+            Environment environment = it.next();
+            if (environment.canRemoveToUpdate()) {
+                it.remove();
+                return;
+            }
             environmentController.handleInteraction(InteractionType.UPDATE, environment, null);
         }
     }

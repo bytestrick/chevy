@@ -15,6 +15,7 @@ import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
 import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Ground;
+import chevy.model.entity.staticEntity.environment.Stair;
 import chevy.model.entity.staticEntity.environment.Wall;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.Sludge;
@@ -38,10 +39,10 @@ public class EntityFromColor {
     private static final int WALL_TOP = 248;
     private static final int WALL_INTERIOR_CORNER_TOP_RIGHT = 247;
     private static final int WALL_INTERIOR_CORNER_BOTTOM_RIGHT = 253;
-    //     private static final int WALL_TOP_TORCH = ;
-//     private static final int WALL_TOP_HOLE = ;
-//     private static final int WALL_TOP_HOLE_2 = ;
-//     private static final int WALL_TOP_BROKEN = ;
+    private static final int WALL_TOP_TORCH = 254;
+     private static final int WALL_TOP_HOLE = 255;
+     private static final int WALL_TOP_HOLE_2 = 256;
+     private static final int WALL_TOP_BROKEN = 257;
     private static final int WALL_EXTERNAL_CORNER_TOP_LEFT = 246;
     private static final int WALL_EXTERNAL_CORNER_TOP_RIGHT = 245;
     private static final int WALL_EXTERNAL_CORNER_BOTTOM_LEFT = 244;
@@ -115,8 +116,10 @@ public class EntityFromColor {
     private static final int HEALING_FLOOD = 27;
     private static final int VANPIRE_FNAGS = 28;
 
-    // Chest
+    // Environment
     private static final int CHEST = 50;
+    private static final int STAIR_RIGHT = 51;
+    private static final int STAIR_LEFT = 52;
 
 
     // ---
@@ -222,6 +225,8 @@ public class EntityFromColor {
 
             // ---
             case CHEST -> new Chest(startPosition);
+            case STAIR_LEFT -> new Stair(startPosition, DirectionsModel.LEFT);
+            case STAIR_RIGHT -> new Stair(startPosition, DirectionsModel.RIGHT);
 
             // ---
             case NULL -> null;

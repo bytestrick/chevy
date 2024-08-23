@@ -29,7 +29,7 @@ public class Knight extends Player {
 
         this.idle = new GlobalState(State.IDLE);
         this.move = new GlobalState(State.MOVE, speed);
-        this.attack = new GlobalState(State.ATTACK, .5f);
+        this.attack = new GlobalState(State.ATTACK, .5f, true);
         this.hit = new GlobalState(State.HIT, .2f);
         this.dead = new GlobalState(State.DEAD, .6f);
         this.glide = new GlobalState(State.GLIDE, speed, true);

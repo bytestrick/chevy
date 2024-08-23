@@ -3,6 +3,7 @@ package chevy.control;
 import chevy.Sound;
 import chevy.control.collectableController.CollectableController;
 import chevy.control.enemyController.EnemyController;
+import chevy.control.environmentController.EnvironmentController;
 import chevy.control.projectileController.ProjectileController;
 import chevy.control.trapsController.TrapsController;
 import chevy.model.chamber.Chamber;
@@ -21,6 +22,7 @@ import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Arrow;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -45,6 +47,7 @@ public class PlayerController implements Update {
     private TrapsController trapsController;
     private ProjectileController projectileController;
     private CollectableController collectableController;
+    private EnvironmentController environmentController;
     private HUDController hudController;
     private boolean updateFinished = false;
 
@@ -243,7 +246,7 @@ public class PlayerController implements Update {
                     }
                     player.checkAndChangeState(Player.State.IDLE);
                 }
-                case TRAP -> {
+                case Environment.Type.TRAP -> {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
                         playerMoveSound(player);
                         chamber.moveDynamicEntity(player, direction);
@@ -264,6 +267,14 @@ public class PlayerController implements Update {
                         chamber.moveDynamicEntity(player, direction);
                         collectableController.handleInteraction(InteractionType.PLAYER_IN, player,
                                 (Collectable) entityNextCell);
+                    }
+                }
+                case Entity.Type.ENVIRONMENT -> {
+                    if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
+                        playerMoveSound(player);
+                        chamber.moveDynamicEntity(player, direction);
+                        environmentController.handleInteraction(InteractionType.PLAYER_IN, player,
+                                (Environment) entityNextCell);
                     }
                 }
                 default -> {
@@ -451,6 +462,11 @@ public class PlayerController implements Update {
         if (this.collectableController == null) {
             this.collectableController = collectableController;
         }
+    }
+
+    public void setEnvironmentController(EnvironmentController environmentController) {
+        if (this.environmentController == null)
+            this.environmentController = environmentController;
     }
 
     public void setHUDController(HUDController hudController) {
