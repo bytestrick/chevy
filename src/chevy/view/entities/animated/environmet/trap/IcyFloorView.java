@@ -1,4 +1,4 @@
-package chevy.view.entities.animated.trap;
+package chevy.view.entities.animated.environmet.trap;
 
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;

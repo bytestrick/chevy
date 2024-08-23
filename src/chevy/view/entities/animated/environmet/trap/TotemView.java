@@ -1,4 +1,4 @@
-package chevy.view.entities.animated.trap;
+package chevy.view.entities.animated.environmet.trap;
 
 import chevy.model.entity.dinamicEntity.DirectionsModel;
 import chevy.model.entity.stateMachine.CommonState;

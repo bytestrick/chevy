@@ -66,6 +66,7 @@ public class BigSlimeController {
             if (bigSlime.getState(BigSlime.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(bigSlime);
                 bigSlime.removeToUpdate();
+                chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(bigSlime);
                 return;
             }

@@ -20,21 +20,20 @@ import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dinamicEntity.projectile.Arrow;
 import chevy.model.entity.dinamicEntity.projectile.Projectile;
 import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
-import chevy.model.entity.staticEntity.environment.Chest;
-import chevy.model.entity.staticEntity.environment.Environment;
-import chevy.model.entity.staticEntity.environment.Ground;
-import chevy.model.entity.staticEntity.environment.Wall;
+import chevy.model.entity.staticEntity.environment.*;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.Sludge;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
+import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.view.entities.EntityView;
-import chevy.view.entities.GroundView;
-import chevy.view.entities.TrapView;
-import chevy.view.entities.WallView;
-import chevy.view.entities.animated.ChestView;
+import chevy.view.entities.animated.environmet.StairView;
+import chevy.view.entities.environmet.GroundView;
+import chevy.view.entities.environmet.VoidView;
+import chevy.view.entities.environmet.WallView;
+import chevy.view.entities.animated.environmet.ChestView;
 import chevy.view.entities.animated.collectable.CoinView;
 import chevy.view.entities.animated.collectable.HealthView;
 import chevy.view.entities.animated.collectable.KeyView;
@@ -50,11 +49,11 @@ import chevy.view.entities.animated.player.KnightView;
 import chevy.view.entities.animated.player.NinjaView;
 import chevy.view.entities.animated.projectile.ArrowView;
 import chevy.view.entities.animated.projectile.SlimeShotView;
-import chevy.view.entities.animated.trap.IcyFloorView;
-import chevy.view.entities.animated.trap.SludgeView;
-import chevy.view.entities.animated.trap.SpikedFloorView;
-import chevy.view.entities.animated.trap.TotemView;
-import chevy.view.entities.animated.trap.TrapdoorView;
+import chevy.view.entities.animated.environmet.trap.IcyFloorView;
+import chevy.view.entities.animated.environmet.trap.SludgeView;
+import chevy.view.entities.animated.environmet.trap.SpikedFloorView;
+import chevy.view.entities.animated.environmet.trap.TotemView;
+import chevy.view.entities.animated.environmet.trap.TrapdoorView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -237,6 +236,16 @@ public class EntityToEntityView {
                 }
                 yield trapdoorView;
             }
+            case Trap.Type.VOID -> {
+                VoidView voidView = null;
+                if (entityView.containsKey(entity)) {
+                    voidView = (VoidView) entityView.get(entity);
+                } else {
+                    voidView = new VoidView((Void) entity);
+                    entityView.put(entity, voidView);
+                }
+                yield voidView;
+            }
 
             // COLLECTABLES
             case Collectable.Type.HEALTH -> {
@@ -271,7 +280,7 @@ public class EntityToEntityView {
             }
             default -> null;
 
-            // Chest
+            // Environment
             case Environment.Type.CHEST -> {
                 ChestView chestView = null;
                 if (entityView.containsKey(entity)) {
@@ -281,6 +290,16 @@ public class EntityToEntityView {
                     entityView.put(entity, chestView);
                 }
                 yield chestView;
+            }
+            case Environment.Type.STAIR -> {
+                StairView stairView = null;
+                if (entityView.containsKey(entity)) {
+                    stairView = (StairView) entityView.get(entity);
+                } else {
+                    stairView = new StairView((Stair) entity);
+                    entityView.put(entity, stairView);
+                }
+                yield stairView;
             }
         };
     }
@@ -309,16 +328,6 @@ public class EntityToEntityView {
                     entityView.put(entity, groundView);
                 }
                 yield groundView;
-            }
-            case Environment.Type.TRAP -> {
-                TrapView trapView;
-                if (entityView.containsKey(entity)) {
-                    trapView = (TrapView) entityView.get(entity);
-                } else {
-                    trapView = new TrapView((Trap) entity);
-                    entityView.put(entity, trapView);
-                }
-                yield trapView;
             }
             case Collectable.Type.POWER_UP -> {
                 PowerUpView powerUpView = null;

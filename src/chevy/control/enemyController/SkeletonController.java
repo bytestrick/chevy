@@ -66,6 +66,7 @@ public class SkeletonController {
             if (skeleton.getState(Skeleton.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(skeleton);
                 skeleton.removeToUpdate();
+                chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(skeleton);
                 return;
             }
