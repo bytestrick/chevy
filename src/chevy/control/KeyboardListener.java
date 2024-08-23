@@ -6,12 +6,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyboardListener implements KeyListener {
-    private final Window window;
     private ChamberController chamberController;
 
     public KeyboardListener(Window window) {
-        this.window = window;
-
         // Connesione degli eventi da tastiera al GamePanel
         window.getGamePanel().addKeyBoardListener(this);
     }

@@ -27,13 +27,13 @@ public class LoadChamber {
     private static final String LAYER_FILE_EXTENSION = ".png";
 
     /**
-     * Carica un'immagine di una stanza.
+     * Carica un layer che comporrà la stanza.
      *
      * @param nChamber il numero della stanza da caricare
-     * @param layer    strato dell'immagine da caricare
+     * @param layer strato dell'immagine da caricare
      * @return l'immagine della stanza, o null se l'immagine non può essere caricata
      */
-    private static BufferedImage loadImage(int nChamber, int layer) {
+    private static BufferedImage loadLayer(int nChamber, int layer) {
         String chamberPath = CHAMBER_PATH + nChamber + LAYER_FILE + layer + LAYER_FILE_EXTENSION;
         BufferedImage chamberImage = null;
         try {
@@ -53,7 +53,7 @@ public class LoadChamber {
      */
     public static boolean loadChamber(int nChamber, Chamber chamber) {
         int layer = 0;
-        BufferedImage chamberImage = loadImage(nChamber, layer);
+        BufferedImage chamberImage = loadLayer(nChamber, layer);
 
         while (chamberImage != null) {
             int nRows = chamberImage.getHeight();
@@ -83,7 +83,7 @@ public class LoadChamber {
                     }
                 }
             }
-            chamberImage = loadImage(nChamber, ++layer);
+            chamberImage = loadLayer(nChamber, ++layer);
         }
         return layer != 0;
     }
