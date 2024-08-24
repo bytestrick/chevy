@@ -29,6 +29,8 @@ public abstract class Player extends LiveEntity {
         }
     }
 
+    public int[] getStats() { return new int[]{health * 10, maxDamage * 10, 100 - (int)(speed * 100)}; }
+
     public PowerUp getOwnedPowerUp(PowerUp.Type powerUpType) {
         return ownedPowerUp.get(powerUpType);
     }
@@ -53,6 +55,6 @@ public abstract class Player extends LiveEntity {
     }
 
     public enum Type implements CommonEntityType {
-        KNIGHT, NINJA, ARCHER;
+        KNIGHT, ARCHER, NINJA
     }
 }

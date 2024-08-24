@@ -1,7 +1,7 @@
 package chevy.view.component;
 
 import chevy.settings.WindowSettings;
-import chevy.utils.Fontt;
+import chevy.utils.Load;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +49,7 @@ public class ProgressBarLabel extends JPanel {
     }
 
     public void setFont(String path) {
-        font = Fontt.load(path);
+        font = Load.font(path);
         resizeFont();
     }
 

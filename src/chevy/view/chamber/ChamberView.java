@@ -6,13 +6,14 @@ import chevy.model.entity.dynamicEntity.DynamicEntity;
 import chevy.service.Render;
 import chevy.service.RenderManager;
 import chevy.settings.GameSettings;
-import chevy.utils.Image;
+import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
 import chevy.view.entities.EntityView;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
@@ -22,17 +23,15 @@ import java.util.List;
  */
 public class ChamberView extends JPanel implements Render {
     private static final boolean DRAW_COLLISIONS = true;
-    private static final BufferedImage NULL_IMAGE = Image.load("/assets/null.png");
+    private static final BufferedImage NULL_IMAGE = Load.image("/assets/null.png");
     // colori per la visualizzazione della collisione
     private static final Color bg = new Color(31, 205, 242, 80);
     private List<Layer> drawOrder;
-
 
     public ChamberView() {
         setOpaque(false);
         RenderManager.addToRender(this);
     }
-
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -101,13 +100,8 @@ public class ChamberView extends JPanel implements Render {
         }
     }
 
-    public void setDrawOrder(List<Layer> drawOrder) {
-        this.drawOrder = drawOrder;
-    }
-
+    public void setDrawOrder(List<Layer> drawOrder) { this.drawOrder = drawOrder; }
 
     @Override
-    public void render(double delta) {
-        repaint();
-    }
+    public void render(double delta) { repaint(); }
 }

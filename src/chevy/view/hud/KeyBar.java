@@ -14,7 +14,7 @@ public class KeyBar extends CounterBar {
         setTexture(MyPanelUI.BAR_L, KEY_BAR_PATH + "key/leftBar.png");
         setTexture(MyPanelUI.BAR_R, KEY_BAR_PATH + "rightBar.png");
         setTexture(MyPanelUI.CENTER, KEY_BAR_PATH + "centerPanel.png");
-        setFont("fonts/superstar_2/superstar_memesbruh03.ttf");
+        setFont("superstar_2/superstar_memesbruh03");
         setOffsetY(2);
         setFontSize(10);
     }

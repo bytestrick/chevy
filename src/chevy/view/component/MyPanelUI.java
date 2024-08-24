@@ -2,7 +2,7 @@ package chevy.view.component;
 
 
 
-import chevy.utils.Image;
+import chevy.utils.Load;
 
 import javax.swing.*;
 import javax.swing.plaf.PanelUI;
@@ -55,7 +55,7 @@ public class MyPanelUI extends PanelUI {
             return;
         }
 
-        texture[i] = Image.load(path);
+        texture[i] = Load.image(path);
         textureWidth[i] = (int) (texture[i].getWidth() * scale);
         textureHeight[i] = (int) (texture[i].getHeight() * scale);
     }

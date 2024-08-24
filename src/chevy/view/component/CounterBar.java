@@ -1,13 +1,13 @@
 package chevy.view.component;
 
 import chevy.settings.WindowSettings;
-import chevy.utils.Fontt;
+import chevy.utils.Load;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class CounterBar extends JPanel {
-    private int counter = 0;
+    private final int counter = 0;
     private final JLabel text = new JLabel(String.valueOf(counter), SwingConstants.RIGHT);
     private final MyPanelUI ui;
     private int rightSpace = 0;
@@ -15,7 +15,7 @@ public class CounterBar extends JPanel {
     private final SpringLayout springLayout;
     private Font font;
     private int fontSize = 13;
-    private float scale = 1f;
+    private final float scale;
     private int offsetY = 0;
 
 
@@ -63,7 +63,7 @@ public class CounterBar extends JPanel {
     }
 
     public void setFont(String path) {
-        font = Fontt.load(path);
+        font = Load.font(path);
         resizeFont();
     }
 

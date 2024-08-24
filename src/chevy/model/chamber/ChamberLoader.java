@@ -21,7 +21,7 @@ import java.io.IOException;
  * Carica le Chamber del gioco.
  * Utilizza le immagini per determinare la disposizione delle entità all'interno di ogni stanza.
  */
-public class LoadChamber {
+public class ChamberLoader {
     private static final String CHAMBER_PATH = "src/res/chambers/chamber";
     private static final String LAYER_FILE = "/layer";
     private static final String LAYER_FILE_EXTENSION = ".png";
@@ -39,19 +39,18 @@ public class LoadChamber {
         try {
             chamberImage = ImageIO.read(new File(chamberPath));
         } catch (IOException ignored) {
-            Log.warn(chamberPath + ": il layer" + layer + ".png non è stato caricato");
+            Log.warn(chamberPath + ": il layer" + ".png non è stato caricato");
         }
         return chamberImage;
     }
 
     /**
-     * Carica una stanza nel gioco.
+     * Carica una stanza nel gioco
      *
-     * @param nChamber Il numero della stanza da caricare.
-     * @param chamber  La stanza in cui caricare le entità.
+     * @param nChamber Il numero della stanza da caricare (livello)
      * @return true se la stanza è stata caricata correttamente, false altrimenti
      */
-    public static boolean loadChamber(int nChamber, Chamber chamber) {
+    public static boolean loadChamber(final int nChamber, Chamber chamber) {
         int layer = 0;
         BufferedImage chamberImage = loadLayer(nChamber, layer);
 

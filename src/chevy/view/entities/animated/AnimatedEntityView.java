@@ -2,7 +2,7 @@ package chevy.view.entities.animated;
 
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.stateMachine.GlobalState;
-import chevy.utils.Image;
+import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.utils.Pair;
 import chevy.utils.Vector2;
@@ -68,7 +68,7 @@ public abstract class AnimatedEntityView extends EntityView {
 
     protected void initAnimation(AnimatedSprite animation, String folderPath, String extension) {
         for (int i = 0; i < animation.getNFrame(); ++i) {
-            animation.addFrame(i, Image.load(folderPath + "/" + i + extension));
+            animation.addFrame(i, Load.image(folderPath + "/" + i + extension));
         }
         addAnimation(animation.getAnimationTypes(), animation);
     }

@@ -48,7 +48,7 @@ public class ChamberManager {
         }
 
         Chamber chamber = new Chamber();
-        boolean loaded = LoadChamber.loadChamber(n, chamber);
+        boolean loaded = ChamberLoader.loadChamber(n, chamber);
         chambers.add(chamber);
         return loaded;
     }
