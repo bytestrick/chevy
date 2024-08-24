@@ -14,7 +14,7 @@ public class CoinBar extends CounterBar {
         setTexture(MyPanelUI.BAR_L, COIN_BAR_PATH + "coin/leftBar.png");
         setTexture(MyPanelUI.BAR_R, COIN_BAR_PATH + "rightBar.png");
         setTexture(MyPanelUI.CENTER, COIN_BAR_PATH + "centerPanel.png");
-        setFont("fonts/superstar_2/superstar_memesbruh03.ttf");
+        setFont("superstar_2/superstar_memesbruh03");
         setOffsetY(2);
         setFontSize(10);
     }

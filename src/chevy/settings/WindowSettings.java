@@ -11,8 +11,8 @@ public class WindowSettings {
 
 
 //    Questo approccio mantiene l'aspect-ratio impostato.
-    private static final int ASPECT_RATIO_W = 4;
-    private static final int ASPECT_RATIO_H = 3;
+    private static final int ASPECT_RATIO_W = 1;
+    private static final int ASPECT_RATIO_H = 1;
     private static final int MAX_WINDOW_SIZE = Math.round(Math.min(MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT) * WINDOW_SCALE);
     public static int WINDOW_HEIGHT = MAX_WINDOW_WIDTH >= MAX_WINDOW_HEIGHT ?
             MAX_WINDOW_SIZE :

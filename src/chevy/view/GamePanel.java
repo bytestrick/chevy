@@ -1,20 +1,28 @@
 package chevy.view;
 
+import chevy.service.GameLoop;
+import chevy.service.Sound;
 import chevy.settings.WindowSettings;
+import chevy.utils.Load;
 import chevy.view.chamber.ChamberView;
 import chevy.view.hud.HUDView;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 import java.awt.Color;
-import java.awt.event.KeyListener;
+import java.awt.Image;
 
 public class GamePanel extends JPanel {
-    private final ChamberView chamberView;
-    private final HUDView hudView;
+    private final static ImageIcon playPause =
+            new ImageIcon(Load.image("/assets/icons/PlayPause.png").getScaledInstance(48, 48, Image.SCALE_SMOOTH));
+    private final ChamberView chamberView = new ChamberView();
+    private final HUDView hudView = new HUDView(3.0f);
+    private final Window window;
 
-    public GamePanel() {
-        this.chamberView = new ChamberView();
-        this.hudView = new HUDView(1.5f);
+    public GamePanel(Window window) {
+        this.window = window;
 
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
@@ -34,9 +42,36 @@ public class GamePanel extends JPanel {
         setBackground(Color.BLACK);
     }
 
-    public void addKeyBoardListener(KeyListener keyboardListener) {
-        addKeyListener(keyboardListener);
-        requestFocus();
+    public void pauseDialog() {
+        window.setTitle("Chevy - Pausa");
+        GameLoop.getInstance().pause();
+        Sound.getInstance().pauseMusic();
+        switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa fare.", "Chevy - Pausa (dialogo)", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE, playPause, new String[]{"Esci", "Opzioni", "Torna al menù", "Riprendi"},
+                "Riprendi")) {
+            case 0 -> {
+                if (window.quitAction()) {
+                    pauseDialog(); // Ricorsione ☺️
+                }
+            }
+            case 1 -> {
+                GameLoop.getInstance().pause();
+                Sound.getInstance().pauseMusic();
+                window.setScene(Window.Scene.OPTIONS);
+            }
+            case 2 -> {
+                window.setScene(Window.Scene.MENU);
+                // TODO: salvare il progresso qui
+                GameLoop.getInstance().stop();
+                Sound.getInstance().cancelMusic();
+            }
+            default -> { // case 3
+                // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
+                GameLoop.getInstance().resume();
+                Sound.getInstance().resumeMusic();
+                window.setTitle("Chevy");
+            }
+        }
     }
 
     public void windowResized() {
@@ -44,11 +79,7 @@ public class GamePanel extends JPanel {
         hudView.windowResized(scale);
     }
 
-    public ChamberView getChamberView() {
-        return chamberView;
-    }
+    public ChamberView getChamberView() { return chamberView; }
 
-    public HUDView getHudView() {
-        return hudView;
-    }
+    public HUDView getHudView() { return hudView; }
 }

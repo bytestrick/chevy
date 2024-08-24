@@ -1,6 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.Sound;
+import chevy.service.Sound;
 import chevy.control.PlayerController;
 import chevy.model.entity.collectable.powerUp.HobnailBoots;
 import chevy.model.entity.collectable.powerUp.PowerUp;

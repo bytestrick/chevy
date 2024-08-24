@@ -1,6 +1,6 @@
 package chevy.control;
 
-import chevy.Sound;
+import chevy.service.Sound;
 import chevy.control.collectableController.CollectableController;
 import chevy.control.enemyController.EnemyController;
 import chevy.control.environmentController.EnvironmentController;
@@ -31,6 +31,7 @@ import chevy.service.Update;
 import chevy.service.UpdateManager;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
+import chevy.view.GamePanel;
 
 import java.awt.event.KeyEvent;
 
@@ -50,11 +51,13 @@ public class PlayerController implements Update {
     private EnvironmentController environmentController;
     private HUDController hudController;
     private boolean updateFinished = false;
+    private final GamePanel gamePanel;
 
     /**
      * @param chamber riferimento alla stanza di gioco
      */
-    public PlayerController(Chamber chamber) {
+    public PlayerController(Chamber chamber, GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
         this.chamber = chamber;
         this.player = chamber.getPlayer();
 
@@ -79,17 +82,20 @@ public class PlayerController implements Update {
 
         final int key = keyEvent.getKeyCode();
 
-        final DirectionsModel direction = switch (key) {
-            case KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_I -> DirectionsModel.UP;
-            case KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_J -> DirectionsModel.LEFT;
-            case KeyEvent.VK_S, KeyEvent.VK_DOWN, KeyEvent.VK_K -> DirectionsModel.DOWN;
-            case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> DirectionsModel.RIGHT;
-            default -> null;
-        };
-
-        if (direction != null) {
-            boolean attack = key >= KeyEvent.VK_I && key <= KeyEvent.VK_L;
-            handleInteraction(InteractionType.KEYBOARD, direction, attack);
+        if (key == KeyEvent.VK_ESCAPE) {
+            gamePanel.pauseDialog();
+        } else {
+            final DirectionsModel direction = switch (key) {
+                case KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_I -> DirectionsModel.UP;
+                case KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_J -> DirectionsModel.LEFT;
+                case KeyEvent.VK_S, KeyEvent.VK_DOWN, KeyEvent.VK_K -> DirectionsModel.DOWN;
+                case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> DirectionsModel.RIGHT;
+                default -> null;
+            };
+            if (direction != null) {
+                final boolean attack = key >= KeyEvent.VK_I && key <= KeyEvent.VK_L;
+                handleInteraction(InteractionType.KEYBOARD, direction, attack);
+            }
         }
     }
 

@@ -2,7 +2,7 @@ package chevy.view.component;
 
 
 import chevy.settings.WindowSettings;
-import chevy.utils.Image;
+import chevy.utils.Load;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,7 +44,7 @@ public class ImageVisualizer extends JComponent {
     }
 
     public void setImage(String path, float scale) {
-        setImage(Image.load(path), scale);
+        setImage(Load.image(path), scale);
     }
 
     public void setImage(String path) {

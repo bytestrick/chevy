@@ -1,19 +1,11 @@
-package chevy;
+package chevy.service;
 
 import chevy.utils.Log;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
 import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Random;
+import chevy.utils.Load;
 
 public class Sound {
     private static Sound instance = null;
@@ -27,14 +19,17 @@ public class Sound {
     private float musicGainPercent = .4f; // valore predefinito volume musica
 
     private Sound() {
-        Log.info(getClass() + ": inizializzazione");
         final Effect[] e = Effect.values();
         for (int i = 0; i < e.length; ++i) {
-            effects[i] = loadClip(e[i].toString().toLowerCase());
+            try (Clip clip = Load.clip(e[i].toString().toLowerCase())) {
+                effects[i] = clip;
+            }
         }
         final Song[] s = Song.values();
         for (int i = 0; i < s.length; ++i) {
-            songs[i] = loadClip(s[i].toString().toLowerCase());
+            try (Clip clip = Load.clip(s[i].toString().toLowerCase())) {
+                songs[i] = clip;
+            }
         }
         setMusicVolume(musicGainPercent);
         setEffectsVolume(effectGainPercent);
@@ -54,30 +49,6 @@ public class Sound {
         gainControl.setValue((beg + end) * percentage - beg);
     }
 
-    private Clip loadClip(final String prefix) {
-        try {
-            URL path = getClass().getResource("/assets/sound/" + prefix + ".wav");
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(Objects.requireNonNull(path));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            return clip;
-        } catch (NullPointerException | IOException | UnsupportedAudioFileException e) {
-            Log.error(getClass() + ": caricamento traccia fallito: " + prefix + " (" + e.getMessage() + ")");
-            System.exit(1);
-        } catch (LineUnavailableException e) {
-            Log.error(getClass() + ": " + prefix + ": " + e.getMessage());
-            final DataLine.Info dataLineInfo;
-            try {
-                dataLineInfo = (DataLine.Info) AudioSystem.getClip().getLineInfo();
-            } catch (LineUnavailableException ex) {
-                throw new RuntimeException(ex);
-            }
-            Log.info("I tipi di DataLine supportati su questa macchina sono:");
-            Arrays.stream(dataLineInfo.getFormats()).forEach(format -> Log.info(format.toString()));
-            System.exit(1);
-        }
-        return null;
-    }
 
     public void play(Effect effect) {
         Clip clip = effects[effect.ordinal()];
@@ -121,7 +92,8 @@ public class Sound {
         }
         musicWorkerRunning = true;
         musicPlaying = true;
-        Thread.ofPlatform().name("Music Worker").start(() -> {
+        Thread.ofPlatform().start(() -> {
+            Log.info("Thread per la musica avviato");
             random.setSeed(Thread.currentThread().threadId());
             int i = random.nextInt(songs.length);
             songs[i].setFramePosition(0);
@@ -142,6 +114,7 @@ public class Sound {
                                 break;
                             }
                         }
+                        // FIXME: la prossima canzone deve essere scelta a Random
                         i = (i + 1) % songs.length;
                         songs[i].setFramePosition(0);
                         Log.info(getClass() + ": canzone successiva");
@@ -150,7 +123,7 @@ public class Sound {
                     }
                 }
             }
-            Log.info(Thread.currentThread().getName() + " termina");
+            Log.info("Thread per la musica terminato");
         });
     }
 
@@ -164,9 +137,7 @@ public class Sound {
 
     public void resumeMusic() {
         synchronized (musicMutex) {
-            if (musicPlaying) {
-                Log.warn(getClass() + ": la musica è già in riproduzione.");
-            } else {
+            if (!musicPlaying) {
                 musicPlaying = true;
                 musicMutex.notify();
             }
@@ -178,8 +149,6 @@ public class Sound {
             if (musicPlaying) {
                 musicPlaying = false;
                 musicMutex.notify();
-            } else {
-                Log.warn(getClass() + ": la musica è già in pausa.");
             }
         }
     }

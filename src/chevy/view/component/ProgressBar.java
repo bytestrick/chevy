@@ -2,7 +2,7 @@ package chevy.view.component;
 
 
 import chevy.settings.WindowSettings;
-import chevy.utils.Image;
+import chevy.utils.Load;
 import chevy.utils.Log;
 
 import javax.swing.*;
@@ -109,7 +109,7 @@ public class ProgressBar extends JPanel {
     }
 
     public void setStepTexture(String path) {
-        stepTexture = Image.load(path);
+        stepTexture = Load.image(path);
     }
 
     private void addStep() {

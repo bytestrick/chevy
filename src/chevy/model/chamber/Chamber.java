@@ -638,7 +638,7 @@ public class Chamber {
 
     public List<Environment> getEnvironment() { return environments; }
 
-    public void addEntityToDraw(Entity entity, int layer) { drawOrderChamber.add(entity, layer); }
+    private void addEntityToDraw(Entity entity, int layer) { drawOrderChamber.add(entity, layer); }
 
     public List<Layer> getDrawOrderChamber() { return Collections.unmodifiableList(drawOrderChamber.getDrawOrder()); }
 }
