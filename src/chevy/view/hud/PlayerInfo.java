@@ -1,7 +1,5 @@
 package chevy.view.hud;
 
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -44,13 +42,6 @@ public class PlayerInfo extends JPanel {
         shieldBar.windowResized(scale);
         attackBar.windowResized(scale);
         playerFrame.windowResized(scale);
-    }
-
-    public void setPlayer(Player player) {
-        healthBar.setMaxValue(player.getCurrentHealth());
-        shieldBar.setMaxValue(player.getCurrentShield());
-        attackBar.setMaxValue(player.getMaxDamage());
-        attackBar.setText(player.getMinDamage() + " ~ " + player.getMaxDamage());
     }
 
     public HealthBar getHealthBar() {

@@ -14,13 +14,13 @@ import chevy.model.entity.collectable.powerUp.HedgehogSpines;
 import chevy.model.entity.collectable.powerUp.HolyShield;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.collectable.powerUp.VampireFangs;
-import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.projectile.Arrow;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.DynamicEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.projectile.Arrow;
+import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
@@ -57,6 +57,7 @@ public class PlayerController implements Update {
     public PlayerController(Chamber chamber) {
         this.chamber = chamber;
         this.player = chamber.getPlayer();
+
         this.enemyController = null;
         this.trapsController = null;
         this.projectileController = null;
@@ -472,6 +473,12 @@ public class PlayerController implements Update {
     public void setHUDController(HUDController hudController) {
         if (this.hudController == null) {
             this.hudController = hudController;
+            hudController.changeMaxHealth(player.getCurrentHealth(), player.getHealth());
+            hudController.changeHealth(player.getCurrentHealth());
+            hudController.changeMaxShield(player.getCurrentShield(), player.getShield());
+            hudController.changeShield(player.getCurrentShield());
+            hudController.changeMaxAttack(player.getMaxDamage());
+            hudController.setTextAttackBar(player.getMinDamage() + " ~ " + player.getMaxDamage());
         }
     }
 }

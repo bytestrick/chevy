@@ -1,7 +1,7 @@
-package chevy.model.entity.dinamicEntity.liveEntity;
+package chevy.model.entity.dynamicEntity.liveEntity;
 
 import chevy.model.entity.CommonEntityType;
-import chevy.model.entity.dinamicEntity.DynamicEntity;
+import chevy.model.entity.dynamicEntity.DynamicEntity;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
 

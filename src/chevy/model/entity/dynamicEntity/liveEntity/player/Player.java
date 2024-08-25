@@ -1,8 +1,8 @@
-package chevy.model.entity.dinamicEntity.liveEntity.player;
+package chevy.model.entity.dynamicEntity.liveEntity.player;
 
 import chevy.model.entity.CommonEntityType;
 import chevy.model.entity.collectable.powerUp.PowerUp;
-import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Log;
 import chevy.utils.Vector2;

@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.environmet;
 
-import chevy.model.entity.dinamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.DirectionsModel;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.staticEntity.environment.Stair;
 import chevy.utils.Vector2;

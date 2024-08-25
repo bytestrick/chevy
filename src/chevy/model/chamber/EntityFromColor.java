@@ -3,16 +3,16 @@ package chevy.model.chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.*;
 import chevy.model.entity.collectable.powerUp.*;
-import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Archer;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
+import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Beetle;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.BigSlime;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Skeleton;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Wraith;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Zombie;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Archer;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Ninja;
 import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Ground;
 import chevy.model.entity.staticEntity.environment.Stair;
@@ -82,8 +82,11 @@ public class EntityFromColor {
 
     // Players
     private static final int KNIGHT = 1;
+    private static final Knight knight = new Knight(new Vector2<>(0, 0));
     private static final int ARCHER = 2;
+    private static final Archer archer = new Archer(new Vector2<>(0, 0));
     private static final int NINJA = 3;
+    private static final Ninja ninja = new Ninja(new Vector2<>(0, 0));
 
     // Enemy
     private static final int WRAITH = 150;
@@ -189,9 +192,18 @@ public class EntityFromColor {
             case TOTEM_LEFT -> new Totem(startPosition, DirectionsModel.LEFT);
 
             // Player
-            case KNIGHT -> new Knight(startPosition);
-            case ARCHER -> new Archer(startPosition);
-            case NINJA -> new Ninja(startPosition);
+            case KNIGHT -> {
+                knight.changePosition(startPosition);
+                yield knight;
+            }
+            case ARCHER -> {
+                archer.changePosition(startPosition);
+                yield archer;
+            }
+            case NINJA -> {
+                ninja.changePosition(startPosition);
+                yield ninja;
+            }
 
             // Enemy
             case WRAITH -> new Wraith(startPosition);

@@ -48,7 +48,7 @@ public class GamePanel extends JPanel {
         return chamberView;
     }
 
-    public HUDView getHud() {
+    public HUDView getHudView() {
         return hudView;
     }
 }

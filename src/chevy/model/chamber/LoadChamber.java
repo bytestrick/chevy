@@ -2,11 +2,11 @@ package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.Collectable;
-import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dynamicEntity.DynamicEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.utils.Log;
@@ -69,17 +69,20 @@ public class LoadChamber {
                     if (r != 0) {
                         Entity entity = EntityFromColor.get(r, i, j);
                         assert entity != null;
-                        chamber.addEntityOnTop(entity);
                         switch (entity.getGenericType()) {
                             case Environment.Type.TRAP -> chamber.addTraps((Trap) entity);
                             case DynamicEntity.Type.PROJECTILE -> chamber.addProjectile((Projectile) entity);
                             case LiveEntity.Type.ENEMY -> chamber.addEnemy((Enemy) entity);
-                            case LiveEntity.Type.PLAYER -> chamber.setPlayer((Player) entity);
+                            case LiveEntity.Type.PLAYER -> {
+                                entity.setToDraw(false);
+                                chamber.setPlayer((Player) entity);
+                            }
                             case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
                                     chamber.addCollectable((Collectable) entity);
                             case Entity.Type.ENVIRONMENT -> chamber.addEnvironment((Environment) entity);
                             default -> { }
                         }
+                        chamber.addEntityOnTop(entity);
                     }
                 }
             }

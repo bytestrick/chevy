@@ -9,12 +9,12 @@ import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.collectable.powerUp.SlimePiece;
-import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.DynamicEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -602,7 +602,9 @@ public class Chamber {
 
     public Player getPlayer() { return this.player; }
 
-    public void setPlayer(Player player) { this.player = player; }
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
     public void addEnemy(Enemy enemy) {
         this.enemies.add(enemy);

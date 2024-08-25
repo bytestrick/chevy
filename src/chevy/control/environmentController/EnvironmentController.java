@@ -5,7 +5,7 @@ import chevy.control.HUDController;
 import chevy.control.InteractionType;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.Stair;

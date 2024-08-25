@@ -2,7 +2,7 @@ package chevy.control.trapsController;
 
 import chevy.Sound;
 import chevy.model.chamber.Chamber;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.Sludge;
 
 /**

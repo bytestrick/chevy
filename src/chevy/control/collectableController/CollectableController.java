@@ -10,7 +10,7 @@ import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 
 
 public class CollectableController {

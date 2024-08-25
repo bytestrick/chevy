@@ -1,10 +1,10 @@
-package chevy.model.entity.dinamicEntity.liveEntity.player;
+package chevy.model.entity.dynamicEntity.liveEntity.player;
 
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
-public class Archer extends Player {
+public class Knight extends Player {
     private final GlobalState idle;
     private final GlobalState move;
     private final GlobalState attack;
@@ -14,22 +14,22 @@ public class Archer extends Player {
     private final GlobalState sludge;
     private final GlobalState fall;
 
-    public Archer(Vector2<Integer> initPosition) {
-        super(initPosition, Type.ARCHER);
+    public Knight(Vector2<Integer> initPosition) {
+        super(initPosition, Type.KNIGHT);
 
-        this.speed = .2f;
-        this.health = 8;
+        this.speed = .3f;
+        this.health = 10;
         this.currentHealth = health;
-        this.shield = 0;
+        this.shield = 5;
         this.currentShield = shield;
-        this.maxDamage = 10;
-        this.minDamage = 6;
+        this.maxDamage = 7;
+        this.minDamage = 5;
 
         this.idle = new GlobalState(State.IDLE);
         this.move = new GlobalState(State.MOVE, speed);
         this.attack = new GlobalState(State.ATTACK, .5f, true);
         this.hit = new GlobalState(State.HIT, .2f);
-        this.dead = new GlobalState(State.DEAD, .3f);
+        this.dead = new GlobalState(State.DEAD, .6f);
         this.glide = new GlobalState(State.GLIDE, speed, true);
         this.sludge = new GlobalState(State.SLUDGE, speed);
         this.fall = new GlobalState(State.FALL);
@@ -44,6 +44,7 @@ public class Archer extends Player {
         hit.linkState(idle);
         hit.linkState(dead);
         hit.linkState(move);
+        hit.linkState(fall);
         move.linkState(glide);
         move.linkState(hit);
         move.linkState(fall);
@@ -52,17 +53,16 @@ public class Archer extends Player {
         move.linkState(attack);
         attack.linkState(idle);
         attack.linkState(move);
-        attack.linkState((hit));
+        attack.linkState(hit);
         glide.linkState(idle);
         glide.linkState(fall);
         glide.linkState(hit);
         glide.linkState(sludge);
         sludge.linkState(idle);
         fall.linkState(idle);
-        fall.linkState(hit);
         fall.linkState(dead);
 
-        stateMachine.setStateMachineName("Archer");
+        stateMachine.setStateMachineName("Knight");
         stateMachine.setInitialState(idle);
     }
 

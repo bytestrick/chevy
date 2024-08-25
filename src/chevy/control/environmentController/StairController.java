@@ -13,7 +13,6 @@ public class StairController {
         this.chamberController = chamberController;
     }
 
-
     public void playerInInteraction(Stair stair) {
         if (stair.getCurrentState() == Stair.State.IDLE_ENTRY)
             chamberController.changeNextChamber();

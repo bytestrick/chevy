@@ -1,7 +1,7 @@
 package chevy.control.enemyController;
 
 import chevy.control.InteractionType;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
 
@@ -15,9 +15,11 @@ import java.util.List;
  * Gestisce l'aggiunta, l'aggiornamento e la rimozione dei nemici dall'aggiornamento.
  */
 public class EnemyUpdateController implements Update {
+    private static boolean STOP_UPDATE = false;
     private final EnemyController enemyController;
     private final List<Enemy> enemies = new ArrayList<>();
     private final List<Enemy> enemiesToAdd;
+    private boolean updateFinished = false;
 
     /**
      * @param enemyController il controller dei nemici responsabile della gestione delle interazioni.
@@ -46,6 +48,8 @@ public class EnemyUpdateController implements Update {
      */
     @Override
     public void update(double delta) {
+        if (STOP_UPDATE) return;
+
         addEnemies();
 
         // Itera attraverso la lista dei nemici per aggiornarli e rimuove quelli che devono essere rimossi.
@@ -59,6 +63,18 @@ public class EnemyUpdateController implements Update {
         }
     }
 
+    public void updateTerminate() {
+        updateFinished = true;
+    }
+
+    public static void stopUpdate() {
+        STOP_UPDATE = true;
+    }
+
+    public static void runUpdate() {
+        STOP_UPDATE = false;
+    }
+
     /**
      * Verifica se l'aggiornamento è terminato, ovvero se non ci sono più nemici da aggiornare.
      *
@@ -66,6 +82,6 @@ public class EnemyUpdateController implements Update {
      */
     @Override
     public boolean updateFinished() {
-        return enemies.isEmpty();
+        return enemies.isEmpty() || updateFinished;
     }
 }

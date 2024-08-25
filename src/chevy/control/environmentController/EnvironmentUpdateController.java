@@ -13,6 +13,7 @@ public class EnvironmentUpdateController implements Update {
     private final EnvironmentController environmentController;
     private final List<Environment> environments = new ArrayList<>();
     private final List<Environment> environmentsToAdd;
+    private boolean updateFinished = false;
 
     /**
      * @param environmentController il controller delle ceste per gestire gli aggiornamenti delle ceste
@@ -57,12 +58,16 @@ public class EnvironmentUpdateController implements Update {
         }
     }
 
+    public void updateTerminate() {
+        updateFinished = true;
+    }
+
     /**
      * Verifica se gli aggiornamenti delle ceste sono terminati.
      * @return true se non ci sono più trappole da aggiornare, altrimenti false
      */
     @Override
     public boolean updateFinished() {
-        return environments.isEmpty();
+        return environments.isEmpty() || updateFinished;
     }
 }
