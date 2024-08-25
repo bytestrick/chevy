@@ -1,8 +1,8 @@
 package chevy.view.entities.animated.player;
 
-import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Ninja;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Log;
 import chevy.utils.Vector2;

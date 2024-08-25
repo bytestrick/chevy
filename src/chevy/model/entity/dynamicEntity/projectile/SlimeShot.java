@@ -1,6 +1,6 @@
-package chevy.model.entity.dinamicEntity.projectile;
+package chevy.model.entity.dynamicEntity.projectile;
 
-import chevy.model.entity.dinamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.DirectionsModel;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;

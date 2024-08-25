@@ -3,7 +3,6 @@ package chevy.control;
 import chevy.Sound;
 import chevy.model.chamber.ChamberManager;
 import chevy.view.Window;
-import chevy.view.chamber.ChamberView;
 import chevy.view.hud.HUDView;
 
 /**
@@ -19,12 +18,11 @@ public class GameController {
         this.keyboardListener = new KeyboardListener(window);
 
         // inizializzazione del controller della stanza
-        HUDView hudView = this.window.getGamePanel().getHud();
+        HUDView hudView = this.window.getGamePanel().getHudView();
         ChamberController chamberController = new ChamberController(this.window.getGamePanel().getChamberView(),
                 ChamberManager.getInstance().getCurrentChamber(), hudView);
         keyboardListener.setChamber(chamberController);
 
-        hudView.getPlayerInfo().setPlayer(chamberController.getChamber().getPlayer());
         Sound.getInstance().startMusic();
     }
 }

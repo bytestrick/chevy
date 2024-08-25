@@ -1,4 +1,4 @@
-package chevy.model.entity.dinamicEntity.liveEntity.player;
+package chevy.model.entity.dynamicEntity.liveEntity.player;
 
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.stateMachine.GlobalState;

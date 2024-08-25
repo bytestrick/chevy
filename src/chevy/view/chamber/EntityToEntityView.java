@@ -6,20 +6,20 @@ import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Archer;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.projectile.Arrow;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Beetle;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.BigSlime;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Skeleton;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Wraith;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Zombie;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Archer;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Ninja;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.projectile.Arrow;
+import chevy.model.entity.dynamicEntity.projectile.Projectile;
+import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
 import chevy.model.entity.staticEntity.environment.*;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.Sludge;
@@ -307,7 +307,7 @@ public class EntityToEntityView {
     /**
      * Ottieni la rappresentazione generica di un entità.
      */
-    public static <powerupview> EntityView getGeneric(Entity entity) {
+    public static EntityView getGeneric(Entity entity) {
         return switch (entity.getGenericType()) {
             case Environment.Type.WALL -> {
                 WallView wallView;

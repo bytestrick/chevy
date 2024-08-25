@@ -1,4 +1,4 @@
-package chevy.model.entity.dinamicEntity;
+package chevy.model.entity.dynamicEntity;
 
 import chevy.model.entity.Entity;
 import chevy.utils.Vector2;

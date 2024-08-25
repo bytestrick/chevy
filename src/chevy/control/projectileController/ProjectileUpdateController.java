@@ -1,7 +1,7 @@
 package chevy.control.projectileController;
 
 import chevy.control.InteractionType;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
 
@@ -14,6 +14,7 @@ import java.util.List;
  * Gestisce l'aggiunta, la rimozione e l'aggiornamento dei proiettili.
  */
 public class ProjectileUpdateController implements Update {
+    private static boolean STOP_UPDATE = false;
     /**
      * Controller dei proiettili per gestire gli aggiornamenti specifici dei proiettili.
      */
@@ -26,6 +27,7 @@ public class ProjectileUpdateController implements Update {
      * Lista temporanea dei proiettili da aggiungere alla lista principale.
      */
     private final List<Projectile> projectilesToAdd;
+    private boolean updateFinished = false;
 
     /**
      * @param projectileController controller dei proiettili per gestire gli aggiornamenti dei proiettili
@@ -49,6 +51,14 @@ public class ProjectileUpdateController implements Update {
         projectilesToAdd.clear(); // Pulisce la lista temporanea dopo aver aggiunto i proiettili
     }
 
+    public static void stopUpdate() {
+        STOP_UPDATE = true;
+    }
+
+    public static void runUpdate() {
+        STOP_UPDATE = false;
+    }
+
     /**
      * Metodo di aggiornamento chiamato a ogni ciclo di gioco per gestire gli aggiornamenti dei proiettili.
      *
@@ -56,6 +66,8 @@ public class ProjectileUpdateController implements Update {
      */
     @Override
     public void update(double delta) {
+        if (STOP_UPDATE) return;
+
         addProjectile(); // Aggiunge i proiettili alla lista principale prima dell'iterazione
 
         Iterator<Projectile> it = projectiles.iterator();
@@ -67,5 +79,14 @@ public class ProjectileUpdateController implements Update {
                 it.remove();
             }
         }
+    }
+
+    public void updateTerminate() {
+        updateFinished = true;
+    }
+
+    @Override
+    public boolean updateFinished() {
+        return updateFinished;
     }
 }

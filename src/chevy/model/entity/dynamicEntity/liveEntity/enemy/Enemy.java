@@ -1,13 +1,10 @@
-package chevy.model.entity.dinamicEntity.liveEntity.enemy;
+package chevy.model.entity.dynamicEntity.liveEntity.enemy;
 
 import chevy.model.entity.CommonEntityType;
 import chevy.model.entity.collectable.Collectable;
-import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class Enemy extends LiveEntity {
     /**
