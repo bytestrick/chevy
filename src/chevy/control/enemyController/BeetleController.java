@@ -5,11 +5,11 @@ import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
+import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Beetle;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.projectile.Projectile;
+import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
@@ -81,6 +81,7 @@ public class BeetleController {
             if (beetle.getState(Beetle.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(beetle);
                 beetle.removeToUpdate();
+                chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(beetle);
                 return;
             }

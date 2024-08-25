@@ -19,6 +19,7 @@ public class CollectableUpdateController implements Update {
     private final CollectableController collectableController;
     private final List<Collectable> collectables = new ArrayList<>();
     private final List<Collectable> collectablesToAdd;
+    private boolean updateFinished = false;
 
     /**
      * @param collectableController il controller degli oggetti collezionabili responsabile della gestione delle interazioni.
@@ -57,5 +58,14 @@ public class CollectableUpdateController implements Update {
                 it.remove();
             }
         }
+    }
+
+    public void updateTerminate() {
+        updateFinished = true;
+    }
+
+    @Override
+    public boolean updateFinished() {
+        return updateFinished;
     }
 }

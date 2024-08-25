@@ -5,10 +5,10 @@ import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Zombie;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.utils.Log;
 
@@ -65,6 +65,7 @@ public class ZombieController {
             if (zombie.getState(Zombie.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(zombie);
                 zombie.removeToUpdate();
+                chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(zombie);
                 return;
             }

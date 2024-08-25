@@ -9,12 +9,12 @@ import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.collectable.powerUp.SlimePiece;
-import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.DynamicEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -41,12 +41,8 @@ public class Chamber {
     private final List<Enemy> enemies = new LinkedList<>(); // Nemici nella stanza
     private final List<Trap> traps = new LinkedList<>(); // Trappole nella stanza
     private final List<Projectile> projectiles = new LinkedList<>(); // Proiettili nella stanza
-
-    /**
-     * Lista che tiene traccia degli oggetti collezionabili presenti nella stanza.
-     */
-    private final List<Collectable> collectables = new LinkedList<>();
-    private final List<Environment> environments = new LinkedList<>();
+    private final List<Collectable> collectables = new LinkedList<>(); // collezionabili nella stanza
+    private final List<Environment> environments = new LinkedList<>(); // elementi dinamici dell'ambiente nella stanza (ceste, scale)
     /**
      * Una struttura dati tridimensionale che rappresenta la griglia di gioco.
      * Ogni cella della griglia può contenere una lista di entità.
@@ -57,6 +53,7 @@ public class Chamber {
     private int nCols; // Colonne della griglia di gioco
     private boolean init = false; // Indica se il mondo è stato inizializzato
     private Player player; // Il giocatore attuale
+    private int enemyCounter = 0;
 
     /**
      * Inizializza la griglia di gioco con le dimensioni specificate e aggiorna le impostazioni di gioco.
@@ -238,7 +235,7 @@ public class Chamber {
     /**
      * Data un entità ritorna la direzione in cui bisogna avanzare per incontrare il player.
      *
-     * @param entity       entità da considerare per il calcolo della direzione
+     * @param entity entità da considerare per il calcolo della direzione
      * @param distanceCell offset che considera le celle più avanti rispetto alla direzione selezionata
      * @return direzione in cui si trova il player
      */
@@ -264,7 +261,7 @@ public class Chamber {
      * Sposta un entità dinamica nella cella successiva in corrispondenza della direzione selezionata.
      *
      * @param dynamicEntity entità dinamica da spostare
-     * @param direction     direzione in cui l'entità dinamica si deve spostare
+     * @param direction direzione in cui l'entità dinamica si deve spostare
      */
     public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity, DirectionsModel direction) {
         Vector2<Integer> nextPosition = new Vector2<>(dynamicEntity.getRow() + direction.row(),
@@ -284,7 +281,7 @@ public class Chamber {
      * Sposta un entità dinamica alla cella presente nella posizione data.
      *
      * @param dynamicEntity entità dinamica da spostare
-     * @param nextPosition  posizione in cui è presente la cella
+     * @param nextPosition posizione in cui è presente la cella
      */
     public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity, Vector2<Integer> nextPosition) {
         DirectionsModel direction = DirectionsModel.positionToDirection(new Vector2<>(dynamicEntity.getRow(),
@@ -308,7 +305,7 @@ public class Chamber {
     /**
      * Trova e rimuove un'entità dalla griglia di gioco.
      *
-     * @param entity    entità da rimuovere
+     * @param entity entità da rimuovere
      * @param setToDraw booleana che in base al valore permette all'entità di essere mostrata a schermo
      * @return true se è stata rimossa, false altrimenti
      */
@@ -320,6 +317,7 @@ public class Chamber {
             if (entity.equals(entity2)) {
                 entity.setToDraw(setToDraw);
                 it.remove();
+
                 return true;
             }
         }
@@ -503,7 +501,7 @@ public class Chamber {
      * altrimenti segue il percorso minore per raggiungere il giocatore. Usa {@link #moveRandom(Enemy)} per il
      * movimento random.
      *
-     * @param enemy       nemico da spostare
+     * @param enemy nemico da spostare
      * @param rangeWander lato dell'area del quadrato
      * @return true se si sposta, false altrimenti
      */
@@ -536,7 +534,7 @@ public class Chamber {
     }
 
     /**
-     * Funzione usata per spostare segundo il percorso minore per raggiungere il giocatore.
+     * Funzione usata per spostare seguendo il percorso minore per raggiungere il giocatore.
      *
      * @param enemy nemico da spostare.
      * @return true se si sposta, false altrimenti.
@@ -592,6 +590,8 @@ public class Chamber {
         return index >= 0 ? entities.get(index) : null;
     }
 
+    // ----
+
     public synchronized List<List<List<Entity>>> getChamber() { return Collections.unmodifiableList(chamber); }
 
     public boolean isInitialized() { return init; }
@@ -602,9 +602,23 @@ public class Chamber {
 
     public Player getPlayer() { return this.player; }
 
-    public void setPlayer(Player player) { this.player = player; }
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
-    public void addEnemy(Enemy enemy) { this.enemies.add(enemy); }
+    public void addEnemy(Enemy enemy) {
+        this.enemies.add(enemy);
+        ++enemyCounter;
+    }
+
+    public void decreaseEnemyCounter() {
+        if (--enemyCounter < 0)
+            ++enemyCounter;
+    }
+
+    public int getEnemyCounter() {
+        return enemyCounter;
+    }
 
     public List<Enemy> getEnemies() { return this.enemies; }
 

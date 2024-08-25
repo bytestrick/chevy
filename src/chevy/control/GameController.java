@@ -17,15 +17,12 @@ public class GameController {
         this.window = window;
         this.keyboardListener = new KeyboardListener(window);
 
-        // collega al chamberView la stanza (con le entità ordinate in base al layer) da disegnare
-        this.window.getGamePanel().getChamberView().setDrawOrder(ChamberManager.getInstance().getCurrentChamber().getDrawOrderChamber());
-
         // inizializzazione del controller della stanza
-        HUDView hudView = this.window.getGamePanel().getHud();
-        ChamberController chamberController = new ChamberController(ChamberManager.getInstance().getCurrentChamber(), hudView);
+        HUDView hudView = this.window.getGamePanel().getHudView();
+        ChamberController chamberController = new ChamberController(this.window.getGamePanel().getChamberView(),
+                ChamberManager.getInstance().getCurrentChamber(), hudView);
         keyboardListener.setChamber(chamberController);
 
-        hudView.getPlayerInfo().setPlayer(chamberController.getChamber().getPlayer());
         Sound.getInstance().startMusic();
     }
 }

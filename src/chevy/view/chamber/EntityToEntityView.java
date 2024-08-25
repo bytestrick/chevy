@@ -6,35 +6,34 @@ import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Beetle;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.BigSlime;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Skeleton;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Slime;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Wraith;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Zombie;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Archer;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Knight;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Ninja;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.projectile.Arrow;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
-import chevy.model.entity.staticEntity.environment.Chest;
-import chevy.model.entity.staticEntity.environment.Environment;
-import chevy.model.entity.staticEntity.environment.Ground;
-import chevy.model.entity.staticEntity.environment.Wall;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Beetle;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.BigSlime;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Skeleton;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Slime;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Wraith;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Zombie;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Archer;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Ninja;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.projectile.Arrow;
+import chevy.model.entity.dynamicEntity.projectile.Projectile;
+import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
+import chevy.model.entity.staticEntity.environment.*;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.Sludge;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
+import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.view.entities.EntityView;
-import chevy.view.entities.GroundView;
-import chevy.view.entities.TrapView;
-import chevy.view.entities.WallView;
-import chevy.view.entities.animated.ChestView;
+import chevy.view.entities.animated.environmet.StairView;
+import chevy.view.entities.environmet.GroundView;
+import chevy.view.entities.environmet.VoidView;
+import chevy.view.entities.environmet.WallView;
+import chevy.view.entities.animated.environmet.ChestView;
 import chevy.view.entities.animated.collectable.CoinView;
 import chevy.view.entities.animated.collectable.HealthView;
 import chevy.view.entities.animated.collectable.KeyView;
@@ -50,11 +49,11 @@ import chevy.view.entities.animated.player.KnightView;
 import chevy.view.entities.animated.player.NinjaView;
 import chevy.view.entities.animated.projectile.ArrowView;
 import chevy.view.entities.animated.projectile.SlimeShotView;
-import chevy.view.entities.animated.trap.IcyFloorView;
-import chevy.view.entities.animated.trap.SludgeView;
-import chevy.view.entities.animated.trap.SpikedFloorView;
-import chevy.view.entities.animated.trap.TotemView;
-import chevy.view.entities.animated.trap.TrapdoorView;
+import chevy.view.entities.animated.environmet.trap.IcyFloorView;
+import chevy.view.entities.animated.environmet.trap.SludgeView;
+import chevy.view.entities.animated.environmet.trap.SpikedFloorView;
+import chevy.view.entities.animated.environmet.trap.TotemView;
+import chevy.view.entities.animated.environmet.trap.TrapdoorView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -237,6 +236,16 @@ public class EntityToEntityView {
                 }
                 yield trapdoorView;
             }
+            case Trap.Type.VOID -> {
+                VoidView voidView = null;
+                if (entityView.containsKey(entity)) {
+                    voidView = (VoidView) entityView.get(entity);
+                } else {
+                    voidView = new VoidView((Void) entity);
+                    entityView.put(entity, voidView);
+                }
+                yield voidView;
+            }
 
             // COLLECTABLES
             case Collectable.Type.HEALTH -> {
@@ -271,7 +280,7 @@ public class EntityToEntityView {
             }
             default -> null;
 
-            // Chest
+            // Environment
             case Environment.Type.CHEST -> {
                 ChestView chestView = null;
                 if (entityView.containsKey(entity)) {
@@ -282,13 +291,23 @@ public class EntityToEntityView {
                 }
                 yield chestView;
             }
+            case Environment.Type.STAIR -> {
+                StairView stairView = null;
+                if (entityView.containsKey(entity)) {
+                    stairView = (StairView) entityView.get(entity);
+                } else {
+                    stairView = new StairView((Stair) entity);
+                    entityView.put(entity, stairView);
+                }
+                yield stairView;
+            }
         };
     }
 
     /**
      * Ottieni la rappresentazione generica di un entità.
      */
-    public static <powerupview> EntityView getGeneric(Entity entity) {
+    public static EntityView getGeneric(Entity entity) {
         return switch (entity.getGenericType()) {
             case Environment.Type.WALL -> {
                 WallView wallView;
@@ -309,16 +328,6 @@ public class EntityToEntityView {
                     entityView.put(entity, groundView);
                 }
                 yield groundView;
-            }
-            case Environment.Type.TRAP -> {
-                TrapView trapView;
-                if (entityView.containsKey(entity)) {
-                    trapView = (TrapView) entityView.get(entity);
-                } else {
-                    trapView = new TrapView((Trap) entity);
-                    entityView.put(entity, trapView);
-                }
-                yield trapView;
             }
             case Collectable.Type.POWER_UP -> {
                 PowerUpView powerUpView = null;

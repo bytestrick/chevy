@@ -28,7 +28,6 @@ public class ChamberManager {
 
     /**
      * Restituisce l'istanza Singleton di ChamberManager. Se non esiste, la crea.
-     *
      * @return L'istanza Singleton di ChamberManager
      */
     public static ChamberManager getInstance() {
@@ -40,7 +39,6 @@ public class ChamberManager {
 
     /**
      * Crea una nuova stanza se necessario e la aggiunge alla lista delle stanze.
-     *
      * @param n numero della stanza da creare (rappresenta il livello)
      * @return true se la stanza è stata creata e caricata correttamente, false altrimenti
      */
@@ -57,7 +55,6 @@ public class ChamberManager {
 
     /**
      * Restituisce la prossima stanza nel gioco.
-     *
      * @return La prossima stanza, o null se non è possibile creare la prossima stanza
      */
     public Chamber getNextChamber() {
@@ -71,7 +68,6 @@ public class ChamberManager {
 
     /**
      * Restituisce la stanza corrente nel gioco.
-     *
      * @return La stanza corrente, o null se non è possibile creare la stanza corrente
      */
     public Chamber getCurrentChamber() {

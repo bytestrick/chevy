@@ -16,6 +16,7 @@ public class TrapsUpdateController implements Update {
     private final TrapsController trapsController;
     private final List<Trap> traps = new ArrayList<>();
     private final List<Trap> trapsToAdd;
+    private boolean updateFinished = false;
 
     /**
      * @param trapsController il controller delle trappole per gestire gli aggiornamenti delle trappole
@@ -54,12 +55,16 @@ public class TrapsUpdateController implements Update {
         }
     }
 
+    public void updateTerminate() {
+        updateFinished = true;
+    }
+
     /**
      * Verifica se gli aggiornamenti delle trappole sono terminati.
      * @return true se non ci sono più trappole da aggiornare, altrimenti false
      */
     @Override
     public boolean updateFinished() {
-        return traps.isEmpty();
+        return traps.isEmpty() || updateFinished;
     }
 }

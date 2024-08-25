@@ -5,9 +5,9 @@ import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
+import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
 
 /**
  * Gestisce le interazioni e gli aggiornamenti specifici dei proiettili di tipo Slime Shot nel gioco.
