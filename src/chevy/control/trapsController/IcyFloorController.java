@@ -4,7 +4,7 @@ import chevy.Sound;
 import chevy.control.PlayerController;
 import chevy.model.entity.collectable.powerUp.HobnailBoots;
 import chevy.model.entity.collectable.powerUp.PowerUp;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 
 /**

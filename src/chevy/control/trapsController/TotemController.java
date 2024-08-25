@@ -1,8 +1,7 @@
 package chevy.control.trapsController;
 
 import chevy.model.chamber.Chamber;
-import chevy.model.entity.dinamicEntity.projectile.Arrow;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dynamicEntity.projectile.Arrow;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
 import chevy.utils.Vector2;
 

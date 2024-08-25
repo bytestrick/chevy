@@ -2,6 +2,7 @@ package chevy.view.chamber;
 
 import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.entity.Entity;
+import chevy.model.entity.dynamicEntity.DynamicEntity;
 import chevy.service.Render;
 import chevy.service.RenderManager;
 import chevy.settings.GameSettings;
@@ -20,7 +21,7 @@ import java.util.List;
  * Gestisce il disegno a schermo della stanza
  */
 public class ChamberView extends JPanel implements Render {
-    private static final boolean DRAW_COLLISIONS = false;
+    private static final boolean DRAW_COLLISIONS = true;
     private static final BufferedImage NULL_IMAGE = Image.load("/assets/null.png");
     // colori per la visualizzazione della collisione
     private static final Color bg = new Color(31, 205, 242, 80);
@@ -47,7 +48,7 @@ public class ChamberView extends JPanel implements Render {
 
                 // disegna lo sfondo della collisione
                 if (entity != null) {
-                    if (DRAW_COLLISIONS) {
+                    if (DRAW_COLLISIONS && entity instanceof DynamicEntity) {
                         g.setColor(bg);
                         g.fillRect(entity.getCol() * GameSettings.optimalCellSize + GameSettings.offsetW,
                                 entity.getRow() * GameSettings.optimalCellSize + GameSettings.offsetH,

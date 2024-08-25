@@ -5,9 +5,9 @@ import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.projectile.Arrow;
+import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dynamicEntity.projectile.Arrow;
 
 /**
  * Gestisce le frecce (Projectile) nel gioco, inclusa la gestione delle collisioni e degli aggiornamenti delle loro

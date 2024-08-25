@@ -6,12 +6,14 @@ import chevy.service.Update;
 import chevy.service.UpdateManager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class EnvironmentUpdateController implements Update {
     private final EnvironmentController environmentController;
     private final List<Environment> environments = new ArrayList<>();
     private final List<Environment> environmentsToAdd;
+    private boolean updateFinished = false;
 
     /**
      * @param environmentController il controller delle ceste per gestire gli aggiornamenti delle ceste
@@ -45,9 +47,19 @@ public class EnvironmentUpdateController implements Update {
     public void update(double delta) {
         addEnvironment();
 
-        for (Environment environment : environments) {
+        Iterator<Environment> it = environments.iterator();
+        while (it.hasNext()) {
+            Environment environment = it.next();
+            if (environment.canRemoveToUpdate()) {
+                it.remove();
+                return;
+            }
             environmentController.handleInteraction(InteractionType.UPDATE, environment, null);
         }
+    }
+
+    public void updateTerminate() {
+        updateFinished = true;
     }
 
     /**
@@ -56,6 +68,6 @@ public class EnvironmentUpdateController implements Update {
      */
     @Override
     public boolean updateFinished() {
-        return environments.isEmpty();
+        return environments.isEmpty() || updateFinished;
     }
 }

@@ -4,7 +4,7 @@ import chevy.control.HUDController;
 import chevy.Sound;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Health;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 
 public class HealthController {
     private final Chamber chamber;

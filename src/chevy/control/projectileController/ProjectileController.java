@@ -4,11 +4,11 @@ import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
-import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.projectile.Arrow;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
-import chevy.model.entity.dinamicEntity.projectile.SlimeShot;
+import chevy.model.entity.dynamicEntity.DynamicEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.projectile.Arrow;
+import chevy.model.entity.dynamicEntity.projectile.Projectile;
+import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
 
 /**
  * Gestisce le interazioni e gli aggiornamenti dei proiettili nel gioco, delegando la gestione specifica a controller

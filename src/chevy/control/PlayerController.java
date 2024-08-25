@@ -3,6 +3,7 @@ package chevy.control;
 import chevy.Sound;
 import chevy.control.collectableController.CollectableController;
 import chevy.control.enemyController.EnemyController;
+import chevy.control.environmentController.EnvironmentController;
 import chevy.control.projectileController.ProjectileController;
 import chevy.control.trapsController.TrapsController;
 import chevy.model.chamber.Chamber;
@@ -13,14 +14,15 @@ import chevy.model.entity.collectable.powerUp.HedgehogSpines;
 import chevy.model.entity.collectable.powerUp.HolyShield;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.collectable.powerUp.VampireFangs;
-import chevy.model.entity.dinamicEntity.DirectionsModel;
-import chevy.model.entity.dinamicEntity.DynamicEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.LiveEntity;
-import chevy.model.entity.dinamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dinamicEntity.liveEntity.player.Player;
-import chevy.model.entity.dinamicEntity.projectile.Arrow;
-import chevy.model.entity.dinamicEntity.projectile.Projectile;
+import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.DynamicEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.projectile.Arrow;
+import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
@@ -45,6 +47,7 @@ public class PlayerController implements Update {
     private TrapsController trapsController;
     private ProjectileController projectileController;
     private CollectableController collectableController;
+    private EnvironmentController environmentController;
     private HUDController hudController;
     private boolean updateFinished = false;
 
@@ -54,6 +57,7 @@ public class PlayerController implements Update {
     public PlayerController(Chamber chamber) {
         this.chamber = chamber;
         this.player = chamber.getPlayer();
+
         this.enemyController = null;
         this.trapsController = null;
         this.projectileController = null;
@@ -243,7 +247,7 @@ public class PlayerController implements Update {
                     }
                     player.checkAndChangeState(Player.State.IDLE);
                 }
-                case TRAP -> {
+                case Environment.Type.TRAP -> {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
                         playerMoveSound(player);
                         chamber.moveDynamicEntity(player, direction);
@@ -264,6 +268,14 @@ public class PlayerController implements Update {
                         chamber.moveDynamicEntity(player, direction);
                         collectableController.handleInteraction(InteractionType.PLAYER_IN, player,
                                 (Collectable) entityNextCell);
+                    }
+                }
+                case Entity.Type.ENVIRONMENT -> {
+                    if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
+                        playerMoveSound(player);
+                        chamber.moveDynamicEntity(player, direction);
+                        environmentController.handleInteraction(InteractionType.PLAYER_IN, player,
+                                (Environment) entityNextCell);
                     }
                 }
                 default -> {
@@ -453,9 +465,20 @@ public class PlayerController implements Update {
         }
     }
 
+    public void setEnvironmentController(EnvironmentController environmentController) {
+        if (this.environmentController == null)
+            this.environmentController = environmentController;
+    }
+
     public void setHUDController(HUDController hudController) {
         if (this.hudController == null) {
             this.hudController = hudController;
+            hudController.changeMaxHealth(player.getCurrentHealth(), player.getHealth());
+            hudController.changeHealth(player.getCurrentHealth());
+            hudController.changeMaxShield(player.getCurrentShield(), player.getShield());
+            hudController.changeShield(player.getCurrentShield());
+            hudController.changeMaxAttack(player.getMaxDamage());
+            hudController.setTextAttackBar(player.getMinDamage() + " ~ " + player.getMaxDamage());
         }
     }
 }
