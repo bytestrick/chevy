@@ -11,12 +11,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
-import java.awt.Color;
 import java.awt.Image;
 
 public class GamePanel extends JPanel {
     private final static ImageIcon playPause =
             new ImageIcon(Load.image("/assets/icons/PlayPause.png").getScaledInstance(48, 48, Image.SCALE_SMOOTH));
+    private final static ImageIcon caution =
+            new ImageIcon(Load.image("/assets/icons/caution.png").getScaledInstance(48, 48, Image.SCALE_SMOOTH));
     private final ChamberView chamberView = new ChamberView();
     private final HUDView hudView = new HUDView(3.0f);
     private final Window window;
@@ -49,9 +50,9 @@ public class GamePanel extends JPanel {
         window.setTitle("Chevy - Pausa");
         GameLoop.getInstance().pause();
         Sound.getInstance().pauseMusic();
-        switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa fare.", "Chevy - Pausa (dialogo)", JOptionPane.DEFAULT_OPTION,
-                JOptionPane.PLAIN_MESSAGE, playPause, new String[]{"Esci", "Opzioni", "Torna al menù", "Riprendi"},
-                "Riprendi")) {
+        switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa fare.", "Chevy - Pausa (dialogo)"
+                , JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, playPause, new String[]{"Esci", "Opzioni",
+                        "Torna al menù", "Riprendi"}, "Riprendi")) {
             case 0 -> {
                 if (window.quitAction()) {
                     pauseDialog(); // Ricorsione ☺️
@@ -63,10 +64,15 @@ public class GamePanel extends JPanel {
                 window.setScene(Window.Scene.OPTIONS);
             }
             case 2 -> {
-                window.setScene(Window.Scene.MENU);
-                // TODO: salvare il progresso qui
-                GameLoop.getInstance().stop();
-                Sound.getInstance().stopMusic();
+                if (JOptionPane.showOptionDialog(window, "Se torni al menù perderai il progresso. Continuare?",
+                        "Chevy - " + "Conferma (dialogo)", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                        caution, new String[]{"Si", "No"}, "No") == 0) {
+                    window.setScene(Window.Scene.MENU);
+                    GameLoop.getInstance().stop();
+                    Sound.getInstance().stopMusic();
+                } else {
+                    pauseDialog(); // Ricorsione ☺️
+                }
             }
             default -> { // e case 3
                 // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
