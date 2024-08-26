@@ -1,33 +1,36 @@
 package chevy.model.chamber;
 
-import java.util.ArrayList;
-import java.util.List;
+import chevy.model.entity.Entity;
+import chevy.model.entity.collectable.Collectable;
+import chevy.model.entity.dynamicEntity.DynamicEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
+import chevy.model.entity.dynamicEntity.projectile.Projectile;
+import chevy.model.entity.staticEntity.environment.Environment;
+import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.utils.Log;
+
+import javax.imageio.ImageIO;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Gestisce l'insieme di stanze (Chamber) nel gioco.
  * Utilizza il pattern Singleton per garantire che esista una sola istanza di ChamberManager.
  */
 public class ChamberManager {
-    /**
-     * L'istanza Singleton di ChamberManager.
-     */
+    public static final int NUMBER_OF_CHAMBERS = 6;
+    private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
+    private static final String CHAMBER_PATH = "src/res/chambers/chamber";
     private static ChamberManager instance = null;
-    /**
-     * Lista delle stanze nel gioco.
-     */
-    List<Chamber> chambers;
-    /**
-     * Indice della stanza corrente nel gioco.
-     */
-    private int currentNChamber;
-
-    private ChamberManager() {
-        this.chambers = new ArrayList<>();
-        this.currentNChamber = 0;
-    }
+    private static int currentChamberIndex = 0; // Indice della stanza corrente nel gioco.
 
     /**
      * Restituisce l'istanza Singleton di ChamberManager. Se non esiste, la crea.
+     *
      * @return L'istanza Singleton di ChamberManager
      */
     public static ChamberManager getInstance() {
@@ -38,43 +41,109 @@ public class ChamberManager {
     }
 
     /**
-     * Crea una nuova stanza se necessario e la aggiunge alla lista delle stanze.
-     * @param n numero della stanza da creare (rappresenta il livello)
-     * @return true se la stanza è stata creata e caricata correttamente, false altrimenti
+     * Carica un layer che comporrà la stanza.
+     *
+     * @param chamber l'indice della stanza da caricare
+     * @param layer   strato dell'immagine da caricare
+     * @return l'immagine della stanza, o null se l'immagine non può essere caricata
      */
-    private boolean createChamber(int n) {
-        if (n < chambers.size()) {
-            return true;
+    private static BufferedImage loadLayer(int chamber, int layer) {
+        String chamberPath = CHAMBER_PATH + chamber + "/layer" + layer + ".png";
+        BufferedImage chamberImage = null;
+        try {
+            chamberImage = ImageIO.read(new File(chamberPath));
+        } catch (IOException ignored) {
+            Log.warn(chamberPath + ": il layer" + ".png non è stato caricato");
         }
+        return chamberImage;
+    }
 
+    /**
+     * Carica una stanza
+     *
+     * @param index il numero della stanza da caricare (livello). Parte da 0.
+     * @return la Chamber. Avrà valore null se il caricamento è fallito.
+     */
+    private static Chamber loadChamber(int index) {
         Chamber chamber = new Chamber();
-        boolean loaded = ChamberLoader.loadChamber(n, chamber);
-        chambers.add(chamber);
-        return loaded;
+        int layer = 0;
+        BufferedImage chamberImage = loadLayer(index, layer);
+
+        while (chamberImage != null) {
+            int nRows = chamberImage.getHeight();
+            int nCols = chamberImage.getWidth();
+            if (!chamber.isInitialized()) {
+                chamber.initWorld(nRows, nCols);
+            }
+
+            for (int i = 0; i < nRows; ++i) {
+                for (int j = 0; j < nCols; ++j) {
+                    Color color = new Color(chamberImage.getRGB(j, i));
+                    int r = color.getRed();
+                    if (r != 0) {
+                        Entity entity = EntityFromColor.get(r, i, j);
+                        assert entity != null;
+                        switch (entity.getGenericType()) {
+                            case Environment.Type.TRAP -> chamber.addTraps((Trap) entity);
+                            case DynamicEntity.Type.PROJECTILE -> chamber.addProjectile((Projectile) entity);
+                            case LiveEntity.Type.ENEMY -> chamber.addEnemy((Enemy) entity);
+                            case LiveEntity.Type.PLAYER -> {
+                                entity.setToDraw(false);
+                                chamber.setPlayer((Player) entity);
+                            }
+                            case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
+                                    chamber.addCollectable((Collectable) entity);
+                            case Entity.Type.ENVIRONMENT -> chamber.addEnvironment((Environment) entity);
+                            default -> { }
+                        }
+                        chamber.addEntityOnTop(entity);
+                    }
+                }
+            }
+            chamberImage = loadLayer(index, ++layer);
+        }
+        if (layer > 0) {
+            return chamber;
+        }
+        return null;
     }
 
     /**
-     * Restituisce la prossima stanza nel gioco.
-     * @return La prossima stanza, o null se non è possibile creare la prossima stanza
+     * @param index indice della stanza
+     * @return la i-esima stanza. Se non esiste la carica.
      */
-    public Chamber getNextChamber() {
-        Chamber chamber = null;
-        if (createChamber(currentNChamber + 1)) {
-            ++currentNChamber;
-            chamber = chambers.get(currentNChamber);
+    private Chamber getChamber(int index) {
+        if (chambers[index] == null) {
+            Log.info("Carico la chamber " + index);
+            Chamber chamber = loadChamber(index);
+            if (chamber == null) {
+                Log.error("Tentativo di caricare la chamber " + index + " fallito");
+                System.exit(1);
+            }
+            chambers[index] = chamber;
         }
-        return chamber;
+        return chambers[index];
     }
 
     /**
-     * Restituisce la stanza corrente nel gioco.
-     * @return La stanza corrente, o null se non è possibile creare la stanza corrente
+     * Passa alla stanza successiva
      */
-    public Chamber getCurrentChamber() {
-        Chamber chamber = null;
-        if (createChamber(currentNChamber)) {
-            chamber = chambers.get(currentNChamber);
-        }
-        return chamber;
+    public void advanceChamber() { ++currentChamberIndex; }
+
+    /**
+     * @return la stanza corrente
+     */
+    public Chamber getCurrentChamber() { return getChamber(currentChamberIndex); }
+
+    public int getCurrentChamberIndex() { return currentChamberIndex; }
+
+    /**
+     * Imposta la stanza corrente a index. Se la stanza è già caricata la invalida e ne forza il caricamento.
+     *
+     * @param index della stanza
+     */
+    public void requireChamber(int index) {
+        currentChamberIndex = index;
+        chambers[index] = null; // al prossimo getCurrentChamber(), getChamber() eseguirà il caricamento
     }
 }

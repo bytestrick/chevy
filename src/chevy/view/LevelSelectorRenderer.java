@@ -12,7 +12,8 @@ import java.awt.Component;
 
 /**
  * Rende possibile avere elementi non selezionabili in JComboBox
- * <a href="https://stackoverflow.com/questions/23722706/how-to-disable-certain-items-in-a-jcombobox">...</a>
+ * <a href="https://stackoverflow.com/questions/23722706/how-to-disable-certain-items-in-a-jcombobox">StackOverflow</a>
+ * Fa affidamento sulla logica dell'ActionListener di levelSelector in Menu.
  */
 public class LevelSelectorRenderer extends BasicComboBoxRenderer {
     private final ListSelectionModel model = new DefaultListSelectionModel();
@@ -20,8 +21,17 @@ public class LevelSelectorRenderer extends BasicComboBoxRenderer {
 
     public LevelSelectorRenderer(JComboBox<?> comboBox) { comboBox.setRenderer(this); }
 
+    /**
+     * @param x indice di un elemento del JComboBox
+     * @return true se l'indice è compreso nell'intervallo degli elementi attivi, false altrimenti
+     */
     public boolean isInsideInterval(final int x) { return x >= enabledInterval.first && x <= enabledInterval.second; }
 
+    /**
+     * Imposta l'intervallo di opzioni è selezionabile in JComboBox
+     *
+     * @param interval comincia da 0
+     */
     public void setEnabledInterval(Pair<Integer, Integer> interval) {
         enabledInterval = interval;
         model.setSelectionInterval(enabledInterval.first, enabledInterval.second);

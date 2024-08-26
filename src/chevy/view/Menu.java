@@ -1,5 +1,7 @@
 package chevy.view;
 
+import chevy.control.ChamberController;
+import chevy.model.chamber.ChamberManager;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Archer;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Ninja;
@@ -35,12 +37,12 @@ public class Menu {
                     "capire come si monta questa maledetta armatura!", "Il mio cavallo è coraggioso," + " la mia " +
                     "spada è affilata, e io… beh,\n io mi sono già perso due volte cercando di arrivare qui."}, {
                 "Precisione millimetrica, occhio di falco, respiro controllato...\nma se c’è una zanzara che mi gira "
-                        + "intorno," + " non garantisco nulla.", "Posso colpire una moneta a 100 passi, ma " + "non" +
-                    "\nchiedermi di trovare le " + "chiavi quando ho fretta."},
-                    {"Muovermi nell’ombra, sparire nel" + " nulla, essere silenzioso\ncome il vento.." + ". e poi " +
-                            "inciampo su una foglia secca.", "Mi " + "alleno per anni a diventare un maestro del " +
-                            "silenzio...\ne " + "poi la mia pancia decide di " + "brontolare nel momento più critico" +
-                            "."}};
+                        + "intorno," + " non garantisco nulla.",
+                    "Posso colpire una moneta a 100 passi, ma " + "non" + "\nchiedermi di trovare le " + "chiavi " +
+                            "quando ho fretta."}, {"Muovermi nell’ombra, sparire nel" + " nulla, essere " +
+                    "silenzioso\ncome il vento.." + ". e poi " + "inciampo su una foglia secca.",
+                    "Mi " + "alleno " + "per" + " anni a diventare un maestro del " + "silenzio...\ne " + "poi la " + "mia" + " pancia decide di " + "brontolare nel momento più critico" + "."}};
+    private static final ChamberManager cm = ChamberManager.getInstance();
     public static Player.Type playerType;
     final int[][] playerStats = new int[][]{new Knight(null).getStats(), new Archer(null).getStats(),
             new Ninja(null).getStats()};
@@ -48,6 +50,7 @@ public class Menu {
     private final Object updateAnimation = new Object();
     private final Window window;
     private final Pair<Integer, Integer> spriteDim;
+    private final ChamberController chamberController;
     public JPanel root;
     private JButton play;
     private JButton playerCycleNext;
@@ -73,15 +76,16 @@ public class Menu {
 
     public Menu(final Window window) {
         this.window = window;
+        root.addKeyListener(window.keyboardListener);
 
         // TODO: recuperare chiavi e monete dal JSON
         coins.setText("69");
         keys.setText("420");
 
-        for (int i = 1; i < 10 /* ChamberManager.getNumberOfChambers() */; ++i) {
+        for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS + 1; ++i) {
             levelSelector.addItem("Livello " + i);
         }
-        levelSelectorRenderer.setEnabledInterval(new Pair<>(0, 0));
+        levelSelectorRenderer.setEnabledInterval(new Pair<>(0, ChamberManager.NUMBER_OF_CHAMBERS));
 
         playerType = Player.Type.ARCHER; // TODO: caricare valore iniziale dal JSON
         level = 0; // TODO: caricare valore iniziale dal JSON
@@ -92,8 +96,12 @@ public class Menu {
         loadCharacterSprites();
         setPlayerType(playerType);
         initListeners();
+        chamberController = new ChamberController(window);
     }
 
+    /**
+     * Procedura che fa parte del costruttore: costruzione dell'interfaccia
+     */
     private void applyStyle() {
         final Font buttonFont = Window.handjet.deriveFont(40f);
         quit.setFont(buttonFont);
@@ -115,6 +123,9 @@ public class Menu {
         speedBar.setForeground(new Color(255, 255, 102));
     }
 
+    /**
+     * Procedura che fa parte del costruttore: inizializza i listener dei componenti dell'interfaccia
+     */
     private void initListeners() {
         options.addActionListener(e -> {
             window.setScene(Window.Scene.OPTIONS);
@@ -138,6 +149,9 @@ public class Menu {
         });
     }
 
+    /**
+     * Risponde agli eventi passati dal KeyboardListener
+     */
     public void handleKeyPress(KeyEvent event) {
         switch (event.getKeyCode()) {
             case KeyEvent.VK_ESCAPE -> window.quitAction();
@@ -147,22 +161,44 @@ public class Menu {
         }
     }
 
+    /**
+     * L'azione di passare alla scena PLAYING e avviare il gioco. È innescata dal JButton play e dal tasto 'invio'
+     * sulla tastiera.
+     */
     private void playAction() {
+        // Ricarica la stanza se necessario
+        if (cm.getCurrentChamber().getPlayer().getSpecificType() != playerType || cm.getCurrentChamberIndex() != level) {
+            cm.requireChamber(level);
+            chamberController.refresh();
+        }
         GameLoop.getInstance().start();
         window.setScene(Window.Scene.PLAYING);
         stopCharacterAnimation();
     }
 
+    /**
+     * L'azione di passaggio al personaggio successivo, innescata dall'apposito JButton e dalla freccia a destra
+     * sulla tastiera.
+     */
     private void playerCycleNextAction() {
         final Player.Type[] v = Player.Type.values();
         setPlayerType(v[(playerType.ordinal() + 1) % v.length]);
     }
 
+    /**
+     * L'azione di passaggio al personaggio precedente, innescata dall'apposito JButton e dalla freccia a sinistra
+     * sulla tastiera.
+     */
     private void playerCyclePrevAction() {
         final Player.Type[] v = Player.Type.values();
         setPlayerType(playerType.ordinal() == 0 ? v[v.length - 1] : v[(playerType.ordinal() - 1)]);
     }
 
+    /**
+     * Controlla il selettore del personaggio
+     *
+     * @param type il tipo di giocatore tra KNIGHT, ARHCER e NINJA
+     */
     private void setPlayerType(final Player.Type type) {
         indicators[playerType.ordinal()].setSelected(false);
         playerType = type;
@@ -181,6 +217,9 @@ public class Menu {
         }
     }
 
+    /**
+     * Carica le sprite usate per mostrare il personaggio
+     */
     private void loadCharacterSprites() {
         for (Player.Type t : Player.Type.values()) {
             for (int f = 0; f < 2; ++f) { // 2 frame
@@ -193,6 +232,10 @@ public class Menu {
         }
     }
 
+    /**
+     * Crea un thread the anima il personaggio nel menu
+     * Da usare quando si entra nella scena MENU.
+     */
     public void startCharacterAnimation() {
         if (animationRunning) {
             Log.warn("Thread per l'animazione del personaggio già in esecuzione");
@@ -220,6 +263,10 @@ public class Menu {
         });
     }
 
+    /**
+     * Cancella il thread che si occupa dell'animazione del personaggio
+     * Da usare quando si lascia la scena MENU.
+     */
     public void stopCharacterAnimation() {
         if (animationRunning) {
             synchronized (updateAnimation) {
@@ -230,7 +277,7 @@ public class Menu {
     }
 
     /**
-     * Questo metodo è chiamato dal form dell'interfaccia per la creazione personalizzata dei componenti
+     * Chiamato dal form dell'interfaccia per la creazione personalizzata dei componenti
      */
     private void createUIComponents() {
         root = new JPanel() {

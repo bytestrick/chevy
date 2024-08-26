@@ -39,9 +39,12 @@ public class GamePanel extends JPanel {
 
         add(hudView);
         add(chamberView);
-        setBackground(Color.BLACK);
+        setBackground(Window.bg);
     }
 
+    /**
+     * Dialogo di pausa del gioco. È innescato dalla pressione di ESC.
+     */
     public void pauseDialog() {
         window.setTitle("Chevy - Pausa");
         GameLoop.getInstance().pause();
@@ -63,9 +66,9 @@ public class GamePanel extends JPanel {
                 window.setScene(Window.Scene.MENU);
                 // TODO: salvare il progresso qui
                 GameLoop.getInstance().stop();
-                Sound.getInstance().cancelMusic();
+                Sound.getInstance().stopMusic();
             }
-            default -> { // case 3
+            default -> { // e case 3
                 // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
                 GameLoop.getInstance().resume();
                 Sound.getInstance().resumeMusic();

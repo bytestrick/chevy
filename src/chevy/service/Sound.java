@@ -1,11 +1,11 @@
 package chevy.service;
 
+import chevy.utils.Load;
 import chevy.utils.Log;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.util.Random;
-import chevy.utils.Load;
 
 public class Sound {
     private static Sound instance = null;
@@ -42,6 +42,12 @@ public class Sound {
         return instance;
     }
 
+    /**
+     * Mappa l'intervallo decimale tra 0 e 1 al dominio del gain della clip specificata
+     *
+     * @param clip a cui applicare il gain
+     * @param percentage valore decimale compreso tra 0 e 1, rappresenta il volume
+     */
     private static void applyGain(Clip clip, final float percentage) {
         assert clip != null;
         FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -49,7 +55,12 @@ public class Sound {
         gainControl.setValue((beg + end) * percentage - beg);
     }
 
-
+    /**
+     * Riproduce un effetto
+     * Se l'effetto è già in riproduzione viene solamente fatto ripartire.
+     *
+     * @param effect da riprodurre
+     */
     public void play(Effect effect) {
         Clip clip = effects[effect.ordinal()];
         if (clip.isActive() || clip.isRunning()) {
@@ -63,6 +74,11 @@ public class Sound {
         clip.start();
     }
 
+    /**
+     * Imposta il volume della musica
+     *
+     * @param percentage valore decimale compreso tra 0 e 1, rappresenta il volume
+     */
     public void setMusicVolume(final float percentage) {
         if (percentage >= 0 && percentage <= 1) {
             this.musicGainPercent = percentage;
@@ -74,6 +90,11 @@ public class Sound {
         }
     }
 
+    /**
+     * Imposta il volume degli effetti
+     *
+     * @param percentage valore decimale compreso tra 0 e 1, rappresenta il volume
+     */
     public void setEffectsVolume(final float percentage) {
         if (percentage >= 0 && percentage <= 1) {
             this.effectGainPercent = percentage;
@@ -85,10 +106,13 @@ public class Sound {
         }
     }
 
+    /**
+     * Crea un thread che si occupa di riprodurre la musica in sequenza. Quando una clip termina la riproduzione fa
+     * partire la prossima.
+     */
     public void startMusic() {
         if (musicWorkerRunning) {
-            Log.warn("Il thread per la musica è già attivo.");
-            return;
+            stopMusic();
         }
         musicWorkerRunning = true;
         musicPlaying = true;
@@ -127,7 +151,7 @@ public class Sound {
         });
     }
 
-    public void cancelMusic() {
+    public void stopMusic() {
         synchronized (musicMutex) {
             musicWorkerRunning = false;
             musicPlaying = false;

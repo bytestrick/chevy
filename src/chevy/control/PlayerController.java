@@ -1,6 +1,5 @@
 package chevy.control;
 
-import chevy.service.Sound;
 import chevy.control.collectableController.CollectableController;
 import chevy.control.enemyController.EnemyController;
 import chevy.control.environmentController.EnvironmentController;
@@ -27,6 +26,7 @@ import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
+import chevy.service.Sound;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
 import chevy.utils.Log;
@@ -44,14 +44,14 @@ import static chevy.model.entity.staticEntity.environment.Environment.Type.TRAP;
 public class PlayerController implements Update {
     private final Chamber chamber;
     private final Player player;
+    private final GamePanel gamePanel;
     private EnemyController enemyController;
     private TrapsController trapsController;
-    private ProjectileController projectileController;
-    private CollectableController collectableController;
-    private EnvironmentController environmentController;
+    private ProjectileController projectileController = null;
+    private CollectableController collectableController = null;
+    private EnvironmentController environmentController = null;
     private HUDController hudController;
     private boolean updateFinished = false;
-    private final GamePanel gamePanel;
 
     /**
      * @param chamber riferimento alla stanza di gioco
@@ -60,10 +60,7 @@ public class PlayerController implements Update {
         this.gamePanel = gamePanel;
         this.chamber = chamber;
         this.player = chamber.getPlayer();
-
-        this.enemyController = null;
-        this.trapsController = null;
-        this.projectileController = null;
+        KeyboardListener.playerController = this;
 
         // Aggiunge il controller del giocatore all'UpdateManager.
         UpdateManager.addToUpdate(this);
@@ -116,7 +113,7 @@ public class PlayerController implements Update {
     }
 
     /**
-     * Gestisce le interazioni del giocatore con gli oggetti collezionabili.
+     * Gestisce le interazioni del giocatore con gli oggetti collezionabili
      *
      * @param collectable collezionabile con cui il giocatore interagisce
      */
@@ -235,8 +232,7 @@ public class PlayerController implements Update {
                     hudController.changeHealth(player.getCurrentHealth());
                 }
             }
-        }
-        else {
+        } else {
             switch (entityNextCell.getGenericType()) {
                 case LiveEntity.Type.ENEMY -> {
                     // Attacco automatico sferrato camminando contro un nemico.
@@ -280,8 +276,7 @@ public class PlayerController implements Update {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
                         playerMoveSound(player);
                         chamber.moveDynamicEntity(player, direction);
-                        environmentController.handleInteraction(InteractionType.PLAYER_IN, player,
-                                (Environment) entityNextCell);
+                        environmentController.handleInteraction(InteractionType.PLAYER_IN, player, entityNextCell);
                     }
                 }
                 default -> {
@@ -472,8 +467,9 @@ public class PlayerController implements Update {
     }
 
     public void setEnvironmentController(EnvironmentController environmentController) {
-        if (this.environmentController == null)
+        if (this.environmentController == null) {
             this.environmentController = environmentController;
+        }
     }
 
     public void setHUDController(HUDController hudController) {

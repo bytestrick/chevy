@@ -28,8 +28,9 @@ public class EnvironmentController {
     }
 
     private void playerInInteraction(Player subject, Environment environment) {
-        if (environment.getSpecificType() == Environment.Type.STAIR)
+        if (environment.getSpecificType() == Environment.Type.STAIR) {
             stairController.playerInInteraction((Stair) environment);
+        }
     }
 
     private void updateTraps(Environment environment) {

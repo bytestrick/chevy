@@ -1,8 +1,25 @@
 package chevy.model.chamber;
 
 import chevy.model.entity.Entity;
-import chevy.model.entity.collectable.*;
-import chevy.model.entity.collectable.powerUp.*;
+import chevy.model.entity.collectable.Coin;
+import chevy.model.entity.collectable.Health;
+import chevy.model.entity.collectable.Key;
+import chevy.model.entity.collectable.powerUp.Agility;
+import chevy.model.entity.collectable.powerUp.AngelRing;
+import chevy.model.entity.collectable.powerUp.BrokenArrows;
+import chevy.model.entity.collectable.powerUp.CoinOfGreed;
+import chevy.model.entity.collectable.powerUp.ColdHeart;
+import chevy.model.entity.collectable.powerUp.GoldArrow;
+import chevy.model.entity.collectable.powerUp.HealingFlood;
+import chevy.model.entity.collectable.powerUp.HedgehogSpines;
+import chevy.model.entity.collectable.powerUp.HobnailBoots;
+import chevy.model.entity.collectable.powerUp.HolyShield;
+import chevy.model.entity.collectable.powerUp.HotHeart;
+import chevy.model.entity.collectable.powerUp.KeySKeeper;
+import chevy.model.entity.collectable.powerUp.LongSword;
+import chevy.model.entity.collectable.powerUp.SlimePiece;
+import chevy.model.entity.collectable.powerUp.StoneBoots;
+import chevy.model.entity.collectable.powerUp.VampireFangs;
 import chevy.model.entity.dynamicEntity.DirectionsModel;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Beetle;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.BigSlime;
@@ -24,6 +41,7 @@ import chevy.model.entity.staticEntity.environment.traps.Totem;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.utils.Vector2;
+import chevy.view.Menu;
 
 /**
  * Crea entità in base a valori di colore.
@@ -40,9 +58,9 @@ public class EntityFromColor {
     private static final int WALL_INTERIOR_CORNER_TOP_RIGHT = 247;
     private static final int WALL_INTERIOR_CORNER_BOTTOM_RIGHT = 253;
     private static final int WALL_TOP_TORCH = 254;
-     private static final int WALL_TOP_HOLE = 255;
-     private static final int WALL_TOP_HOLE_2 = 256;
-     private static final int WALL_TOP_BROKEN = 257;
+    private static final int WALL_TOP_HOLE = 255;
+    private static final int WALL_TOP_HOLE_2 = 256;
+    private static final int WALL_TOP_BROKEN = 257;
     private static final int WALL_EXTERNAL_CORNER_TOP_LEFT = 246;
     private static final int WALL_EXTERNAL_CORNER_TOP_RIGHT = 245;
     private static final int WALL_EXTERNAL_CORNER_BOTTOM_LEFT = 244;
@@ -81,11 +99,9 @@ public class EntityFromColor {
     private static final int TOTEM_LEFT = 140;
 
     // Players
-    private static final int KNIGHT = 1;
+    private static final int PLAYER = 1;
     private static final Knight knight = new Knight(new Vector2<>(0, 0));
-    private static final int ARCHER = 2;
     private static final Archer archer = new Archer(new Vector2<>(0, 0));
-    private static final int NINJA = 3;
     private static final Ninja ninja = new Ninja(new Vector2<>(0, 0));
 
     // Enemy
@@ -123,7 +139,6 @@ public class EntityFromColor {
     private static final int CHEST = 50;
     private static final int STAIR_RIGHT = 51;
     private static final int STAIR_LEFT = 52;
-
 
     // ---
     private static final int NULL = 0; // assenza di colore rosso
@@ -192,18 +207,20 @@ public class EntityFromColor {
             case TOTEM_LEFT -> new Totem(startPosition, DirectionsModel.LEFT);
 
             // Player
-            case KNIGHT -> {
-                knight.changePosition(startPosition);
-                yield knight;
-            }
-            case ARCHER -> {
-                archer.changePosition(startPosition);
-                yield archer;
-            }
-            case NINJA -> {
-                ninja.changePosition(startPosition);
-                yield ninja;
-            }
+            case PLAYER -> switch (Menu.playerType) {
+                case KNIGHT -> {
+                    knight.changePosition(startPosition);
+                    yield knight;
+                }
+                case ARCHER -> {
+                    archer.changePosition(startPosition);
+                    yield archer;
+                }
+                case NINJA -> {
+                    ninja.changePosition(startPosition);
+                    yield ninja;
+                }
+            };
 
             // Enemy
             case WRAITH -> new Wraith(startPosition);
