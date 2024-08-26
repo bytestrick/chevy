@@ -1,19 +1,17 @@
 package chevy.control;
 
-import chevy.utils.Log;
 import chevy.view.Window;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyboardListener implements KeyListener {
-    private ChamberController chamberController;
-    private Window window;
+    private final Window window;
+    public static PlayerController playerController;
 
     public KeyboardListener(Window window) {
         this.window = window;
         window.gamePanel.addKeyListener(this);
-        window.menu.root.addKeyListener(this);
         window.addKeyListener(this);
     }
 
@@ -24,11 +22,8 @@ public class KeyboardListener implements KeyListener {
     public void keyPressed(KeyEvent keyEvent) {
         switch (window.getScene()) {
             case Window.Scene.PLAYING -> {
-                if (chamberController != null) {
-                    chamberController.keyPressed(keyEvent);
-                } else {
-                    Log.warn("Non posso passare gli eventi della tastiera alla Chamber perché il riferimento è nullo");
-                }
+                assert playerController != null;
+                playerController.keyPressed(keyEvent);
             }
             case Window.Scene.MENU -> window.menu.handleKeyPress(keyEvent);
         }
@@ -36,6 +31,4 @@ public class KeyboardListener implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent keyEvent) { }
-
-    public void setChamber(ChamberController chamberController) { this.chamberController = chamberController; }
 }

@@ -38,7 +38,6 @@ public class Load {
      * Carica un Font
      *
      * @param name il percorso della risorsa
-     * @return il font caricato
      */
     public static Font font(final String name) {
         Font font = null;
@@ -46,8 +45,7 @@ public class Load {
             InputStream is = Objects.requireNonNull(Load.class.getResourceAsStream("/fonts/" + name + ".ttf"));
             font = Font.createFont(Font.TRUETYPE_FONT, is);
         } catch (IOException | FontFormatException | NullPointerException e) {
-            Log.error("Font '" + name + "' non trovato: (" + e.getMessage() + ")");
-            System.exit(1);
+            Log.warn("Font '" + name + "' non caricato: (" + e.getMessage() + ")");
         }
         return font;
     }

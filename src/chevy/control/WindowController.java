@@ -7,6 +7,9 @@ import chevy.view.Window;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+/**
+ * Cattura gli eventi di Window
+ */
 public class WindowController implements WindowListener {
     private final Window window;
 

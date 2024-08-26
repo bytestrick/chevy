@@ -612,8 +612,9 @@ public class Chamber {
     }
 
     public void decreaseEnemyCounter() {
-        if (--enemyCounter < 0)
+        if (--enemyCounter < 0) {
             ++enemyCounter;
+        }
     }
 
     public int getEnemyCounter() {

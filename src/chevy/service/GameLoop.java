@@ -59,6 +59,9 @@ public class GameLoop implements Runnable {
         }
     }
 
+    /**
+     * A intervalli calcolati aggiorna il model tramite UpdateManager e view tramite RenderManager
+     */
     @Override
     public void run() {
         Log.info("Game loop: AVVIATO");

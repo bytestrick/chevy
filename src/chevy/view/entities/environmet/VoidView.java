@@ -11,10 +11,10 @@ public class VoidView extends EntityView {
     private static final String VOID_RESOURCES = "/assets/chamberTiles/trapTiles/void.png";
     private static final BufferedImage frame = Load.image(VOID_RESOURCES);
 
-    public VoidView(Void voidd) {
+    public VoidView(Void _void) {
         this.currentViewPosition = new Vector2<>(
-                (double) voidd.getCol(),
-                (double) voidd.getRow()
+                (double) _void.getCol(),
+                (double) _void.getRow()
         );
     }
 

@@ -113,4 +113,4 @@ Possibili cose da evitare: non implementare i power up e le chests.
   - [DungeonRush](https://github.com/rapiz1/DungeonRush/tree/master/res/audio)
   - [pixabay](https://pixabay.com/)
 - Font per l'interfaccia: [Handject](https://fonts.google.com/specimen/Handjet)
-- Le citazioni dei personaggi nella schermata iniziale sono generate [ChatGPT](https://chatgpt.com/)
+- Le citazioni dei personaggi nella schermata iniziale sono generate da [ChatGPT](https://chatgpt.com/)

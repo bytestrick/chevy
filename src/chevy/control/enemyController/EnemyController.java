@@ -59,7 +59,7 @@ public class EnemyController {
     }
 
     /**
-     * Gestisce l'interazione di una trappoòa con un nemico.
+     * Gestisce l'interazione di una trappola con un nemico.
      *
      * @param trap  la trappola che interagisce con il nemico
      * @param enemy il nemico colpito dal proiettile

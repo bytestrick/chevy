@@ -28,11 +28,11 @@ public class Window extends JFrame {
     public static final Font handjet = Load.font("Handjet");
     private static final ImageIcon icon = new ImageIcon(Load.image("/assets/icons/Power.png").getScaledInstance(42,
             42, Image.SCALE_SMOOTH));
-    private static final Color bg = new Color(24, 20, 37);
+    public static final Color bg = new Color(24, 20, 37);
     public final GamePanel gamePanel = new GamePanel(this);
-    public final Menu menu = new Menu(this);
     public final Options options = new Options(this);
     public final KeyboardListener keyboardListener = new KeyboardListener(this);
+    public final Menu menu = new Menu(this);
     private Scene scene;
 
     public Window(boolean resizable) {
@@ -44,7 +44,6 @@ public class Window extends JFrame {
         setVisible(true);
         requestFocus();
 
-        getRootPane().setBackground(new Color(25, 21, 38)); // Sfondo della barra del titolo
 
         // assicura l'esecuzione del codice solamente dopo la creazione del componente JFrame
         SwingUtilities.invokeLater(() -> {
@@ -55,20 +54,19 @@ public class Window extends JFrame {
             }
         });
 
-        Log.info(size.toString());
+        Log.info("Window: creazione terminata [w: " + size.width + ", h: " + size.height + "]");
     }
 
     /**
      * Inizializza la FlatLaf e imposta personalizzazioni.
      * <a href="https://www.formdev.com/flatlaf/customizing/">Documentazione</a>.
-     * Va chiamata prima di istanziare qualsiasi componente.
+     * Le modifica relative al LookAndFell vanno fatte prima di creare istanze di qualsiasi componente.
      */
-    public static void initLookAndFeel() {
+    public static void create() {
         try {
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (UnsupportedLookAndFeelException e) {
             Log.warn("Tentativo di inizializzare FlatLaf fallito.");
-            return;
         }
 
         // Le decorazioni della finestra personalizzate sono già abilitate su Windows e non sono supportate su Mac.
@@ -83,8 +81,6 @@ public class Window extends JFrame {
         UIManager.put("TitlePane.font", handjet.deriveFont(20f));
         UIManager.put("ToolTip.font", handjet.deriveFont(25f));
 
-        UIManager.put("Component.background", bg);
-        UIManager.put("Dialog.background", bg);
         UIManager.put("Component.arc", 10); // border-radius
         UIManager.put("Button.arc", 10);
 
@@ -111,6 +107,8 @@ public class Window extends JFrame {
         UIManager.put("CheckBox.icon.disabledSelectedBorderColor", new Color(255, 255, 255));
         UIManager.put("CheckBox.icon.disabledBorderColor", new Color(255, 255, 255));
         UIManager.put("CheckBox.icon.disabledBackground", bg);
+
+        new Window(true);
     }
 
     private void makeResponsive() {
@@ -124,9 +122,10 @@ public class Window extends JFrame {
 
     /**
      * Unico punto di uscita (corretto) dall'app.
-     * Il WindowController collega l'evento di chiusura del JFrame a questo metodo.
+     * Il WindowController collega l'evento di chiusura del JFrame a questo metodo, perciò premere la 'X' della
+     * cornice della finestra passa il controllo qui.
      *
-     * @return true quando l'utente ha scelto di non uscire dall'app.
+     * @return true quando l'utente ha scelto di non uscire dall'app, altrimenti non ritorna affatto.
      */
     public boolean quitAction() {
         if (JOptionPane.showOptionDialog(this, "Uscire da Chevy?", "Conferma uscita", JOptionPane.YES_NO_OPTION,
@@ -142,16 +141,23 @@ public class Window extends JFrame {
 
     public Scene getScene() { return scene; }
 
+    /**
+     * Cambia la scena
+     *
+     * @param scene a cui si vuole passare
+     */
     public void setScene(Scene scene) {
         if (this.scene != scene) {
             Log.info("Cambio scena da " + this.scene + " a " + scene);
             final JPanel panel = switch (scene) {
                 case MENU -> {
+                    getRootPane().setBackground(new Color(25, 21, 38)); // Sfondo della barra del titolo
                     menu.startCharacterAnimation();
                     setTitle("Chevy");
                     yield menu.root;
                 }
                 case PLAYING -> {
+                    getRootPane().setBackground(bg);
                     setTitle("Chevy");
                     yield gamePanel;
                 }
