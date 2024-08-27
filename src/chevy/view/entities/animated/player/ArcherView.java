@@ -27,7 +27,6 @@ public class ArcherView extends AnimatedEntityView {
                 Interpolation.Type.EASE_OUT_SINE);
         moveInterpolationY = new Interpolation(currentViewPosition.second, archer.getRow(), duration,
                 Interpolation.Type.EASE_OUT_SINE);
-
         initAnimation();
     }
 

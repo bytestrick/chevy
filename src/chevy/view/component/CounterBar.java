@@ -3,21 +3,26 @@ package chevy.view.component;
 import chevy.settings.WindowSettings;
 import chevy.utils.Load;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.Box;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 
 public class CounterBar extends JPanel {
     private final int counter = 0;
     private final JLabel text = new JLabel(String.valueOf(counter), SwingConstants.RIGHT);
     private final MyPanelUI ui;
-    private int rightSpace = 0;
     private final Dimension dimension;
     private final SpringLayout springLayout;
+    private final float scale;
+    private int rightSpace = 0;
     private Font font;
     private int fontSize = 13;
-    private final float scale;
     private int offsetY = 0;
-
 
     public CounterBar(Dimension dimension) {
         this(dimension, 1f);
@@ -77,23 +82,24 @@ public class CounterBar extends JPanel {
     }
 
     private void setDimension(float scale) {
-        Dimension dimensionScaled = new Dimension(
-                (int) (dimension.getWidth() * scale),
-                (int) (dimension.height * scale)
-        );
+        Dimension dimensionScaled = new Dimension((int) (dimension.getWidth() * scale),
+                (int) (dimension.height * scale));
+
         setMaximumSize(dimensionScaled);
         setPreferredSize(dimensionScaled);
         setMinimumSize(dimensionScaled);
     }
 
     private void setConstraints(float scale) {
-        springLayout.putConstraint(SpringLayout.EAST, text, -((int) (rightSpace * scale) + ui.getWidth(MyPanelUI.BAR_R)), SpringLayout.EAST, this);
+        springLayout.putConstraint(SpringLayout.EAST, text,
+                -((int) (rightSpace * scale) + ui.getWidth(MyPanelUI.BAR_R)), SpringLayout.EAST, this);
         springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, text, offsetY, SpringLayout.VERTICAL_CENTER, this);
     }
 
     public void setOffsetY(int offsetY) {
         this.offsetY = offsetY;
     }
+
     public void windowResized(float scale) {
         scale = scale * this.scale;
 

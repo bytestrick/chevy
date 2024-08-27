@@ -1,10 +1,9 @@
 package chevy.view.hud;
 
-
 import chevy.view.component.CounterBar;
 import chevy.view.component.MyPanelUI;
 
-import java.awt.*;
+import java.awt.Dimension;
 
 public class CoinBar extends CounterBar {
     private static final String COIN_BAR_PATH = "/assets/component/label/";

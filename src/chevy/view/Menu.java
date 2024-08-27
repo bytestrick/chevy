@@ -11,6 +11,7 @@ import chevy.service.Sound;
 import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.utils.Pair;
+import chevy.view.chamber.EntityToEntityView;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -43,7 +44,6 @@ public class Menu {
                             "quando ho fretta."}, {"Muovermi nell’ombra, sparire nel" + " nulla, essere " +
                     "silenzioso\ncome il vento.." + ". e poi " + "inciampo su una foglia secca.",
                     "Mi " + "alleno " + "per" + " anni a diventare un maestro del " + "silenzio...\ne " + "poi la " + "mia" + " pancia decide di " + "brontolare nel momento più critico" + "."}};
-    private static final ChamberManager cm = ChamberManager.getInstance();
     public static Player.Type playerType;
     final int[][] playerStats = new int[][]{new Knight(null).getStats(), new Archer(null).getStats(),
             new Ninja(null).getStats()};
@@ -167,13 +167,18 @@ public class Menu {
      * sulla tastiera.
      */
     private void playAction() {
-        // Ricarica la stanza se necessario
-        if (cm.getCurrentChamber().getPlayer().getSpecificType() != playerType || cm.getCurrentChamberIndex() != level) {
-            cm.requireChamber(level);
-            chamberController.refresh();
+        ChamberManager.getInstance().requireChamber(level); // invalida la chamber caricata
+        chamberController.refresh();
+        final Player player = ChamberManager.getInstance().getCurrentChamber().getPlayer(); // innesca il ricaricamento
+
+        // Ricarica la view del Player
+        if (EntityToEntityView.entityView.containsKey(player)) {
+            EntityToEntityView.entityView.remove(player);
+            EntityToEntityView.getSpecific(player);
         }
-        GameLoop.getInstance().start();
+
         window.setScene(Window.Scene.PLAYING);
+        GameLoop.getInstance().start();
         stopCharacterAnimation();
         Sound.stopMenuMusic();
         Sound.getInstance().startMusic(); // 🎵
