@@ -5,31 +5,32 @@ import chevy.utils.Log;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public class Sound {
+    private static final Random random = new Random();
+    private static final Clip[] effects = new Clip[Effect.values().length];
+    private static final Clip[] songs = new Clip[Song.values().length];
+    private static final Clip[] loops = new Clip[]{Load.clip("loop0"), Load.clip("loop1")};
     private static Sound instance = null;
-    private final Random random = new Random();
-    private final Clip[] effects = new Clip[Effect.values().length];
-    private final Clip[] songs = new Clip[Song.values().length];
+    private static Clip currentPlayingLoop;
+    private static boolean musicPaused = false;
+    private static boolean musicRunning = false;
+    private static float effectGainPercent = .8f; // valore predefinito volume effetti
+    private static float musicGainPercent = .7f; // valore predefinito volume musica
     private final Object musicMutex = new Object();
-    private boolean musicPlaying = false;
-    private boolean musicWorkerRunning = false;
-    private float effectGainPercent = .8f; // valore predefinito volume effetti
-    private float musicGainPercent = .4f; // valore predefinito volume musica
+    private static Clip previousSong;
 
     private Sound() {
         final Effect[] e = Effect.values();
         for (int i = 0; i < e.length; ++i) {
-            try (Clip clip = Load.clip(e[i].toString().toLowerCase())) {
-                effects[i] = clip;
-            }
+            effects[i] = Load.clip(e[i].toString().toLowerCase());
         }
         final Song[] s = Song.values();
         for (int i = 0; i < s.length; ++i) {
-            try (Clip clip = Load.clip(s[i].toString().toLowerCase())) {
-                songs[i] = clip;
-            }
+            songs[i] = Load.clip(s[i].toString().toLowerCase());
         }
         setMusicVolume(musicGainPercent);
         setEffectsVolume(effectGainPercent);
@@ -45,7 +46,7 @@ public class Sound {
     /**
      * Mappa l'intervallo decimale tra 0 e 1 al dominio del gain della clip specificata
      *
-     * @param clip a cui applicare il gain
+     * @param clip       a cui applicare il gain
      * @param percentage valore decimale compreso tra 0 e 1, rappresenta il volume
      */
     private static void applyGain(Clip clip, final float percentage) {
@@ -54,6 +55,14 @@ public class Sound {
         final float beg = Math.abs(gainControl.getMinimum()), end = Math.abs(gainControl.getMaximum());
         gainControl.setValue((beg + end) * percentage - beg);
     }
+
+    public static void startMenuMusic() {
+        currentPlayingLoop = loops[random.nextInt(loops.length)];
+        applyGain(currentPlayingLoop, musicGainPercent);
+        currentPlayingLoop.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+    public static void stopMenuMusic() { currentPlayingLoop.stop(); }
 
     /**
      * Riproduce un effetto
@@ -81,7 +90,10 @@ public class Sound {
      */
     public void setMusicVolume(final float percentage) {
         if (percentage >= 0 && percentage <= 1) {
-            this.musicGainPercent = percentage;
+            musicGainPercent = percentage;
+            for (Clip loop : loops) {
+                applyGain(loop, percentage);
+            }
             for (Song song : Song.values()) {
                 applyGain(songs[song.ordinal()], percentage);
             }
@@ -97,7 +109,7 @@ public class Sound {
      */
     public void setEffectsVolume(final float percentage) {
         if (percentage >= 0 && percentage <= 1) {
-            this.effectGainPercent = percentage;
+            effectGainPercent = percentage;
             for (Effect effect : Effect.values()) {
                 applyGain(effects[effect.ordinal()], percentage);
             }
@@ -111,58 +123,66 @@ public class Sound {
      * partire la prossima.
      */
     public void startMusic() {
-        if (musicWorkerRunning) {
-            stopMusic();
-        }
-        musicWorkerRunning = true;
-        musicPlaying = true;
+        stopMusic();
+        musicRunning = true;
         Thread.ofPlatform().start(() -> {
             Log.info("Thread per la musica avviato");
             random.setSeed(Thread.currentThread().threadId());
-            int i = random.nextInt(songs.length);
-            songs[i].setFramePosition(0);
-            while (musicWorkerRunning) {
+            while (musicRunning) {
+                // Scegli la canzone successiva escludendo la precedente.
+                final Clip finalPreviousSong = previousSong;
+                final List<Clip> choices = Stream.of(songs).filter(clip -> !clip.equals(finalPreviousSong)).toList();
+                final Clip song = choices.get(random.nextInt(choices.size()));
+                song.setFramePosition(0);
+                previousSong = song;
+                final long len = song.getMicrosecondLength();
                 synchronized (musicMutex) { // Acquisisci il monitor di musicMutex
-                    try {
-                        while (songs[i].getFramePosition() < songs[i].getFrameLength()) {
-                            if (musicWorkerRunning) {
-                                if (musicPlaying) {
-                                    songs[i].start();
-                                    musicMutex.wait((songs[i].getMicrosecondLength() - songs[i].getMicrosecondPosition()) / 1000);
-                                } else {
-                                    songs[i].stop();
+                    while (song.getMicrosecondPosition() < len) {
+                        if (musicRunning) {
+                            try {
+                                if (musicPaused) {
+                                    song.stop();
                                     musicMutex.wait(); // Aspetta una chiamata di resumeMusic()
+                                } else {
+                                    song.start();
+                                    musicMutex.wait((len - song.getMicrosecondPosition()) / 1000);
                                 }
-                            } else {
-                                songs[i].stop();
-                                break;
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
                             }
+                        } else {
+                            song.stop();
+                            Log.info("Thread per la musica terminato");
+                            return;
                         }
-                        // FIXME: la prossima canzone deve essere scelta a Random
-                        i = (i + 1) % songs.length;
-                        songs[i].setFramePosition(0);
-                        Log.info(getClass() + ": canzone successiva");
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
                     }
                 }
             }
-            Log.info("Thread per la musica terminato");
         });
     }
 
     public void stopMusic() {
-        synchronized (musicMutex) {
-            musicWorkerRunning = false;
-            musicPlaying = false;
-            musicMutex.notify();
+        if (musicRunning) {
+            synchronized (musicMutex) {
+                musicRunning = false;
+                musicPaused = false;
+                musicMutex.notify();
+            }
+            Thread t = Thread.currentThread();
+            try {
+                synchronized (t) {
+                    t.wait(10); // Dai tempo al thread di uscire.
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     public void resumeMusic() {
         synchronized (musicMutex) {
-            if (!musicPlaying) {
-                musicPlaying = true;
+            if (musicPaused) {
+                musicPaused = false;
                 musicMutex.notify();
             }
         }
@@ -170,8 +190,8 @@ public class Sound {
 
     public void pauseMusic() {
         synchronized (musicMutex) {
-            if (musicPlaying) {
-                musicPlaying = false;
+            if (!musicPaused) {
+                musicPaused = true;
                 musicMutex.notify();
             }
         }
