@@ -1,12 +1,9 @@
 package chevy.view;
 
-import chevy.model.entity.stateMachine.CommonState;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.settings.WindowSettings;
 import chevy.utils.Load;
-import chevy.utils.Pair;
-import chevy.view.animation.Interpolation;
 import chevy.view.chamber.ChamberView;
 import chevy.view.hud.HUDView;
 
@@ -22,6 +19,7 @@ public class GamePanel extends JPanel {
     private final static ImageIcon caution =
             new ImageIcon(Load.image("/assets/icons/caution.png").getScaledInstance(48, 48, Image.SCALE_SMOOTH));
     private static final ChamberView chamberView = new ChamberView();
+    private static boolean pauseDialogActive = false;
     private final HUDView hudView = new HUDView(3.0f);
     private final Window window;
 
@@ -50,40 +48,45 @@ public class GamePanel extends JPanel {
      * Dialogo di pausa del gioco. È innescato dalla pressione di ESC.
      */
     public void pauseDialog() {
-        // FIXME: non deve essere possibile creare più di un dialogo
-        window.setTitle("Chevy - Pausa");
-        GameLoop.getInstance().pause();
-        Sound.getInstance().pauseMusic();
-        switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa fare.", "Chevy - Pausa (dialogo)"
-                , JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, playPause, new String[]{"Esci", "Opzioni",
-                        "Torna al menù", "Riprendi"}, "Riprendi")) {
-            case 0 -> {
-                if (window.quitAction()) {
-                    pauseDialog(); // Ricorsione ☺️
+        if (!pauseDialogActive) {
+            window.setTitle("Chevy - Pausa");
+            GameLoop.getInstance().pause();
+            Sound.getInstance().pauseMusic();
+            pauseDialogActive = true;
+            switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa fare.", "Chevy - Pausa " +
+                    "(dialogo)", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, playPause, new String[]{"Esci"
+                    , "Opzioni", "Torna al menù", "Riprendi"}, "Riprendi")) {
+                case 0 -> {
+                    pauseDialogActive = false;
+                    if (window.quitAction()) {
+                        pauseDialog(); // Ricorsione ☺️
+                    }
+                }
+                case 1 -> {
+                    GameLoop.getInstance().pause();
+                    Sound.getInstance().pauseMusic();
+                    window.setScene(Window.Scene.OPTIONS);
+                }
+                case 2 -> {
+                    if (JOptionPane.showOptionDialog(window, "Se torni al menù perderai il progresso. Continuare?",
+                            "Chevy - " + "Conferma (dialogo)", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                            caution, new String[]{"Si", "No"}, "No") == 0) {
+                        window.setScene(Window.Scene.MENU);
+                        GameLoop.getInstance().stop();
+                        Sound.getInstance().stopMusic();
+                    } else {
+                        pauseDialogActive = false;
+                        pauseDialog(); // Ricorsione ☺️
+                    }
+                }
+                default -> { // e case 3
+                    // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
+                    GameLoop.getInstance().resume();
+                    Sound.getInstance().resumeMusic();
+                    window.setTitle("Chevy");
                 }
             }
-            case 1 -> {
-                GameLoop.getInstance().pause();
-                Sound.getInstance().pauseMusic();
-                window.setScene(Window.Scene.OPTIONS);
-            }
-            case 2 -> {
-                if (JOptionPane.showOptionDialog(window, "Se torni al menù perderai il progresso. Continuare?",
-                        "Chevy - " + "Conferma (dialogo)", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-                        caution, new String[]{"Si", "No"}, "No") == 0) {
-                    window.setScene(Window.Scene.MENU);
-                    GameLoop.getInstance().stop();
-                    Sound.getInstance().stopMusic();
-                } else {
-                    pauseDialog(); // Ricorsione ☺️
-                }
-            }
-            default -> { // e case 3
-                // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
-                GameLoop.getInstance().resume();
-                Sound.getInstance().resumeMusic();
-                window.setTitle("Chevy");
-            }
+            pauseDialogActive = false;
         }
     }
 
