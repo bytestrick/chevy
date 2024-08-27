@@ -17,6 +17,7 @@ public class KeyBar extends CounterBar {
 
         setFont("superstar_2/superstar_memesbruh03");
         setColor(Color.BLACK);
+
         setOffsetY((int) (2 * scale));
         setFontSize((int) (8 * scale));
     }

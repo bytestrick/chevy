@@ -25,6 +25,7 @@ public class AttackBar extends ProgressBarLabel {
         setTexture(MyPanelUI.BAR_R, PROGRESS_BAR_PATH + "rightBar.png");
         setTexture(MyPanelUI.CENTER, PROGRESS_BAR_PATH + "centerPanel.png");
         setStepTexture(ATTACK_BAR_PATH + "step.png");
+
         setFont("superstar_2/superstar_memesbruh03");
         setFontSize((int) (8 * scale));
     }
