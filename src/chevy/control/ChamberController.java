@@ -88,6 +88,5 @@ public class ChamberController {
 
         // collega al chamberView la stanza (con le entità ordinate in base al layer) da disegnare
         chamberView.setDrawOrder(chamber.getDrawOrderChamber());
-        Sound.getInstance().startMusic(); // 🎵
     }
 }

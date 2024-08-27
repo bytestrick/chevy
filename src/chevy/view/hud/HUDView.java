@@ -2,7 +2,8 @@ package chevy.view.hud;
 
 import chevy.settings.WindowSettings;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 
 public class HUDView extends JPanel {
     private final CoinBar coinBar;
@@ -12,7 +13,6 @@ public class HUDView extends JPanel {
     private final SpringLayout springLayout;
     private int borderMargin = 10;
     private int componentMargin = 5;
-
 
     public HUDView(float scale) {
         coinBar = new CoinBar(32, 7, scale);
@@ -46,7 +46,8 @@ public class HUDView extends JPanel {
         springLayout.putConstraint(SpringLayout.NORTH, playerInfo, borderMarginScaled, SpringLayout.NORTH, this);
         springLayout.putConstraint(SpringLayout.WEST, playerInfo, borderMarginScaled, SpringLayout.WEST, this);
 
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, powerUpText, 0, SpringLayout.HORIZONTAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, powerUpText, 0, SpringLayout.HORIZONTAL_CENTER,
+                this);
         springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, powerUpText, 0, SpringLayout.VERTICAL_CENTER, this);
     }
 

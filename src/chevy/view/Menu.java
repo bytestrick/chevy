@@ -7,6 +7,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Ninja;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.service.GameLoop;
+import chevy.service.Sound;
 import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.utils.Pair;
@@ -174,6 +175,8 @@ public class Menu {
         GameLoop.getInstance().start();
         window.setScene(Window.Scene.PLAYING);
         stopCharacterAnimation();
+        Sound.stopMenuMusic();
+        Sound.getInstance().startMusic(); // 🎵
     }
 
     /**
