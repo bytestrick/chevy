@@ -28,7 +28,7 @@ public class LevelSelectorRenderer extends BasicComboBoxRenderer {
     public boolean isInsideInterval(final int x) { return x >= enabledInterval.first && x <= enabledInterval.second; }
 
     /**
-     * Imposta l'intervallo di opzioni è selezionabile in JComboBox
+     * Imposta l'intervallo di opzioni selezionabile in JComboBox
      *
      * @param interval comincia da 0
      */
