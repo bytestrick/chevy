@@ -15,16 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AnimatedEntityView extends EntityView {
-    private final Map<Pair<CommonState, Integer>, AnimatedSprite> animations;
+    private final Map<Pair<CommonState, Integer>, AnimatedSprite> animations = new HashMap<>();
     protected Interpolation moveInterpolationX;
     protected Interpolation moveInterpolationY;
     protected Vector2<Double> currentViewPosition;
     protected GlobalState currentGlobalState;
     protected boolean firstTimeInState = false;
-
-    public AnimatedEntityView() {
-        animations = new HashMap<>();
-    }
 
     protected void createAnimation(CommonState enumStates, int type, int nFrame, float secDurationFrame,
                                    String folderPath, String extension) {
