@@ -1,9 +1,12 @@
 package chevy.view;
 
+import chevy.model.entity.stateMachine.CommonState;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.settings.WindowSettings;
 import chevy.utils.Load;
+import chevy.utils.Pair;
+import chevy.view.animation.Interpolation;
 import chevy.view.chamber.ChamberView;
 import chevy.view.hud.HUDView;
 
@@ -18,7 +21,7 @@ public class GamePanel extends JPanel {
             new ImageIcon(Load.image("/assets/icons/PlayPause.png").getScaledInstance(48, 48, Image.SCALE_SMOOTH));
     private final static ImageIcon caution =
             new ImageIcon(Load.image("/assets/icons/caution.png").getScaledInstance(48, 48, Image.SCALE_SMOOTH));
-    private final ChamberView chamberView = new ChamberView();
+    private static final ChamberView chamberView = new ChamberView();
     private final HUDView hudView = new HUDView(3.0f);
     private final Window window;
 
@@ -47,6 +50,7 @@ public class GamePanel extends JPanel {
      * Dialogo di pausa del gioco. È innescato dalla pressione di ESC.
      */
     public void pauseDialog() {
+        // FIXME: non deve essere possibile creare più di un dialogo
         window.setTitle("Chevy - Pausa");
         GameLoop.getInstance().pause();
         Sound.getInstance().pauseMusic();

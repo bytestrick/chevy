@@ -135,15 +135,13 @@ public class ChamberManager {
      */
     public Chamber getCurrentChamber() { return getChamber(currentChamberIndex); }
 
-    public int getCurrentChamberIndex() { return currentChamberIndex; }
-
     /**
      * Imposta la stanza corrente a index. Se la stanza è già caricata la invalida e ne forza il caricamento.
      *
      * @param index della stanza
      */
-    public void requireChamber(int index) {
+    public void requireChamber(final int index) {
         currentChamberIndex = index;
-        chambers[index] = null; // al prossimo getCurrentChamber(), getChamber() eseguirà il caricamento
+        chambers[index] = null; // Forza il ricaricamento al prossimo getCurrentChamber()
     }
 }
