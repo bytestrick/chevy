@@ -6,6 +6,8 @@ import chevy.utils.Load;
 import chevy.utils.Log;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -31,7 +33,7 @@ public class ProgressBar extends JPanel {
 
         setOpaque(false);
         containerImage.setOpaque(false);
-        ui = new MyPanelUI(null, scale * WindowSettings.scale);
+        ui = new MyPanelUI(null);
         setUI(ui);
 
         setLayout(springLayout);
@@ -114,7 +116,7 @@ public class ProgressBar extends JPanel {
 
     private void addStep() {
         if (stepTexture == null) {
-            Log.warn("Non è presente nessuna texture per lo step");
+            Log.error("Non è presente nessuna texture per lo step");
             return;
         }
 
@@ -123,7 +125,7 @@ public class ProgressBar extends JPanel {
             if (i < nComponents) {
                 containerImage.remove(i);
             }
-            containerImage.add(new ImageVisualizer(stepTexture, scale), i);
+            containerImage.add(new ImageVisualizer(stepTexture, scale * WindowSettings.scale), i);
             if (i >= value) {
                 containerImage.getComponent(i).setVisible(false);
             }
@@ -141,13 +143,11 @@ public class ProgressBar extends JPanel {
     }
 
     public void windowResized(float scale) {
-        float scale2 = scale;
         scale *= this.scale;
-
         ui.setScale(scale);
         for (int i = 0; i < containerImage.getComponentCount(); ++i) {
             ImageVisualizer im = (ImageVisualizer) containerImage.getComponent(i);
-            im.windowResized(scale2); // lo scale del componente è già applicato all'inserimento (riga 114)
+            im.windowResized(scale);
         }
         setDimension(scale);
     }

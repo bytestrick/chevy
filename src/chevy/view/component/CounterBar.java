@@ -8,9 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.*;
 
 public class CounterBar extends JPanel {
     private final int counter = 0;
@@ -33,7 +31,7 @@ public class CounterBar extends JPanel {
         this.dimension = dimension;
 
         setOpaque(false);
-        ui = new MyPanelUI(null, scale * WindowSettings.scale);
+        ui = new MyPanelUI(null);
         setUI(ui);
 
         setDimension(WindowSettings.scale);
@@ -70,6 +68,10 @@ public class CounterBar extends JPanel {
     public void setFont(String path) {
         font = Load.font(path);
         resizeFont();
+    }
+
+    public void setColor(Color color) {
+        text.setForeground(color);
     }
 
     private void resizeFont() {

@@ -4,6 +4,8 @@ package chevy.view.hud;
 import chevy.view.component.MyPanelUI;
 import chevy.view.component.ProgressBarLabel;
 
+import java.awt.*;
+
 public class AttackBar extends ProgressBarLabel {
     private static final String PROGRESS_BAR_PATH = "/assets/component/progressBar/";
     private static final String ATTACK_BAR_PATH = PROGRESS_BAR_PATH + "attackBar/";
@@ -24,6 +26,6 @@ public class AttackBar extends ProgressBarLabel {
         setTexture(MyPanelUI.CENTER, PROGRESS_BAR_PATH + "centerPanel.png");
         setStepTexture(ATTACK_BAR_PATH + "step.png");
         setFont("superstar_2/superstar_memesbruh03");
-        setFontSize(11);
+        setFontSize((int) (8 * scale));
     }
 }
