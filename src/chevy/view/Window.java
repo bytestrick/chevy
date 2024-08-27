@@ -2,6 +2,7 @@ package chevy.view;
 
 import chevy.control.KeyboardListener;
 import chevy.control.WindowController;
+import chevy.service.Sound;
 import chevy.settings.WindowSettings;
 import chevy.utils.Load;
 import chevy.utils.Log;
@@ -44,7 +45,6 @@ public class Window extends JFrame {
         setVisible(true);
         requestFocus();
 
-
         // assicura l'esecuzione del codice solamente dopo la creazione del componente JFrame
         SwingUtilities.invokeLater(() -> {
             WindowSettings.SIZE_TOP_BAR = getInsets().top;
@@ -53,6 +53,7 @@ public class Window extends JFrame {
                 makeResponsive();
             }
         });
+        Sound.getInstance(); // inizializza il Sound
 
         Log.info("Window: creazione terminata [w: " + size.width + ", h: " + size.height + "]");
     }
@@ -151,6 +152,7 @@ public class Window extends JFrame {
             Log.info("Cambio scena da " + this.scene + " a " + scene);
             final JPanel panel = switch (scene) {
                 case MENU -> {
+                    Sound.startMenuMusic();
                     getRootPane().setBackground(new Color(25, 21, 38)); // Sfondo della barra del titolo
                     menu.startCharacterAnimation();
                     setTitle("Chevy");
