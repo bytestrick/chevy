@@ -20,8 +20,9 @@ public class GamePanel extends JPanel {
             new ImageIcon(Load.image("/assets/icons/caution.png").getScaledInstance(48, 48, Image.SCALE_SMOOTH));
     private static final ChamberView chamberView = new ChamberView();
     private static boolean pauseDialogActive = false;
-    private final HUDView hudView = new HUDView(3.0f);
+    private final HUDView hudView = new HUDView(1.3f);
     private final Window window;
+
 
     public GamePanel(Window window) {
         this.window = window;
@@ -90,8 +91,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public void windowResized() {
-        float scale = Math.min(WindowSettings.scaleX, WindowSettings.scaleY);
+    public void windowResized(float scale) {
         hudView.windowResized(scale);
     }
 

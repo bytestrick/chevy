@@ -50,6 +50,10 @@ public class Window extends JFrame {
             WindowSettings.SIZE_TOP_BAR = getInsets().top;
             setResizable(resizable);
             if (resizable) {
+                // visto che componentResized() non viene chiamata sempre all'avvio questo assicura il corretto scale dei componenti
+                WindowSettings.updateValue(getHeight(), getWidth());
+                gamePanel.windowResized(WindowSettings.scale);
+                // ---
                 makeResponsive();
             }
         });
@@ -116,7 +120,8 @@ public class Window extends JFrame {
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
                 WindowSettings.updateValue(getHeight(), getWidth());
-                gamePanel.windowResized();
+                System.out.println("update:  " + WindowSettings.scale);
+                gamePanel.windowResized(WindowSettings.scale);
             }
         });
     }

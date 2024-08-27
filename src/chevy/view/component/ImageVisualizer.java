@@ -37,8 +37,8 @@ public class ImageVisualizer extends JComponent {
         this.image = image;
         setOpaque(false);
 
-        width = (int) (scale * image.getWidth() * WindowSettings.scale);
-        height = (int) (scale * image.getHeight() * WindowSettings.scale);
+        width = (int) (scale * image.getWidth());
+        height = (int) (scale * image.getHeight());
 
         setDimension();
     }
@@ -74,8 +74,6 @@ public class ImageVisualizer extends JComponent {
     }
 
     public void windowResized(float scale) {
-        scale *= this.scale;
-
         width = (int) (scale * image.getWidth());
         height = (int) (scale * image.getHeight());
         setDimension();
