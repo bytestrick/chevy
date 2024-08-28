@@ -10,8 +10,9 @@ import java.awt.Toolkit;
  */
 public class GameLoop implements Runnable {
     private static GameLoop instance;
-    private boolean isRunning = false;
-    private boolean isPaused = false;
+    private static boolean isRunning;
+    private static Thread worker;
+    private static boolean isPaused = false;
 
     public static GameLoop getInstance() {
         if (instance == null) {
@@ -20,42 +21,20 @@ public class GameLoop implements Runnable {
         return instance;
     }
 
-    public void start() {
-        if (isRunning) {
-            Log.warn(Thread.currentThread().getName() + ": già in esecuzione");
+    public synchronized void start() {
+        isPaused = false;
+        isRunning = true;
+        if (worker == null || worker.isInterrupted() || !worker.isAlive()) {
+            worker = Thread.ofPlatform().priority(Thread.MAX_PRIORITY).name("Game loop").start(this);
         } else {
-            isRunning = true;
-            Thread.ofPlatform().priority(Thread.MAX_PRIORITY).name("Game Loop").start(this);
+            notify();
         }
     }
 
-    public void stop() {
-        if (isRunning) {
-            synchronized (this) {
-                isRunning = false;
-                isPaused = false;
-                notify();
-            }
-        }
-    }
-
-    public void pause() {
+    public synchronized void stop() {
         if (!isPaused) {
-            synchronized (this) {
-                isPaused = true;
-                notify();
-            }
-            Log.info("Game loop: PAUSA");
-        }
-    }
-
-    public void resume() {
-        if (isPaused) {
-            synchronized (this) {
-                isPaused = false;
-                notify();
-            }
-            Log.info("Game loop: FINE PAUSA");
+            isPaused = true;
+            notify();
         }
     }
 
@@ -64,7 +43,7 @@ public class GameLoop implements Runnable {
      */
     @Override
     public void run() {
-        Log.info("Game loop: AVVIATO");
+        Log.info("Game loop avviato");
         long lastTime = System.currentTimeMillis();
         while (isRunning) {
             final long timeToWait = GameSettings.FRAME_TARGET_TIME - (System.currentTimeMillis() - lastTime);
@@ -73,12 +52,11 @@ public class GameLoop implements Runnable {
                     synchronized (this) {
                         wait(timeToWait);
                         while (isPaused) {
+                            Log.info("Game loop in pausa");
                             wait();
                         }
                     }
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                } catch (InterruptedException ignored) { }
             }
             final double delta = (System.currentTimeMillis() - lastTime) / 1000.0d; // conversione in secondi
             lastTime = System.currentTimeMillis();
@@ -87,6 +65,6 @@ public class GameLoop implements Runnable {
             RenderManager.render(delta);
             Toolkit.getDefaultToolkit().sync();
         }
-        Log.info("Game loop: TERMINATO");
+        worker = null;
     }
 }

@@ -29,26 +29,18 @@ public abstract class Player extends LiveEntity {
         }
     }
 
-    public int[] getStats() { return new int[]{health * 10, maxDamage * 10, 100 - (int)(speed * 100)}; }
+    public int[] getStats() { return new int[]{health * 10, maxDamage * 10, 100 - (int) (speed * 100)}; }
 
-    public PowerUp getOwnedPowerUp(PowerUp.Type powerUpType) {
-        return ownedPowerUp.get(powerUpType);
-    }
+    public PowerUp getOwnedPowerUp(PowerUp.Type powerUpType) { return ownedPowerUp.get(powerUpType); }
 
     @Override
-    public Type getSpecificType() {
-        return type;
-    }
+    public Type getSpecificType() { return type; }
 
     @Override
-    public CommonEntityType getGenericType() {
-        return super.getSpecificType();
-    }
+    public CommonEntityType getGenericType() { return super.getSpecificType(); }
 
     @Override
-    public String toString() {
-        return type.toString();
-    }
+    public String toString() { return type.toString(); }
 
     public enum State implements CommonState {
         IDLE, ATTACK, MOVE, DEAD, HIT, SLUDGE, FALL, GLIDE

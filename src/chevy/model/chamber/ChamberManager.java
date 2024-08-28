@@ -1,5 +1,6 @@
 package chevy.model.chamber;
 
+import chevy.control.ChamberController;
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
@@ -9,7 +10,10 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.service.GameLoop;
+import chevy.service.Sound;
 import chevy.utils.Log;
+import chevy.view.chamber.EntityToEntityView;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
@@ -25,20 +29,7 @@ public class ChamberManager {
     public static final int NUMBER_OF_CHAMBERS = 6;
     private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
     private static final String CHAMBER_PATH = "src/res/chambers/chamber";
-    private static ChamberManager instance = null;
     private static int currentChamberIndex = 0; // Indice della stanza corrente nel gioco.
-
-    /**
-     * Restituisce l'istanza Singleton di ChamberManager. Se non esiste, la crea.
-     *
-     * @return L'istanza Singleton di ChamberManager
-     */
-    public static ChamberManager getInstance() {
-        if (instance == null) {
-            instance = new ChamberManager();
-        }
-        return instance;
-    }
 
     /**
      * Carica un layer che comporrà la stanza.
@@ -62,9 +53,10 @@ public class ChamberManager {
      * Carica una stanza
      *
      * @param index il numero della stanza da caricare (livello). Parte da 0.
-     * @return la Chamber. Avrà valore null se il caricamento è fallito.
+     * @return Chamber caricata
      */
     private static Chamber loadChamber(int index) {
+        Log.info("Caricamento della stanza " + index);
         Chamber chamber = new Chamber();
         int layer = 0;
         BufferedImage chamberImage = loadLayer(index, layer);
@@ -105,43 +97,38 @@ public class ChamberManager {
         if (layer > 0) {
             return chamber;
         }
-        return null;
-    }
-
-    /**
-     * @param index indice della stanza
-     * @return la i-esima stanza. Se non esiste la carica.
-     */
-    private Chamber getChamber(int index) {
-        if (chambers[index] == null) {
-            Log.info("Carico la chamber " + index);
-            Chamber chamber = loadChamber(index);
-            if (chamber == null) {
-                Log.error("Tentativo di caricare la chamber " + index + " fallito");
-                System.exit(1);
-            }
-            chambers[index] = chamber;
-        }
-        return chambers[index];
+        throw new RuntimeException("Tentativo di caricare la stanza " + index + " fallito");
     }
 
     /**
      * Passa alla stanza successiva
      */
-    public void advanceChamber() { ++currentChamberIndex; }
+    public static void nextChamber() {
+        if (currentChamberIndex + 1 < NUMBER_OF_CHAMBERS) {
+            enterChamber(currentChamberIndex + 1);
+            // TODO: qui si sbloccano i livelli
+        }
+    }
 
     /**
      * @return la stanza corrente
      */
-    public Chamber getCurrentChamber() { return getChamber(currentChamberIndex); }
+    public static Chamber getCurrentChamber() { return chambers[currentChamberIndex]; }
 
     /**
      * Imposta la stanza corrente a index. Se la stanza è già caricata la invalida e ne forza il caricamento.
+     * Predispone il gioco.
      *
      * @param index della stanza
      */
-    public void requireChamber(final int index) {
+    public static void enterChamber(final int index) {
         currentChamberIndex = index;
-        chambers[index] = null; // Forza il ricaricamento al prossimo getCurrentChamber()
+        chambers[currentChamberIndex] = loadChamber(index);
+        ChamberController.refresh();
+        EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer()); // Invalida la view del player corrente
+        GameLoop.getInstance().start();
+        Sound.getInstance().startMusic(); // 🎵
     }
+
+    public static int getCurrentChamberIndex() { return currentChamberIndex; }
 }

@@ -1,17 +1,15 @@
 package chevy.view;
 
-import chevy.control.ChamberController;
 import chevy.model.chamber.ChamberManager;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Archer;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Ninja;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
-import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.utils.Pair;
-import chevy.view.chamber.EntityToEntityView;
+import chevy.utils.Utils;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,10 +28,8 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 
 public class Menu {
-    private static final Random random = new Random();
     private static final String[][] quotes =
             new String[][]{{"Ho giurato di proteggere il regno, difendere i deboli " + "e… sì, anche\ncercare di " +
                     "capire come si monta questa maledetta armatura!", "Il mio cavallo è coraggioso," + " la mia " +
@@ -51,7 +47,6 @@ public class Menu {
     private final Object updateAnimation = new Object();
     private final Window window;
     private final Pair<Integer, Integer> spriteDim;
-    private final ChamberController chamberController;
     public JPanel root;
     private JButton play;
     private JButton playerCycleNext;
@@ -77,7 +72,6 @@ public class Menu {
 
     public Menu(final Window window) {
         this.window = window;
-        root.addKeyListener(window.keyboardListener);
 
         // TODO: recuperare chiavi e monete dal JSON
         coins.setText("69");
@@ -97,7 +91,6 @@ public class Menu {
         loadCharacterSprites();
         setPlayerType(playerType);
         initListeners();
-        chamberController = new ChamberController(window);
     }
 
     /**
@@ -151,7 +144,7 @@ public class Menu {
     }
 
     /**
-     * Risponde agli eventi passati dal KeyboardListener
+     * Risponde agli eventi passati dalla Window
      */
     public void handleKeyPress(KeyEvent event) {
         switch (event.getKeyCode()) {
@@ -167,21 +160,10 @@ public class Menu {
      * sulla tastiera.
      */
     private void playAction() {
-        ChamberManager.getInstance().requireChamber(level); // invalida la chamber caricata
-        chamberController.refresh();
-        final Player player = ChamberManager.getInstance().getCurrentChamber().getPlayer(); // innesca il ricaricamento
-
-        // Ricarica la view del Player
-        if (EntityToEntityView.entityView.containsKey(player)) {
-            EntityToEntityView.entityView.remove(player);
-            EntityToEntityView.getSpecific(player);
-        }
-
-        window.setScene(Window.Scene.PLAYING);
-        GameLoop.getInstance().start();
+        ChamberManager.enterChamber(level);
         stopCharacterAnimation();
         Sound.stopMenuMusic();
-        Sound.getInstance().startMusic(); // 🎵
+        window.setScene(Window.Scene.PLAYING);
     }
 
     /**
@@ -211,7 +193,7 @@ public class Menu {
         indicators[playerType.ordinal()].setSelected(false);
         playerType = type;
         final int p = playerType.ordinal();
-        characterAnimation.setToolTipText(quotes[p][random.nextInt(quotes[p].length)]);
+        characterAnimation.setToolTipText(quotes[p][Utils.random.nextInt(quotes[p].length)]);
         characterName.setText(playerType.toString());
         indicators[p].setSelected(true);
         healthBar.setValue(playerStats[p][0]);

@@ -64,7 +64,7 @@ public class WraithController {
         if (wraith.isDead()) {
             if (wraith.getState(Wraith.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(wraith);
-                wraith.removeToUpdate();
+                wraith.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(wraith);
                 return;

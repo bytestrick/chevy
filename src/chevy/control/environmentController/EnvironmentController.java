@@ -1,6 +1,5 @@
 package chevy.control.environmentController;
 
-import chevy.control.ChamberController;
 import chevy.control.HUDController;
 import chevy.control.InteractionType;
 import chevy.model.chamber.Chamber;
@@ -12,13 +11,10 @@ import chevy.model.entity.staticEntity.environment.Stair;
 
 public class EnvironmentController {
     private final ChestController chestController;
-    private final StairController stairController;
 
-    public EnvironmentController(Chamber chamber, HUDController hudController, ChamberController chamberController) {
+    public EnvironmentController(Chamber chamber, HUDController hudController) {
         this.chestController = new ChestController(chamber, hudController);
-        this.stairController = new StairController(chamber, chamberController);
     }
-
 
     public synchronized void handleInteraction(InteractionType interaction, Entity subject, Entity object) {
         switch (interaction) {
@@ -29,14 +25,14 @@ public class EnvironmentController {
 
     private void playerInInteraction(Player subject, Environment environment) {
         if (environment.getSpecificType() == Environment.Type.STAIR) {
-            stairController.playerInInteraction((Stair) environment);
+            StairController.playerInInteraction((Stair) environment);
         }
     }
 
     private void updateTraps(Environment environment) {
         switch (environment.getSpecificType()) {
             case Environment.Type.CHEST -> chestController.update((Chest) environment);
-            case Environment.Type.STAIR -> stairController.update((Stair) environment);
+            case Environment.Type.STAIR -> StairController.update((Stair) environment);
             default -> { }
         }
     }

@@ -1,6 +1,5 @@
 package chevy.view;
 
-import chevy.control.KeyboardListener;
 import chevy.control.WindowController;
 import chevy.service.Sound;
 import chevy.settings.WindowSettings;
@@ -27,30 +26,29 @@ import java.awt.event.ComponentEvent;
 public class Window extends JFrame {
     public static final Dimension size = new Dimension(WindowSettings.WINDOW_WIDTH, WindowSettings.WINDOW_HEIGHT);
     public static final Font handjet = Load.font("Handjet");
+    public static final Color bg = new Color(24, 20, 37);
     private static final ImageIcon icon = new ImageIcon(Load.image("/assets/icons/Power.png").getScaledInstance(42,
             42, Image.SCALE_SMOOTH));
-    public static final Color bg = new Color(24, 20, 37);
     public final GamePanel gamePanel = new GamePanel(this);
     public final Options options = new Options(this);
-    public final KeyboardListener keyboardListener = new KeyboardListener(this);
     public final Menu menu = new Menu(this);
     private Scene scene;
 
     public Window(boolean resizable) {
+        new WindowController(this);
         setSize(size);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowController(this));
         setScene(Scene.MENU);
         setVisible(true);
         requestFocus();
-
         // assicura l'esecuzione del codice solamente dopo la creazione del componente JFrame
         SwingUtilities.invokeLater(() -> {
             WindowSettings.SIZE_TOP_BAR = getInsets().top;
             setResizable(resizable);
             if (resizable) {
-                // visto che componentResized() non viene chiamata sempre all'avvio questo assicura il corretto scale dei componenti
+                // visto che componentResized() non viene chiamata sempre all'avvio questo assicura il corretto scale
+                // dei componenti
                 WindowSettings.updateValue(getHeight(), getWidth());
                 gamePanel.windowResized(WindowSettings.scale);
                 // ---
@@ -176,7 +174,7 @@ public class Window extends JFrame {
             options.setupReturnAction(this.scene);
             this.scene = scene;
             setContentPane(panel);
-            panel.requestFocus();
+            requestFocus(); // mantieni il focus su Window
             validate();
         }
     }

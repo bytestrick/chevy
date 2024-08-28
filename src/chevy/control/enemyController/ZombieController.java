@@ -64,7 +64,7 @@ public class ZombieController {
         if (zombie.isDead()) {
             if (zombie.getState(Zombie.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(zombie);
-                zombie.removeToUpdate();
+                zombie.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(zombie);
                 return;

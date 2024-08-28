@@ -100,9 +100,6 @@ public class EntityFromColor {
 
     // Players
     private static final int PLAYER = 1;
-    private static final Knight knight = new Knight(new Vector2<>(0, 0));
-    private static final Archer archer = new Archer(new Vector2<>(0, 0));
-    private static final Ninja ninja = new Ninja(new Vector2<>(0, 0));
 
     // Enemy
     private static final int WRAITH = 150;
@@ -208,18 +205,9 @@ public class EntityFromColor {
 
             // Player
             case PLAYER -> switch (Menu.playerType) {
-                case KNIGHT -> {
-                    knight.changePosition(startPosition);
-                    yield knight;
-                }
-                case ARCHER -> {
-                    archer.changePosition(startPosition);
-                    yield archer;
-                }
-                case NINJA -> {
-                    ninja.changePosition(startPosition);
-                    yield ninja;
-                }
+                case KNIGHT -> new Knight(startPosition);
+                case ARCHER -> new Archer(startPosition);
+                case NINJA -> new Ninja(startPosition);
             };
 
             // Enemy

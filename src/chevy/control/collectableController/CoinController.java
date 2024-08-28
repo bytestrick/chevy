@@ -29,7 +29,7 @@ public class CoinController {
         if (coin.isCollected()) {
             if (coin.getState(Coin.State.COLLECTED).isFinished()) {
                 coin.setToDraw(false);
-                coin.removeToUpdate();
+                coin.removeFromUpdate();
             }
         }
     }

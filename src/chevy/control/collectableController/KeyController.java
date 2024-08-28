@@ -29,7 +29,7 @@ public class KeyController {
         if (key.isCollected()) {
             if (key.getState(Key.State.COLLECTED).isFinished()) {
                 key.setToDraw(false);
-                key.removeToUpdate();
+                key.removeFromUpdate();
             }
         }
     }
