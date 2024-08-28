@@ -33,16 +33,21 @@ public class WindowController implements WindowListener, KeyListener {
 
     @Override
     public void windowIconified(WindowEvent windowEvent) {
-        if (window.getScene() == Window.Scene.PLAYING) {
-            GameLoop.getInstance().stop();
-            Sound.getInstance().pauseMusic();
+        switch (window.getScene()) {
+            case PLAYING -> {
+                GameLoop.getInstance().stop();
+                Sound.getInstance().pauseMusic();
+
+            }
+            case MENU, OPTIONS -> Sound.stopMenuMusic();
         }
     }
 
     @Override
     public void windowDeiconified(WindowEvent windowEvent) {
-        if (window.getScene() == Window.Scene.PLAYING) {
-            window.gamePanel.pauseDialog();
+        switch (window.getScene()) {
+            case PLAYING -> window.gamePanel.pauseDialog();
+            case MENU, OPTIONS -> Sound.startMenuMusic();
         }
     }
 
