@@ -18,16 +18,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
+import javax.swing.ToolTipManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.LinearGradientPaint;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.stream.Stream;
 
 public class Menu {
     private static final String[][] quotes =
@@ -141,6 +146,25 @@ public class Menu {
             }
             Log.info("Cambiato livello: " + level);
         });
+
+        Stream.of(playerCycleNext, playerCyclePrev, characterAnimation, coins, keys, options, healthBar, damageBar,
+                speedBar, levelSelector).forEach(jComponent -> jComponent.addMouseListener(new MouseAdapter() {
+            /**
+             * L'attesa iniziale affinché il tooltip si attivi è più breve.
+             * Il tooltip persiste per un'ora se il cursore vi giace sopra per tanto.
+             */
+            public void mouseEntered(MouseEvent ignored) {
+                ToolTipManager.sharedInstance().setInitialDelay(100);
+                ToolTipManager.sharedInstance().setDismissDelay(3_600_000);
+            }
+
+            /**
+             * Il tooltip viene nascosto non appena il cursore abbandona il componente.
+             */
+            public void mouseExited(MouseEvent ignored) {
+                ToolTipManager.sharedInstance().setDismissDelay(0);
+            }
+        }));
     }
 
     /**
@@ -293,6 +317,9 @@ public class Menu {
                     g.drawImage(sprites[playerType.ordinal()][1], 0, 0, spriteDim.first, spriteDim.second, null);
                 }
             }
+
+            @Override
+            public Point getToolTipLocation(MouseEvent event) { return getMousePosition(); }
         };
     }
 }
