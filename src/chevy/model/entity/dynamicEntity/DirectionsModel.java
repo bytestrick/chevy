@@ -1,9 +1,8 @@
 package chevy.model.entity.dynamicEntity;
 
 import chevy.model.entity.Entity;
+import chevy.utils.Utils;
 import chevy.utils.Vector2;
-
-import java.util.Random;
 
 public enum DirectionsModel {
     DOWN(new Vector2<>(1, 0)), LEFT(new Vector2<>(0, -1)), RIGHT(new Vector2<>(0, 1)), UP(new Vector2<>(-1, 0));
@@ -15,9 +14,8 @@ public enum DirectionsModel {
     }
 
     public static DirectionsModel getRandom() {
-        Random random = new Random();
         DirectionsModel[] directionsModels = values();
-        return directionsModels[random.nextInt(directionsModels.length)];
+        return directionsModels[Utils.random.nextInt(directionsModels.length)];
     }
 
     public static DirectionsModel positionToDirection(Entity a, Entity b) {

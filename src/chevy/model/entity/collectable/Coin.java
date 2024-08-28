@@ -5,8 +5,6 @@ import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
-import java.util.Random;
-
 public class Coin extends Collectable {
     private final GlobalState idle = new GlobalState(State.IDLE, 0.8f);
     private final GlobalState collected = new GlobalState(State.COLLECTED, 0.8f);
@@ -20,7 +18,7 @@ public class Coin extends Collectable {
     }
 
     public int getValue() {
-        return new Random().nextInt(minValue, maxValue);
+        return Utils.random.nextInt(minValue, maxValue);
     }
 
     private void initStateMachine() {

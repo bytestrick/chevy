@@ -105,7 +105,7 @@ public class PowerUpController {
         if (powerUp.isCollected()) {
             if (powerUp.getState(PowerUp.State.COLLECTED).isFinished()) {
                 powerUp.setToDraw(false);
-                powerUp.removeToUpdate();
+                powerUp.removeFromUpdate();
             }
         }
         else {

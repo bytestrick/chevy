@@ -2,15 +2,14 @@ package chevy.service;
 
 import chevy.utils.Load;
 import chevy.utils.Log;
+import chevy.utils.Utils;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Stream;
 
 public class Sound {
-    private static final Random random = new Random();
     private static final Clip[] effects = new Clip[Effect.values().length];
     private static final Clip[] songs = new Clip[Song.values().length];
     private static final Clip[] loops = new Clip[]{Load.clip("loop0"), Load.clip("loop1")};
@@ -20,8 +19,8 @@ public class Sound {
     private static boolean musicRunning = false;
     private static float effectGainPercent = .8f; // valore predefinito volume effetti
     private static float musicGainPercent = .7f; // valore predefinito volume musica
-    private final Object musicMutex = new Object();
     private static Clip previousSong;
+    private final Object musicMutex = new Object();
 
     private Sound() {
         final Effect[] e = Effect.values();
@@ -57,7 +56,7 @@ public class Sound {
     }
 
     public static void startMenuMusic() {
-        currentPlayingLoop = loops[random.nextInt(loops.length)];
+        currentPlayingLoop = loops[Utils.random.nextInt(loops.length)];
         applyGain(currentPlayingLoop, musicGainPercent);
         currentPlayingLoop.loop(Clip.LOOP_CONTINUOUSLY);
     }
@@ -127,12 +126,11 @@ public class Sound {
         musicRunning = true;
         Thread.ofPlatform().start(() -> {
             Log.info("Thread per la musica avviato");
-            random.setSeed(Thread.currentThread().threadId());
             while (musicRunning) {
                 // Scegli la canzone successiva escludendo la precedente.
                 final Clip finalPreviousSong = previousSong;
                 final List<Clip> choices = Stream.of(songs).filter(clip -> !clip.equals(finalPreviousSong)).toList();
-                final Clip song = choices.get(random.nextInt(choices.size()));
+                final Clip song = choices.get(Utils.random.nextInt(choices.size()));
                 song.setFramePosition(0);
                 previousSong = song;
                 final long len = song.getMicrosecondLength();
@@ -148,7 +146,7 @@ public class Sound {
                                     musicMutex.wait((len - song.getMicrosecondPosition()) / 1000);
                                 }
                             } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
+                                break;
                             }
                         } else {
                             song.stop();
@@ -173,9 +171,7 @@ public class Sound {
                 synchronized (t) {
                     t.wait(10); // Dai tempo al thread di uscire.
                 }
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            } catch (InterruptedException ignored) { }
         }
     }
 

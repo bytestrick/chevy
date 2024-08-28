@@ -7,8 +7,6 @@ import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
-import java.util.Random;
-
 public abstract class PowerUp extends Collectable {
     private final Type type;
     private final GlobalState idle = new GlobalState(State.IDLE, 0.5f);
@@ -19,7 +17,6 @@ public abstract class PowerUp extends Collectable {
     protected String description = "No description";
     protected int occurringPercentage = 0;
     protected int inStock = -1; // quantità infinita
-
 
     public PowerUp(Vector2<Integer> initVelocity, Type type) {
         super(initVelocity, Collectable.Type.POWER_UP);
@@ -47,7 +44,6 @@ public abstract class PowerUp extends Collectable {
             case GOLD_ARROW -> new GoldArrow(position);
             case HEALING_FLOOD -> new HealingFlood(position);
             case KEY_S_KEEPER -> new KeySKeeper(position);
-
         };
     }
 
@@ -108,15 +104,13 @@ public abstract class PowerUp extends Collectable {
     public String toString() { return type.toString(); }
 
     public enum Type implements CommonEntityType {
-        HOLY_SHIELD, VAMPIRE_FANGS, ANGEL_RING, LONG_SWORD, HOBNAIL_BOOTS,
-        COIN_OF_GREED, HOT_HEART, COLD_HEART, STONE_BOOTS, BROKEN_ARROWS, AGILITY, HEDGEHOG_SPINES,
-        SLIME_PIECE, PIECE_OF_BONE, GOLD_ARROW, HEALING_FLOOD, KEY_S_KEEPER;
-
+        HOLY_SHIELD, VAMPIRE_FANGS, ANGEL_RING, LONG_SWORD, HOBNAIL_BOOTS, COIN_OF_GREED, HOT_HEART, COLD_HEART,
+        STONE_BOOTS, BROKEN_ARROWS, AGILITY, HEDGEHOG_SPINES, SLIME_PIECE, PIECE_OF_BONE, GOLD_ARROW, HEALING_FLOOD,
+        KEY_S_KEEPER;
 
         public static Type getRandom() {
             Type[] types = values();
-            Random random = new Random();
-            return types[random.nextInt(types.length)];
+            return types[Utils.random.nextInt(types.length)];
         }
     }
 

@@ -64,7 +64,7 @@ public class SlimeController {
         if (slime.isDead()) {
             if (slime.getState(Slime.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(slime);
-                slime.removeToUpdate();
+                slime.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(slime);
                 return;

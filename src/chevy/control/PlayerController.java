@@ -60,7 +60,7 @@ public class PlayerController implements Update {
         this.gamePanel = gamePanel;
         this.chamber = chamber;
         this.player = chamber.getPlayer();
-        KeyboardListener.playerController = this;
+        WindowController.playerController = this;
 
         // Aggiunge il controller del giocatore all'UpdateManager.
         UpdateManager.addToUpdate(this);
@@ -72,16 +72,11 @@ public class PlayerController implements Update {
      * @param keyEvent l'evento di pressione del tasto
      */
     public void keyPressed(KeyEvent keyEvent) {
-        CommonState currentPlayerState = player.getCurrentState();
-        if (currentPlayerState == Player.State.DEAD || currentPlayerState == Player.State.GLIDE) {
-            return;
-        }
-
+        final CommonState currentPlayerState = player.getCurrentState();
         final int key = keyEvent.getKeyCode();
-
         if (key == KeyEvent.VK_ESCAPE) {
             gamePanel.pauseDialog();
-        } else {
+        } else if (currentPlayerState != Player.State.DEAD && currentPlayerState != Player.State.GLIDE) {
             final DirectionsModel direction = switch (key) {
                 case KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_I -> DirectionsModel.UP;
                 case KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_J -> DirectionsModel.LEFT;
@@ -335,8 +330,9 @@ public class PlayerController implements Update {
         if (player.isDead()) {
             if (player.getState(Player.State.DEAD).isFinished()) {
                 chamber.findAndRemoveEntity(player, false);
-                player.removeToUpdate();
+                player.removeFromUpdate();
                 updateFinished = true;
+                gamePanel.playerDeathDialog();
                 return;
             }
         } else if (player.getCurrentHealth() <= 0) {
@@ -358,7 +354,6 @@ public class PlayerController implements Update {
 
         // gestione dello scivolamento del player (stato GLIDE)
         if (player.getCurrentState() == Player.State.GLIDE && player.getState(player.getCurrentState()).isFinished() && chamber.canCross(player, player.getDirection()) && chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
-
             Entity previousEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
             chamber.moveDynamicEntity(player, player.getDirection());
             Entity nextEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
@@ -395,9 +390,7 @@ public class PlayerController implements Update {
         }
     }
 
-    public boolean updateFinished() {
-        return updateFinished;
-    }
+    public boolean updateFinished() { return updateFinished; }
 
     /**
      * Applica danno al giocatore e cambia il suo stato a "HIT" se possibile.

@@ -80,7 +80,7 @@ public class BeetleController {
         if (beetle.isDead()) {
             if (beetle.getState(Beetle.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(beetle);
-                beetle.removeToUpdate();
+                beetle.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(beetle);
                 return;

@@ -13,54 +13,42 @@ import chevy.control.trapsController.TrapsUpdateController;
 import chevy.model.HUD;
 import chevy.model.chamber.Chamber;
 import chevy.model.chamber.ChamberManager;
-import chevy.service.Sound;
-import chevy.view.Window;
-import chevy.view.chamber.ChamberView;
-import chevy.view.hud.HUDView;
+import chevy.view.GamePanel;
 
 /**
  * Gestisce le interazione tra le diverse entità, nella stanza di gioco
  */
 public class ChamberController {
-    private final HUDView hudView;
-    private final ChamberView chamberView;
-    private final Window window;
-    private EnemyUpdateController enemyUpdateController;
-    private TrapsUpdateController trapsUpdateController;
-    private ProjectileUpdateController projectileUpdateController;
-    private CollectableUpdateController collectableUpdateController;
-    private EnvironmentUpdateController environmentUpdateController;
-
-    public ChamberController(final Window window) {
-        chamberView = window.gamePanel.getChamberView();
-        this.window = window;
-        hudView = window.gamePanel.getHudView();
-        refresh();
-    }
+    private static GamePanel gamePanel;
+    private static EnemyUpdateController enemyUpdateController;
+    private static TrapsUpdateController trapsUpdateController;
+    private static ProjectileUpdateController projectileUpdateController;
+    private static CollectableUpdateController collectableUpdateController;
+    private static EnvironmentUpdateController environmentUpdateController;
 
     /**
      * Inizializza (o reimposta) i controller per il giocatore, i nemici, le trappole e i proiettili.
      * Da usare ogni volta che si cambia stanza.
      */
-    public void refresh() {
-        Chamber chamber = ChamberManager.getInstance().getCurrentChamber();
-        PlayerController playerController = new PlayerController(chamber, window.gamePanel);
+    public static void refresh() {
+        final Chamber chamber = ChamberManager.getCurrentChamber();
+        final PlayerController playerController = new PlayerController(chamber, gamePanel);
 
-        EnemyController enemyController = new EnemyController(chamber, playerController);
+        final EnemyController enemyController = new EnemyController(chamber, playerController);
         playerController.setEnemyController(enemyController);
         if (enemyUpdateController != null) {
             enemyUpdateController.updateTerminate();
         }
         enemyUpdateController = new EnemyUpdateController(enemyController, chamber.getEnemies());
 
-        TrapsController trapsController = new TrapsController(chamber, playerController, enemyController);
+        final TrapsController trapsController = new TrapsController(chamber, playerController, enemyController);
         playerController.setTrapController(trapsController);
         if (trapsUpdateController != null) {
             trapsUpdateController.updateTerminate();
         }
         trapsUpdateController = new TrapsUpdateController(trapsController, chamber.getTraps());
 
-        HUDController hudController = new HUDController(new HUD(), hudView);
+        final HUDController hudController = new HUDController(new HUD(), gamePanel.getHudView());
         playerController.setHUDController(hudController);
 
         CollectableController collectableController = new CollectableController(chamber, playerController,
@@ -71,7 +59,7 @@ public class ChamberController {
         }
         collectableUpdateController = new CollectableUpdateController(collectableController, chamber.getCollectables());
 
-        ProjectileController projectileController = new ProjectileController(chamber, playerController,
+        final ProjectileController projectileController = new ProjectileController(chamber, playerController,
                 enemyController);
         playerController.setProjectileController(projectileController);
         if (projectileUpdateController != null) {
@@ -79,7 +67,7 @@ public class ChamberController {
         }
         projectileUpdateController = new ProjectileUpdateController(projectileController, chamber.getProjectiles());
 
-        EnvironmentController environmentController = new EnvironmentController(chamber, hudController, this);
+        final EnvironmentController environmentController = new EnvironmentController(chamber, hudController);
         playerController.setEnvironmentController(environmentController);
         if (environmentUpdateController != null) {
             environmentUpdateController.updateTerminate();
@@ -87,6 +75,8 @@ public class ChamberController {
         environmentUpdateController = new EnvironmentUpdateController(environmentController, chamber.getEnvironment());
 
         // collega al chamberView la stanza (con le entità ordinate in base al layer) da disegnare
-        chamberView.setDrawOrder(chamber.getDrawOrderChamber());
+        gamePanel.getChamberView().setDrawOrder(chamber.getDrawOrderChamber());
     }
+
+    public static void setGamePanel(final GamePanel gamePanel) { ChamberController.gamePanel = gamePanel; }
 }

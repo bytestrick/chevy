@@ -31,7 +31,7 @@ public class HealthController {
         if (health.isCollected()) {
             if (health.getState(Health.State.COLLECTED).isFinished()) {
                 health.setToDraw(false);
-                health.removeToUpdate();
+                health.removeFromUpdate();
             }
         }
     }
