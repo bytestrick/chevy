@@ -18,7 +18,7 @@ public class PlayerInfo extends JPanel {
         healthBar = new HealthBar(0, scale);
         shieldBar = new ShieldBar(0, scale);
         attackBar = new AttackBar(0, scale);
-        playerFrame = new PlayerFrame(new Dimension(24, 24), scale);
+        playerFrame = new PlayerFrame(new Dimension(42, 42), scale);
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         barContainer.setLayout(new BoxLayout(barContainer, BoxLayout.Y_AXIS));

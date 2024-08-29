@@ -1,7 +1,7 @@
 package chevy.control.collectableController;
 
 import chevy.control.HUDController;
-import chevy.Sound;
+import chevy.service.Sound;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Key;
 
@@ -29,7 +29,7 @@ public class KeyController {
         if (key.isCollected()) {
             if (key.getState(Key.State.COLLECTED).isFinished()) {
                 key.setToDraw(false);
-                key.removeToUpdate();
+                key.removeFromUpdate();
             }
         }
     }

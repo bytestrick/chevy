@@ -31,7 +31,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 /**
  * L'area di gioco.
@@ -42,7 +41,8 @@ public class Chamber {
     private final List<Trap> traps = new LinkedList<>(); // Trappole nella stanza
     private final List<Projectile> projectiles = new LinkedList<>(); // Proiettili nella stanza
     private final List<Collectable> collectables = new LinkedList<>(); // collezionabili nella stanza
-    private final List<Environment> environments = new LinkedList<>(); // elementi dinamici dell'ambiente nella stanza (ceste, scale)
+    private final List<Environment> environments = new LinkedList<>(); // elementi dinamici dell'ambiente nella
+    // stanza (ceste, scale)
     /**
      * Una struttura dati tridimensionale che rappresenta la griglia di gioco.
      * Ogni cella della griglia può contenere una lista di entità.
@@ -235,7 +235,7 @@ public class Chamber {
     /**
      * Data un entità ritorna la direzione in cui bisogna avanzare per incontrare il player.
      *
-     * @param entity entità da considerare per il calcolo della direzione
+     * @param entity       entità da considerare per il calcolo della direzione
      * @param distanceCell offset che considera le celle più avanti rispetto alla direzione selezionata
      * @return direzione in cui si trova il player
      */
@@ -261,7 +261,7 @@ public class Chamber {
      * Sposta un entità dinamica nella cella successiva in corrispondenza della direzione selezionata.
      *
      * @param dynamicEntity entità dinamica da spostare
-     * @param direction direzione in cui l'entità dinamica si deve spostare
+     * @param direction     direzione in cui l'entità dinamica si deve spostare
      */
     public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity, DirectionsModel direction) {
         Vector2<Integer> nextPosition = new Vector2<>(dynamicEntity.getRow() + direction.row(),
@@ -281,7 +281,7 @@ public class Chamber {
      * Sposta un entità dinamica alla cella presente nella posizione data.
      *
      * @param dynamicEntity entità dinamica da spostare
-     * @param nextPosition posizione in cui è presente la cella
+     * @param nextPosition  posizione in cui è presente la cella
      */
     public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity, Vector2<Integer> nextPosition) {
         DirectionsModel direction = DirectionsModel.positionToDirection(new Vector2<>(dynamicEntity.getRow(),
@@ -305,7 +305,7 @@ public class Chamber {
     /**
      * Trova e rimuove un'entità dalla griglia di gioco.
      *
-     * @param entity entità da rimuovere
+     * @param entity    entità da rimuovere
      * @param setToDraw booleana che in base al valore permette all'entità di essere mostrata a schermo
      * @return true se è stata rimossa, false altrimenti
      */
@@ -396,8 +396,7 @@ public class Chamber {
                 int randomJ = Utils.wrap(f + j, -1, 1);
 
                 if (randomI != 0 || randomJ != 0) {
-                    Vector2<Integer> spawnPosition = new Vector2<>(chest.getRow() + randomI,
-                            chest.getCol() + randomJ);
+                    Vector2<Integer> spawnPosition = new Vector2<>(chest.getRow() + randomI, chest.getCol() + randomJ);
                     if (canSpawn(spawnPosition)) {
                         Collectable.Type collectableType = chest.getDrop();
                         if (collectableType == null) {
@@ -483,8 +482,7 @@ public class Chamber {
      */
     public synchronized boolean moveRandomPlus(Enemy enemy) {
         DirectionsModel[] directions = DirectionsModel.values();
-        Random random = new Random();
-        int index = random.nextInt(directions.length);
+        int index = Utils.random.nextInt(directions.length);
         for (int i = 0; i <= directions.length; ++i) {
             if (isSafeToCross(enemy, directions[index])) {
                 moveDynamicEntity(enemy, directions[index]);
@@ -501,7 +499,7 @@ public class Chamber {
      * altrimenti segue il percorso minore per raggiungere il giocatore. Usa {@link #moveRandom(Enemy)} per il
      * movimento random.
      *
-     * @param enemy nemico da spostare
+     * @param enemy       nemico da spostare
      * @param rangeWander lato dell'area del quadrato
      * @return true se si sposta, false altrimenti
      */
@@ -590,8 +588,6 @@ public class Chamber {
         return index >= 0 ? entities.get(index) : null;
     }
 
-    // ----
-
     public synchronized List<List<List<Entity>>> getChamber() { return Collections.unmodifiableList(chamber); }
 
     public boolean isInitialized() { return init; }
@@ -602,9 +598,7 @@ public class Chamber {
 
     public Player getPlayer() { return this.player; }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
+    public void setPlayer(Player player) { this.player = player; }
 
     public void addEnemy(Enemy enemy) {
         this.enemies.add(enemy);
@@ -612,8 +606,9 @@ public class Chamber {
     }
 
     public void decreaseEnemyCounter() {
-        if (--enemyCounter < 0)
+        if (--enemyCounter < 0) {
             ++enemyCounter;
+        }
     }
 
     public int getEnemyCounter() {
@@ -638,7 +633,7 @@ public class Chamber {
 
     public List<Environment> getEnvironment() { return environments; }
 
-    public void addEntityToDraw(Entity entity, int layer) { drawOrderChamber.add(entity, layer); }
+    private void addEntityToDraw(Entity entity, int layer) { drawOrderChamber.add(entity, layer); }
 
     public List<Layer> getDrawOrderChamber() { return Collections.unmodifiableList(drawOrderChamber.getDrawOrder()); }
 }

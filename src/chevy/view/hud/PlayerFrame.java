@@ -17,10 +17,10 @@ public class PlayerFrame extends JPanel {
         setOpaque(false);
         this.scale = scale;
         this.dimension = new Dimension(
-                (int) (dimension.getWidth() * scale),
-                (int) (dimension.getHeight() * scale)
+                (int) (dimension.getWidth()),
+                (int) (dimension.getHeight())
         );
-        ui =  new MyPanelUI(null, scale * WindowSettings.scale);
+        ui =  new MyPanelUI(null);
 
         ui.setTexture(MyPanelUI.CENTER, PANEL_PATH + "centerPanel.png");
         ui.setTexture(MyPanelUI.CORNER_TL, PANEL_PATH + "topLeftCorner.png");
@@ -33,7 +33,7 @@ public class PlayerFrame extends JPanel {
         ui.setTexture(MyPanelUI.BAR_R, PANEL_PATH + "rightBar.png");
 
         setUI(ui);
-        setDimension(scale * WindowSettings.scale);
+        setDimension(scale);
     }
 
     private void setDimension(float scale) {

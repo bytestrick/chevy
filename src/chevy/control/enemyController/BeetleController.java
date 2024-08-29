@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.Sound;
+import chevy.service.Sound;
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
@@ -80,7 +80,7 @@ public class BeetleController {
         if (beetle.isDead()) {
             if (beetle.getState(Beetle.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(beetle);
-                beetle.removeToUpdate();
+                beetle.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(beetle);
                 return;

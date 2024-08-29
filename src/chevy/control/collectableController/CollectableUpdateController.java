@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * La classe CollectableUpdateController è responsabile della gestione degli aggiornamenti
- * degli oggetti collezionaili nel gioco. Implementa l'interfaccia Update per integrarsi con il ciclo di
+ * degli oggetti collezionabili nel gioco. Implementa l'interfaccia Update per integrarsi con il ciclo di
  * aggiornamento del gioco. Gestisce l'aggiornamento e la rimozione degli aggetti collezionabili
  * dall'aggiornamento.
  */

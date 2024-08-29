@@ -6,20 +6,18 @@ import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
-import java.util.Random;
-
 public class Chest extends Environment {
 
-
-    public enum State implements CommonState {
-        IDLE_LOCKED,
-        IDLE_UNLOCKED,
-        OPEN,
-        UNLOCK,
-        CLOSE;
-    }
+    /**
+     * Oggetti collezionabili che i nemici possono rilasciare
+     */
+    private static final Collectable.Type[] DROPPABLE_COLLECTABLE = {Collectable.Type.COIN, Collectable.Type.KEY,
+            Collectable.Type.HEALTH, Collectable.Type.POWER_UP};
+    /**
+     * Probabilità di rilascio degli oggetti collezionabili
+     */
+    private static final int[] DROPPABLE_COLLECTABLE_PROB = {100, 15, 15, 35};
     private final GlobalState idleLocked = new GlobalState(State.IDLE_LOCKED);
-
     private final GlobalState idleUnlocked = new GlobalState(State.IDLE_UNLOCKED);
     private final GlobalState open = new GlobalState(State.OPEN, 0.8f);
     private final GlobalState unlock = new GlobalState(State.UNLOCK, 0.5f);
@@ -28,26 +26,6 @@ public class Chest extends Environment {
     private int maxDrop = 6;
     private int minDrop = 3;
     private boolean isFirstOpen = true;
-
-    /**
-     * Oggetti collezionabili che i nemici possono rilasciare
-     */
-    private static final Collectable.Type[] DROPPABLE_COLLECTABLE = {
-            Collectable.Type.COIN,
-            Collectable.Type.KEY,
-            Collectable.Type.HEALTH,
-            Collectable.Type.POWER_UP
-    };
-
-    /**
-     * Probabilità di rilascio degli oggetti collezionabili
-     */
-    private static final int[] DROPPABLE_COLLECTABLE_PROB = {
-            100,
-            15,
-            15,
-            35
-    };
 
     public Chest(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.CHEST);
@@ -86,7 +64,7 @@ public class Chest extends Environment {
     }
 
     public int getSpawnQuantity() {
-        return new Random().nextInt(minDrop, maxDrop + 1);
+        return Utils.random.nextInt(minDrop, maxDrop + 1);
     }
 
     public boolean isFirstOpen() {
@@ -106,5 +84,9 @@ public class Chest extends Environment {
             case UNLOCK -> unlock;
             case CLOSE -> close;
         };
+    }
+
+    public enum State implements CommonState {
+        IDLE_LOCKED, IDLE_UNLOCKED, OPEN, UNLOCK, CLOSE;
     }
 }

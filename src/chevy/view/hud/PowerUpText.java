@@ -4,15 +4,15 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 
-import chevy.Sound;
+import chevy.service.Sound;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.settings.WindowSettings;
-import chevy.utils.Fontt;
+import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.view.component.NoCaret;
 
 public class PowerUpText extends JPanel {
-    private static final String FONT_PATH = "fonts/PixelatedPusab.ttf";
+    private static final String FONT_PATH = "PixelatedPusab";
     private static final int TITLE_FONT_SIZE = 24;
     private static final int DESCRIPTION_FONT_SIZE = 16;
     private static final Color COLOR_BG = new Color(0, 0, 0, 180);
@@ -63,7 +63,7 @@ public class PowerUpText extends JPanel {
     }
 
     public void setFont(String path) {
-        this.font = Fontt.load(path);
+        this.font = Load.font(path);
         textPane.setFont(font);
     }
 

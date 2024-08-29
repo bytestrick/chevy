@@ -1,7 +1,7 @@
 package chevy.view.entities.environmet;
 
 import chevy.model.entity.staticEntity.environment.Wall;
-import chevy.utils.Image;
+import chevy.utils.Load;
 import chevy.utils.Vector2;
 import chevy.view.entities.EntityView;
 
@@ -30,49 +30,49 @@ public class WallView extends EntityView {
         return switch (wall.getSpecificType()) {
             case TOP -> {
                 if (TOP_IMAGE == null) {
-                    TOP_IMAGE = Image.load(COMMON_PATH + "top.png");
+                    TOP_IMAGE = Load.image(COMMON_PATH + "top.png");
                 }
                 yield TOP_IMAGE;
             }
             case BOTTOM -> {
                 if (BOTTOM_IMAGE == null) {
-                    BOTTOM_IMAGE = Image.load(COMMON_PATH + "bottom.png");
+                    BOTTOM_IMAGE = Load.image(COMMON_PATH + "bottom.png");
                 }
                 yield BOTTOM_IMAGE;
             }
             case LEFT -> {
                 if (LEFT_IMAGE == null) {
-                    LEFT_IMAGE = Image.load(COMMON_PATH + "left.png");
+                    LEFT_IMAGE = Load.image(COMMON_PATH + "left.png");
                 }
                 yield LEFT_IMAGE;
             }
             case RIGHT -> {
                 if (RIGHT_IMAGE == null) {
-                    RIGHT_IMAGE = Image.load(COMMON_PATH + "right.png");
+                    RIGHT_IMAGE = Load.image(COMMON_PATH + "right.png");
                 }
                 yield RIGHT_IMAGE;
             }
             case EXTERNAL_CORNER_BOTTOM_LEFT -> {
                 if (EXTERNAL_CORNER_BOTTOM_LEFT_IMAGE == null) {
-                    EXTERNAL_CORNER_BOTTOM_LEFT_IMAGE = Image.load(COMMON_PATH + "externalCornerBottomLeft.png");
+                    EXTERNAL_CORNER_BOTTOM_LEFT_IMAGE = Load.image(COMMON_PATH + "externalCornerBottomLeft.png");
                 }
                 yield EXTERNAL_CORNER_BOTTOM_LEFT_IMAGE;
             }
             case EXTERNAL_CORNER_BOTTOM_RIGHT -> {
                 if (EXTERNAL_CORNER_BOTTOM_RIGHT_IMAGE == null) {
-                    EXTERNAL_CORNER_BOTTOM_RIGHT_IMAGE = Image.load(COMMON_PATH + "externalCornerBottomRight.png");
+                    EXTERNAL_CORNER_BOTTOM_RIGHT_IMAGE = Load.image(COMMON_PATH + "externalCornerBottomRight.png");
                 }
                 yield EXTERNAL_CORNER_BOTTOM_RIGHT_IMAGE;
             }
             case EXTERNAL_CORNER_TOP_LEFT -> {
                 if (EXTERNAL_CORNER_TOP_LEFT_IMAGE == null) {
-                    EXTERNAL_CORNER_TOP_LEFT_IMAGE = Image.load(COMMON_PATH + "externalCornerTopLeft.png");
+                    EXTERNAL_CORNER_TOP_LEFT_IMAGE = Load.image(COMMON_PATH + "externalCornerTopLeft.png");
                 }
                 yield EXTERNAL_CORNER_TOP_LEFT_IMAGE;
             }
             case EXTERNAL_CORNER_TOP_RIGHT -> {
                 if (EXTERNAL_CORNER_TOP_RIGHT_IMAGE == null) {
-                    EXTERNAL_CORNER_TOP_RIGHT_IMAGE = Image.load(COMMON_PATH + "externalCornerTopRight.png");
+                    EXTERNAL_CORNER_TOP_RIGHT_IMAGE = Load.image(COMMON_PATH + "externalCornerTopRight.png");
                 }
                 yield EXTERNAL_CORNER_TOP_RIGHT_IMAGE;
             }

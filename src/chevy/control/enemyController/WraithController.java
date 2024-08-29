@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.Sound;
+import chevy.service.Sound;
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
@@ -64,7 +64,7 @@ public class WraithController {
         if (wraith.isDead()) {
             if (wraith.getState(Wraith.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(wraith);
-                wraith.removeToUpdate();
+                wraith.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(wraith);
                 return;

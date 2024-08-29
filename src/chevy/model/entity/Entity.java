@@ -4,9 +4,9 @@ import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.stateMachine.GlobalState;
 import chevy.model.entity.stateMachine.StateMachine;
 import chevy.utils.Log;
+import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
-import java.util.Random;
 import java.util.UUID;
 
 public abstract class Entity {
@@ -33,22 +33,18 @@ public abstract class Entity {
         this.toDraw = false;
     }
 
-    public boolean toDraw() {
-        return toDraw;
-    }
+    public boolean toDraw() { return toDraw; }
 
-    public void setToDraw(boolean toDraw) {
-        this.toDraw = toDraw;
-    }
+    public void setToDraw(boolean toDraw) { this.toDraw = toDraw; }
 
-    public synchronized int getDamage() {
-        Random random = new Random();
-        return random.nextInt(minDamage, maxDamage + 1);
-    }
+    public synchronized int getDamage() { return Utils.random.nextInt(minDamage, maxDamage + 1); }
 
     public void changeMinDamage(int minDamage) { this.minDamage = minDamage; }
+
     public void changeMaxDamage(int maxDamage) { this.maxDamage = maxDamage; }
+
     public int getMaxDamage() { return maxDamage; }
+
     public int getMinDamage() { return minDamage; }
 
     public CommonEntityType getSpecificType() { return type; }
@@ -68,30 +64,20 @@ public abstract class Entity {
         return false;
     }
 
-    public int getDrawLayer() {
-        return Math.abs(this.drawLayer);
-    }
+    public int getDrawLayer() { return Math.abs(this.drawLayer); }
 
     public GlobalState getState(CommonState commonEnumStates) {
         Log.warn("La funzione getState() deve essere ridefinita opportunamente nelle classi figlie");
         return null;
     }
 
-    public boolean changeState(CommonState state) {
-        return stateMachine.changeState(state);
-    }
+    public boolean changeState(CommonState state) { return stateMachine.changeState(state); }
 
-    public boolean canChange(CommonState state) {
-        return stateMachine.canChange(state);
-    }
+    public boolean canChange(CommonState state) { return stateMachine.canChange(state); }
 
-    public boolean checkAndChangeState(CommonState state) {
-        return stateMachine.checkAndChangeState(state);
-    }
+    public boolean checkAndChangeState(CommonState state) { return stateMachine.checkAndChangeState(state); }
 
-    public boolean changeToPreviousState() {
-        return stateMachine.changeToPreviousState();
-    }
+    public boolean changeToPreviousState() { return stateMachine.changeToPreviousState(); }
 
     public CommonState getCurrentState() {
         GlobalState currentGlobalState = stateMachine.getCurrentState();
@@ -109,18 +95,12 @@ public abstract class Entity {
         return previousGlobalState.getState();
     }
 
-    public boolean canRemoveToUpdate() {
-        return !mustBeUpdate;
-    }
+    public boolean canRemoveToUpdate() { return !mustBeUpdate; }
 
-    public void removeToUpdate() {
-        mustBeUpdate = false;
-    }
+    public void removeFromUpdate() { mustBeUpdate = false; }
 
     @Override
-    public String toString() {
-        return "ENTITY";
-    }
+    public String toString() { return "ENTITY"; }
 
     @Override
     public boolean equals(Object o) {

@@ -1,6 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.Sound;
+import chevy.service.Sound;
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;

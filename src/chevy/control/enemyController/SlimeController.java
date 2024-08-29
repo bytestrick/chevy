@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.Sound;
+import chevy.service.Sound;
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
@@ -64,7 +64,7 @@ public class SlimeController {
         if (slime.isDead()) {
             if (slime.getState(Slime.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(slime);
-                slime.removeToUpdate();
+                slime.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(slime);
                 return;

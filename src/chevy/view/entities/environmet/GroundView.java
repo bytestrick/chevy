@@ -1,7 +1,7 @@
 package chevy.view.entities.environmet;
 
 import chevy.model.entity.staticEntity.environment.Ground;
-import chevy.utils.Image;
+import chevy.utils.Load;
 import chevy.utils.Vector2;
 import chevy.view.entities.EntityView;
 
@@ -27,37 +27,37 @@ public class GroundView extends EntityView {
         return switch (ground.getSpecificType()) {
             case CENTRAL -> {
                 if (GROUND_CENTRAL == null) {
-                    GROUND_CENTRAL = Image.load(TILES_RESOURCES + "central.png");
+                    GROUND_CENTRAL = Load.image(TILES_RESOURCES + "central.png");
                 }
                 yield GROUND_CENTRAL;
             }
             case LEFT -> {
                 if (GROUND_LEFT == null) {
-                    GROUND_LEFT = Image.load(TILES_RESOURCES + "left.png");
+                    GROUND_LEFT = Load.image(TILES_RESOURCES + "left.png");
                 }
                 yield GROUND_LEFT;
             }
             case RIGHT -> {
                 if (GROUND_RIGHT == null) {
-                    GROUND_RIGHT = Image.load(TILES_RESOURCES + "right.png");
+                    GROUND_RIGHT = Load.image(TILES_RESOURCES + "right.png");
                 }
                 yield GROUND_RIGHT;
             }
             case TOP -> {
                 if (GROUND_TOP == null) {
-                    GROUND_TOP = Image.load(TILES_RESOURCES + "top.png");
+                    GROUND_TOP = Load.image(TILES_RESOURCES + "top.png");
                 }
                 yield GROUND_TOP;
             }
             case INTERIOR_CORNER_TOP_LEFT -> {
                 if (GROUND_INTERIOR_CORNER_TOP_LEFT == null) {
-                    GROUND_INTERIOR_CORNER_TOP_LEFT = Image.load(TILES_RESOURCES + "interiorCornerTopLeft.png");
+                    GROUND_INTERIOR_CORNER_TOP_LEFT = Load.image(TILES_RESOURCES + "interiorCornerTopLeft.png");
                 }
                 yield GROUND_INTERIOR_CORNER_TOP_LEFT;
             }
             case INTERIOR_CORNER_TOP_RIGHT -> {
                 if (GROUND_INTERIOR_CORNER_TOP_RIGHT == null) {
-                    GROUND_INTERIOR_CORNER_TOP_RIGHT = Image.load(TILES_RESOURCES + "interiorCornerTopRight.png");
+                    GROUND_INTERIOR_CORNER_TOP_RIGHT = Load.image(TILES_RESOURCES + "interiorCornerTopRight.png");
                 }
                 yield GROUND_INTERIOR_CORNER_TOP_RIGHT;
             }

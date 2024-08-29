@@ -20,7 +20,11 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
-import chevy.model.entity.staticEntity.environment.*;
+import chevy.model.entity.staticEntity.environment.Chest;
+import chevy.model.entity.staticEntity.environment.Environment;
+import chevy.model.entity.staticEntity.environment.Ground;
+import chevy.model.entity.staticEntity.environment.Stair;
+import chevy.model.entity.staticEntity.environment.Wall;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.Sludge;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
@@ -29,11 +33,6 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.view.entities.EntityView;
-import chevy.view.entities.animated.environmet.StairView;
-import chevy.view.entities.environmet.GroundView;
-import chevy.view.entities.environmet.VoidView;
-import chevy.view.entities.environmet.WallView;
-import chevy.view.entities.animated.environmet.ChestView;
 import chevy.view.entities.animated.collectable.CoinView;
 import chevy.view.entities.animated.collectable.HealthView;
 import chevy.view.entities.animated.collectable.KeyView;
@@ -44,16 +43,21 @@ import chevy.view.entities.animated.enemy.SkeletonView;
 import chevy.view.entities.animated.enemy.SlimeView;
 import chevy.view.entities.animated.enemy.WraithView;
 import chevy.view.entities.animated.enemy.ZombieView;
-import chevy.view.entities.animated.player.ArcherView;
-import chevy.view.entities.animated.player.KnightView;
-import chevy.view.entities.animated.player.NinjaView;
-import chevy.view.entities.animated.projectile.ArrowView;
-import chevy.view.entities.animated.projectile.SlimeShotView;
+import chevy.view.entities.animated.environmet.ChestView;
+import chevy.view.entities.animated.environmet.StairView;
 import chevy.view.entities.animated.environmet.trap.IcyFloorView;
 import chevy.view.entities.animated.environmet.trap.SludgeView;
 import chevy.view.entities.animated.environmet.trap.SpikedFloorView;
 import chevy.view.entities.animated.environmet.trap.TotemView;
 import chevy.view.entities.animated.environmet.trap.TrapdoorView;
+import chevy.view.entities.animated.player.ArcherView;
+import chevy.view.entities.animated.player.KnightView;
+import chevy.view.entities.animated.player.NinjaView;
+import chevy.view.entities.animated.projectile.ArrowView;
+import chevy.view.entities.animated.projectile.SlimeShotView;
+import chevy.view.entities.environmet.GroundView;
+import chevy.view.entities.environmet.VoidView;
+import chevy.view.entities.environmet.WallView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +66,7 @@ import java.util.Map;
  * Mappa le entità alle loro rappresentazioni visive.
  */
 public class EntityToEntityView {
-    private static final Map<Entity, EntityView> entityView = new HashMap<>();
+    public static final Map<Entity, EntityView> entityView = new HashMap<>();
 
     /**
      * Ottieni la rappresentazione specifica di un entità.
@@ -175,7 +179,7 @@ public class EntityToEntityView {
                 yield slimeShotView;
             }
             case Projectile.Type.ARROW -> {
-                ArrowView arrowView = null;
+                ArrowView arrowView;
                 if (entityView.containsKey(entity)) {
                     arrowView = (ArrowView) entityView.get(entity);
                 } else {
@@ -217,7 +221,7 @@ public class EntityToEntityView {
                 yield icyFloorView;
             }
             case Trap.Type.TOTEM -> {
-                TotemView totemView = null;
+                TotemView totemView;
                 if (entityView.containsKey(entity)) {
                     totemView = (TotemView) entityView.get(entity);
                 } else {
@@ -227,7 +231,7 @@ public class EntityToEntityView {
                 yield totemView;
             }
             case Trap.Type.TRAPDOOR -> {
-                TrapdoorView trapdoorView = null;
+                TrapdoorView trapdoorView;
                 if (entityView.containsKey(entity)) {
                     trapdoorView = (TrapdoorView) entityView.get(entity);
                 } else {
@@ -237,7 +241,7 @@ public class EntityToEntityView {
                 yield trapdoorView;
             }
             case Trap.Type.VOID -> {
-                VoidView voidView = null;
+                VoidView voidView;
                 if (entityView.containsKey(entity)) {
                     voidView = (VoidView) entityView.get(entity);
                 } else {
@@ -249,7 +253,7 @@ public class EntityToEntityView {
 
             // COLLECTABLES
             case Collectable.Type.HEALTH -> {
-                HealthView healthView = null;
+                HealthView healthView;
                 if (entityView.containsKey(entity)) {
                     healthView = (HealthView) entityView.get(entity);
                 } else {
@@ -259,7 +263,7 @@ public class EntityToEntityView {
                 yield healthView;
             }
             case Collectable.Type.COIN -> {
-                CoinView coinView = null;
+                CoinView coinView;
                 if (entityView.containsKey(entity)) {
                     coinView = (CoinView) entityView.get(entity);
                 } else {
@@ -269,7 +273,7 @@ public class EntityToEntityView {
                 yield coinView;
             }
             case Collectable.Type.KEY -> {
-                KeyView keyView = null;
+                KeyView keyView;
                 if (entityView.containsKey(entity)) {
                     keyView = (KeyView) entityView.get(entity);
                 } else {
@@ -278,11 +282,8 @@ public class EntityToEntityView {
                 }
                 yield keyView;
             }
-            default -> null;
-
-            // Environment
             case Environment.Type.CHEST -> {
-                ChestView chestView = null;
+                ChestView chestView;
                 if (entityView.containsKey(entity)) {
                     chestView = (ChestView) entityView.get(entity);
                 } else {
@@ -292,7 +293,7 @@ public class EntityToEntityView {
                 yield chestView;
             }
             case Environment.Type.STAIR -> {
-                StairView stairView = null;
+                StairView stairView;
                 if (entityView.containsKey(entity)) {
                     stairView = (StairView) entityView.get(entity);
                 } else {
@@ -301,6 +302,9 @@ public class EntityToEntityView {
                 }
                 yield stairView;
             }
+            default -> null;
+
+            // Environment
         };
     }
 
@@ -330,7 +334,7 @@ public class EntityToEntityView {
                 yield groundView;
             }
             case Collectable.Type.POWER_UP -> {
-                PowerUpView powerUpView = null;
+                PowerUpView powerUpView;
                 if (entityView.containsKey(entity)) {
                     powerUpView = (PowerUpView) entityView.get(entity);
                 } else {

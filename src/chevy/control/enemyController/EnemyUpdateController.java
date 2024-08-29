@@ -48,7 +48,9 @@ public class EnemyUpdateController implements Update {
      */
     @Override
     public void update(double delta) {
-        if (STOP_UPDATE) return;
+        if (STOP_UPDATE) {
+            return;
+        }
 
         addEnemies();
 
