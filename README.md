@@ -1,7 +1,17 @@
-- [Assets store](https://itch.io/gameView-assets)
-- [Linear interpolation](https://en.wikipedia.org/wiki/Linear_interpolation)
+### Maven
 
-# Cose
+> [!TIP]
+> Eseguire `./mvnw` compila ed esegue il progetto in un colpo solo.
+
+Lifecycle phases:
+  - `./mvnw clean` rimuove `target/` dopo la build
+  - `./mvnw compile` compila il progetto
+  - `./mvnw exec:exec` esegue il progetto compilato
+  - `./mvnw package` crea l'archivio `jar` compreso di dipendenze
+
+Le fasi si possono concatenare, esempio: `./mvnw clean compile` rimuove `target/` e ricompila il progetto da capo.
+
+### Cose
 
 - I nemici:
   - [x] Wraith
@@ -55,7 +65,9 @@ Le classi dentro il package `entity` sono tutte funzionanti (a patto di bug) tra
 
 Possibili cose da evitare: non implementare i power up e le chests.
 
-### Entities
+### Entità
+
+TODO: creare un diagramma per le classi con Mermaid 
 
 - Static entities:
   - PowerUp:
@@ -112,5 +124,6 @@ Possibili cose da evitare: non implementare i power up e le chests.
 - Le risorse audio sono tutte _royalty free_ e provengono da
   - [DungeonRush](https://github.com/rapiz1/DungeonRush/tree/master/res/audio)
   - [pixabay](https://pixabay.com/)
-- Font per l'interfaccia: [Handject](https://fonts.google.com/specimen/Handjet)
-- Le citazioni dei personaggi nella schermata iniziale sono generate da [ChatGPT](https://chatgpt.com/)
+- Font per l'interfaccia: [Handjet](https://fonts.google.com/specimen/Handjet)
+- Le citazioni dei personaggi nella schermata iniziale e i messaggi del dialogo di morte sono generati da [ChatGPT](https://chatgpt.com/)
+- Varie risorse provengono da [itch.io](https://itch.io/gameView-assets), i file sono accompagnati dalle rispettive licenze.
