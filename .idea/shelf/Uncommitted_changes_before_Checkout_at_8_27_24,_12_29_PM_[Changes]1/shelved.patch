@@ -1,0 +1,57 @@
+Index: src/chevy/view/hud/CoinBar.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chevy.view.hud;\n\n\nimport chevy.view.component.CounterBar;\nimport chevy.view.component.MyPanelUI;\n\nimport java.awt.*;\n\npublic class CoinBar extends CounterBar {\n    private static final String COIN_BAR_PATH = \"/assets/component/label/\";\n\n    public CoinBar(int width, int height, float scale) {\n        super(new Dimension((int) (width * scale), (int) (height * scale)), scale);\n        setTexture(MyPanelUI.BAR_L, COIN_BAR_PATH + \"coin/leftBar.png\");\n        setTexture(MyPanelUI.BAR_R, COIN_BAR_PATH + \"rightBar.png\");\n        setTexture(MyPanelUI.CENTER, COIN_BAR_PATH + \"centerPanel.png\");\n        setFont(\"superstar_2/superstar_memesbruh03\");\n        setOffsetY(2);\n        setFontSize(10);\n    }\n\n    public void setCoin(int value) {\n        setText(String.valueOf(value));\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/chevy/view/hud/CoinBar.java b/src/chevy/view/hud/CoinBar.java
+--- a/src/chevy/view/hud/CoinBar.java	
++++ b/src/chevy/view/hud/CoinBar.java	
+@@ -16,6 +16,7 @@
+         setTexture(MyPanelUI.CENTER, COIN_BAR_PATH + "centerPanel.png");
+         setFont("superstar_2/superstar_memesbruh03");
+         setOffsetY(2);
++        setTextColor(Color.BLACK);
+         setFontSize(10);
+     }
+ 
+Index: src/chevy/view/hud/KeyBar.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chevy.view.hud;\n\n\nimport chevy.view.component.CounterBar;\nimport chevy.view.component.MyPanelUI;\n\nimport java.awt.*;\n\npublic class KeyBar extends CounterBar {\n    private static final String KEY_BAR_PATH = \"/assets/component/label/\";\n\n    public KeyBar(int width, int height, float scale) {\n        super(new Dimension((int) (width * scale), (int)(height * scale)), scale);\n        setTexture(MyPanelUI.BAR_L, KEY_BAR_PATH + \"key/leftBar.png\");\n        setTexture(MyPanelUI.BAR_R, KEY_BAR_PATH + \"rightBar.png\");\n        setTexture(MyPanelUI.CENTER, KEY_BAR_PATH + \"centerPanel.png\");\n        setFont(\"superstar_2/superstar_memesbruh03\");\n        setOffsetY(2);\n        setFontSize(10);\n    }\n\n    public void setKey(int value) {\n        setText(String.valueOf(value));\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/chevy/view/hud/KeyBar.java b/src/chevy/view/hud/KeyBar.java
+--- a/src/chevy/view/hud/KeyBar.java	
++++ b/src/chevy/view/hud/KeyBar.java	
+@@ -17,6 +17,7 @@
+         setFont("superstar_2/superstar_memesbruh03");
+         setOffsetY(2);
+         setFontSize(10);
++        setTextColor(Color.BLACK);
+     }
+ 
+     public void setKey(int value) {
+Index: src/chevy/settings/WindowSettings.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package chevy.settings;\n\nimport java.awt.*;\n\npublic class WindowSettings {\n    public static int SIZE_TOP_BAR = 0; // il valore viene impostato non appena la finestra di gioco si apre\n\n    private static final int MAX_WINDOW_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;\n    private static final int MAX_WINDOW_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;\n    private static final float WINDOW_SCALE = 0.8f; // da 0 a 1\n\n\n//    Questo approccio mantiene l'aspect-ratio impostato.\n    private static final int ASPECT_RATIO_W = 1;\n    private static final int ASPECT_RATIO_H = 1;\n    private static final int MAX_WINDOW_SIZE = Math.round(Math.min(MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT) * WINDOW_SCALE);\n    public static int WINDOW_HEIGHT = MAX_WINDOW_WIDTH >= MAX_WINDOW_HEIGHT ?\n            MAX_WINDOW_SIZE :\n            Math.round((float) (MAX_WINDOW_SIZE * ASPECT_RATIO_H) / ASPECT_RATIO_W);\n    public static int WINDOW_WIDTH = MAX_WINDOW_WIDTH <= MAX_WINDOW_HEIGHT ?\n            MAX_WINDOW_SIZE :\n            Math.round((float) (MAX_WINDOW_SIZE * ASPECT_RATIO_W) / ASPECT_RATIO_H);\n    public static float scaleX = (float) WINDOW_WIDTH / MAX_WINDOW_WIDTH; // fattore di scala per x\n    public static float scaleY = (float) WINDOW_HEIGHT / MAX_WINDOW_HEIGHT; // fattore di scala per y\n    public static float scale = Math.min(scaleX, scaleY);\n\n\n//    Questo approccio mantiene l'aspect-ratio dello schermo\n//    public static final int WINDOW_HEIGHT = Math.round(MAX_WINDOW_EIGHT * WINDOW_SCALE);\n//    public static final int WINDOW_WIDTH = Math.round(MAX_WINDOW_WIDTH * WINDOW_SCALE);\n\n\n    public static void updateValue(int newHeight, int newWidth) {\n        WINDOW_HEIGHT = newHeight;\n        WINDOW_WIDTH = newWidth;\n\n        GameSettings.updateValue(GameSettings.nTileW, GameSettings.nTileH);\n\n        scaleX = (float) WINDOW_WIDTH / MAX_WINDOW_WIDTH * ASPECT_RATIO_W;\n        scaleY = (float) WINDOW_HEIGHT / MAX_WINDOW_HEIGHT * ASPECT_RATIO_H;\n        scale = Math.min(scaleX, scaleY);\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/chevy/settings/WindowSettings.java b/src/chevy/settings/WindowSettings.java
+--- a/src/chevy/settings/WindowSettings.java	
++++ b/src/chevy/settings/WindowSettings.java	
+@@ -11,8 +11,8 @@
+ 
+ 
+ //    Questo approccio mantiene l'aspect-ratio impostato.
+-    private static final int ASPECT_RATIO_W = 1;
+-    private static final int ASPECT_RATIO_H = 1;
++    private static final int ASPECT_RATIO_W = 4;
++    private static final int ASPECT_RATIO_H = 3;
+     private static final int MAX_WINDOW_SIZE = Math.round(Math.min(MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT) * WINDOW_SCALE);
+     public static int WINDOW_HEIGHT = MAX_WINDOW_WIDTH >= MAX_WINDOW_HEIGHT ?
+             MAX_WINDOW_SIZE :

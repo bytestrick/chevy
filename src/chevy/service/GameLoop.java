@@ -9,16 +9,41 @@ import java.awt.Toolkit;
  * Il thread che aggiorna il gioco.
  */
 public class GameLoop implements Runnable {
-    private boolean isRunning;
+    private static GameLoop instance;
+    private static boolean isRunning;
+    private static Thread worker;
+    private static boolean isPaused = false;
 
-    public GameLoop() {
-        isRunning = true;
-        Thread.ofPlatform().priority(Thread.MAX_PRIORITY).name("Game Loop").start(this);
+    public static GameLoop getInstance() {
+        if (instance == null) {
+            instance = new GameLoop();
+        }
+        return instance;
     }
 
+    public synchronized void start() {
+        isPaused = false;
+        isRunning = true;
+        if (worker == null || worker.isInterrupted() || !worker.isAlive()) {
+            worker = Thread.ofPlatform().priority(Thread.MAX_PRIORITY).name("Game loop").start(this);
+        } else {
+            notify();
+        }
+    }
+
+    public synchronized void stop() {
+        if (!isPaused) {
+            isPaused = true;
+            notify();
+        }
+    }
+
+    /**
+     * A intervalli calcolati aggiorna il model tramite UpdateManager e view tramite RenderManager
+     */
     @Override
     public void run() {
-        Log.info(Thread.currentThread().getName() + " avviato");
+        Log.info("Game loop avviato");
         long lastTime = System.currentTimeMillis();
         while (isRunning) {
             final long timeToWait = GameSettings.FRAME_TARGET_TIME - (System.currentTimeMillis() - lastTime);
@@ -26,10 +51,12 @@ public class GameLoop implements Runnable {
                 try {
                     synchronized (this) {
                         wait(timeToWait);
+                        while (isPaused) {
+                            Log.info("Game loop in pausa");
+                            wait();
+                        }
                     }
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                } catch (InterruptedException ignored) { }
             }
             final double delta = (System.currentTimeMillis() - lastTime) / 1000.0d; // conversione in secondi
             lastTime = System.currentTimeMillis();
@@ -38,13 +65,6 @@ public class GameLoop implements Runnable {
             RenderManager.render(delta);
             Toolkit.getDefaultToolkit().sync();
         }
-        Log.info(Thread.currentThread().getName() + " terminato");
-    }
-
-    /**
-     * Termina l'aggiornamento del gioco
-     */
-    public void stopLoop() {
-        isRunning = false;
+        worker = null;
     }
 }

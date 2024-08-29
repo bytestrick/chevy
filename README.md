@@ -16,10 +16,9 @@
   - [x] Sludge
 - [x] Aggiungere le animazioni al Player (ho messo alcuni archivi con delle immagini di player) (Attenzione la durata delle animazioni deve corrispondere alla durata dello stato a meno che non si imposti `loop = true` nell'`AnimatedSprite` per info guardare la classe `BeetleView`)
 - [ ] le impostazioni per gestire l'audio e i parametri per il resize
-- [ ] la classe per gestire l'audio
+- [x] la classe per gestire l'audio
 - [ ] la gestione dei livelli: passaggio da un livello all'altro (quando si prendono le scale)
 - [ ] salvataggio delle informazioni dei livelli e delle impostazioni (livello bloccato/completato)
-
 - [x] Problemi relativi all'attacco
     - Il giocatore può solo sferrare attacchi quando è adiacente al nemico.
     - Sferrare gli attacchi tramite i tasti usati per il movimento è inusuale.
@@ -30,7 +29,7 @@
       l'attacco: `ijkl`. in modo tale che sia supportato anche l'attacco a
       distanza e il cambio di direzione.
 
-Sono stati tutti implementati sia la parti relativa a model e sia la parte relativa alla view.
+Sono stati tutti implementati sia la parte relativa a model e sia la parte relativa alla view.
 
 La classe `GameSettings` contiene informazioni utili sulle impostazioni di gioco.
 
@@ -57,6 +56,7 @@ Le classi dentro il package `entity` sono tutte funzionanti (a patto di bug) tra
 Possibili cose da evitare: non implementare i power up e le chests.
 
 ### Entities
+
 - Static entities:
   - PowerUp:
     - [x] Agility: Possibilità di evitare un attacco.
@@ -108,3 +108,9 @@ Possibili cose da evitare: non implementare i power up e le chests.
 ### Attribuzione
 
 - Il ninja è una versione modificata di [Superpowers Asset Packs](https://github.com/sparklinlabs/superpowers-asset-packs) (CC0)
+- Il look & feel per swing è [FlatLaf](https://www.formdev.com/flatlaf/) (Apache-2.0)
+- Le risorse audio sono tutte _royalty free_ e provengono da
+  - [DungeonRush](https://github.com/rapiz1/DungeonRush/tree/master/res/audio)
+  - [pixabay](https://pixabay.com/)
+- Font per l'interfaccia: [Handject](https://fonts.google.com/specimen/Handjet)
+- Le citazioni dei personaggi nella schermata iniziale sono generate da [ChatGPT](https://chatgpt.com/)

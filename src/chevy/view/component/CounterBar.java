@@ -1,23 +1,26 @@
 package chevy.view.component;
 
 import chevy.settings.WindowSettings;
-import chevy.utils.Fontt;
+import chevy.utils.Load;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import java.awt.*;
 
 public class CounterBar extends JPanel {
-    private int counter = 0;
+    private final int counter = 0;
     private final JLabel text = new JLabel(String.valueOf(counter), SwingConstants.RIGHT);
     private final MyPanelUI ui;
-    private int rightSpace = 0;
     private final Dimension dimension;
     private final SpringLayout springLayout;
+    private final float scale;
+    private int rightSpace = 0;
     private Font font;
     private int fontSize = 13;
-    private float scale = 1f;
     private int offsetY = 0;
-
 
     public CounterBar(Dimension dimension) {
         this(dimension, 1f);
@@ -28,7 +31,7 @@ public class CounterBar extends JPanel {
         this.dimension = dimension;
 
         setOpaque(false);
-        ui = new MyPanelUI(null, scale * WindowSettings.scale);
+        ui = new MyPanelUI(null);
         setUI(ui);
 
         setDimension(WindowSettings.scale);
@@ -63,8 +66,12 @@ public class CounterBar extends JPanel {
     }
 
     public void setFont(String path) {
-        font = Fontt.load(path);
+        font = Load.font(path);
         resizeFont();
+    }
+
+    public void setColor(Color color) {
+        text.setForeground(color);
     }
 
     private void resizeFont() {
@@ -77,23 +84,24 @@ public class CounterBar extends JPanel {
     }
 
     private void setDimension(float scale) {
-        Dimension dimensionScaled = new Dimension(
-                (int) (dimension.getWidth() * scale),
-                (int) (dimension.height * scale)
-        );
+        Dimension dimensionScaled = new Dimension((int) (dimension.getWidth() * scale),
+                (int) (dimension.height * scale));
+
         setMaximumSize(dimensionScaled);
         setPreferredSize(dimensionScaled);
         setMinimumSize(dimensionScaled);
     }
 
     private void setConstraints(float scale) {
-        springLayout.putConstraint(SpringLayout.EAST, text, -((int) (rightSpace * scale) + ui.getWidth(MyPanelUI.BAR_R)), SpringLayout.EAST, this);
+        springLayout.putConstraint(SpringLayout.EAST, text,
+                -((int) (rightSpace * scale) + ui.getWidth(MyPanelUI.BAR_R)), SpringLayout.EAST, this);
         springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, text, offsetY, SpringLayout.VERTICAL_CENTER, this);
     }
 
     public void setOffsetY(int offsetY) {
         this.offsetY = offsetY;
     }
+
     public void windowResized(float scale) {
         scale = scale * this.scale;
 

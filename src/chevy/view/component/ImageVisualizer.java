@@ -2,7 +2,7 @@ package chevy.view.component;
 
 
 import chevy.settings.WindowSettings;
-import chevy.utils.Image;
+import chevy.utils.Load;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,14 +37,14 @@ public class ImageVisualizer extends JComponent {
         this.image = image;
         setOpaque(false);
 
-        width = (int) (scale * image.getWidth() * WindowSettings.scale);
-        height = (int) (scale * image.getHeight() * WindowSettings.scale);
+        width = (int) (scale * image.getWidth());
+        height = (int) (scale * image.getHeight());
 
         setDimension();
     }
 
     public void setImage(String path, float scale) {
-        setImage(Image.load(path), scale);
+        setImage(Load.image(path), scale);
     }
 
     public void setImage(String path) {
@@ -74,8 +74,6 @@ public class ImageVisualizer extends JComponent {
     }
 
     public void windowResized(float scale) {
-        scale *= this.scale;
-
         width = (int) (scale * image.getWidth());
         height = (int) (scale * image.getHeight());
         setDimension();

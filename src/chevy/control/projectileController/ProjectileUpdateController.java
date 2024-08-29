@@ -66,7 +66,9 @@ public class ProjectileUpdateController implements Update {
      */
     @Override
     public void update(double delta) {
-        if (STOP_UPDATE) return;
+        if (STOP_UPDATE) {
+            return;
+        }
 
         addProjectile(); // Aggiunge i proiettili alla lista principale prima dell'iterazione
 

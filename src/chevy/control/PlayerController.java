@@ -1,6 +1,5 @@
 package chevy.control;
 
-import chevy.Sound;
 import chevy.control.collectableController.CollectableController;
 import chevy.control.enemyController.EnemyController;
 import chevy.control.environmentController.EnvironmentController;
@@ -27,10 +26,12 @@ import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
+import chevy.service.Sound;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
+import chevy.view.GamePanel;
 
 import java.awt.event.KeyEvent;
 
@@ -43,24 +44,23 @@ import static chevy.model.entity.staticEntity.environment.Environment.Type.TRAP;
 public class PlayerController implements Update {
     private final Chamber chamber;
     private final Player player;
+    private final GamePanel gamePanel;
     private EnemyController enemyController;
     private TrapsController trapsController;
-    private ProjectileController projectileController;
-    private CollectableController collectableController;
-    private EnvironmentController environmentController;
+    private ProjectileController projectileController = null;
+    private CollectableController collectableController = null;
+    private EnvironmentController environmentController = null;
     private HUDController hudController;
     private boolean updateFinished = false;
 
     /**
      * @param chamber riferimento alla stanza di gioco
      */
-    public PlayerController(Chamber chamber) {
+    public PlayerController(Chamber chamber, GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
         this.chamber = chamber;
         this.player = chamber.getPlayer();
-
-        this.enemyController = null;
-        this.trapsController = null;
-        this.projectileController = null;
+        WindowController.playerController = this;
 
         // Aggiunge il controller del giocatore all'UpdateManager.
         UpdateManager.addToUpdate(this);
@@ -72,24 +72,22 @@ public class PlayerController implements Update {
      * @param keyEvent l'evento di pressione del tasto
      */
     public void keyPressed(KeyEvent keyEvent) {
-        CommonState currentPlayerState = player.getCurrentState();
-        if (currentPlayerState == Player.State.DEAD || currentPlayerState == Player.State.GLIDE) {
-            return;
-        }
-
+        final CommonState currentPlayerState = player.getCurrentState();
         final int key = keyEvent.getKeyCode();
-
-        final DirectionsModel direction = switch (key) {
-            case KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_I -> DirectionsModel.UP;
-            case KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_J -> DirectionsModel.LEFT;
-            case KeyEvent.VK_S, KeyEvent.VK_DOWN, KeyEvent.VK_K -> DirectionsModel.DOWN;
-            case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> DirectionsModel.RIGHT;
-            default -> null;
-        };
-
-        if (direction != null) {
-            boolean attack = key >= KeyEvent.VK_I && key <= KeyEvent.VK_L;
-            handleInteraction(InteractionType.KEYBOARD, direction, attack);
+        if (key == KeyEvent.VK_ESCAPE) {
+            gamePanel.pauseDialog();
+        } else if (currentPlayerState != Player.State.DEAD && currentPlayerState != Player.State.GLIDE) {
+            final DirectionsModel direction = switch (key) {
+                case KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_I -> DirectionsModel.UP;
+                case KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_J -> DirectionsModel.LEFT;
+                case KeyEvent.VK_S, KeyEvent.VK_DOWN, KeyEvent.VK_K -> DirectionsModel.DOWN;
+                case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> DirectionsModel.RIGHT;
+                default -> null;
+            };
+            if (direction != null) {
+                final boolean attack = key >= KeyEvent.VK_I && key <= KeyEvent.VK_L;
+                handleInteraction(InteractionType.KEYBOARD, direction, attack);
+            }
         }
     }
 
@@ -110,7 +108,7 @@ public class PlayerController implements Update {
     }
 
     /**
-     * Gestisce le interazioni del giocatore con gli oggetti collezionabili.
+     * Gestisce le interazioni del giocatore con gli oggetti collezionabili
      *
      * @param collectable collezionabile con cui il giocatore interagisce
      */
@@ -229,8 +227,7 @@ public class PlayerController implements Update {
                     hudController.changeHealth(player.getCurrentHealth());
                 }
             }
-        }
-        else {
+        } else {
             switch (entityNextCell.getGenericType()) {
                 case LiveEntity.Type.ENEMY -> {
                     // Attacco automatico sferrato camminando contro un nemico.
@@ -274,8 +271,7 @@ public class PlayerController implements Update {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
                         playerMoveSound(player);
                         chamber.moveDynamicEntity(player, direction);
-                        environmentController.handleInteraction(InteractionType.PLAYER_IN, player,
-                                (Environment) entityNextCell);
+                        environmentController.handleInteraction(InteractionType.PLAYER_IN, player, entityNextCell);
                     }
                 }
                 default -> {
@@ -334,8 +330,9 @@ public class PlayerController implements Update {
         if (player.isDead()) {
             if (player.getState(Player.State.DEAD).isFinished()) {
                 chamber.findAndRemoveEntity(player, false);
-                player.removeToUpdate();
+                player.removeFromUpdate();
                 updateFinished = true;
+                gamePanel.playerDeathDialog();
                 return;
             }
         } else if (player.getCurrentHealth() <= 0) {
@@ -357,7 +354,6 @@ public class PlayerController implements Update {
 
         // gestione dello scivolamento del player (stato GLIDE)
         if (player.getCurrentState() == Player.State.GLIDE && player.getState(player.getCurrentState()).isFinished() && chamber.canCross(player, player.getDirection()) && chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
-
             Entity previousEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
             chamber.moveDynamicEntity(player, player.getDirection());
             Entity nextEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
@@ -394,9 +390,7 @@ public class PlayerController implements Update {
         }
     }
 
-    public boolean updateFinished() {
-        return updateFinished;
-    }
+    public boolean updateFinished() { return updateFinished; }
 
     /**
      * Applica danno al giocatore e cambia il suo stato a "HIT" se possibile.
@@ -466,8 +460,9 @@ public class PlayerController implements Update {
     }
 
     public void setEnvironmentController(EnvironmentController environmentController) {
-        if (this.environmentController == null)
+        if (this.environmentController == null) {
             this.environmentController = environmentController;
+        }
     }
 
     public void setHUDController(HUDController hudController) {

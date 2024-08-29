@@ -1,7 +1,7 @@
 package chevy.control.collectableController;
 
 import chevy.control.HUDController;
-import chevy.Sound;
+import chevy.service.Sound;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
@@ -31,7 +31,7 @@ public class HealthController {
         if (health.isCollected()) {
             if (health.getState(Health.State.COLLECTED).isFinished()) {
                 health.setToDraw(false);
-                health.removeToUpdate();
+                health.removeFromUpdate();
             }
         }
     }
