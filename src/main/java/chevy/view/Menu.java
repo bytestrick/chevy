@@ -111,10 +111,8 @@ public class Menu {
                 Image.SCALE_SMOOTH)));
         play.setIcon(new ImageIcon(Load.image("/icons/Play.png").getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
         quit.setIcon(new ImageIcon(Load.image("/icons/Exit.png").getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
-        options.setIcon(new ImageIcon(Load.image("/icons/Gear.png").getScaledInstance(32, 32,
-                Image.SCALE_SMOOTH)));
-        coins.setIcon(new ImageIcon(Load.image("/icons/Coin.png").getScaledInstance(32, 32,
-                Image.SCALE_SMOOTH)));
+        options.setIcon(new ImageIcon(Load.image("/icons/Gear.png").getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+        coins.setIcon(new ImageIcon(Load.image("/icons/Coin.png").getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
         keys.setIcon(new ImageIcon(Load.image("/icons/Key.png").getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
         characterName.setFont(Window.handjet.deriveFont(50f));
         healthBar.setForeground(new Color(153, 255, 153));
@@ -238,8 +236,8 @@ public class Menu {
         for (Player.Type t : Player.Type.values()) {
             for (int f = 0; f < 2; ++f) { // 2 frame
                 final String substring = t == Player.Type.KNIGHT ? "_16x16" : "";
-                final String path = "/sprites/player/" + t.toString().toLowerCase() + "/idle/down/" + f + substring +
-                        ".png";
+                final String path =
+                        "/sprites/player/" + t.toString().toLowerCase() + "/idle/down/" + f + substring + ".png";
                 final BufferedImage img = Load.image(path);
                 sprites[t.ordinal()][f] = img.getScaledInstance(spriteDim.first, spriteDim.second, Image.SCALE_SMOOTH);
             }

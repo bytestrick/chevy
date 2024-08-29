@@ -11,8 +11,8 @@ public class HUDView extends JPanel {
     private final PlayerInfo playerInfo;
     private final PowerUpText powerUpText;
     private final SpringLayout springLayout;
-    private int borderMargin = 10;
-    private int componentMargin = 5;
+    private final int borderMargin = 10;
+    private final int componentMargin = 5;
 
     public HUDView(float scale) {
         coinBar = new CoinBar(64, 12, scale);

@@ -1,6 +1,5 @@
 package chevy.control.trapsController;
 
-import chevy.service.Sound;
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
@@ -11,6 +10,7 @@ import chevy.model.entity.collectable.powerUp.StoneBoots;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
+import chevy.service.Sound;
 
 /**
  * Controller per gestire le interazioni del giocatore e delle entità con il pavimento spinato nel gioco.

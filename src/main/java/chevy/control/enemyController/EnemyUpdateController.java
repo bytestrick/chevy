@@ -33,6 +33,14 @@ public class EnemyUpdateController implements Update {
         UpdateManager.addToUpdate(this);
     }
 
+    public static void stopUpdate() {
+        STOP_UPDATE = true;
+    }
+
+    public static void runUpdate() {
+        STOP_UPDATE = false;
+    }
+
     /**
      * Aggiunge i nuovi nemici alla lista degli aggiornamenti e svuota la lista temporanea.
      */
@@ -67,14 +75,6 @@ public class EnemyUpdateController implements Update {
 
     public void updateTerminate() {
         updateFinished = true;
-    }
-
-    public static void stopUpdate() {
-        STOP_UPDATE = true;
-    }
-
-    public static void runUpdate() {
-        STOP_UPDATE = false;
     }
 
     /**

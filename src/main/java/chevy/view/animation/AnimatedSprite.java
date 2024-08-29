@@ -30,8 +30,7 @@ public class AnimatedSprite implements Render {
      * @param secFrameDuration durata di ciascun frame
      * @param loop             se l'animazione deve ripetersi
      */
-    public AnimatedSprite(Pair<CommonState, Integer> animationTypes, int nFrame, float secFrameDuration,
-                          boolean loop) {
+    public AnimatedSprite(Pair<CommonState, Integer> animationTypes, int nFrame, float secFrameDuration, boolean loop) {
         this.animationTypes = animationTypes;
         this.nFrame = nFrame;
         this.secFrameDuration = secFrameDuration;
@@ -50,8 +49,8 @@ public class AnimatedSprite implements Render {
      * @param offset           offset dell'animazione
      * @param scale            scala che la sequenza deve avere durante la rappresentazione
      */
-    public AnimatedSprite(Pair<CommonState, Integer> animationTypes, int nFrame, float secFrameDuration,
-                          boolean loop, Vector2<Integer> offset, float scale) {
+    public AnimatedSprite(Pair<CommonState, Integer> animationTypes, int nFrame, float secFrameDuration, boolean loop
+            , Vector2<Integer> offset, float scale) {
         this.animationTypes = animationTypes;
         this.nFrame = nFrame;
         this.secFrameDuration = secFrameDuration;

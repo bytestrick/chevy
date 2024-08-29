@@ -97,14 +97,13 @@ public class NinjaView extends AnimatedEntityView {
     private int getAnimationType(CommonState currentState) {
         DirectionsModel currentDirection = ninja.getDirection();
         return switch (currentState) {
-            case Player.State.ATTACK, Player.State.IDLE, Player.State.MOVE, Player.State.HIT , Player.State.GLIDE,
-                 Player.State.SLUDGE->
-                    switch (currentDirection) {
-                        case UP -> 0;
-                        case DOWN -> 1;
-                        case RIGHT -> 2;
-                        case LEFT -> 3;
-                    };
+            case Player.State.ATTACK, Player.State.IDLE, Player.State.MOVE, Player.State.HIT, Player.State.GLIDE,
+                 Player.State.SLUDGE -> switch (currentDirection) {
+                case UP -> 0;
+                case DOWN -> 1;
+                case RIGHT -> 2;
+                case LEFT -> 3;
+            };
             case Player.State.DEAD, Player.State.FALL -> {
                 if (currentDirection == DirectionsModel.RIGHT) {
                     yield 0;

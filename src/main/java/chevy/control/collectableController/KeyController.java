@@ -1,20 +1,18 @@
 package chevy.control.collectableController;
 
 import chevy.control.HUDController;
-import chevy.service.Sound;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Key;
+import chevy.service.Sound;
 
 public class KeyController {
     private final Chamber chamber;
     private final HUDController hudController;
 
-
     public KeyController(Chamber chamber, HUDController hudController) {
         this.chamber = chamber;
         this.hudController = hudController;
     }
-
 
     public void playerInInteraction(Key key) {
         if (key.changeState(Key.State.COLLECTED)) {

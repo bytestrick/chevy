@@ -150,8 +150,8 @@ public class AStar {
                                 cellDetails[neighbor.first][neighbor.second].g = gNew;
                                 cellDetails[neighbor.first][neighbor.second].h = hNew;
                                 cellDetails[neighbor.first][neighbor.second].f = fNew;
-                                cellDetails[neighbor.first][neighbor.second].parent =
-                                        new Vector2<>(currentCell.first, currentCell.second);
+                                cellDetails[neighbor.first][neighbor.second].parent = new Vector2<>(currentCell.first
+                                        , currentCell.second);
                             }
                         }
                     }

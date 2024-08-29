@@ -1,10 +1,10 @@
 package chevy.view.hud;
 
-
 import chevy.view.component.CounterBar;
 import chevy.view.component.MyPanelUI;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
 
 public class KeyBar extends CounterBar {
     private static final String KEY_BAR_PATH = "/sprites/component/label/";

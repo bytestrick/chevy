@@ -37,10 +37,10 @@ public abstract class Projectile extends DynamicEntity {
     public String toString() { return "PROJECTILE"; }
 
     public enum Type implements CommonEntityType {
-        ARROW, FIRE_BALL, SLIME_SHOT;
+        ARROW, FIRE_BALL, SLIME_SHOT
     }
 
     public enum State implements CommonState {
-        START, LOOP, END;
+        START, LOOP, END
     }
 }

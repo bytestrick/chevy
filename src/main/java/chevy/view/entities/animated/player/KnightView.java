@@ -35,10 +35,14 @@ public class KnightView extends AnimatedEntityView {
         Vector2<Integer> offset = new Vector2<>(-8, -8);
 
         final float idleDuration = 1f;
-        createAnimation(Player.State.IDLE, 0, 2, true, 2, idleDuration, offset, 1, KNIGHT_RESOURCES + "idle/up", ".png");
-        createAnimation(Player.State.IDLE, 1, 2, true, 2, idleDuration, offset, 1, KNIGHT_RESOURCES + "idle/down", ".png");
-        createAnimation(Player.State.IDLE, 2, 2, true, 2, idleDuration, offset, 1, KNIGHT_RESOURCES + "idle/right", ".png");
-        createAnimation(Player.State.IDLE, 3, 2, true, 2, idleDuration, offset, 1, KNIGHT_RESOURCES + "idle/left", ".png");
+        createAnimation(Player.State.IDLE, 0, 2, true, 2, idleDuration, offset, 1, KNIGHT_RESOURCES + "idle/up",
+                ".png");
+        createAnimation(Player.State.IDLE, 1, 2, true, 2, idleDuration, offset, 1, KNIGHT_RESOURCES + "idle/down",
+                ".png");
+        createAnimation(Player.State.IDLE, 2, 2, true, 2, idleDuration, offset, 1, KNIGHT_RESOURCES + "idle/right",
+                ".png");
+        createAnimation(Player.State.IDLE, 3, 2, true, 2, idleDuration, offset, 1, KNIGHT_RESOURCES + "idle/left",
+                ".png");
 
         final float moveDuration = knight.getState(Player.State.MOVE).getDuration();
         createAnimation(Player.State.MOVE, 0, 8, moveDuration, offset, 1, KNIGHT_RESOURCES + "move/up", ".png");
@@ -49,7 +53,8 @@ public class KnightView extends AnimatedEntityView {
         final float attackDuration = knight.getState(Player.State.ATTACK).getDuration();
         createAnimation(Player.State.ATTACK, 0, 6, attackDuration, offset, 1, KNIGHT_RESOURCES + "attack/up", ".png");
         createAnimation(Player.State.ATTACK, 1, 6, attackDuration, offset, 1, KNIGHT_RESOURCES + "attack/down", ".png");
-        createAnimation(Player.State.ATTACK, 2, 6, attackDuration, offset, 1, KNIGHT_RESOURCES + "attack/right", ".png");
+        createAnimation(Player.State.ATTACK, 2, 6, attackDuration, offset, 1, KNIGHT_RESOURCES + "attack/right",
+                ".png");
         createAnimation(Player.State.ATTACK, 3, 6, attackDuration, offset, 1, KNIGHT_RESOURCES + "attack/left", ".png");
 
         final float hitDuration = knight.getState(Player.State.HIT).getDuration();
@@ -147,6 +152,7 @@ public class KnightView extends AnimatedEntityView {
         currentViewPosition.changeSecond(moveInterpolationY.getValue());
         return currentViewPosition;
     }
+
     @Override
     public void wasRemoved() {
         moveInterpolationX.delete();

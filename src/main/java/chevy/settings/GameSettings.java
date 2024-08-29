@@ -27,7 +27,8 @@ public class GameSettings {
     /**
      * Altezza ottimale di una cella, considerando l'altezza della finestra.
      */
-    public static float optimalCellSizeH = (float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR) / nTileH;
+    public static float optimalCellSizeH =
+            (float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR) / nTileH;
 
     /**
      * Larghezza ottimale di una cella, considerando la larghezza della finestra.
@@ -64,7 +65,8 @@ public class GameSettings {
 
         optimalCellSize = Math.round(Math.min(optimalCellSizeH, optimalCellSizeW));
 
-        offsetH = Math.max(0, Math.round((float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR - nTileH * optimalCellSize) / 2));
+        offsetH = Math.max(0,
+                Math.round((float) (WindowSettings.WINDOW_HEIGHT - WindowSettings.SIZE_TOP_BAR - nTileH * optimalCellSize) / 2));
         offsetW = Math.max(0, Math.round((float) (WindowSettings.WINDOW_WIDTH - nTileW * optimalCellSize) / 2));
     }
 }

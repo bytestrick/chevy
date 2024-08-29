@@ -13,7 +13,6 @@ public class ChestController {
         this.hudController = hudController;
     }
 
-
     public void update(Chest chest) {
         if (chamber.getHitDirectionPlayer(chest) != null) {
             if (chest.checkAndChangeState(Chest.State.OPEN)) {
@@ -24,8 +23,7 @@ public class ChestController {
             if (hudController.getKey() > 0 && chest.checkAndChangeState(Chest.State.UNLOCK)) {
                 hudController.addKey(-1);
             }
-        }
-        else {
+        } else {
             chest.checkAndChangeState(Chest.State.CLOSE);
         }
 

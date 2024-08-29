@@ -1,15 +1,24 @@
 package chevy.view.hud;
 
-import javax.swing.*;
-import javax.swing.text.*;
-import java.awt.*;
-
-import chevy.service.Sound;
 import chevy.model.entity.collectable.powerUp.PowerUp;
+import chevy.service.Sound;
 import chevy.settings.WindowSettings;
 import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.view.component.NoCaret;
+
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
 
 public class PowerUpText extends JPanel {
     private static final String FONT_PATH = "PixelatedPusab";
@@ -22,7 +31,7 @@ public class PowerUpText extends JPanel {
     private String name = "Title\n";
     private String description = "Description";
     private Font font;
-    private JTextPane textPane = new JTextPane();
+    private final JTextPane textPane = new JTextPane();
     private final StyledDocument doc = textPane.getStyledDocument();
     private final Style titleStyle = doc.addStyle("TitleStyle", null);
     private final Style descriptionStyle = doc.addStyle("DescriptionStyle", null);
@@ -85,7 +94,8 @@ public class PowerUpText extends JPanel {
             doc.setParagraphAttributes(0, name.length(), titleStyle, false);
 
             doc.insertString(doc.getLength(), description, descriptionStyle);
-            doc.setParagraphAttributes(doc.getLength() - description.length(), description.length(), descriptionStyle, false);
+            doc.setParagraphAttributes(doc.getLength() - description.length(), description.length(), descriptionStyle
+                    , false);
         } catch (BadLocationException e) {
             Log.warn("Tentativo di scrittura in una posizione invalida: " + e.getMessage());
         }

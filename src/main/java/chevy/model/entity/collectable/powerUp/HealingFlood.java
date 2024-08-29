@@ -1,4 +1,5 @@
 package chevy.model.entity.collectable.powerUp;
+
 import chevy.utils.Vector2;
 
 public class HealingFlood extends PowerUp {
@@ -11,7 +12,8 @@ public class HealingFlood extends PowerUp {
         this.inStock = 1;
         this.occurringPercentage = 100;
         this.name = "Inondazione Curativa\n";
-        this.description = "I nemici aumentano la probabilità di\nrilasciare pozioni di cura del " + (int) (increaseDropPercentage * 100) + "%";
+        this.description =
+                "I nemici aumentano la probabilità di\nrilasciare pozioni di cura del " + (int) (increaseDropPercentage * 100) + "%";
     }
 
     public float getIncreaseDropPercentage() {

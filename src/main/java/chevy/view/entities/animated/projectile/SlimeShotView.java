@@ -40,14 +40,14 @@ public class SlimeShotView extends AnimatedEntityView {
         float durationLoop = slimeShot.getState(SlimeShot.State.LOOP).getDuration();
         float durationEnd = slimeShot.getState(SlimeShot.State.END).getDuration();
 
-        createAnimation(SlimeShot.State.START, 0, 4, durationStart, startOffsetUp, 1, SLIME_SHOT_RESOURCES +
-                "start/up", ".png");
-        createAnimation(SlimeShot.State.START, 1, 4, durationStart, startOffsetDown, 1, SLIME_SHOT_RESOURCES +
-                "start/down", ".png");
+        createAnimation(SlimeShot.State.START, 0, 4, durationStart, startOffsetUp, 1, SLIME_SHOT_RESOURCES + "start" +
+                "/up", ".png");
+        createAnimation(SlimeShot.State.START, 1, 4, durationStart, startOffsetDown, 1, SLIME_SHOT_RESOURCES + "start" +
+                "/down", ".png");
         createAnimation(SlimeShot.State.START, 2, 4, durationStart, startOffsetRight, 1, SLIME_SHOT_RESOURCES +
                 "start/right", ".png");
-        createAnimation(SlimeShot.State.START, 3, 4, durationStart, startOffsetLeft, 1, SLIME_SHOT_RESOURCES +
-                "start/left", ".png");
+        createAnimation(SlimeShot.State.START, 3, 4, durationStart, startOffsetLeft, 1, SLIME_SHOT_RESOURCES + "start" +
+                "/left", ".png");
 
         // --- LOOP
         Vector2<Integer> loopEndOffsetUp = new Vector2<>(2, 0);
@@ -67,12 +67,12 @@ public class SlimeShotView extends AnimatedEntityView {
         // --- END
         createAnimation(SlimeShot.State.END, 0, 5, durationEnd, loopEndOffsetUp, 1, SLIME_SHOT_RESOURCES + "end",
                 ".png");
-        createAnimation(SlimeShot.State.END, 1, 5, durationEnd, loopEndOffsetDown, 1, SLIME_SHOT_RESOURCES + "end"
-                , ".png");
-        createAnimation(SlimeShot.State.END, 2, 5, durationEnd, loopEndOffsetRight, 1, SLIME_SHOT_RESOURCES +
-                "end", ".png");
-        createAnimation(SlimeShot.State.END, 3, 5, durationEnd, loopEndOffsetLeft, 1, SLIME_SHOT_RESOURCES + "end"
-                , ".png");
+        createAnimation(SlimeShot.State.END, 1, 5, durationEnd, loopEndOffsetDown, 1, SLIME_SHOT_RESOURCES + "end",
+                ".png");
+        createAnimation(SlimeShot.State.END, 2, 5, durationEnd, loopEndOffsetRight, 1, SLIME_SHOT_RESOURCES + "end",
+                ".png");
+        createAnimation(SlimeShot.State.END, 3, 5, durationEnd, loopEndOffsetLeft, 1, SLIME_SHOT_RESOURCES + "end",
+                ".png");
     }
 
     @Override
@@ -109,13 +109,12 @@ public class SlimeShotView extends AnimatedEntityView {
     private int getAnimationType(CommonState currentState) {
         DirectionsModel currentDirection = slimeShot.getDirection();
         return switch (currentState) {
-            case SlimeShot.State.START, SlimeShot.State.LOOP, SlimeShot.State.END ->
-                    switch (currentDirection) {
-                        case UP -> 0;
-                        case DOWN -> 1;
-                        case RIGHT -> 2;
-                        case LEFT -> 3;
-                    };
+            case SlimeShot.State.START, SlimeShot.State.LOOP, SlimeShot.State.END -> switch (currentDirection) {
+                case UP -> 0;
+                case DOWN -> 1;
+                case RIGHT -> 2;
+                case LEFT -> 3;
+            };
             default -> 0;
         };
     }

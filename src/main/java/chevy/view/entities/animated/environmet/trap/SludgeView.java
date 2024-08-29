@@ -20,9 +20,8 @@ public class SludgeView extends AnimatedEntityView {
     }
 
     private void initAnimation() {
-        createAnimation(Sludge.EnumState.SLUDGE_BUBBLES, 0,
-                4, sludge.getState(Sludge.EnumState.SLUDGE_BUBBLES).getDuration(),
-                SLUDGE_FLOOR_PATH, ".png");
+        createAnimation(Sludge.EnumState.SLUDGE_BUBBLES, 0, 4,
+                sludge.getState(Sludge.EnumState.SLUDGE_BUBBLES).getDuration(), SLUDGE_FLOOR_PATH, ".png");
     }
 
     public Vector2<Integer> getOffset() {

@@ -21,15 +21,18 @@ public class SpikedFloorView extends AnimatedEntityView {
 
     private void initAnimation() {
         Vector2<Integer> offset = new Vector2<>(0, -7);
-        
+
         final float disabledDuration = spikedFloor.getState(SpikedFloor.State.DISABLED).getDuration();
-        createAnimation(SpikedFloor.State.DISABLED, 0, 1, disabledDuration, offset, 1, SPIKED_FLOOR_PATH + "disabled", ".png");
+        createAnimation(SpikedFloor.State.DISABLED, 0, 1, disabledDuration, offset, 1, SPIKED_FLOOR_PATH + "disabled"
+                , ".png");
 
         final float activatedDuration = spikedFloor.getState(SpikedFloor.State.ACTIVATED).getDuration();
-        createAnimation(SpikedFloor.State.ACTIVATED, 0, 2, activatedDuration, offset, 1, SPIKED_FLOOR_PATH + "active", ".png");
+        createAnimation(SpikedFloor.State.ACTIVATED, 0, 2, activatedDuration, offset, 1, SPIKED_FLOOR_PATH + "active"
+                , ".png");
 
         final float damageDuration = spikedFloor.getState(SpikedFloor.State.DAMAGE).getDuration();
-        createAnimation(SpikedFloor.State.DAMAGE, 0, 1, damageDuration, offset, 1, SPIKED_FLOOR_PATH + "damage", ".png");
+        createAnimation(SpikedFloor.State.DAMAGE, 0, 1, damageDuration, offset, 1, SPIKED_FLOOR_PATH + "damage",
+                ".png");
     }
 
     public Vector2<Integer> getOffset() {

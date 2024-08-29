@@ -12,7 +12,6 @@ import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 
-
 public class CollectableController {
     private final PlayerController playerController;
     private final CoinController coinController;
@@ -21,7 +20,6 @@ public class CollectableController {
     private final PowerUpController powerUpController;
     private final HUDController hudController;
     private final Chamber chamber;
-
 
     public CollectableController(Chamber chamber, PlayerController playerController, HUDController hudController) {
         this.chamber = chamber;
@@ -33,23 +31,24 @@ public class CollectableController {
         this.powerUpController = new PowerUpController(chamber, hudController);
     }
 
-
     /**
      * Gestisce il tipo di interazione ricevuta.
+     *
      * @param interaction il tipo di interazione da gestire.
-     * @param subject l'entità che avvia l'interazione.
-     * @param object l'entità che subisce l'interazione.
+     * @param subject     l'entità che avvia l'interazione.
+     * @param object      l'entità che subisce l'interazione.
      */
     public void handleInteraction(InteractionType interaction, Entity subject, Collectable object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, object);
-            case UPDATE ->  update(subject);
-            default -> {}
+            case UPDATE -> update(subject);
+            default -> { }
         }
     }
 
     /**
      * Gestisce l'interazione di un giocatore con un oggetto collezionabile.
+     *
      * @param collectable l'oggetto da collezionare.
      */
     private void playerInInteraction(Player player, Collectable collectable) {
@@ -57,7 +56,7 @@ public class CollectableController {
             case Collectable.Type.HEALTH -> healthController.playerInInteraction(player, (Health) collectable);
             case Collectable.Type.COIN -> coinController.playerInInteraction((Coin) collectable);
             case Collectable.Type.KEY -> keyController.playerInInteraction((Key) collectable);
-            default -> {}
+            default -> { }
         }
         if (collectable.getGenericType() == Collectable.Type.POWER_UP) {
             powerUpController.playerInInteraction(player, (PowerUp) collectable);
@@ -69,7 +68,7 @@ public class CollectableController {
             case Collectable.Type.HEALTH -> healthController.update((Health) subject);
             case Collectable.Type.COIN -> coinController.update((Coin) subject);
             case Collectable.Type.KEY -> keyController.update((Key) subject);
-            default -> {}
+            default -> { }
         }
         if (subject.getGenericType() == Collectable.Type.POWER_UP) {
             powerUpController.update((PowerUp) subject);

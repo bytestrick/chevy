@@ -1,10 +1,7 @@
 package chevy.view.hud;
 
-
 import chevy.view.component.MyPanelUI;
 import chevy.view.component.ProgressBarLabel;
-
-import java.awt.*;
 
 public class AttackBar extends ProgressBarLabel {
     private static final String PROGRESS_BAR_PATH = "/sprites/component/progressBar/";

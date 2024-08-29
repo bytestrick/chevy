@@ -1,13 +1,13 @@
 package chevy.model.entity.dynamicEntity;
 
-import chevy.model.entity.Entity;
 import chevy.model.entity.CommonEntityType;
+import chevy.model.entity.Entity;
 import chevy.utils.Vector2;
 
 public abstract class DynamicEntity extends Entity {
     private final Type type;
-    protected DirectionsModel direction = DirectionsModel.getRandom();
     private final boolean canRemove = false;
+    protected DirectionsModel direction = DirectionsModel.getRandom();
 
     public DynamicEntity(Vector2<Integer> initPosition, Type type) {
         super(initPosition, Entity.Type.DYNAMIC);
@@ -34,6 +34,6 @@ public abstract class DynamicEntity extends Entity {
     public String toString() { return "DYNAMIC ENTITY"; }
 
     public enum Type implements CommonEntityType {
-        LIVE_ENTITY, PROJECTILE;
+        LIVE_ENTITY, PROJECTILE
     }
 }

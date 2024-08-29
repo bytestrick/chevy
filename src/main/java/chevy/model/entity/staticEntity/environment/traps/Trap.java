@@ -5,17 +5,8 @@ import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.utils.Vector2;
 
 public abstract class Trap extends Environment {
-    protected boolean canHitFlingEntity;
-    public enum Type implements CommonEntityType {
-        SLUDGE,
-        VOID,
-        SPIKED_FLOOR,
-        TRAPDOOR,
-        TOTEM,
-        ICY_FLOOR;
-    }
     private final Type type;
-
+    protected boolean canHitFlingEntity;
 
     public Trap(Vector2<Integer> initVelocity, Type type) {
         super(initVelocity, Environment.Type.TRAP);
@@ -23,7 +14,6 @@ public abstract class Trap extends Environment {
         this.crossable = true;
         this.canHitFlingEntity = false;
     }
-
 
     @Override
     public CommonEntityType getSpecificType() {
@@ -38,5 +28,9 @@ public abstract class Trap extends Environment {
     @Override
     public String toString() {
         return type.toString();
+    }
+
+    public enum Type implements CommonEntityType {
+        SLUDGE, VOID, SPIKED_FLOOR, TRAPDOOR, TOTEM, ICY_FLOOR
     }
 }

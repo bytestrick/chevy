@@ -1,6 +1,5 @@
 package chevy.view.hud;
 
-
 import chevy.view.component.MyPanelUI;
 import chevy.view.component.ProgressBar;
 

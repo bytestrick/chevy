@@ -3,7 +3,8 @@ package chevy.model.entity.collectable.powerUp;
 import chevy.utils.Vector2;
 
 public class ColdHeart extends PowerUp {
-    private int increaseShield = 3;
+    private final int increaseShield = 3;
+
     public ColdHeart(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.COLD_HEART);
 

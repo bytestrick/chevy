@@ -19,6 +19,10 @@ public class Arrow extends Projectile {
         initStateMachine();
     }
 
+    public static void changeAddDamage(int value) {
+        ADD_DAMAGE = value;
+    }
+
     private void initStateMachine() {
         stateMachine.setStateMachineName("Arrow");
         stateMachine.setInitialState(loop);
@@ -36,9 +40,5 @@ public class Arrow extends Projectile {
 
     public enum State implements CommonState {
         LOOP, END
-    }
-
-    public static void changeAddDamage(int value) {
-        ADD_DAMAGE = value;
     }
 }

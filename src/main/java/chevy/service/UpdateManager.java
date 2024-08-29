@@ -11,7 +11,6 @@ public class UpdateManager {
     private static final List<Update> updateList = new LinkedList<>();
     private static final List<Update> toAdd = new LinkedList<>();
 
-
     public static void addToUpdate(Update u) {
         synchronized (toAdd) {
             toAdd.add(u);

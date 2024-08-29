@@ -11,7 +11,6 @@ public class RenderManager {
     private static final List<Render> renderList = new LinkedList<>();
     private static final List<Render> toAdd = new LinkedList<>();
 
-
     public static void addToRender(Render r) {
         synchronized (toAdd) {
             toAdd.add(r);

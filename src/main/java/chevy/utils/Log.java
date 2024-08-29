@@ -10,6 +10,7 @@ public class Log {
     /**
      * Registra un evento di errore. Un evento simile indica un punto in cui l'applicazione non può continuare.
      * Quindi la chiamata è spesso seguita da System.exit(1).
+     *
      * @param message il messaggio diagnostico che descrive l'evento.
      */
     public static void error(String message) {
@@ -20,6 +21,7 @@ public class Log {
 
     /**
      * Registra un evento grave ma non fatale. Un evento simile causa malfunzionamenti ma non termina l'applicazione.
+     *
      * @param message il messaggio diagnostico che descrive l'evento.
      */
     public static void warn(String message) {
@@ -31,6 +33,7 @@ public class Log {
     /**
      * Registra un evento normale. È il tipo di evento più comune in un'applicazione, come il cambiamento di uno stato,
      * di una scena, la terminazione di un thread, ...
+     *
      * @param message il messaggio diagnostico che descrive l'evento.
      */
     public static void info(String message) {

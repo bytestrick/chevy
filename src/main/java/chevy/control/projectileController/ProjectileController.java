@@ -59,7 +59,7 @@ public class ProjectileController {
         switch (projectile.getSpecificType()) {
             case Projectile.Type.ARROW -> arrowController.playerInInteraction((Arrow) projectile);
             case Projectile.Type.SLIME_SHOT -> slimeShotController.playerInInteraction((SlimeShot) projectile);
-            default -> {}
+            default -> { }
         }
     }
 
@@ -73,7 +73,7 @@ public class ProjectileController {
         switch (projectile.getSpecificType()) {
             case Projectile.Type.ARROW -> arrowController.update((Arrow) projectile);
             case Projectile.Type.SLIME_SHOT -> slimeShotController.update((SlimeShot) projectile);
-            default -> {}
+            default -> { }
         }
     }
 }
