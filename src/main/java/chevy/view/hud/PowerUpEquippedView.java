@@ -10,7 +10,7 @@ import java.awt.*;
 public class PowerUpEquippedView extends JComponent {
     private static final String POWER_UP_RESOURCES = "/sprites/powerUpIcons/";
     private float scale;
-    private final int nFrame = 3;
+    private final int nFrame = 2;
     private int frameWidth = 0;
     private int spacing = 2;
 
@@ -31,10 +31,10 @@ public class PowerUpEquippedView extends JComponent {
             case ANGEL_RING -> path += "angelRing";
             case COLD_HEART -> path += "coldHeart";
             case COIN_OF_GREED -> path += "coinOfGreed";
-            case BROKEN_ARROWS -> path += "brokenArrow";
-            case GOLD_ARROW -> path += "goldenArrow";
+            case BROKEN_ARROWS -> path += "brokenSArrows";
+            case GOLD_ARROW -> path += "goldenArrows";
             case HEALING_FLOOD -> path += "healingFlood";
-            case HEDGEHOG_SPINES -> path += "hedgehogSpied";
+            case HEDGEHOG_SPINES -> path += "hedgehogSpines";
             case HOBNAIL_BOOTS -> path += "hobnailBoots";
             case HOLY_SHIELD -> path += "holyShield";
             case HOT_HEART -> path += "hotHeart";
@@ -46,7 +46,11 @@ public class PowerUpEquippedView extends JComponent {
             case VAMPIRE_FANGS -> path += "vampireFangs";
         }
 
-        add(new ImageVisualizer(path + ".png", scale * WindowSettings.scale));
+        ImageVisualizer frame = new ImageVisualizer(path + ".png", scale * WindowSettings.scale);
+        ToolTipManager.sharedInstance().setInitialDelay(100);  // Ritardo prima della comparsa del tooltip (in millisecondi)
+        ToolTipManager.sharedInstance().setDismissDelay(10000); // Tempo di permanenza del tooltip (in millisecondi)
+        frame.setToolTipText(powerUp.getDescription());
+        add(frame);
         setDimension();
     }
 
