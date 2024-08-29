@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.CDCBC</groupId>
+    <artifactId>chevy</artifactId>
+    <version>0.1</version>
+
+    <licenses>
+        <license>
+            <name>GPL-3.0-only</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0-standalone.html</url>
+            <comments>The GNU General Public License is a free, copyleft license
+                for software and other kinds of works.
+            </comments>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Giorgio Carlino</name>
+            <email>carlinogiorgiogithub@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Mario D'Andrea</name>
+            <email>mdandrea@disroot.org</email>
+            <url>https://ormai.dev</url>
+        </developer>
+    </developers>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.build.finalName>${project.name}</project.build.finalName>
+        <exec.mainClass>chevy.Main</exec.mainClass>
+        <exec.executable>java</exec.executable>
+        <exec.args>-classpath %classpath ${exec.mainClass}</exec.args>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>jetbrains.releases</id>
+            <url>https://www.jetbrains.com/intellij-repository/releases</url>
+        </repository>
+        <repository>
+            <id>jetbrains.3rdparty</id>
+            <url>https://cache-redirector.jetbrains.com/intellij-dependencies
+            </url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>3.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jetbrains.intellij.java</groupId>
+            <artifactId>java-compiler-ant-tasks</artifactId>
+            <version>242.20224.432</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jetbrains.intellij.java</groupId>
+            <artifactId>java-gui-forms-rt</artifactId>
+            <version>242.20224.432</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.10.14</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <defaultGoal>compile exec:exec</defaultGoal>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <!-- Dopo la compilazione esegue il task Ant 'javac2'
+                         fornito da JetBrains.
+                         Fa un postprocessing alle classi collegate ai form. -->
+                    <execution>
+                        <phase>compile</phase>
+                        <configuration>
+                            <target>
+                                <property name="maven.compile.classpath"
+                                          refid="maven.compile.classpath"/>
+                                <path id="j2sp">
+                                    <pathelement
+                                            location="${project.basedir}/src/main/java/"/>
+                                </path>
+                                <taskdef name="javac2"
+                                         classname="com.intellij.ant.Javac2"
+                                         classpathref="maven.runtime.classpath"/>
+                                <javac2 includeantruntime="false"
+                                        destdir="${project.basedir}/target/classes">
+                                    <src refid="j2sp"/>
+                                    <!-- Se non gli si dà il classhpath della
+                                    compilazione fallisce perché non trova le
+                                    classi contenute nelle dipendenze -->
+                                    <classpath>
+                                        <!--suppress UnresolvedMavenProperty -->
+
+                                        <pathelement
+                                                location="${maven.compile.classpath}"/>
+                                    </classpath>
+                                </javac2>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <compilerArgs>
+                        <arg>-Xlint</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.7.1</version>
+                <executions>
+                    <!-- Include tutti gli artifact nello jar. -->
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <finalName>${project.build.finalName}</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <archive>
+                        <manifest>
+                            <mainClass>${exec.mainClass}</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
