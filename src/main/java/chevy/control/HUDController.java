@@ -80,4 +80,8 @@ public class HUDController {
     public void PowerUpText(PowerUp powerUp) {
         hudView.getPowerUpText().show(powerUp);
     }
+
+    public void addPowerUpIcon(PowerUp powerUp) {
+        hudView.getPlayerInfo().getPowerUpEquippedView().add(powerUp);
+    }
 }
