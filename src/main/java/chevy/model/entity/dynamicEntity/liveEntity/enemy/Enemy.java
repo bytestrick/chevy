@@ -10,19 +10,12 @@ public abstract class Enemy extends LiveEntity {
     /**
      * Oggetti collezionabili che i nemici possono rilasciare
      */
-    private static final Collectable.Type[] DROPPABLE_COLLECTABLE = {
-            Collectable.Type.COIN,
-            Collectable.Type.KEY,
-            Collectable.Type.HEALTH
-    };
+    private static final Collectable.Type[] DROPPABLE_COLLECTABLE = {Collectable.Type.COIN, Collectable.Type.KEY,
+            Collectable.Type.HEALTH};
     /**
      * Probabilità di rilascio degli oggetti collezionabili
      */
-    private static final int[] DROPPABLE_COLLECTABLE_PROB = {
-            40,
-            10,
-            15
-    };
+    private static final int[] DROPPABLE_COLLECTABLE_PROB = {40, 10, 15};
     private final Type type;
     protected boolean canAttack = false;
     protected int dropProbability = 100;
@@ -32,6 +25,14 @@ public abstract class Enemy extends LiveEntity {
         this.type = type;
 
         this.drawLayer = 2;
+    }
+
+    public static void changeDropPercentage(int i, int newDropPercentage) {
+        DROPPABLE_COLLECTABLE_PROB[i] = Math.clamp(newDropPercentage, 0, 100);
+    }
+
+    public static int getDropPercentage(int i) {
+        return DROPPABLE_COLLECTABLE_PROB[i];
     }
 
     /**
@@ -57,14 +58,6 @@ public abstract class Enemy extends LiveEntity {
         return DROPPABLE_COLLECTABLE[index];
     }
 
-    public static void changeDropPercentage(int i, int newDropPercentage) {
-        DROPPABLE_COLLECTABLE_PROB[i] = Math.clamp(newDropPercentage, 0, 100);
-    }
-
-    public static int getDropPercentage(int i) {
-        return DROPPABLE_COLLECTABLE_PROB[i];
-    }
-
     @Override
     public CommonEntityType getSpecificType() { return type; }
 
@@ -77,6 +70,6 @@ public abstract class Enemy extends LiveEntity {
     }
 
     public enum Type implements CommonEntityType {
-        WRAITH, ZOMBIE, SKELETON, SLIME, BIG_SLIME, BEETLE;
+        WRAITH, ZOMBIE, SKELETON, SLIME, BIG_SLIME, BEETLE
     }
 }

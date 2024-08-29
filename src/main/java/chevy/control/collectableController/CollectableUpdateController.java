@@ -22,8 +22,9 @@ public class CollectableUpdateController implements Update {
     private boolean updateFinished = false;
 
     /**
-     * @param collectableController il controller degli oggetti collezionabili responsabile della gestione delle interazioni.
-     * @param collectables la lista degli oggetti collezionabili da aggiungere.
+     * @param collectableController il controller degli oggetti collezionabili responsabile della gestione delle
+     *                              interazioni.
+     * @param collectables          la lista degli oggetti collezionabili da aggiungere.
      */
     public CollectableUpdateController(CollectableController collectableController, List<Collectable> collectables) {
         this.collectableController = collectableController;
@@ -43,6 +44,7 @@ public class CollectableUpdateController implements Update {
 
     /**
      * Aggiorna lo stato di tutti gli oggetti collezionabili a ogni ciclo di gioco.
+     *
      * @param delta il tempo trascorso dall'ultimo aggiornamento.
      */
     @Override

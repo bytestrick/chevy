@@ -31,7 +31,7 @@ public class GlobalState {
      * Costruttore con durata. Crea uno stato senza auto-arco ma con una durata specificata.
      *
      * @param commonState l'enumerazione associata a questo stato
-     * @param secDuration      la durata di questo stato in secondi
+     * @param secDuration la durata di questo stato in secondi
      */
     public GlobalState(CommonState commonState, float secDuration) {
         this.commonState = commonState;
@@ -44,7 +44,7 @@ public class GlobalState {
      * Costruttore con auto-arco. Crea uno stato con un auto-arco ma senza durata.
      *
      * @param commonState l'enumerazione associata a questo stato
-     * @param selfEdge         indica se questo stato ha un auto-arco
+     * @param selfEdge    indica se questo stato ha un auto-arco
      */
     public GlobalState(CommonState commonState, boolean selfEdge) {
         this.commonState = commonState;
@@ -57,8 +57,8 @@ public class GlobalState {
      * Costruttore completo. Crea uno stato con un auto-arco e una durata specificata.
      *
      * @param commonState l'enumerazione associata a questo stato
-     * @param duration         la durata di questo stato in secondi
-     * @param selfEdge         indica se questo stato ha un auto-arco
+     * @param duration    la durata di questo stato in secondi
+     * @param selfEdge    indica se questo stato ha un auto-arco
      */
     public GlobalState(CommonState commonState, float duration, boolean selfEdge) {
         this.commonState = commonState;
@@ -130,7 +130,6 @@ public class GlobalState {
             timer.stop();
         }
     }
-
 
     @Override
     public boolean equals(Object o) {

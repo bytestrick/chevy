@@ -5,15 +5,9 @@ import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class Trapdoor extends Trap {
-    public enum EnumState implements CommonState {
-        IDLE,
-        OPEN,
-        DAMAGE
-    }
     private final GlobalState idle = new GlobalState(EnumState.IDLE);
     private final GlobalState open = new GlobalState(EnumState.OPEN, 0.4f);
     private final GlobalState damage = new GlobalState(EnumState.DAMAGE);
-
 
     public Trapdoor(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.TRAPDOOR);
@@ -46,5 +40,9 @@ public class Trapdoor extends Trap {
             case OPEN -> open;
             case DAMAGE -> damage;
         };
+    }
+
+    public enum EnumState implements CommonState {
+        IDLE, OPEN, DAMAGE
     }
 }

@@ -13,11 +13,9 @@ public class Timer implements Update {
     private boolean isRunning = false;
     private boolean delete = true;
 
-
     public Timer(double secDuration) {
         this.duration = secDuration;
     }
-
 
     public boolean isRunning() {
         return isRunning && !delete;

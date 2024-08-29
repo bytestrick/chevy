@@ -16,18 +16,20 @@ import javax.swing.SpringLayout;
 import java.awt.Image;
 
 public class GamePanel extends JPanel {
-    private static final ImageIcon playPause =
-            new ImageIcon(Load.image("/icons/PlayPause.png").getScaledInstance(48, 48, Image.SCALE_SMOOTH));
-    private static final ImageIcon caution =
-            new ImageIcon(Load.image("/icons/caution.png").getScaledInstance(48, 48, Image.SCALE_SMOOTH));
-    private static final ImageIcon skull = new ImageIcon(Load.image("/icons/Skull.png").getScaledInstance(48,
+    private static final ImageIcon playPause = new ImageIcon(Load.image("/icons/PlayPause.png").getScaledInstance(48,
             48, Image.SCALE_SMOOTH));
+    private static final ImageIcon caution = new ImageIcon(Load.image("/icons/caution.png").getScaledInstance(48, 48,
+            Image.SCALE_SMOOTH));
+    private static final ImageIcon skull = new ImageIcon(Load.image("/icons/Skull.png").getScaledInstance(48, 48,
+            Image.SCALE_SMOOTH));
 
-    private static final String[] deathMessages = new String[]{"Complimenti, hai vinto un biglietto per l'aldilà! " +
-            "Prossima fermata: riprova!", "Sembra che il tuo personaggio abbia deciso di prendersi una pausa... dalla" +
-            " vita.", "Ecco un esempio perfetto di cosa NON fare. Riprovaci!", "Il tuo personaggio ha appena scoperto" +
-            " il modo più veloce per tornare al menu principale!", "Se ti consola, anche i bot rideranno di questa " +
-            "mossa!", "Complimenti, hai vinto un biglietto per l'aldilà! Prossima fermata: riprova!"};
+    private static final String[] deathMessages =
+            new String[]{"Complimenti, hai vinto un biglietto per l'aldilà! " + "Prossima fermata: riprova!", "Sembra" +
+                    " che il tuo personaggio abbia deciso di prendersi una pausa... dalla" + " vita.", "Ecco un " +
+                    "esempio perfetto di cosa NON fare. Riprovaci!", "Il tuo personaggio ha appena scoperto" + " il " +
+                    "modo più veloce per tornare al menu principale!", "Se ti consola, anche i bot rideranno di " +
+                    "questa " + "mossa!", "Complimenti, hai vinto un biglietto per l'aldilà! Prossima fermata: " +
+                    "riprova!"};
     private static final ChamberView chamberView = new ChamberView();
     private static boolean pauseDialogActive = false;
     private static boolean playerDeathDialogActive = false;

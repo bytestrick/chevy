@@ -1,3 +1,3 @@
 package chevy.model.entity;
 
-public interface CommonEntityType {}
+public interface CommonEntityType { }

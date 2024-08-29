@@ -14,19 +14,18 @@ public class IcyFloorView extends AnimatedEntityView {
 
     public IcyFloorView(IcyFloor icyFloor) {
         this.icyFloor = icyFloor;
-        this.currentViewPosition = new Vector2<>( (double) icyFloor.getCol(), (double) icyFloor.getRow());
+        this.currentViewPosition = new Vector2<>((double) icyFloor.getCol(), (double) icyFloor.getRow());
 
         initAnimation();
     }
 
     private void initAnimation() {
-        createAnimation(IcyFloor.EnumState.ICY_FLOOR, 0,
-                1, icyFloor.getState(IcyFloor.EnumState.ICY_FLOOR).getDuration(),
-                ICY_FLOOR_PATH + "base", ".png");
+        createAnimation(IcyFloor.EnumState.ICY_FLOOR, 0, 1,
+                icyFloor.getState(IcyFloor.EnumState.ICY_FLOOR).getDuration(), ICY_FLOOR_PATH + "base", ".png");
 
-        createAnimation(IcyFloor.EnumState.ICY_FLOOR_SPARKLING, 0,
-                8, icyFloor.getState(IcyFloor.EnumState.ICY_FLOOR_SPARKLING).getDuration(),
-                ICY_FLOOR_PATH + "sparkling", ".png");
+        createAnimation(IcyFloor.EnumState.ICY_FLOOR_SPARKLING, 0, 8,
+                icyFloor.getState(IcyFloor.EnumState.ICY_FLOOR_SPARKLING).getDuration(), ICY_FLOOR_PATH + "sparkling"
+                , ".png");
     }
 
     @Override

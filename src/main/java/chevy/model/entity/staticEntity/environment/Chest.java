@@ -22,9 +22,9 @@ public class Chest extends Environment {
     private final GlobalState open = new GlobalState(State.OPEN, 0.8f);
     private final GlobalState unlock = new GlobalState(State.UNLOCK, 0.5f);
     private final GlobalState close = new GlobalState(State.CLOSE, 0.8f);
+    private final int maxDrop = 6;
+    private final int minDrop = 3;
     private boolean onePowerUp = false;
-    private int maxDrop = 6;
-    private int minDrop = 3;
     private boolean isFirstOpen = true;
 
     public Chest(Vector2<Integer> initVelocity) {
@@ -87,6 +87,6 @@ public class Chest extends Environment {
     }
 
     public enum State implements CommonState {
-        IDLE_LOCKED, IDLE_UNLOCKED, OPEN, UNLOCK, CLOSE;
+        IDLE_LOCKED, IDLE_UNLOCKED, OPEN, UNLOCK, CLOSE
     }
 }

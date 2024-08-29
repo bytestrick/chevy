@@ -11,7 +11,8 @@ public class KeySKeeper extends PowerUp {
         this.inStock = 1;
         this.occurringPercentage = 100;
         this.name = "Guardiano delle chiavi\n";
-        this.description = "I nemici aumentano la probabilità di\nrilasciare chiavi del " + (int) (increaseDropPercentage * 100) + "%";
+        this.description =
+                "I nemici aumentano la probabilità di\nrilasciare chiavi del " + (int) (increaseDropPercentage * 100) + "%";
     }
 
     public float getIncreaseDropPercentage() {

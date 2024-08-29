@@ -1,6 +1,5 @@
 package chevy.control.enemyController;
 
-import chevy.service.Sound;
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
@@ -10,6 +9,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.service.Sound;
 import chevy.utils.Log;
 
 /**
@@ -82,8 +82,7 @@ public class ZombieController {
                 if (chamber.wanderChase(zombie, 4)) {
                     zombie.changeState(Zombie.State.MOVE);
                 }
-            }
-            else if (zombie.changeState(Zombie.State.ATTACK)) {
+            } else if (zombie.changeState(Zombie.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(zombie, direction);
                 if (entity instanceof Player) {
                     zombie.setCanAttack(true);

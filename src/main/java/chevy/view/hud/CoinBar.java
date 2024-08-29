@@ -3,7 +3,8 @@ package chevy.view.hud;
 import chevy.view.component.CounterBar;
 import chevy.view.component.MyPanelUI;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
 
 public class CoinBar extends CounterBar {
     private static final String COIN_BAR_PATH = "/sprites/component/label/";
@@ -19,7 +20,6 @@ public class CoinBar extends CounterBar {
         setOffsetY((int) (2 * scale));
         setFontSize((int) (8 * scale));
     }
-
 
     public void setCoin(int value) {
         setText(String.valueOf(value));

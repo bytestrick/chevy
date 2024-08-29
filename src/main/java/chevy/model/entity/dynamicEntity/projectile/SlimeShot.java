@@ -9,6 +9,7 @@ public class SlimeShot extends Projectile {
     public final GlobalState start = new GlobalState(SlimeShot.State.START, 0.5f);
     public final GlobalState loop = new GlobalState(SlimeShot.State.LOOP, 1f, true);
     public final GlobalState end = new GlobalState(SlimeShot.State.END, 0.5f);
+
     public SlimeShot(Vector2<Integer> initPosition, DirectionsModel direction, float advanceTimer) {
         super(initPosition, Projectile.Type.SLIME_SHOT, direction);
 
@@ -38,6 +39,6 @@ public class SlimeShot extends Projectile {
     }
 
     public enum State implements CommonState {
-        START, LOOP, END;
+        START, LOOP, END
     }
 }

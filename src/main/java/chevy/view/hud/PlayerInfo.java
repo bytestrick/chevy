@@ -1,14 +1,15 @@
 package chevy.view.hud;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.Dimension;
 
 public class PlayerInfo extends JPanel {
     private final HealthBar healthBar;
     private final ShieldBar shieldBar;
     private final AttackBar attackBar;
     private final PlayerFrame playerFrame;
-
 
     public PlayerInfo(float scale) {
         setOpaque(false);

@@ -10,12 +10,10 @@ public class HealthController {
     private final Chamber chamber;
     private final HUDController hudController;
 
-
     public HealthController(HUDController hudController, Chamber chamber) {
         this.chamber = chamber;
         this.hudController = hudController;
     }
-
 
     public void playerInInteraction(Player player, Health health) {
         if (health.changeState(Health.State.COLLECTED)) {

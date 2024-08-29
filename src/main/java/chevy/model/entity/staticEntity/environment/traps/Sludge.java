@@ -5,13 +5,8 @@ import chevy.model.entity.stateMachine.GlobalState;
 import chevy.utils.Vector2;
 
 public class Sludge extends Trap {
-    private int nMoveToUnlock;
-    public enum EnumState implements CommonState {
-        SLUDGE_BUBBLES
-    }
-
     private final GlobalState active = new GlobalState(EnumState.SLUDGE_BUBBLES, 0.8f);
-
+    private int nMoveToUnlock;
 
     public Sludge(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.SLUDGE);
@@ -20,17 +15,16 @@ public class Sludge extends Trap {
         initStateMachine();
     }
 
-    private void initStateMachine() {
-        stateMachine.setStateMachineName("Sludge");
-        stateMachine.setInitialState(active);
-    }
-
     public Sludge(Vector2<Integer> initVelocity, int nMoveToUnlock) {
         super(initVelocity, Type.SLUDGE);
         this.crossable = true;
         this.nMoveToUnlock = nMoveToUnlock;
     }
 
+    private void initStateMachine() {
+        stateMachine.setStateMachineName("Sludge");
+        stateMachine.setInitialState(active);
+    }
 
     public void decreaseNMoveToUnlock() {
         --nMoveToUnlock;
@@ -45,5 +39,9 @@ public class Sludge extends Trap {
         return switch (spikedFloorState) {
             case SLUDGE_BUBBLES -> active;
         };
+    }
+
+    public enum EnumState implements CommonState {
+        SLUDGE_BUBBLES
     }
 }

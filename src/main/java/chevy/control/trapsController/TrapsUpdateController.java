@@ -20,7 +20,7 @@ public class TrapsUpdateController implements Update {
 
     /**
      * @param trapsController il controller delle trappole per gestire gli aggiornamenti delle trappole
-     * @param traps la lista delle trappole da aggiornare
+     * @param traps           la lista delle trappole da aggiornare
      */
     public TrapsUpdateController(TrapsController trapsController, List<Trap> traps) {
         this.trapsController = trapsController;
@@ -44,6 +44,7 @@ public class TrapsUpdateController implements Update {
 
     /**
      * Esegue l'aggiornamento delle trappole.
+     *
      * @param delta tempo trascorso dall'ultimo aggiornamento
      */
     @Override
@@ -61,6 +62,7 @@ public class TrapsUpdateController implements Update {
 
     /**
      * Verifica se gli aggiornamenti delle trappole sono terminati.
+     *
      * @return true se non ci sono più trappole da aggiornare, altrimenti false
      */
     @Override

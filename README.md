@@ -67,55 +67,138 @@ Possibili cose da evitare: non implementare i power up e le chests.
 
 ### Entità
 
-TODO: creare un diagramma per le classi con Mermaid 
+```mermaid
+---
+Title: Gerarchia dell'ereditarietà dell'entità
+---
+classDiagram
+    Entity <|-- DynamicEntity
+    Entity <|-- Collectable
+    Entity <|-- Environment
 
-- Static entities:
-  - PowerUp:
-    - [x] Agility: Possibilità di evitare un attacco.
-    - [x] Angel Ring: il giocatore viene rianimato quando muore (utilizzabile per una volta).
-    - [x] Broken Arrows: Le frecce non ti infliggono danno.
-    - [x] Coin of Greed: I nemici aumentano la probabilità di rilasciare monete del 30%.
-    - [x] Cold Heart: Incrementa lo scudo di 3.
-    - [x] Gold Arrow: Aumenta il danno delle frecce di 2.
-    - [x] Healing Flood: I nemici aumentano la probabilità di rilasciare pozioni di cura del 30%.
-    - [x] Hedgehog Spines: Probabilità del 50% di riflettere il 20% di danno al tuo aguzzino.
-    - [x] Hobnail Boots: Aumenta la presa sul ghiaccio impedendo di scivolarci sopra.
-    - [x] Holy Shield: Riduce i danni in arrivo dopo essere stati colpiti.
-    - [x] Hot Heart: Incrementa gli HP di 3.
-    - [x] Key's Keeper: I nemici aumentano la probabilità di rilasciare chiavi del 30%.
-    - [x] Long Sword: Incrementa il danno da spada di 2.
-    - [x] Slime Piece: Il danno d'attacco aumenta di 5, ma dopo la morte i nemici generano piccoli slime. I piccoli slime non generano altri slime.
-    - [x] Stone Boots: Le trappole chiodate non hanno effetto.
-    - [x] Vampire Fangs: Possibilità del 15% di recuperare 1HP durante un attacco.
-  - Environment:
-    - Ground
-    - Walls
-    - Stairs
-    - Barrier: circonda uno o più spazi vuoti per evitare di caderci dentro.
-    - Chest: genera un powerUp randomico.
-    - Trap:
-      - Sludge: Blocca il giocatore di un movimento e poi scompare.
-      - Void: Se il giocatore ci finisce dentro precipita.
-      - Spiked floor: Dal pavimento spuntano periodicamente dei chiodi, infliggendo danno a chiunque si trovi sopra.
-      - Trapdoor: Pezzo di legno sospeso nel vuoto, cade dopo un po' che ci stai sopra.
-      - Totem: Spara periodicamente una freccia.
-      - Icy Floor: Scivoli per tutta la durata del pavimento ghiacciato.
-- Dynamic entities:
-  - Environment:
-    - Trap:
-      - Circular saw blade: Una lama circolare che segue un percorso definito tagliando tutto ciò che incontra.
-  - Player:
-    - Knight: 10 HP, 2 SP, velocità: lenta, danno 5-7
-    - Archer: 8 HP, 0 SP, velocità: media, danno 2-4
-    - Ninja: 5 HP, 0 SP, velocità: alta, danno 3-5
-  - Enemy:
-    - Bat: si muove a caso. 2 HP, danno 2-3
-    - Zombie: segue il player.
-    - Wizard: si allinea nella riga del player per poi sparare una palla di fuoco che viaggio in linea retta.
-    - Skeleton: segue il player, grazie al suo scudo resiste al primo attacco (non perde vita).
-    - Big Slime: segue il player, alla morte genera due slime più piccoli nelle caselle confinanti, se disponibili.
-    - Slime: si muovono nella direzione del player se il player si trova vicino ad un tot di blocchi.
-    - Frog: Grazie alla sua lingua è in grado di colpire il player da un blocco di distanza.
+    Environment <|-- Barrier
+    Environment <|-- Chest
+    Environment <|-- Ground
+    Environment <|-- Wall
+    Environment <|-- Stair
+    Environment <|-- Trap
+
+    Trap <|-- IcyFloor
+    Trap <|-- Sludge
+    Trap <|-- SpikedFloor
+    Trap <|-- Totem
+    Trap <|-- Trapdoor
+    Trap <|-- Void
+
+    Collectable <|-- Coin
+    Collectable <|-- Health
+    Collectable <|-- Key
+    Collectable <|-- PowerUp
+
+    PowerUp <|-- Agility
+    PowerUp <|-- AngelRing
+    PowerUp <|-- BrokenArrows
+    PowerUp <|-- CoinOfGreed
+    PowerUp <|-- ColdHearth
+    PowerUp <|-- GoldArrow
+    PowerUp <|-- HealingFlood
+    PowerUp <|-- HedgehogSpines
+    PowerUp <|-- HobnailBoots
+    PowerUp <|-- HolyShield
+    PowerUp <|-- HotHeart
+    PowerUp <|-- KeySKeeper
+    PowerUp <|-- LongSword
+    PowerUp <|-- PieceOfBone
+    PowerUp <|-- SlimePiece
+    PowerUp <|-- StoneBoots
+    PowerUp <|-- VampireFangs
+
+    DynamicEntity <|-- LiveEntity
+    DynamicEntity <|-- Projectile
+
+    LiveEntity <|-- Enemy
+    LiveEntity <|-- Player
+
+    Enemy <|-- Beetle
+    Enemy <|-- BigSlime
+    Enemy <|-- Skeleton
+    Enemy <|-- Slime
+    Enemy <|-- Wraith
+    Enemy <|-- Zombie
+
+    Player <|-- Knight
+    Player <|-- Archer
+    Player <|-- Ninja
+
+    Projectile <|-- Arrow
+    Projectile <|-- SlimeShot
+```
+
+
+
+In ogni istante del gioco ciascuna `Entity` si trova in uno _stato_. La `StateMachine`, che non è altro che un [automa a stati finiti](https://it.wikipedia.org/wiki/Automa_a_stati_finiti), gestisce la definizione degli stati e degli archi che regolano il passaggio tra essi.
+
+```mermaid
+---
+title: Stati di Player
+---
+stateDiagram-v2
+    [*] --> IDLE
+    IDLE --> MOVE
+    IDLE --> ATTACK
+    IDLE --> HIT
+    IDLE --> FALL
+    HIT --> IDLE
+    HIT --> DEAD
+    HIT --> MOVE
+    HIT --> FALL
+    MOVE --> GLIDE
+    MOVE --> HIT
+    MOVE --> FALL
+    MOVE --> SLUDGE
+    MOVE --> IDLE
+    MOVE --> ATTACK
+    ATTACK --> IDLE
+    ATTACK --> MOVE
+    ATTACK --> HIT
+    GLIDE --> IDLE
+    GLIDE --> FALL
+    GLIDE --> HIT
+    GLIDE --> SLUDGE
+    SLUDGE --> IDLE
+    FALL --> IDLE
+    FALL --> DEAD
+    DEAD --> [*]
+```
+
+```mermaid
+---
+title: Stati di Enemy
+---
+stateDiagram-v2
+[*] --> IDLE
+IDLE --> MOVE
+IDLE --> ATTACK
+IDLE --> HIT
+MOVE --> IDLE
+MOVE --> HIT
+ATTACK --> IDLE
+ATTACK --> HIT
+HIT --> IDLE
+HIT --> DEAD
+DEAD --> [*]
+```
+
+```mermaid
+---
+title: Stati di Collectable
+---
+stateDiagram-v2
+  [*] --> IDLE
+  IDLE --> COLLECTED
+  COLLECTED --> [*]
+```
+
 
 ### Attribuzione
 

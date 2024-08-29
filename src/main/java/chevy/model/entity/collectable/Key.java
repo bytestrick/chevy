@@ -7,6 +7,7 @@ import chevy.utils.Vector2;
 public class Key extends Collectable {
     private final GlobalState idle = new GlobalState(State.IDLE, 1.8f);
     private final GlobalState collected = new GlobalState(State.COLLECTED, 0.8f);
+
     public Key(Vector2<Integer> initPosition) {
         super(initPosition, Type.KEY);
 

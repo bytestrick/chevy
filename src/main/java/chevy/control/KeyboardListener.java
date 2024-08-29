@@ -6,8 +6,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyboardListener implements KeyListener {
-    private final Window window;
     public static PlayerController playerController;
+    private final Window window;
 
     public KeyboardListener(Window window) {
         this.window = window;

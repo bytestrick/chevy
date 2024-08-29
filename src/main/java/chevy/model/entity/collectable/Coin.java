@@ -8,8 +8,8 @@ import chevy.utils.Vector2;
 public class Coin extends Collectable {
     private final GlobalState idle = new GlobalState(State.IDLE, 0.8f);
     private final GlobalState collected = new GlobalState(State.COLLECTED, 0.8f);
-    private int maxValue = 5;
-    private int minValue = 2;
+    private final int maxValue = 5;
+    private final int minValue = 2;
 
     public Coin(Vector2<Integer> initPosition) {
         super(initPosition, Type.COIN);

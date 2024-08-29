@@ -61,11 +61,10 @@ public class ArrowController {
             Entity nextEntity = chamber.getNearEntityOnTop(arrow, arrow.getDirection());
 
             switch (nextEntity.getGenericType()) {
-                case LiveEntity.Type.PLAYER ->
-                        playerController.handleInteraction(InteractionType.PROJECTILE, arrow);
+                case LiveEntity.Type.PLAYER -> playerController.handleInteraction(InteractionType.PROJECTILE, arrow);
                 case LiveEntity.Type.ENEMY ->
                         enemyController.handleInteraction(InteractionType.PROJECTILE, arrow, (Enemy) nextEntity);
-                default -> {}
+                default -> { }
             }
 
             if (nextEntity.isCrossable()) {

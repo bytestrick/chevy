@@ -37,7 +37,6 @@ public class WindowController implements WindowListener, KeyListener {
             case PLAYING -> {
                 GameLoop.getInstance().stop();
                 Sound.getInstance().pauseMusic();
-
             }
             case MENU, OPTIONS -> Sound.stopMenuMusic();
         }

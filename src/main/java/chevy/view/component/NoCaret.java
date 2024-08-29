@@ -3,8 +3,8 @@ package chevy.view.component;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.Caret;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
-
+import java.awt.Graphics;
+import java.awt.Point;
 
 /**
  * Classe usata nel JTextPane quando non si vuole avere un caret
@@ -56,17 +56,12 @@ public class NoCaret implements Caret {
     }
 
     @Override
-    public void setMagicCaretPosition(Point p) {
-
-    }
-
-    @Override
     public Point getMagicCaretPosition() {
         return null;
     }
 
     @Override
-    public void setBlinkRate(int rate) {
+    public void setMagicCaretPosition(Point p) {
 
     }
 
@@ -76,18 +71,23 @@ public class NoCaret implements Caret {
     }
 
     @Override
-    public int getDot() {
-        return 0;
+    public void setBlinkRate(int rate) {
+
     }
 
     @Override
-    public int getMark() {
+    public int getDot() {
         return 0;
     }
 
     @Override
     public void setDot(int dot) {
 
+    }
+
+    @Override
+    public int getMark() {
+        return 0;
     }
 
     @Override

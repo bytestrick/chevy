@@ -1,26 +1,26 @@
 package chevy.view.component;
 
-
 import chevy.settings.WindowSettings;
 import chevy.utils.Load;
 import chevy.utils.Log;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import java.awt.*;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
 public class ProgressBar extends JPanel {
     private BufferedImage stepTexture;
     private int maxValue;
     private int value;
-    private float scale;
-    private JPanel containerImage = new JPanel();
-    private MyPanelUI ui;
-    private SpringLayout springLayout = new SpringLayout();
+    private final float scale;
+    private final JPanel containerImage = new JPanel();
+    private final MyPanelUI ui;
+    private final SpringLayout springLayout = new SpringLayout();
 
-    public  ProgressBar(int maxValue) {
+    public ProgressBar(int maxValue) {
         this(maxValue, maxValue, 1f);
     }
 
@@ -43,10 +43,6 @@ public class ProgressBar extends JPanel {
         add(containerImage);
     }
 
-    public void setMaxValue(int maxValue) {
-        setMaxValue(maxValue, maxValue);
-    }
-
     public void setMaxValue(int value, int maxValue) {
         if (maxValue <= 0) {
             return;
@@ -60,9 +56,12 @@ public class ProgressBar extends JPanel {
     }
 
     private void setConstraints() {
-        springLayout.putConstraint(SpringLayout.NORTH, containerImage, ui.getHeight(MyPanelUI.BAR_T), SpringLayout.NORTH, this);
-        springLayout.putConstraint(SpringLayout.SOUTH, containerImage, ui.getHeight(MyPanelUI.BAR_B), SpringLayout.SOUTH, this);
-        springLayout.putConstraint(SpringLayout.WEST, containerImage, ui.getWidth(MyPanelUI.BAR_L), SpringLayout.WEST, this);
+        springLayout.putConstraint(SpringLayout.NORTH, containerImage, ui.getHeight(MyPanelUI.BAR_T),
+                SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.SOUTH, containerImage, ui.getHeight(MyPanelUI.BAR_B),
+                SpringLayout.SOUTH, this);
+        springLayout.putConstraint(SpringLayout.WEST, containerImage, ui.getWidth(MyPanelUI.BAR_L), SpringLayout.WEST
+                , this);
     }
 
     private void setDimension(float scale) {
@@ -83,26 +82,6 @@ public class ProgressBar extends JPanel {
 
         revalidate();
         repaint();
-    }
-
-    public void setValue(int value) {
-        int increment = value - this.value;
-        if (increment > containerImage.getComponentCount()) {
-            return;
-        }
-
-        SwingUtilities.invokeLater(() -> {
-            if (increment > 0) {
-                for (int i = 0; i < increment; ++i) {
-                    containerImage.getComponent(this.value + i).setVisible(true);
-                }
-            } else {
-                for (int i = increment; i < 0; ++i) {
-                    containerImage.getComponent(this.value + i).setVisible(false);
-                }
-            }
-            this.value = value;
-        });
     }
 
     public void setTexture(int i, String path) {
@@ -138,8 +117,32 @@ public class ProgressBar extends JPanel {
         return value;
     }
 
+    public void setValue(int value) {
+        int increment = value - this.value;
+        if (increment > containerImage.getComponentCount()) {
+            return;
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            if (increment > 0) {
+                for (int i = 0; i < increment; ++i) {
+                    containerImage.getComponent(this.value + i).setVisible(true);
+                }
+            } else {
+                for (int i = increment; i < 0; ++i) {
+                    containerImage.getComponent(this.value + i).setVisible(false);
+                }
+            }
+            this.value = value;
+        });
+    }
+
     public int getMaxValue() {
         return maxValue;
+    }
+
+    public void setMaxValue(int maxValue) {
+        setMaxValue(maxValue, maxValue);
     }
 
     public void windowResized(float scale) {

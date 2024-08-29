@@ -41,6 +41,14 @@ public class ProjectileUpdateController implements Update {
         UpdateManager.addToUpdate(this); // Aggiungiamo questo controller agli aggiornamenti gestiti da UpdateManager
     }
 
+    public static void stopUpdate() {
+        STOP_UPDATE = true;
+    }
+
+    public static void runUpdate() {
+        STOP_UPDATE = false;
+    }
+
     /**
      * Metodo privato per aggiungere i proiettili alla lista principale. Viene chiamato prima di ogni iterazione di
      * aggiornamento.
@@ -49,14 +57,6 @@ public class ProjectileUpdateController implements Update {
     private void addProjectile() {
         this.projectiles.addAll(projectilesToAdd);
         projectilesToAdd.clear(); // Pulisce la lista temporanea dopo aver aggiunto i proiettili
-    }
-
-    public static void stopUpdate() {
-        STOP_UPDATE = true;
-    }
-
-    public static void runUpdate() {
-        STOP_UPDATE = false;
     }
 
     /**

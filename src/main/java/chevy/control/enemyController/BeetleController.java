@@ -1,6 +1,5 @@
 package chevy.control.enemyController;
 
-import chevy.service.Sound;
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
@@ -11,6 +10,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.service.Sound;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
 
@@ -105,7 +105,8 @@ public class BeetleController {
                 // Se può cambiare lo stato a "ATTACK", cerca di attaccare il giocatore.
                 for (int distance = 1; distance <= 3; ++distance) {
                     Entity entity = chamber.getNearEntityOnTop(beetle, direction, distance);
-                    // muoviti in modo casuale, non sparare, se tra te è il player c'è un ostacolo che non può essere attraversato
+                    // muoviti in modo casuale, non sparare, se tra te è il player c'è un ostacolo che non può essere
+                    // attraversato
                     if (!(entity instanceof Player) && !entity.isCrossable()) {
                         if (beetle.checkAndChangeState(Beetle.State.MOVE)) {
                             chamber.moveRandomPlus(beetle);
@@ -114,7 +115,8 @@ public class BeetleController {
                     }
 
                     if (distance > 1 && entity instanceof Player && beetle.changeState(Beetle.State.ATTACK)) {
-                        Projectile slimeShot = new SlimeShot(new Vector2<>(beetle.getRow(), beetle.getCol()), direction, 1f);
+                        Projectile slimeShot = new SlimeShot(new Vector2<>(beetle.getRow(), beetle.getCol()),
+                                direction, 1f);
                         chamber.addProjectile(slimeShot);
                         chamber.addEntityOnTop(slimeShot);
                         break;

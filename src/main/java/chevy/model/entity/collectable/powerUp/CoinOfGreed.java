@@ -11,7 +11,8 @@ public class CoinOfGreed extends PowerUp {
         this.inStock = 1;
         this.occurringPercentage = 100;
         this.name = "Avido di Monete\n";
-        this.description = "I nemici aumentano la probabilità di\nrilasciare monete del " + (int) (increaseDropPercentage * 100) + "%";
+        this.description =
+                "I nemici aumentano la probabilità di\nrilasciare monete del " + (int) (increaseDropPercentage * 100) + "%";
     }
 
     public float getIncreaseDropPercentage() {

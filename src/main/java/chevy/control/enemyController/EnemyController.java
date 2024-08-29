@@ -54,7 +54,7 @@ public class EnemyController {
             case UPDATE -> updateEnemy((Enemy) subject);
             case PROJECTILE -> projectileInteraction((Projectile) subject, object);
             case TRAP -> trapInteraction((Trap) subject, object);
-            default -> {}
+            default -> { }
         }
     }
 

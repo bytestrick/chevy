@@ -10,7 +10,8 @@ public class VampireFangs extends PowerUp {
 
         this.occurringPercentage = 5;
         this.name = "Zanne di Vampiro\n";
-        this.description = "Possibilità del " + occurringPercentage  + "% di recuperare\n" + recoveryHealth + " unità di vita durante un attacco";
+        this.description = "Possibilità del " + occurringPercentage + "% di recuperare\n" + recoveryHealth + " unità "
+                + "di vita durante un attacco";
     }
 
     public int getRecoveryHealth() {

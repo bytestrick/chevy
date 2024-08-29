@@ -2,7 +2,6 @@ package chevy.model.chamber.drawOrder;
 
 import chevy.model.entity.Entity;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,6 +26,7 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Inizializza il Layer con il livello di priorità specificato.
+     *
      * @param n il numero del livello
      */
     public Layer(int n) {
@@ -38,6 +38,7 @@ public class Layer implements Comparable<Layer> {
     /**
      * Applica i cambiamenti al livello, aggiungendo tutte le entità da aggiungere al livello.
      * Poi svuota la lista di entità da aggiungere.
+     *
      * @return la lista di entità nel livello
      */
     public synchronized List<Entity> getLayer() {
@@ -48,6 +49,7 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Aggiunge un'entità all Layer.
+     *
      * @param entity l'entità da aggiungere
      */
     public synchronized void add(Entity entity) {

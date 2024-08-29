@@ -1,11 +1,10 @@
 package chevy.view.component;
 
-
-import chevy.settings.WindowSettings;
 import chevy.utils.Load;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 public class ImageVisualizer extends JComponent {
@@ -14,7 +13,7 @@ public class ImageVisualizer extends JComponent {
     private int width;
     private int height;
 
-    public ImageVisualizer() {}
+    public ImageVisualizer() { }
 
     public ImageVisualizer(String path) {
         this(path, 1f);
@@ -69,7 +68,7 @@ public class ImageVisualizer extends JComponent {
         super.paintComponent(g);
 
         if (image != null) {
-            g.drawImage(image, 0 , 0, width, height, null);
+            g.drawImage(image, 0, 0, width, height, null);
         }
     }
 

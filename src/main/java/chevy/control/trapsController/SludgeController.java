@@ -1,9 +1,9 @@
 package chevy.control.trapsController;
 
-import chevy.service.Sound;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.traps.Sludge;
+import chevy.service.Sound;
 
 /**
  * Gestisce le interazioni del giocatore con la melma nel gioco.

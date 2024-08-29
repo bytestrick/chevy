@@ -14,12 +14,10 @@ public class PowerUpController {
     private final Chamber chamber;
     private final HUDController hudController;
 
-
     public PowerUpController(Chamber chamber, HUDController hudController) {
         this.chamber = chamber;
         this.hudController = hudController;
     }
-
 
     public void playerInInteraction(Player player, PowerUp powerUp) {
         if (powerUp.changeState(PowerUp.State.COLLECTED)) {
@@ -58,7 +56,6 @@ public class PowerUpController {
                         int increaseValue = (int) (currentPercentage * healingFlood.getIncreaseDropPercentage());
                         Enemy.changeDropPercentage(2, currentPercentage + increaseValue);
                     }
-
                 }
                 case PowerUp.Type.HOT_HEART -> {
                     HotHeart hotHeath = (HotHeart) player.getOwnedPowerUp(PowerUp.Type.HOT_HEART);
@@ -94,7 +91,7 @@ public class PowerUpController {
                         hudController.setTextAttackBar(player.getMinDamage() + " ~ " + player.getMaxDamage());
                     }
                 }
-                default -> {}
+                default -> { }
             }
             EnemyUpdateController.runUpdate();
             ProjectileUpdateController.runUpdate();
@@ -107,16 +104,14 @@ public class PowerUpController {
                 powerUp.setToDraw(false);
                 powerUp.removeFromUpdate();
             }
-        }
-        else {
+        } else {
             if (chamber.getHitDirectionPlayer(powerUp) != null) {
                 if (powerUp.changeState(PowerUp.State.SELECTED)) {
                     EnemyUpdateController.stopUpdate();
                     ProjectileUpdateController.stopUpdate();
                     hudController.PowerUpText(powerUp);
                 }
-            }
-            else if (powerUp.checkAndChangeState(PowerUp.State.DESELECTED)) {
+            } else if (powerUp.checkAndChangeState(PowerUp.State.DESELECTED)) {
                 hudController.hidePowerUpText();
                 EnemyUpdateController.runUpdate();
                 ProjectileUpdateController.runUpdate();

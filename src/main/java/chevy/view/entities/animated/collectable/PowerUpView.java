@@ -28,19 +28,17 @@ public class PowerUpView extends AnimatedEntityView {
 
     private void iniAnimation() {
         Vector2<Integer> offset = new Vector2<>(0, -6);
-        createAnimation(PowerUp.State.IDLE, 0, 3, powerUp.getState(PowerUp.State.IDLE).getDuration(), offset,
-                1, POWER_UP_PATH + "idle", ".png");
+        createAnimation(PowerUp.State.IDLE, 0, 3, powerUp.getState(PowerUp.State.IDLE).getDuration(), offset, 1,
+                POWER_UP_PATH + "idle", ".png");
 
-        createAnimation(PowerUp.State.SELECTED, 0, 4, powerUp.getState(PowerUp.State.SELECTED).getDuration(),
-                offset, 1, POWER_UP_PATH + "selected", ".png");
+        createAnimation(PowerUp.State.SELECTED, 0, 4, powerUp.getState(PowerUp.State.SELECTED).getDuration(), offset,
+                1, POWER_UP_PATH + "selected", ".png");
 
-        createAnimation(PowerUp.State.DESELECTED, 0, 4,
-                powerUp.getState(PowerUp.State.DESELECTED).getDuration(), offset, 1, POWER_UP_PATH + "deselected"
-                , ".png");
+        createAnimation(PowerUp.State.DESELECTED, 0, 4, powerUp.getState(PowerUp.State.DESELECTED).getDuration(),
+                offset, 1, POWER_UP_PATH + "deselected", ".png");
 
-        createAnimation(PowerUp.State.COLLECTED, 0, 7,
-                powerUp.getState(PowerUp.State.COLLECTED).getDuration(), offset, 1, POWER_UP_PATH + "collected",
-                ".png");
+        createAnimation(PowerUp.State.COLLECTED, 0, 7, powerUp.getState(PowerUp.State.COLLECTED).getDuration(),
+                offset, 1, POWER_UP_PATH + "collected", ".png");
     }
 
     @Override

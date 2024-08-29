@@ -1,20 +1,18 @@
 package chevy.control.collectableController;
 
 import chevy.control.HUDController;
-import chevy.service.Sound;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Coin;
+import chevy.service.Sound;
 
 public class CoinController {
     private final Chamber chamber;
     private final HUDController hudController;
 
-
     public CoinController(Chamber chamber, HUDController hudController) {
         this.chamber = chamber;
         this.hudController = hudController;
     }
-
 
     public void playerInInteraction(Coin coin) {
         if (coin.changeState(Coin.State.COLLECTED)) {

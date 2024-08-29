@@ -34,8 +34,7 @@ public class SkeletonView extends AnimatedEntityView {
         float idleDuration = skeleton.getState(Skeleton.State.IDLE).getDuration();
         createAnimation(Skeleton.State.IDLE, 0, 4, true, 4, idleDuration, SKELETON_RESOURCES + "idle/up", ".png");
         createAnimation(Skeleton.State.IDLE, 1, 4, true, 4, idleDuration, SKELETON_RESOURCES + "idle/down", ".png");
-        createAnimation(Skeleton.State.IDLE, 2, 4, true, 4, idleDuration, SKELETON_RESOURCES + "idle/right",
-                ".png");
+        createAnimation(Skeleton.State.IDLE, 2, 4, true, 4, idleDuration, SKELETON_RESOURCES + "idle/right", ".png");
         createAnimation(Skeleton.State.IDLE, 3, 4, true, 4, idleDuration, SKELETON_RESOURCES + "idle/left", ".png");
 
         // Move
@@ -84,13 +83,12 @@ public class SkeletonView extends AnimatedEntityView {
     private int getAnimationType(CommonState currentState) {
         DirectionsModel currentDirection = skeleton.getDirection();
         return switch (currentState) {
-            case Skeleton.State.ATTACK, Skeleton.State.IDLE, Skeleton.State.MOVE ->
-                    switch (currentDirection) {
-                        case UP -> 0;
-                        case DOWN -> 1;
-                        case RIGHT -> 2;
-                        case LEFT -> 3;
-                    };
+            case Skeleton.State.ATTACK, Skeleton.State.IDLE, Skeleton.State.MOVE -> switch (currentDirection) {
+                case UP -> 0;
+                case DOWN -> 1;
+                case RIGHT -> 2;
+                case LEFT -> 3;
+            };
             case Skeleton.State.DEAD -> {
                 if (currentDirection == DirectionsModel.RIGHT) {
                     yield 1;

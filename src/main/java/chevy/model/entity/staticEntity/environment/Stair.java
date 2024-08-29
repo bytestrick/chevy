@@ -11,11 +11,6 @@ import chevy.utils.Vector2;
  * tutti si apre e permette il passaggio a un altra stanza.
  */
 public class Stair extends Environment {
-    public enum State implements CommonState {
-        IDLE,
-        OPEN,
-        IDLE_ENTRY
-    }
     private final GlobalState idle = new GlobalState(State.IDLE);
     private final GlobalState open = new GlobalState(State.OPEN, 0.3f);
     private final GlobalState idleEntry = new GlobalState(State.IDLE_ENTRY, 0.5f);
@@ -51,5 +46,9 @@ public class Stair extends Environment {
             case OPEN -> open;
             case IDLE_ENTRY -> idleEntry;
         };
+    }
+
+    public enum State implements CommonState {
+        IDLE, OPEN, IDLE_ENTRY
     }
 }

@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 public abstract class EntityView {
     protected Vector2<Double> currentViewPosition;
 
-    public EntityView() {}
+    public EntityView() { }
 
     public Vector2<Integer> getOffset() {
         return new Vector2<>(0, 0);
@@ -21,5 +21,5 @@ public abstract class EntityView {
 
     public abstract Vector2<Double> getCurrentViewPosition();
 
-    public void wasRemoved() {}
+    public void wasRemoved() { }
 }

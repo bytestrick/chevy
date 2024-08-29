@@ -16,10 +16,7 @@ public class StairView extends AnimatedEntityView {
 
     public StairView(Stair stair) {
         this.stair = stair;
-        currentViewPosition = new Vector2<>(
-                (double) stair.getCol(),
-                (double) stair.getRow()
-        );
+        currentViewPosition = new Vector2<>((double) stair.getCol(), (double) stair.getRow());
 
         initAnimation();
     }
@@ -33,20 +30,14 @@ public class StairView extends AnimatedEntityView {
             folder = "left/";
         }
 
-        createAnimation(Stair.State.IDLE, 0,
-                1, stair.getState(Stair.State.IDLE).getDuration(),
-                offset, 1,
+        createAnimation(Stair.State.IDLE, 0, 1, stair.getState(Stair.State.IDLE).getDuration(), offset, 1,
                 STAIR_RESOURCES + folder + "idle", ".png");
 
-        createAnimation(Stair.State.OPEN, 0,
-                6, stair.getState(Stair.State.OPEN).getDuration(),
-                offset, 1,
+        createAnimation(Stair.State.OPEN, 0, 6, stair.getState(Stair.State.OPEN).getDuration(), offset, 1,
                 STAIR_RESOURCES + folder + "open", ".png");
 
-        createAnimation(Stair.State.IDLE_ENTRY, 0,
-                6, stair.getState(Stair.State.IDLE_ENTRY).getDuration(),
-                offset, 1,
-                STAIR_RESOURCES + folder + "idleEntry", ".png");
+        createAnimation(Stair.State.IDLE_ENTRY, 0, 6, stair.getState(Stair.State.IDLE_ENTRY).getDuration(), offset, 1
+                , STAIR_RESOURCES + folder + "idleEntry", ".png");
     }
 
     @Override
