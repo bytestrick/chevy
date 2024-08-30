@@ -67,9 +67,8 @@ public class Load {
             Log.error(Load.class + ": caricamento traccia fallito: " + prefix + " (" + e.getMessage() + ")");
             System.exit(1);
         } catch (LineUnavailableException e) {
-            Log.warn("Si è tentato di caricare una clip il cui formato non è supportato dalla configurazione " +
-                    "audio\ndel sistema. Questo problema è risolvibile modificando la configurazione audio del " +
-                    "sistema.");
+            Log.warn("Si è tentato di caricare una clip il cui formato non è supportato dalla configurazione audio\n " +
+                    "   del sistema. Questo problema è risolvibile modificando la configurazione audio del sistema.");
         }
         return null;
     }
