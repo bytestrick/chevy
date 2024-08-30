@@ -1,6 +1,7 @@
 package chevy.view;
 
 import chevy.control.WindowController;
+import chevy.service.Data;
 import chevy.service.Sound;
 import chevy.settings.WindowSettings;
 import chevy.utils.Load;
@@ -135,8 +136,7 @@ public class Window extends JFrame {
         if (JOptionPane.showOptionDialog(this, "Uscire da Chevy?", "Conferma uscita", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, icon, new String[]{"Si", "No"}, "No") == 0) {
             Log.info("Salvataggio dei dati ...");
-            // TODO: eventualmente salvare il progresso qui.
-
+            Data.write();
             Log.info("Chevy: TERMINAZIONE");
             System.exit(0);
         }

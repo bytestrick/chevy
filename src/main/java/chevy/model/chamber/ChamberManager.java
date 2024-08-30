@@ -10,6 +10,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.service.Data;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Log;
@@ -28,7 +29,7 @@ import java.util.Objects;
 public class ChamberManager {
     public static final int NUMBER_OF_CHAMBERS = 6;
     private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
-    private static int currentChamberIndex = 0; // Indice della stanza corrente nel gioco.
+    private static Integer currentChamberIndex = 0; // Indice della stanza corrente nel gioco.
 
     /**
      * Carica un layer che comporrà la stanza.
@@ -100,12 +101,12 @@ public class ChamberManager {
     }
 
     /**
-     * Passa alla stanza successiva
+     * Sblocca e passa alla stanza successiva
      */
     public static void nextChamber() {
-        if (currentChamberIndex + 1 < NUMBER_OF_CHAMBERS) {
-            enterChamber(currentChamberIndex + 1);
-            // TODO: qui si sbloccano i livelli
+        enterChamber(currentChamberIndex + 1);
+        if ((Integer) Data.get("$.progress.lastUnlockedLevel") < currentChamberIndex) {
+            Data.set("$.progress.lastUnlockedLevel", currentChamberIndex);
         }
     }
 
@@ -121,12 +122,14 @@ public class ChamberManager {
      * @param index della stanza
      */
     public static void enterChamber(final int index) {
-        currentChamberIndex = index;
-        chambers[currentChamberIndex] = loadChamber(index);
-        ChamberController.refresh();
-        EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer()); // Invalida la view del player corrente
-        GameLoop.getInstance().start();
-        Sound.getInstance().startMusic(); // 🎵
+        if (index < NUMBER_OF_CHAMBERS) {
+            currentChamberIndex = index;
+            chambers[currentChamberIndex] = loadChamber(index);
+            ChamberController.refresh();
+            EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer()); // Invalida la view del player corrente
+            GameLoop.getInstance().start();
+            Sound.getInstance().startMusic(); // 🎵
+        }
     }
 
     public static int getCurrentChamberIndex() { return currentChamberIndex; }

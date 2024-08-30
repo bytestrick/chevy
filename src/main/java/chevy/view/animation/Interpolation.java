@@ -261,7 +261,6 @@ public class Interpolation implements Render {
     public void changeDuration(float duration) { this.duration = duration; }
 
     /**
-     * TODO: rimuovere se rimane non usato
      *
      * @param type imposta il tipo di interpolazione
      */
