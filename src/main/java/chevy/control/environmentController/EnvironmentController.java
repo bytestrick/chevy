@@ -8,12 +8,14 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.Stair;
+import chevy.view.GamePanel;
 
 public class EnvironmentController {
     private final ChestController chestController;
 
-    public EnvironmentController(Chamber chamber, HUDController hudController) {
+    public EnvironmentController(Chamber chamber, HUDController hudController, GamePanel gamePanel) {
         this.chestController = new ChestController(chamber, hudController);
+        StairController.setGamePanel(gamePanel);
     }
 
     public synchronized void handleInteraction(InteractionType interaction, Entity subject, Entity object) {

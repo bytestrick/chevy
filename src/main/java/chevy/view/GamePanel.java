@@ -23,6 +23,9 @@ public class GamePanel extends JPanel {
     private static final ImageIcon skull = new ImageIcon(Load.image("/icons/Skull.png").getScaledInstance(48, 48,
             Image.SCALE_SMOOTH));
 
+    private static final ImageIcon trophy = new ImageIcon(Load.image("/icons/Trophy.png").getScaledInstance(48, 48,
+            Image.SCALE_SMOOTH));
+
     private static final String[] deathMessages =
             new String[]{"Complimenti, hai vinto un biglietto per l'aldilà! " + "Prossima fermata: riprova!", "Sembra" +
                     " che il tuo personaggio abbia deciso di prendersi una pausa... dalla" + " vita.", "Ecco un " +
@@ -30,9 +33,18 @@ public class GamePanel extends JPanel {
                     "modo più veloce per tornare al menu principale!", "Se ti consola, anche i bot rideranno di " +
                     "questa " + "mossa!", "Complimenti, hai vinto un biglietto per l'aldilà! Prossima fermata: " +
                     "riprova!"};
+
+    private static final String[] winMessage =
+            new String[] {"Grandioso! Ogni mossa è stata perfetta, livello conquistato!",
+                    "Impressionante! Non c'è nulla che possa fermarti, grande performance!",
+                    "Superbo! Questo livello non aveva alcuna chance contro di te!",
+                    "Complimenti! La tua strategia ha fatto la differenza, livello completato!",
+                    "Complimenti! Hai dimostrato ancora una volta la tua abilità!"};
+
     private static final ChamberView chamberView = new ChamberView();
     private static boolean pauseDialogActive = false;
     private static boolean playerDeathDialogActive = false;
+    private static boolean winDialogActive = false;
     private final HUDView hudView = new HUDView(1.3f);
     private final Window window;
 
@@ -62,7 +74,7 @@ public class GamePanel extends JPanel {
      * Dialogo di pausa del gioco. È innescato dalla pressione di ESC.
      */
     public void pauseDialog() {
-        if (!(pauseDialogActive || playerDeathDialogActive)) {
+        if (!(pauseDialogActive || playerDeathDialogActive || winDialogActive)) {
             window.setTitle("Chevy - Pausa");
             GameLoop.getInstance().stop();
             Sound.getInstance().pauseMusic();
@@ -124,6 +136,29 @@ public class GamePanel extends JPanel {
             default -> playerDeathDialog(); // Questo dialogo non può essere ignorato
         }
         playerDeathDialogActive = false;
+    }
+
+    public void winDialog() {
+        winDialogActive = true;
+        GameLoop.getInstance().stop();
+        Sound.getInstance().stopMusic();
+        switch (JOptionPane.showOptionDialog(window, winMessage[Utils.random.nextInt(winMessage.length)],
+                "Chevy - Vittoria",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                trophy,
+                new String[]{"Esci", "Torna al menù", "Rigioca livello", "Continua"}, "Continua")) {
+            case 0 -> {
+                if (window.quitAction()) {
+                    winDialog();
+                }
+            }
+            case 1 -> window.setScene(Window.Scene.MENU);
+            case 2 -> ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
+            case 3 -> ChamberManager.nextChamber();
+            default -> winDialog(); // Questo dialogo non può essere ignorato
+        }
+        winDialogActive = false;
     }
 
     public void windowResized(float scale) { hudView.windowResized(scale); }

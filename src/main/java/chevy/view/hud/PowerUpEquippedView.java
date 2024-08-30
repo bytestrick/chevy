@@ -72,6 +72,12 @@ public class PowerUpEquippedView extends JComponent {
             frameWidth = 0;
     }
 
+    public void clear() {
+        int n = getComponentCount();
+        for (; n > 0; --n)
+            remove(n - 1);
+    }
+
     public void windowResized(float scale) {
         scale *= this.scale;
         int n = getComponentCount();

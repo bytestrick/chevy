@@ -22,11 +22,13 @@ public abstract class Player extends LiveEntity {
         this.drawLayer = 2;
     }
 
-    public void acquirePowerUp(PowerUp.Type powerUpType, PowerUp powerUp) {
+    public boolean acquirePowerUp(PowerUp.Type powerUpType, PowerUp powerUp) {
         if (!ownedPowerUp.containsKey(powerUpType)) {
             ownedPowerUp.put(powerUpType, powerUp);
             Log.info(this + " acquire the power up " + powerUpType);
+            return true;
         }
+        return false;
     }
 
     public int[] getStats() { return new int[]{health * 10, maxDamage * 10, 100 - (int) (speed * 100)}; }
