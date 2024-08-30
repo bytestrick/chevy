@@ -4,7 +4,6 @@ import chevy.settings.GameSettings;
 
 /**
  * Gestione dei messaggi di logging
- * TODO: dovremmo supportare il logging su file?
  */
 public class Log {
     /**

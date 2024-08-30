@@ -5,6 +5,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Archer;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Ninja;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
+import chevy.service.Data;
 import chevy.service.Sound;
 import chevy.utils.Load;
 import chevy.utils.Log;
@@ -27,7 +28,6 @@ import java.awt.Image;
 import java.awt.LinearGradientPaint;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -45,13 +45,13 @@ public class Menu {
                             "quando ho fretta."}, {"Muovermi nell’ombra, sparire nel" + " nulla, essere " +
                     "silenzioso\ncome il vento.." + ". e poi " + "inciampo su una foglia secca.",
                     "Mi " + "alleno " + "per" + " anni a diventare un maestro del " + "silenzio...\ne " + "poi la " + "mia" + " pancia decide di " + "brontolare nel momento più critico" + "."}};
-    public static Player.Type playerType;
+    private static final Pair<Integer, Integer> spriteDim = new Pair<>(200, 200);
+    public static Player.Type playerType = Player.Type.valueOf(Data.get("$.state.menu.playerType"));
     final int[][] playerStats = new int[][]{new Knight(null).getStats(), new Archer(null).getStats(),
             new Ninja(null).getStats()};
     private final Image[][] sprites = new Image[3][2];
     private final Object updateAnimation = new Object();
     private final Window window;
-    private final Pair<Integer, Integer> spriteDim;
     public JPanel root;
     private JButton play;
     private JButton playerCycleNext;
@@ -71,28 +71,13 @@ public class Menu {
     private JProgressBar healthBar;
     private JProgressBar damageBar;
     private JProgressBar speedBar;
-    private int level;
+    private int level = Data.get("$.state.menu.level");
     private boolean alternateAnimation = true;
     private boolean animationRunning = false;
 
     public Menu(final Window window) {
         this.window = window;
-
-        // TODO: recuperare chiavi e monete dal JSON
-        coins.setText("69");
-        keys.setText("420");
-
-        for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS + 1; ++i) {
-            levelSelector.addItem("Livello " + i);
-        }
-        levelSelectorRenderer.setEnabledInterval(new Pair<>(0, ChamberManager.NUMBER_OF_CHAMBERS));
-
-        playerType = Player.Type.ARCHER; // TODO: caricare valore iniziale dal JSON
-        level = 0; // TODO: caricare valore iniziale dal JSON
-
-        spriteDim = new Pair<>(200, 200);
-
-        applyStyle();
+        applyProperties();
         loadCharacterSprites();
         setPlayerType(playerType);
         initListeners();
@@ -101,7 +86,13 @@ public class Menu {
     /**
      * Procedura che fa parte del costruttore: costruzione dell'interfaccia
      */
-    private void applyStyle() {
+    private void applyProperties() {
+        coins.setText(Data.get("$.progress.coins").toString());
+        keys.setText(Data.get("$.progress.keys").toString());
+        for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS + 1; ++i) {
+            levelSelector.addItem("Livello " + i);
+        }
+        levelSelectorRenderer.setEnabledInterval(new Pair<>(0, Data.get("$.progress.lastUnlockedLevel")));
         final Font buttonFont = Window.handjet.deriveFont(40f);
         quit.setFont(buttonFont);
         play.setFont(buttonFont);
@@ -214,6 +205,8 @@ public class Menu {
     private void setPlayerType(final Player.Type type) {
         indicators[playerType.ordinal()].setSelected(false);
         playerType = type;
+        Data.set("$.state.menu.playerType", playerType.toString());
+        Data.set("$.state.menu.level", level);
         final int p = playerType.ordinal();
         characterAnimation.setToolTipText(quotes[p][Utils.random.nextInt(quotes[p].length)]);
         characterName.setText(playerType.toString());
@@ -259,7 +252,6 @@ public class Menu {
             while (animationRunning) {
                 characterAnimation.repaint();
                 alternateAnimation = !alternateAnimation;
-                Toolkit.getDefaultToolkit().sync();
 
                 // Ridisegna dopo un certo intervallo, tranne quando riceve updateAnimation.notify(), in quel caso
                 // ridisegna subito e questo evento è innescato dal cambiamento del personaggio da parte dell'utente.
