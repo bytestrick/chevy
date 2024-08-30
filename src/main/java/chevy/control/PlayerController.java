@@ -215,6 +215,8 @@ public class PlayerController implements Update {
                     }
                     case ARCHER -> { // Spara freccia
                         Arrow arrow = new Arrow(new Vector2<>(player.getRow(), player.getCol()), player.getDirection());
+                        arrow.changeMinDamage(player.getMinDamage());
+                        arrow.changeMaxDamage(player.getMaxDamage());
                         Sound.getInstance().play(Sound.Effect.ARROW_SWOOSH);
                         chamber.addProjectile(arrow);
                         chamber.addEntityOnTop(arrow);

@@ -14,6 +14,8 @@ public class HUDController {
     public HUDController(HUD hud, HUDView hudView) {
         this.hudView = hudView;
         this.hud = hud;
+
+        hudView.getPlayerInfo().getPowerUpEquippedView().clear();
     }
 
     public void changeHealth(int health) {
@@ -79,5 +81,9 @@ public class HUDController {
 
     public void PowerUpText(PowerUp powerUp) {
         hudView.getPowerUpText().show(powerUp);
+    }
+
+    public void addPowerUpIcon(PowerUp powerUp) {
+        hudView.getPlayerInfo().getPowerUpEquippedView().add(powerUp);
     }
 }

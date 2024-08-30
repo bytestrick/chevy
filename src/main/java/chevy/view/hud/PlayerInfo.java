@@ -1,29 +1,32 @@
 package chevy.view.hud;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import java.awt.Dimension;
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 
 public class PlayerInfo extends JPanel {
     private final HealthBar healthBar;
     private final ShieldBar shieldBar;
     private final AttackBar attackBar;
     private final PlayerFrame playerFrame;
+    private final PowerUpEquippedView powerUpEquippedView;
+
 
     public PlayerInfo(float scale) {
-        setOpaque(false);
         JPanel barContainer = new JPanel();
-        barContainer.setOpaque(false);
+        JPanel frameAndBarContainer = new JPanel();
 
+        setOpaque(false);
+        barContainer.setOpaque(false);
+        frameAndBarContainer.setOpaque(false);
+
+        // Creazione, sistemazione e aggiunta dei componenti nel barContainer
         healthBar = new HealthBar(0, scale);
         shieldBar = new ShieldBar(0, scale);
         attackBar = new AttackBar(0, scale);
         playerFrame = new PlayerFrame(new Dimension(42, 42), scale);
 
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         barContainer.setLayout(new BoxLayout(barContainer, BoxLayout.Y_AXIS));
-
         healthBar.setAlignmentX(LEFT_ALIGNMENT);
         shieldBar.setAlignmentX(LEFT_ALIGNMENT);
         attackBar.setAlignmentX(LEFT_ALIGNMENT);
@@ -33,9 +36,22 @@ public class PlayerInfo extends JPanel {
         barContainer.add(attackBar);
         barContainer.setAlignmentY(CENTER_ALIGNMENT);
 
-        add(playerFrame);
-        add(Box.createHorizontalStrut(5));
-        add(barContainer);
+        // Creazione, sistemazione e aggiunta dei componenti nel frameAndBarContainer
+        powerUpEquippedView = new PowerUpEquippedView(scale / 1.4f);
+
+        frameAndBarContainer.setLayout(new BoxLayout(frameAndBarContainer, BoxLayout.X_AXIS));
+        frameAndBarContainer.add(playerFrame);
+        frameAndBarContainer.add(Box.createHorizontalStrut(5));
+        frameAndBarContainer.add(barContainer);
+        frameAndBarContainer.setAlignmentX(LEFT_ALIGNMENT);
+
+        // Sistemazione e aggiunta dei componenti nel container principale
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        powerUpEquippedView.setAlignmentX(LEFT_ALIGNMENT);
+
+        add(frameAndBarContainer);
+        add(Box.createVerticalStrut(5));
+        add(powerUpEquippedView);
     }
 
     public void windowResized(float scale) {
@@ -43,6 +59,7 @@ public class PlayerInfo extends JPanel {
         shieldBar.windowResized(scale);
         attackBar.windowResized(scale);
         playerFrame.windowResized(scale);
+        powerUpEquippedView.windowResized(scale);
     }
 
     public HealthBar getHealthBar() {
@@ -55,6 +72,10 @@ public class PlayerInfo extends JPanel {
 
     public AttackBar getAttackBar() {
         return attackBar;
+    }
+
+    public PowerUpEquippedView getPowerUpEquippedView() {
+        return powerUpEquippedView;
     }
 }
 
