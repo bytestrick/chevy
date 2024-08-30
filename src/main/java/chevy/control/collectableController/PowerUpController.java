@@ -26,8 +26,8 @@ public class PowerUpController {
             powerUp.collect();
             chamber.findAndRemoveEntity(powerUp);
             hudController.hidePowerUpText();
-            player.acquirePowerUp((PowerUp.Type) powerUp.getSpecificType(), powerUp);
-            hudController.addPowerUpIcon(powerUp);
+            if (player.acquirePowerUp((PowerUp.Type) powerUp.getSpecificType(), powerUp))
+                hudController.addPowerUpIcon(powerUp);
 
             switch (powerUp.getSpecificType()) {
                 case PowerUp.Type.COIN_OF_GREED -> {

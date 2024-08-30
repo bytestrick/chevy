@@ -67,7 +67,7 @@ public class ChamberController {
         }
         projectileUpdateController = new ProjectileUpdateController(projectileController, chamber.getProjectiles());
 
-        final EnvironmentController environmentController = new EnvironmentController(chamber, hudController);
+        final EnvironmentController environmentController = new EnvironmentController(chamber, hudController, gamePanel);
         playerController.setEnvironmentController(environmentController);
         if (environmentUpdateController != null) {
             environmentUpdateController.updateTerminate();
