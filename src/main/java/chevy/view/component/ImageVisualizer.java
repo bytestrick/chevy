@@ -1,10 +1,11 @@
 package chevy.view.component;
 
+
+import chevy.settings.WindowSettings;
 import chevy.utils.Load;
 
-import javax.swing.JComponent;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ImageVisualizer extends JComponent {
@@ -13,13 +14,14 @@ public class ImageVisualizer extends JComponent {
     private int width;
     private int height;
 
-    public ImageVisualizer() { }
+    public ImageVisualizer() {}
 
     public ImageVisualizer(String path) {
         this(path, 1f);
     }
 
     public ImageVisualizer(String path, float scale) {
+        setOpaque(false);
         setImage(path, scale);
     }
 
@@ -28,13 +30,13 @@ public class ImageVisualizer extends JComponent {
     }
 
     public ImageVisualizer(BufferedImage image, float scale) {
+        setOpaque(false);
         setImage(image, scale);
     }
 
     public void setImage(BufferedImage image, float scale) {
         this.scale = scale;
         this.image = image;
-        setOpaque(false);
 
         width = (int) (scale * image.getWidth());
         height = (int) (scale * image.getHeight());
@@ -54,6 +56,16 @@ public class ImageVisualizer extends JComponent {
         setImage(image, 1f);
     }
 
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
     private void setDimension() {
         Dimension newDimension = new Dimension(width, height);
         setMaximumSize(newDimension);
@@ -68,13 +80,13 @@ public class ImageVisualizer extends JComponent {
         super.paintComponent(g);
 
         if (image != null) {
-            g.drawImage(image, 0, 0, width, height, null);
+            g.drawImage(image, 0 , 0, width, height, null);
         }
     }
 
     public void windowResized(float scale) {
-        width = (int) (scale * image.getWidth());
-        height = (int) (scale * image.getHeight());
+        width = (int) Math.ceil(scale * image.getWidth());
+        height = (int) Math.ceil(scale * image.getHeight());
         setDimension();
     }
 }
