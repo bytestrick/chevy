@@ -13,23 +13,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
-import java.awt.Image;
 
 public class GamePanel extends JPanel {
-    private static final ImageIcon playPause = new ImageIcon(Load.image("/icons/PlayPause.png").getScaledInstance(48,
-            48, Image.SCALE_SMOOTH));
-    private static final ImageIcon caution = new ImageIcon(Load.image("/icons/caution.png").getScaledInstance(48, 48,
-            Image.SCALE_SMOOTH));
-    private static final ImageIcon skull = new ImageIcon(Load.image("/icons/Skull.png").getScaledInstance(48, 48,
-            Image.SCALE_SMOOTH));
-
-    private static final String[] deathMessages =
-            new String[]{"Complimenti, hai vinto un biglietto per l'aldilà! " + "Prossima fermata: riprova!", "Sembra" +
-                    " che il tuo personaggio abbia deciso di prendersi una pausa... dalla" + " vita.", "Ecco un " +
-                    "esempio perfetto di cosa NON fare. Riprovaci!", "Il tuo personaggio ha appena scoperto" + " il " +
-                    "modo più veloce per tornare al menu principale!", "Se ti consola, anche i bot rideranno di " +
-                    "questa " + "mossa!", "Complimenti, hai vinto un biglietto per l'aldilà! Prossima fermata: " +
-                    "riprova!"};
+    private static final ImageIcon playPause = Load.icon("PlayPause", 48, 48);
+    private static final ImageIcon caution = Load.icon("caution", 48, 48);
+    private static final ImageIcon skull = Load.icon("Skull", 48, 48);
+    private static final String[] deathMessages = new String[]{"Complimenti, hai vinto un " +
+            "biglietto per l'aldilà! Prossima fermata: riprova!", "Sembra che il tuo personaggio " +
+            "abbia deciso di prendersi una pausa... dalla vita.", "Ecco un esempio perfetto di " +
+            "cosa NON fare. Riprovaci!", "Il tuo personaggio ha appena scoperto il modo più " +
+            "veloce per tornare al menu principale!", "Se ti consola, anche i bot rideranno di " +
+            "questa mossa!"};
     private static final ChamberView chamberView = new ChamberView();
     private static boolean pauseDialogActive = false;
     private static boolean playerDeathDialogActive = false;
@@ -67,9 +61,10 @@ public class GamePanel extends JPanel {
             GameLoop.getInstance().stop();
             Sound.getInstance().pauseMusic();
             pauseDialogActive = true;
-            switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa fare.", "Chevy - Pausa " +
-                    "(dialogo)", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, playPause, new String[]{"Esci"
-                    , "Opzioni", "Torna al menù", "Riprendi"}, "Riprendi")) {
+            switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, " + "scegli cosa " +
+                    "fare" + ".", "Chevy - Pausa " + "(dialogo)", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.PLAIN_MESSAGE, playPause, new String[]{"Esci", "Opzioni", "Torna "
+                            + "al " + "menù", "Riprendi"}, "Riprendi")) {
                 case 0 -> {
                     pauseDialogActive = false;
                     if (window.quitAction()) {
@@ -82,9 +77,10 @@ public class GamePanel extends JPanel {
                     window.setScene(Window.Scene.OPTIONS);
                 }
                 case 2 -> {
-                    if (JOptionPane.showOptionDialog(window, "Se torni al menù perderai il progresso. Continuare?",
-                            "Chevy - " + "Conferma (dialogo)", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-                            caution, new String[]{"Si", "No"}, "No") == 0) {
+                    if (JOptionPane.showOptionDialog(window,
+                            "Se torni al " + "menù perderai il " + "progresso. Continuare?",
+                            "Chevy" + " - " + "Conferma (dialogo)", JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.PLAIN_MESSAGE, caution, new String[]{"Si", "No"}, "No") == 0) {
                         window.setScene(Window.Scene.MENU);
                         GameLoop.getInstance().stop();
                         Sound.getInstance().stopMusic();
@@ -94,7 +90,8 @@ public class GamePanel extends JPanel {
                     }
                 }
                 default -> { // e case 3
-                    // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
+                    // Considera anche il caso in cui l'utente chiude la
+                    // finestra di dialogo.
                     GameLoop.getInstance().start();
                     Sound.getInstance().resumeMusic();
                     window.setTitle("Chevy");
@@ -111,9 +108,10 @@ public class GamePanel extends JPanel {
         playerDeathDialogActive = true;
         GameLoop.getInstance().stop();
         Sound.getInstance().stopMusic();
-        switch (JOptionPane.showOptionDialog(window, deathMessages[Utils.random.nextInt(deathMessages.length)],
-                "Chevy - Morte", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, skull, new String[]{"Esci",
-                        "Torna al menù", "Rigioca livello"}, "Rigioca livello")) {
+        switch (JOptionPane.showOptionDialog(window,
+                deathMessages[Utils.random.nextInt(deathMessages.length)], "Chevy - Morte",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, skull, new String[]{"Esci"
+                        , "Torna" + " al menù", "Rigioca livello"}, "Rigioca livello")) {
             case 0 -> {
                 if (window.quitAction()) {
                     playerDeathDialog();
@@ -121,14 +119,15 @@ public class GamePanel extends JPanel {
             }
             case 1 -> window.setScene(Window.Scene.MENU);
             case 2 -> ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
-            default -> playerDeathDialog(); // Questo dialogo non può essere ignorato
+            default -> playerDeathDialog(); // Questo dialogo non può essere
+            // ignorato
         }
         playerDeathDialogActive = false;
     }
 
-    public void windowResized(float scale) { hudView.windowResized(scale); }
+    public void windowResized(float scale) {hudView.windowResized(scale);}
 
-    public ChamberView getChamberView() { return chamberView; }
+    public ChamberView getChamberView() {return chamberView;}
 
-    public HUDView getHudView() { return hudView; }
+    public HUDView getHudView() {return hudView;}
 }

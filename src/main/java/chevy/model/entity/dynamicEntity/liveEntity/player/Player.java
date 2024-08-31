@@ -29,7 +29,7 @@ public abstract class Player extends LiveEntity {
         }
     }
 
-    public int[] getStats() { return new int[]{health * 10, maxDamage * 10, 100 - (int) (speed * 100)}; }
+    public int[] getStats() { return new int[]{health * 10, shield * 10, maxDamage * 10, 100 - (int) (speed * 100)}; }
 
     public PowerUp getOwnedPowerUp(PowerUp.Type powerUpType) { return ownedPowerUp.get(powerUpType); }
 

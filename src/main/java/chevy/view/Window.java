@@ -20,16 +20,15 @@ import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 public class Window extends JFrame {
-    public static final Dimension size = new Dimension(WindowSettings.WINDOW_WIDTH, WindowSettings.WINDOW_HEIGHT);
+    public static final Dimension size = new Dimension(WindowSettings.WINDOW_WIDTH,
+            WindowSettings.WINDOW_HEIGHT);
     public static final Font handjet = Load.font("Handjet");
     public static final Color bg = new Color(24, 20, 37);
-    private static final ImageIcon icon = new ImageIcon(Load.image("/icons/Power.png").getScaledInstance(42, 42,
-            Image.SCALE_SMOOTH));
+    private static final ImageIcon icon = Load.icon("Power", 42, 42);
     public GamePanel gamePanel = new GamePanel(this);
     public Options options = new Options(this);
     public Menu menu = new Menu(this);
@@ -48,7 +47,8 @@ public class Window extends JFrame {
             WindowSettings.SIZE_TOP_BAR = getInsets().top;
             setResizable(resizable);
             if (resizable) {
-                // visto che componentResized() non viene chiamata sempre all'avvio questo assicura il corretto scale
+                // visto che componentResized() non viene chiamata sempre all'avvio questo
+                // assicura il corretto scale
                 // dei componenti
                 WindowSettings.updateValue(getHeight(), getWidth());
                 gamePanel.windowResized(WindowSettings.scale);
@@ -64,7 +64,8 @@ public class Window extends JFrame {
     /**
      * Inizializza la FlatLaf e imposta personalizzazioni.
      * <a href="https://www.formdev.com/flatlaf/customizing/">Documentazione</a>.
-     * Le modifica relative al LookAndFell vanno fatte prima di creare istanze di qualsiasi componente.
+     * Le modifica relative al LookAndFell vanno fatte prima di creare istanze di qualsiasi
+     * componente.
      */
     public static void create() {
         try {
@@ -73,7 +74,8 @@ public class Window extends JFrame {
             Log.warn("Tentativo di inizializzare FlatLaf fallito.");
         }
 
-        // Le decorazioni della finestra personalizzate sono già abilitate su Windows e non sono supportate su Mac.
+        // Le decorazioni della finestra personalizzate sono già abilitate su Windows e non sono
+        // supportate su Mac.
         if (SystemInfo.isLinux) {
             JFrame.setDefaultLookAndFeelDecorated(true);
             JDialog.setDefaultLookAndFeelDecorated(true);
@@ -87,9 +89,12 @@ public class Window extends JFrame {
 
         UIManager.put("Component.arc", 10); // border-radius
         UIManager.put("Button.arc", 10);
+        UIManager.put("ProgressBar.arc", 10);
 
-        // Il colore di sfondo dei dialoghi è più chiaro, così è più facile accorgersi che un dialogo è attivo.
-        // Lo sfondo della barra del titolo del JFrame è impostata nel costruttore, questo è per i JOptionPane
+        // Il colore di sfondo dei dialoghi è più chiaro, così è più facile accorgersi che un
+        // dialogo è attivo.
+        // Lo sfondo della barra del titolo del JFrame è impostata nel costruttore, questo è per
+        // i JOptionPane
         final Color dialogBg = new Color(53, 20, 84);
         UIManager.put("RootPane.background", dialogBg);
         UIManager.put("OptionPane.background", dialogBg);
@@ -127,14 +132,17 @@ public class Window extends JFrame {
 
     /**
      * Unico punto di uscita (corretto) dall'app.
-     * Il WindowController collega l'evento di chiusura del JFrame a questo metodo, perciò premere la 'X' della
+     * Il WindowController collega l'evento di chiusura del JFrame a questo metodo, perciò
+     * premere la 'X' della
      * cornice della finestra passa il controllo qui.
      *
-     * @return true quando l'utente ha scelto di non uscire dall'app, altrimenti non ritorna affatto.
+     * @return true quando l'utente ha scelto di non uscire dall'app, altrimenti non ritorna
+     * affatto.
      */
     public boolean quitAction() {
-        if (JOptionPane.showOptionDialog(this, "Uscire da Chevy?", "Conferma uscita", JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, icon, new String[]{"Si", "No"}, "No") == 0) {
+        if (JOptionPane.showOptionDialog(this, "Uscire da Chevy?", "Conferma uscita",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, new String[]{"Si",
+                        "No"}, "No") == 0) {
             Log.info("Salvataggio dei dati ...");
             Data.write();
             Log.info("Chevy: TERMINAZIONE");
@@ -152,7 +160,7 @@ public class Window extends JFrame {
         options = new Options(this);
     }
 
-    public Scene getScene() { return scene; }
+    public Scene getScene() {return scene;}
 
     /**
      * Cambia la scena
@@ -165,7 +173,8 @@ public class Window extends JFrame {
             final JPanel panel = switch (scene) {
                 case MENU -> {
                     Sound.startMenuMusic();
-                    getRootPane().setBackground(new Color(25, 21, 38)); // Sfondo della barra del titolo
+                    getRootPane().setBackground(new Color(25, 21, 38)); // Sfondo della barra del
+                    // titolo
                     menu.startCharacterAnimation();
                     setTitle("Chevy");
                     yield menu.root;

@@ -6,8 +6,10 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,9 +21,8 @@ import java.util.Objects;
  */
 public class Load {
     /**
-     * Carica un'immagine dalle risorse
-     *
-     * @param path il percorso, tipo "/sprites/img.png".
+     * @param path il percorso, tipo "/sprites/img.png"
+     * @return l'immagine caricata dalle risorse
      */
     public static BufferedImage image(final String path) {
         BufferedImage image = null;
@@ -35,9 +36,19 @@ public class Load {
     }
 
     /**
-     * Carica un Font
-     *
+     * @param name il nome dell'icona senza estensione
+     * @param width larghezza dell'icona desiderata
+     * @param height altezza dell'icona desiderata
+     * @return l'icona caricata e scalata.
+     */
+    public static ImageIcon icon(String name, int width, int height) {
+        Image image = image("/icons/" + name + ".png");
+        return new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
+    }
+
+    /**
      * @param name il percorso della risorsa
+     * @return il font caricato
      */
     public static Font font(final String name) {
         Font font = null;
@@ -51,10 +62,8 @@ public class Load {
     }
 
     /**
-     * Carica una Clip per la classe Sound
-     *
      * @param prefix è il nome della clip senza l'estensione, esempio: coin.wav -> coin
-     * @return la Clip caricata, aperta e pronta all'uso.
+     * @return la Clip caricata, aperta e pronta all'uso
      */
     public static Clip clip(final String prefix) {
         try {

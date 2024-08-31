@@ -14,6 +14,7 @@ import chevy.service.Data;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Log;
+import chevy.view.Menu;
 import chevy.view.chamber.EntityToEntityView;
 
 import javax.imageio.ImageIO;
@@ -106,7 +107,7 @@ public class ChamberManager {
     public static void nextChamber() {
         enterChamber(currentChamberIndex + 1);
         if ((Integer) Data.get("$.progress.lastUnlockedLevel") < currentChamberIndex) {
-            Data.set("$.progress.lastUnlockedLevel", currentChamberIndex);
+            Menu.LevelSelectorRenderer.setEnabledInterval(0, currentChamberIndex);
         }
     }
 
