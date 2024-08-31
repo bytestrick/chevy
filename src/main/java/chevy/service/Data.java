@@ -74,6 +74,8 @@ public class Data {
             // .toURI() risolve il problema per cui il path comincia con / su window, es: /C:/Users/...
             Path from = Paths.get(Objects.requireNonNull(url).toURI());
             Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
+            root = null;
+            Log.info(to + " è stato creato");
         } catch (NullPointerException | IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -82,8 +84,8 @@ public class Data {
     /**
      * Il file JSON è salvato nella cartella dei dati dell'utente. Per esempio, su un sistema POSIX aderente a
      * <a href="https://specifications.freedesktop.org/basedir-spec/0.6/">XDG Base Directory Specification</a>
-     * la posizione sara <code>$XDG_DATA_HOME/chevy/data.json</code>. Mentre su MS Windows la posizione sarà
-     * <code>%appdata%\chevy\data.json</code>.
+     * la posizione sarà <code>$XDG_DATA_HOME/chevy/data.json</code>. Mentre su MS Windows la posizione sarà
+     * <code>%LocalAppData%\chevy\data.json</code>.
      */
     private static File findFile() {
         String prefix = AppDirsFactory.getInstance().getUserDataDir("chevy", null, null);

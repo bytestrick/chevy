@@ -30,9 +30,9 @@ public class Window extends JFrame {
     public static final Color bg = new Color(24, 20, 37);
     private static final ImageIcon icon = new ImageIcon(Load.image("/icons/Power.png").getScaledInstance(42, 42,
             Image.SCALE_SMOOTH));
-    public final GamePanel gamePanel = new GamePanel(this);
-    public final Options options = new Options(this);
-    public final Menu menu = new Menu(this);
+    public GamePanel gamePanel = new GamePanel(this);
+    public Options options = new Options(this);
+    public Menu menu = new Menu(this);
     private Scene scene;
 
     public Window(boolean resizable) {
@@ -141,6 +141,15 @@ public class Window extends JFrame {
             System.exit(0);
         }
         return true;
+    }
+
+    /**
+     * Utile per portare l'app allo stato predefinito.
+     */
+    public void refresh() {
+        menu = new Menu(this);
+        gamePanel = new GamePanel(this);
+        options = new Options(this);
     }
 
     public Scene getScene() { return scene; }

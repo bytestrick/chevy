@@ -1,14 +1,21 @@
 package chevy.view;
 
+import chevy.service.Data;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import java.awt.Color;
 
 public class Options {
     public JPanel root;
     private JButton quit;
+    private JButton restoreApp;
     private Window.Scene sceneToReturnTo;
+    private final Window window;
+    private static final Color destructiveActionBG = new Color(103, 40, 40);
 
     public Options(final Window window) {
+        this.window = window;
         quit.addActionListener(e -> {
             if (sceneToReturnTo == Window.Scene.PLAYING) {
                 window.setScene(sceneToReturnTo);
@@ -16,6 +23,15 @@ public class Options {
             } else {
                 window.setScene(sceneToReturnTo);
             }
+        });
+
+        restoreApp.setBackground(destructiveActionBG);
+
+        restoreApp.addActionListener(e -> {
+            // TODO: dialogo di conferma che avvisa della perdita del progresso
+            Data.createPristineFile();
+            Data.read();
+            window.refresh();
         });
     }
 
