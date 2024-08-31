@@ -23,13 +23,13 @@ public class WindowController implements WindowListener, KeyListener {
     }
 
     @Override
-    public void windowOpened(WindowEvent windowEvent) { }
+    public void windowOpened(WindowEvent windowEvent) {}
 
     @Override
-    public void windowClosing(WindowEvent windowEvent) { window.quitAction(); }
+    public void windowClosing(WindowEvent windowEvent) {window.quitAction();}
 
     @Override
-    public void windowClosed(WindowEvent windowEvent) { }
+    public void windowClosed(WindowEvent windowEvent) {}
 
     @Override
     public void windowIconified(WindowEvent windowEvent) {
@@ -51,13 +51,13 @@ public class WindowController implements WindowListener, KeyListener {
     }
 
     @Override
-    public void windowActivated(WindowEvent windowEvent) { }
+    public void windowActivated(WindowEvent windowEvent) {}
 
     @Override
-    public void windowDeactivated(WindowEvent windowEvent) { }
+    public void windowDeactivated(WindowEvent windowEvent) {}
 
     @Override
-    public void keyTyped(KeyEvent keyEvent) { }
+    public void keyTyped(KeyEvent keyEvent) {}
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
@@ -71,5 +71,5 @@ public class WindowController implements WindowListener, KeyListener {
     }
 
     @Override
-    public void keyReleased(KeyEvent keyEvent) { }
+    public void keyReleased(KeyEvent keyEvent) {}
 }
