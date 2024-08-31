@@ -12,10 +12,13 @@ import chevy.utils.Log;
 import chevy.utils.Utils;
 
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
@@ -40,19 +43,40 @@ import java.awt.image.BufferedImage;
 import java.util.stream.Stream;
 
 public class Menu {
-    private static final String[][] quotes = new String[][]{{"Ho giurato di proteggere il regno, "
-            + "difendere i deboli e… sì, anche\ncercare di capire come si monta questa maledetta "
-            + "armatura!",
-            "Il mio cavallo è coraggioso, la mia spada è affilata, e io… beh,\n " + "io" + " " +
-                    "mi sono già perso due volte cercando di arrivare qui."}, {"Precisione " +
-            "millimetrica, " + "occhio di falco, respiro controllato...\nma se " + "c’è una " +
-            "zanzara " + "che mi gira intorno, " + "non garantisco nulla.",
-            "Posso colpire una " + "moneta a 100 " + "passi, ma non\nchiedermi di " + "trovare" + " le chiavi quando ho " + "fretta."}, {"Muovermi " + "nell’ombra, sparire " + "nel nulla, " + "essere " + "silenzioso\ncome il vento... e poi " + "inciampo su una " + "foglia secca.", "Mi " + "alleno" + " per anni a diventare un maestro del " + "silenzio.." + ".\ne poi la mia " + "pancia decide di " + "brontolare nel momento più critico."}};
+    // @formatter:off
+    private static final String[][] quotes = new String[][]{
+            {"Ho giurato di proteggere il regno, difendere i deboli e… sì, anche\n" +
+                "cercare di capire come si monta questa maledetta armatura!",
+             "Il mio cavallo è coraggioso, la mia spada è affilata, e io… beh,\n" +
+                "io mi sono già perso due volte cercando di arrivare qui."},
+            {"Precisione millimetrica, occhio di falco, respiro controllato...\n" +
+                "ma se c’è una zanzara che mi gira intorno, non garantisco nulla.",
+             "Posso colpire una moneta a 100 passi, ma non\n" +
+                "chiedermi di trovare le chiavi quando ho fretta."},
+            {"Muovermi nell’ombra, sparire nel nulla, essere silenzioso\n" +
+                "come il vento... e poi inciampo su una foglia secca.",
+             "Mi alleno per anni a diventare un maestro del silenzio...\n" +
+                "e poi la mia pancia decide di brontolare nel momento più critico."}};
+    // @formatter:on
     private static final Dimension spriteSize = new Dimension(200, 200);
-    public static Player.Type playerType = Player.Type.valueOf(Data.get("$.state.menu.playerType"));
+    private static final Color[] barsColors = new Color[]{new Color(153, 255, 153), new Color(189
+            , 189, 189), new Color(255, 80, 80), new Color(255, 255, 102)};
+    private static final Color progressBarDimmedForeground = new Color(144, 144, 144);
+    private static final int archerCost = 500, ninjaCost = 1000;
+    private static final ImageIcon coin = Load.icon("Coin", 32, 32);
+    private static final ImageIcon[] statsIcons = new ImageIcon[]{Load.icon("heart", 32, 32),
+            Load.icon("shield", 36, 36), Load.icon("sword", 32, 32), Load.icon("boot", 28, 28)};
+    private static final ImageIcon[] statsIconsGreyScale = new ImageIcon[]{Load.icon(
+            "heart_greyscale", 32, 32), Load.icon("shield_greyscale", 36, 36), Load.icon(
+                    "sword_greyscale", 32, 32), Load.icon("boot_greyscale", 28, 28)};
+    private static final String[] statsTooltipPrefixes = new String[]{"Salute: ", "Scudo: ",
+            "Danno: ", "Velocità: "};
+    public static Player.Type playerType = Player.Type.valueOf(Data.get("state.menu.playerType"));
+    protected static int level = Data.get("state.menu.level");
+    private static boolean currentPlayerLocked = false;
     final int[][] playerStats = new int[][]{new Knight(null).getStats(),
             new Archer(null).getStats(), new Ninja(null).getStats()};
-    private final Image[][] sprites = new Image[3][2];
+    private final Image[][] sprites = new Image[3][4];
     private final Object updateAnimation = new Object();
     private final Window window;
     public JPanel root;
@@ -77,51 +101,58 @@ public class Menu {
     private JProgressBar damageBar;
     private JProgressBar speedBar;
     private JProgressBar shieldBar;
+    private final JProgressBar[] bars = new JProgressBar[]{healthBar, shieldBar, damageBar,
+            speedBar};
     private JLabel healthLabel;
     private JLabel shieldLabel;
     private JLabel damageLabel;
     private JLabel speedLabel;
-    private int level = Data.get("$.state.menu.level");
+    private final JLabel[] statsLabels = new JLabel[]{healthLabel, shieldLabel, damageLabel,
+            speedLabel};
+    private JButton unlock;
+    private JLabel cost;
     private boolean alternateAnimation = true;
     private boolean animationRunning = false;
 
     public Menu(final Window window) {
         this.window = window;
-        applyProperties();
+        ChamberManager.menu = this;
+        initListeners();
+        initializeComponents();
         loadCharacterSprites();
         setPlayerType(playerType);
-        initListeners();
+    }
+
+    public void setLevel() {levelSelector.setSelectedIndex(level);}
+
+    public void incrementLevel() {
+        ++level;
+        Data.set("progress.lastUnlockedLevel", level);
+        LevelSelectorRenderer.setEnabledInterval(0, level);
     }
 
     /**
      * Procedura che fa parte del costruttore: costruzione dell'interfaccia
      */
-    private void applyProperties() {
-        coins.setText(Data.get("$.progress.coins").toString());
-        keys.setText(Data.get("$.progress.keys").toString());
+    private void initializeComponents() {
+        coins.setText(Data.get("progress.coins").toString());
+        keys.setText(Data.get("progress.keys").toString());
         for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS + 1; ++i) {
             levelSelector.addItem("Livello " + i);
         }
-        LevelSelectorRenderer.setEnabledInterval(0, Data.get("$.progress.lastUnlockedLevel"));
-        final Font buttonFont = Window.handjet.deriveFont(40f);
-        quit.setFont(buttonFont);
-        play.setFont(buttonFont);
+        LevelSelectorRenderer.setEnabledInterval(0, Data.get("progress.lastUnlockedLevel"));
+        final Font normalFont = Window.handjet.deriveFont(40f);
+        Stream.of(quit, play, keys, cost, coins, unlock).forEach(c -> c.setFont(normalFont));
         playerCycleNext.setIcon(Load.icon("right-chevron", 32, 32));
         playerCyclePrev.setIcon(Load.icon("left-chevron", 32, 32));
         play.setIcon(Load.icon("Play", 32, 32));
         quit.setIcon(Load.icon("Exit", 32, 32));
         options.setIcon(Load.icon("Gear", 32, 32));
-        coins.setIcon(Load.icon("Coin", 32, 32));
+        coins.setIcon(Load.icon("Coin2", 32, 32));
         keys.setIcon(Load.icon("Key", 32, 32));
-        healthLabel.setIcon(Load.icon("heart", 32, 32));
-        shieldLabel.setIcon(Load.icon("shield", 36, 36));
-        damageLabel.setIcon(Load.icon("sword", 32, 32));
-        speedLabel.setIcon(Load.icon("boot", 28, 28));
+        cost.setIcon(coin);
         characterName.setFont(Window.handjet.deriveFont(50f));
-        healthBar.setForeground(new Color(153, 255, 153));
-        shieldBar.setForeground(new Color(189, 189, 189));
-        damageBar.setForeground(new Color(255, 80, 80));
-        speedBar.setForeground(new Color(255, 255, 102));
+        unlock.setIcon(Load.icon("Unlocked", 30, 30));
     }
 
     /**
@@ -138,41 +169,50 @@ public class Menu {
         quit.addActionListener(e -> window.quitAction());
         playerCycleNext.addActionListener(e -> playerCycleNextAction());
         playerCyclePrev.addActionListener(e -> playerCyclePrevAction());
+        levelSelector.addActionListener(actionEvent -> changeLevelAction());
+        unlock.addActionListener(e -> unlockPlayerAction());
 
-        levelSelector.addActionListener(actionEvent -> {
-            final int i = levelSelector.getSelectedIndex();
-            if (levelSelectorRenderer.isInsideInterval(i)) {
-                level = i;
-            } else {
-                levelSelector.setSelectedIndex(level);
-                levelSelector.showPopup();
-            }
-            Log.info("Cambiato livello: " + level);
-        });
+        Stream<JComponent> components = Stream.of(playerCycleNext, playerCyclePrev,
+                characterAnimation, coins, keys, options, healthBar, shieldBar, damageBar,
+                speedBar, levelSelector, healthLabel, shieldLabel, damageLabel, speedLabel, play,
+                characterName);
+        components.forEach(component -> component.addMouseListener(new TooltipMouseAdapter()));
+    }
 
-        Stream.of(playerCycleNext, playerCyclePrev, characterAnimation, coins, keys, options,
-                healthBar, damageBar, speedBar, levelSelector, healthLabel, shieldLabel,
-                damageLabel, speedLabel).forEach(jComponent -> jComponent.addMouseListener(new MouseAdapter() {
-            /**
-             * L'attesa iniziale affinché il tooltip si attivi è più breve.
-             * Il tooltip persiste per un'ora se il cursore vi giace sopra per tanto.
-             */
-            public void mouseEntered(MouseEvent ignored) {
-                ToolTipManager.sharedInstance().setInitialDelay(100);
-                ToolTipManager.sharedInstance().setDismissDelay(3_600_000);
-            }
+    private void changeLevelAction() {
+        final int i = levelSelector.getSelectedIndex();
+        if (levelSelectorRenderer.isInsideInterval(i)) {
+            level = i;
+            Data.set("state.menu.level", level);
+        } else {
+            levelSelector.setSelectedIndex(level);
+            levelSelector.showPopup();
+        }
+        Log.info("Cambiato livello: " + level);
+    }
 
-            /**
-             * Il tooltip viene nascosto non appena il cursore abbandona il componente.
-             */
-            public void mouseExited(MouseEvent ignored) {
-                ToolTipManager.sharedInstance().setDismissDelay(0);
+    private void unlockPlayerAction() {
+        int actualCost = playerType == Player.Type.ARCHER ? archerCost : ninjaCost;
+        if (JOptionPane.showOptionDialog(window,
+                "Sbloccare " + playerType + " per " + actualCost + " monete?", "Conferma",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Load.icon("Unlocked", 48
+                        , 48), new String[]{"Si", "No"}, "No") == 0) {
+            if (actualCost > (int) Data.get("progress.coins")) {
+                JOptionPane.showMessageDialog(window, "Monete insufficienti", null,
+                        JOptionPane.PLAIN_MESSAGE, Load.icon("x", 48, 48));
+                return;
             }
-        }));
+            currentPlayerLocked = false;
+            Data.set("progress.player." + playerType.toString().toLowerCase() + ".locked", false);
+            int coinsLeft = (int) Data.get("progress.coins") - actualCost;
+            Data.set("progress.coins", coinsLeft);
+            coins.setText(Integer.toString(coinsLeft));
+            setPlayerType(playerType);
+        }
     }
 
     /**
-     * Risponde agli eventi passati dalla Window
+     * Risponde agli eventi passati da Window
      */
     public void handleKeyPress(KeyEvent event) {
         switch (event.getKeyCode()) {
@@ -223,30 +263,45 @@ public class Menu {
     private void setPlayerType(final Player.Type type) {
         indicators[playerType.ordinal()].setSelected(false);
         playerType = type;
-        Data.set("$.state.menu.playerType", playerType.toString());
-        Data.set("$.state.menu.level", level);
+        Data.set("state.menu.playerType", playerType.toString());
+        Data.set("state.menu.level", level);
         final int p = playerType.ordinal();
-        characterAnimation.setToolTipText(quotes[p][Utils.random.nextInt(quotes[p].length)]);
         characterName.setText(playerType.toString());
         indicators[p].setSelected(true);
-        healthBar.setValue(playerStats[p][0]);
-        shieldBar.setValue(playerStats[p][1]);
-        damageBar.setValue(playerStats[p][2]);
-        speedBar.setValue(playerStats[p][3]);
-        String healthInfo = "Salute: " + playerStats[p][0] / 10;
-        healthBar.setToolTipText(healthInfo);
-        healthLabel.setToolTipText(healthInfo);
-        String shieldInfo = "Scudo: " + playerStats[p][1] / 10;
-        shieldBar.setToolTipText(shieldInfo);
-        shieldLabel.setToolTipText(shieldInfo);
-        String damageInfo = "Danno: " + playerStats[p][2] / 10;
-        damageBar.setToolTipText(damageInfo);
-        damageLabel.setToolTipText(damageInfo);
-        String speedInfo = "Velocità: " + playerStats[p][3] / 10;
-        speedBar.setToolTipText(speedInfo);
-        speedLabel.setToolTipText(speedInfo);
+        for (int i = 0; i < bars.length; ++i) {
+            bars[i].setValue(playerStats[p][i]);
+            final String statTooltip = statsTooltipPrefixes[i] + playerStats[p][i] / 10;
+            bars[i].setToolTipText(statTooltip);
+            statsLabels[i].setToolTipText(statTooltip);
+        }
         synchronized (updateAnimation) {
             updateAnimation.notify();
+        }
+        currentPlayerLocked =
+                Data.get("progress.player." + playerType.toString().toLowerCase() + ".locked");
+        if (currentPlayerLocked) {
+            characterName.setToolTipText("Bloccato");
+            characterAnimation.setToolTipText(null);
+            play.setEnabled(false);
+            play.setToolTipText(playerType + " è bloccato");
+            unlock.setVisible(true);
+            cost.setText(String.valueOf(playerType == Player.Type.ARCHER ? archerCost : ninjaCost));
+            cost.setVisible(true);
+            for (int i = 0; i < bars.length; ++i) {
+                bars[i].setForeground(progressBarDimmedForeground);
+                statsLabels[i].setIcon(statsIconsGreyScale[i]);
+            }
+        } else {
+            characterAnimation.setToolTipText(quotes[p][Utils.random.nextInt(quotes[p].length)]);
+            characterName.setToolTipText(null);
+            play.setEnabled(true);
+            play.setToolTipText(null);
+            unlock.setVisible(false);
+            cost.setVisible(false);
+            for (int i = 0; i < bars.length; ++i) {
+                bars[i].setForeground(barsColors[i]);
+                statsLabels[i].setIcon(statsIcons[i]);
+            }
         }
     }
 
@@ -255,8 +310,14 @@ public class Menu {
      */
     private void loadCharacterSprites() {
         for (Player.Type t : Player.Type.values()) {
-            for (int f = 0; f < 2; ++f) { // 2 frame
-                final String substring = t == Player.Type.KNIGHT ? "_16x16" : "";
+            String substring = "";
+            int nSprites = 2;
+            if (t == Player.Type.KNIGHT) {
+                substring = "_16x16";
+            } else {
+                nSprites = 4;
+            }
+            for (int f = 0; f < nSprites; ++f) { // 2 frame
                 final String path = "/sprites/player/" + t.toString().toLowerCase() + "/idle/down"
                         + "/" + f + substring + ".png";
                 final BufferedImage img = Load.image(path);
@@ -283,9 +344,8 @@ public class Menu {
                 alternateAnimation = !alternateAnimation;
 
                 // Ridisegna dopo un certo intervallo, tranne quando riceve updateAnimation
-                // .notify(), in quel caso
-                // ridisegna subito e questo evento è innescato dal cambiamento del personaggio
-                // da parte dell'utente.
+                // .notify(), in quel caso  ridisegna subito e questo evento è innescato dal
+                // cambiamento del personaggio da parte dell'utente.
                 synchronized (updateAnimation) {
                     try {
                         updateAnimation.wait(386);
@@ -333,13 +393,15 @@ public class Menu {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
+                int i = 0;
                 if (alternateAnimation) {
-                    g.drawImage(sprites[playerType.ordinal()][0], 0, 0, spriteSize.width,
-                            spriteSize.height, null);
-                } else {
-                    g.drawImage(sprites[playerType.ordinal()][1], 0, 0, spriteSize.width,
-                            spriteSize.height, null);
+                    i = 1;
                 }
+                if (playerType != Player.Type.KNIGHT && currentPlayerLocked) {
+                    i += 2;
+                }
+                g.drawImage(sprites[playerType.ordinal()][i], 0, 0, spriteSize.width,
+                        spriteSize.height, null);
             }
 
             @Override
@@ -352,7 +414,7 @@ public class Menu {
      * <a href="https://stackoverflow.com/a/23724201">StackOverflow</a>.
      * Funziona in combinazione con l'ActionListener di Menu.levelSelector
      */
-    public static class LevelSelectorRenderer extends BasicComboBoxRenderer {
+    private static class LevelSelectorRenderer extends BasicComboBoxRenderer {
         private static final ListSelectionModel model = new DefaultListSelectionModel();
         private static int enabledFirst = 0;
         private static int enabledLast = 0;
@@ -366,9 +428,8 @@ public class Menu {
          * @param last  fine dell'intervallo
          */
         public static void setEnabledInterval(int first, int last) {
-            Data.set("$.progress.lastUnlockedLevel", last);
             enabledFirst = first;
-            enabledLast = last;
+            level = enabledLast = last;
             model.setSelectionInterval(first, last);
         }
 
@@ -396,6 +457,24 @@ public class Menu {
                 c.setForeground(super.getForeground());
             }
             return c;
+        }
+    }
+
+    private static class TooltipMouseAdapter extends MouseAdapter {
+        /**
+         * L'attesa iniziale affinché il tooltip si attivi è più breve.
+         * Il tooltip persiste per un'ora se il cursore vi giace sopra per tanto.
+         */
+        public void mouseEntered(MouseEvent ignored) {
+            ToolTipManager.sharedInstance().setInitialDelay(100);
+            ToolTipManager.sharedInstance().setDismissDelay(3_600_000);
+        }
+
+        /**
+         * Il tooltip viene nascosto non appena il cursore abbandona il componente.
+         */
+        public void mouseExited(MouseEvent ignored) {
+            ToolTipManager.sharedInstance().setDismissDelay(0);
         }
     }
 }

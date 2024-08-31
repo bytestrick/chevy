@@ -29,14 +29,14 @@ public class Data {
         if (root == null) {
             read();
         }
-        return JsonPath.read(root, path);
+        return JsonPath.read(root, "$." + path);
     }
 
     public static void set(String path, Object value) {
         if (root == null) {
             read();
         }
-        root = JsonPath.parse(root).set(path, value).jsonString();
+        root = JsonPath.parse(root).set("$." + path, value).jsonString();
     }
 
     /**

@@ -18,12 +18,14 @@ public class GamePanel extends JPanel {
     private static final ImageIcon playPause = Load.icon("PlayPause", 48, 48);
     private static final ImageIcon caution = Load.icon("caution", 48, 48);
     private static final ImageIcon skull = Load.icon("Skull", 48, 48);
-    private static final String[] deathMessages = new String[]{"Complimenti, hai vinto un " +
-            "biglietto per l'aldilà! Prossima fermata: riprova!", "Sembra che il tuo personaggio " +
-            "abbia deciso di prendersi una pausa... dalla vita.", "Ecco un esempio perfetto di " +
-            "cosa NON fare. Riprovaci!", "Il tuo personaggio ha appena scoperto il modo più " +
-            "veloce per tornare al menu principale!", "Se ti consola, anche i bot rideranno di " +
-            "questa mossa!"};
+    // @formatter:off
+    private static final String[] deathMessages = new String[]{
+            "Complimenti, hai vinto un biglietto per l'aldilà! Prossima fermata: riprova!",
+            "Sembra che il tuo personaggio abbia deciso di prendersi una pausa... dalla vita.",
+            "Ecco un esempio perfetto di cosa NON fare. Riprovaci!",
+            "Il tuo personaggio ha appena scoperto il modo più veloce per tornare al menu principale!",
+            "Se ti consola, anche i bot rideranno di questa mossa!"};
+    // @formatter:on
     private static final ChamberView chamberView = new ChamberView();
     private static boolean pauseDialogActive = false;
     private static boolean playerDeathDialogActive = false;
@@ -61,10 +63,10 @@ public class GamePanel extends JPanel {
             GameLoop.getInstance().stop();
             Sound.getInstance().pauseMusic();
             pauseDialogActive = true;
-            switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, " + "scegli cosa " +
-                    "fare" + ".", "Chevy - Pausa " + "(dialogo)", JOptionPane.DEFAULT_OPTION,
+            switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa " +
+                    "fare.", "Chevy - Pausa (dialogo)", JOptionPane.DEFAULT_OPTION,
                     JOptionPane.PLAIN_MESSAGE, playPause, new String[]{"Esci", "Opzioni", "Torna "
-                            + "al " + "menù", "Riprendi"}, "Riprendi")) {
+                            + "al menù", "Riprendi"}, "Riprendi")) {
                 case 0 -> {
                     pauseDialogActive = false;
                     if (window.quitAction()) {
@@ -78,8 +80,8 @@ public class GamePanel extends JPanel {
                 }
                 case 2 -> {
                     if (JOptionPane.showOptionDialog(window,
-                            "Se torni al " + "menù perderai il " + "progresso. Continuare?",
-                            "Chevy" + " - " + "Conferma (dialogo)", JOptionPane.DEFAULT_OPTION,
+                            "Se torni al menù perderai il progresso. Continuare?",
+                            "Chevy - Conferma (dialogo)", JOptionPane.DEFAULT_OPTION,
                             JOptionPane.PLAIN_MESSAGE, caution, new String[]{"Si", "No"}, "No") == 0) {
                         window.setScene(Window.Scene.MENU);
                         GameLoop.getInstance().stop();
@@ -111,7 +113,7 @@ public class GamePanel extends JPanel {
         switch (JOptionPane.showOptionDialog(window,
                 deathMessages[Utils.random.nextInt(deathMessages.length)], "Chevy - Morte",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, skull, new String[]{"Esci"
-                        , "Torna" + " al menù", "Rigioca livello"}, "Rigioca livello")) {
+                        , "Torna al menù", "Rigioca livello"}, "Rigioca livello")) {
             case 0 -> {
                 if (window.quitAction()) {
                     playerDeathDialog();
