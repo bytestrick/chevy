@@ -173,10 +173,11 @@ public class Window extends JFrame {
             final JPanel panel = switch (scene) {
                 case MENU -> {
                     Sound.startMenuMusic();
-                    getRootPane().setBackground(new Color(25, 21, 38)); // Sfondo della barra del
-                    // titolo
+                    // Sfondo della barra del titolo
+                    getRootPane().setBackground(new Color(25, 21, 38));
                     menu.startCharacterAnimation();
                     setTitle("Chevy");
+                    menu.setLevel();
                     yield menu.root;
                 }
                 case PLAYING -> {

@@ -10,7 +10,6 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
-import chevy.service.Data;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Log;
@@ -30,6 +29,7 @@ import java.util.Objects;
 public class ChamberManager {
     public static final int NUMBER_OF_CHAMBERS = 6;
     private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
+    public static Menu menu;
     private static Integer currentChamberIndex = 0; // Indice della stanza corrente nel gioco.
 
     /**
@@ -43,7 +43,8 @@ public class ChamberManager {
         final String chamberPath = "/chambers/chamber" + chamber + "/layer" + layer + ".png";
         BufferedImage chamberImage = null;
         try {
-            chamberImage = ImageIO.read(Objects.requireNonNull(ChamberManager.class.getResource(chamberPath)));
+            chamberImage =
+                    ImageIO.read(Objects.requireNonNull(ChamberManager.class.getResource(chamberPath)));
         } catch (NullPointerException | IOException ignored) {
             Log.warn(chamberPath + ": il layer" + ".png non è stato caricato");
         }
@@ -78,7 +79,8 @@ public class ChamberManager {
                         assert entity != null;
                         switch (entity.getGenericType()) {
                             case Environment.Type.TRAP -> chamber.addTraps((Trap) entity);
-                            case DynamicEntity.Type.PROJECTILE -> chamber.addProjectile((Projectile) entity);
+                            case DynamicEntity.Type.PROJECTILE ->
+                                    chamber.addProjectile((Projectile) entity);
                             case LiveEntity.Type.ENEMY -> chamber.addEnemy((Enemy) entity);
                             case LiveEntity.Type.PLAYER -> {
                                 entity.setToDraw(false);
@@ -86,8 +88,9 @@ public class ChamberManager {
                             }
                             case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
                                     chamber.addCollectable((Collectable) entity);
-                            case Entity.Type.ENVIRONMENT -> chamber.addEnvironment((Environment) entity);
-                            default -> { }
+                            case Entity.Type.ENVIRONMENT ->
+                                    chamber.addEnvironment((Environment) entity);
+                            default -> {}
                         }
                         chamber.addEntityOnTop(entity);
                     }
@@ -105,19 +108,18 @@ public class ChamberManager {
      * Sblocca e passa alla stanza successiva
      */
     public static void nextChamber() {
+        menu.incrementLevel();
         enterChamber(currentChamberIndex + 1);
-        if ((Integer) Data.get("$.progress.lastUnlockedLevel") < currentChamberIndex) {
-            Menu.LevelSelectorRenderer.setEnabledInterval(0, currentChamberIndex);
-        }
     }
 
     /**
      * @return la stanza corrente
      */
-    public static Chamber getCurrentChamber() { return chambers[currentChamberIndex]; }
+    public static Chamber getCurrentChamber() {return chambers[currentChamberIndex];}
 
     /**
-     * Imposta la stanza corrente a index. Se la stanza è già caricata la invalida e ne forza il caricamento.
+     * Imposta la stanza corrente a index. Se la stanza è già caricata la invalida e ne forza il
+     * caricamento.
      * Predispone il gioco.
      *
      * @param index della stanza
@@ -127,11 +129,12 @@ public class ChamberManager {
             currentChamberIndex = index;
             chambers[currentChamberIndex] = loadChamber(index);
             ChamberController.refresh();
-            EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer()); // Invalida la view del player corrente
+            EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer()); // Invalida la
+            // view del player corrente
             GameLoop.getInstance().start();
             Sound.getInstance().startMusic(); // 🎵
         }
     }
 
-    public static int getCurrentChamberIndex() { return currentChamberIndex; }
+    public static int getCurrentChamberIndex() {return currentChamberIndex;}
 }
