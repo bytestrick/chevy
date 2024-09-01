@@ -109,6 +109,10 @@ public class ChamberManager {
         }
     }
 
+    public static boolean isLastChamber() {
+        return currentChamberIndex == NUMBER_OF_CHAMBERS - 1;
+    }
+
     /**
      * @return la stanza corrente
      */
