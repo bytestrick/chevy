@@ -270,7 +270,7 @@ public class Interpolation implements Render {
     /**
      * @return true se l'interpolazione è in esecuzione, false altrimenti
      */
-    public boolean isRunning() { return isRunning || !delete; }
+    public boolean isRunning() { return isRunning && !delete; }
 
     /**
      * @return true se l'interpolazione è terminata, false altrimenti
