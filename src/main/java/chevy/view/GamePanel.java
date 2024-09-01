@@ -141,7 +141,6 @@ public class GamePanel extends JPanel {
     public void winDialog() {
         winDialogActive = true;
         GameLoop.getInstance().stop();
-        Sound.getInstance().stopMusic();
 
         String[] option = new String[]{"Esci", "Torna al menù", "Rigioca livello", "Continua"};
         int defaultOption = 3;
