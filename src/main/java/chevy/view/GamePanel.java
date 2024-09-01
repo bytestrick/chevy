@@ -34,7 +34,7 @@ public class GamePanel extends JPanel {
                     "questa " + "mossa!", "Complimenti, hai vinto un biglietto per l'aldilà! Prossima fermata: " +
                     "riprova!"};
 
-    private static final String[] winMessage =
+    private static final String[] winMessages =
             new String[] {"Grandioso! Ogni mossa è stata perfetta, livello conquistato!",
                     "Impressionante! Non c'è nulla che possa fermarti, grande performance!",
                     "Superbo! Questo livello non aveva alcuna chance contro di te!",
@@ -142,12 +142,21 @@ public class GamePanel extends JPanel {
         winDialogActive = true;
         GameLoop.getInstance().stop();
         Sound.getInstance().stopMusic();
-        switch (JOptionPane.showOptionDialog(window, winMessage[Utils.random.nextInt(winMessage.length)],
+
+        String[] option = new String[]{"Esci", "Torna al menù", "Rigioca livello", "Continua"};
+        int defaultOption = 3;
+        if (ChamberManager.isLastChamber()) {
+            option = new String[]{"Esci", "Torna al menù", "Rigioca livello"};
+            defaultOption = 2;
+        }
+
+        switch (JOptionPane.showOptionDialog(window,
+                winMessages[Utils.random.nextInt(winMessages.length)],
                 "Chevy - Vittoria",
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.PLAIN_MESSAGE,
                 trophy,
-                new String[]{"Esci", "Torna al menù", "Rigioca livello", "Continua"}, "Continua")) {
+                option, option[defaultOption])) {
             case 0 -> {
                 if (window.quitAction()) {
                     winDialog();
