@@ -17,16 +17,16 @@ public class Knight extends Player {
     public Knight(Vector2<Integer> initPosition) {
         super(initPosition, Type.KNIGHT);
 
-        this.speed = .3f;
+        this.speed = .2f;
         this.health = 10;
         this.currentHealth = health;
         this.shield = 5;
         this.currentShield = shield;
         this.maxDamage = 7;
-        this.minDamage = 5;
+        this.minDamage = 4;
 
         this.idle = new GlobalState(State.IDLE);
-        this.move = new GlobalState(State.MOVE, speed);
+        this.move = new GlobalState(State.MOVE, speed, true);
         this.attack = new GlobalState(State.ATTACK, .5f, true);
         this.hit = new GlobalState(State.HIT, .2f);
         this.dead = new GlobalState(State.DEAD, .6f);

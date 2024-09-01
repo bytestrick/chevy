@@ -20,14 +20,14 @@ public class Ninja extends Player {
         this.speed = 0.1f;
         this.health = 6;
         this.currentHealth = health;
-        this.shield = 0;
+        this.shield = 2;
         this.currentShield = shield;
-        this.maxDamage = 8;
-        this.minDamage = 6;
+        this.maxDamage = 5;
+        this.minDamage = 4;
 
         this.idle = new GlobalState(State.IDLE);
-        this.move = new GlobalState(State.MOVE, speed);
-        this.attack = new GlobalState(State.ATTACK, .5f, true);
+        this.move = new GlobalState(State.MOVE, speed, true);
+        this.attack = new GlobalState(State.ATTACK, .3f, true);
         this.hit = new GlobalState(State.HIT, .2f);
         this.dead = new GlobalState(State.DEAD, .3f);
         this.glide = new GlobalState(State.GLIDE, speed, true);
