@@ -35,8 +35,6 @@
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <project.build.finalName>${project.name}</project.build.finalName>
         <exec.mainClass>chevy.Main</exec.mainClass>
         <exec.executable>java</exec.executable>
         <exec.args>-classpath %classpath ${exec.mainClass}</exec.args>
@@ -99,6 +97,7 @@
 
     <build>
         <defaultGoal>compile exec:exec</defaultGoal>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -128,7 +127,6 @@
                                     classi contenute nelle dipendenze -->
                                     <classpath>
                                         <!--suppress UnresolvedMavenProperty -->
-
                                         <pathelement
                                                 location="${maven.compile.classpath}"/>
                                     </classpath>
@@ -158,7 +156,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.7.1</version>
                 <executions>
-                    <!-- Include tutti gli artifact nello jar. -->
+                    <!-- Include tutti gli artifact in chevy.jar -->
                     <execution>
                         <phase>package</phase>
                         <goals>
@@ -167,7 +165,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <finalName>${project.build.finalName}</finalName>
+                    <finalName>${project.name}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>

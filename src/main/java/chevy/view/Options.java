@@ -6,10 +6,9 @@ import chevy.utils.Load;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import java.awt.Color;
+import javax.swing.UIManager;
 
 public class Options {
-    private static final Color destructiveActionBG = new Color(103, 40, 40);
     private static final ImageIcon basket = Load.icon("Basket", 32, 32);
     public JPanel root;
     private JButton quit;
@@ -26,7 +25,7 @@ public class Options {
             }
         });
 
-        restoreApp.setBackground(destructiveActionBG);
+        restoreApp.setBackground(UIManager.getColor("Chevy.color.destructiveActionBG"));
         restoreApp.setIcon(basket);
 
         restoreApp.addActionListener(e -> {
@@ -46,6 +45,6 @@ public class Options {
      */
     public void setupReturnAction(Window.Scene scene) {
         sceneToReturnTo = scene;
-        quit.setText(scene == Window.Scene.PLAYING ? "Ritorna al gioco" : "Ritorna al menù");
+        quit.setText("Torna al " + (scene == Window.Scene.PLAYING ? "gioco" : "menù"));
     }
 }

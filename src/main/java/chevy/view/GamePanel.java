@@ -63,14 +63,14 @@ public class GamePanel extends JPanel {
             GameLoop.getInstance().stop();
             Sound.getInstance().pauseMusic();
             pauseDialogActive = true;
-            switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa " +
-                    "fare.", "Chevy - Pausa (dialogo)", JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.PLAIN_MESSAGE, playPause, new String[]{"Esci", "Opzioni", "Torna "
-                            + "al menù", "Riprendi"}, "Riprendi")) {
+            switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa " + "fare" +
+                    ".", null, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, playPause,
+                    new String[]{"Esci", "Opzioni", "Torna " + "al menù", "Riprendi"},
+                    "Riprendi")) {
                 case 0 -> {
                     pauseDialogActive = false;
                     if (window.quitAction()) {
-                        pauseDialog(); // Ricorsione ☺️
+                        pauseDialog();
                     }
                 }
                 case 1 -> {
@@ -79,16 +79,15 @@ public class GamePanel extends JPanel {
                     window.setScene(Window.Scene.OPTIONS);
                 }
                 case 2 -> {
-                    if (JOptionPane.showOptionDialog(window,
-                            "Se torni al menù perderai il progresso. Continuare?",
-                            "Chevy - Conferma (dialogo)", JOptionPane.DEFAULT_OPTION,
+                    if (JOptionPane.showOptionDialog(window, "Se torni al menù perderai il " +
+                            "progresso. Continuare?", null, JOptionPane.DEFAULT_OPTION,
                             JOptionPane.PLAIN_MESSAGE, caution, new String[]{"Si", "No"}, "No") == 0) {
                         window.setScene(Window.Scene.MENU);
                         GameLoop.getInstance().stop();
                         Sound.getInstance().stopMusic();
                     } else {
                         pauseDialogActive = false;
-                        pauseDialog(); // Ricorsione ☺️
+                        pauseDialog();
                     }
                 }
                 default -> { // e case 3

@@ -5,9 +5,7 @@
     <constraints>
       <xy x="20" y="20" width="800" height="830"/>
     </constraints>
-    <properties>
-      <background color="-15199195"/>
-    </properties>
+    <properties/>
     <border type="none"/>
     <children>
       <grid id="2b445" layout-manager="GridLayoutManager" row-count="7" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -38,9 +36,9 @@
               <component id="5d363" class="javax.swing.JButton" binding="playerCycleNext">
                 <constraints>
                   <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <minimum-size width="60" height="60"/>
-                    <preferred-size width="60" height="60"/>
-                    <maximum-size width="60" height="60"/>
+                    <minimum-size width="50" height="50"/>
+                    <preferred-size width="50" height="50"/>
+                    <maximum-size width="50" height="50"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -50,9 +48,9 @@
               <component id="c0194" class="javax.swing.JButton" binding="playerCyclePrev">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false">
-                    <minimum-size width="60" height="60"/>
-                    <preferred-size width="60" height="60"/>
-                    <maximum-size width="60" height="60"/>
+                    <minimum-size width="50" height="50"/>
+                    <preferred-size width="50" height="50"/>
+                    <maximum-size width="50" height="50"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -69,7 +67,7 @@
                   <enabled value="false"/>
                   <focusPainted value="false"/>
                   <focusable value="false"/>
-                  <iconTextGap value="5"/>
+                  <iconTextGap value="4"/>
                   <margin top="0" left="0" bottom="0" right="0"/>
                   <opaque value="false"/>
                   <requestFocusEnabled value="false"/>
@@ -89,7 +87,7 @@
                   <enabled value="false"/>
                   <focusPainted value="false"/>
                   <focusable value="false"/>
-                  <iconTextGap value="5"/>
+                  <iconTextGap value="4"/>
                   <margin top="0" left="0" bottom="0" right="0"/>
                   <requestFocusEnabled value="false"/>
                   <rolloverEnabled value="false"/>
@@ -142,9 +140,9 @@
               <component id="8d418" class="javax.swing.JButton" binding="play">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="4" fill="0" indent="0" use-parent-layout="false">
-                    <minimum-size width="-1" height="60"/>
-                    <preferred-size width="-1" height="60"/>
-                    <maximum-size width="-1" height="60"/>
+                    <minimum-size width="-1" height="50"/>
+                    <preferred-size width="-1" height="50"/>
+                    <maximum-size width="-1" height="50"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -155,9 +153,9 @@
               <component id="ae260" class="javax.swing.JButton" binding="quit">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <minimum-size width="-1" height="60"/>
-                    <preferred-size width="-1" height="60"/>
-                    <maximum-size width="-1" height="60"/>
+                    <minimum-size width="-1" height="50"/>
+                    <preferred-size width="-1" height="50"/>
+                    <maximum-size width="-1" height="50"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -167,9 +165,9 @@
               <component id="fdb9a" class="javax.swing.JComboBox" binding="levelSelector">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="4" anchor="4" fill="0" indent="0" use-parent-layout="false">
-                    <minimum-size width="-1" height="60"/>
-                    <preferred-size width="-1" height="60"/>
-                    <maximum-size width="-1" height="60"/>
+                    <minimum-size width="-1" height="50"/>
+                    <preferred-size width="-1" height="50"/>
+                    <maximum-size width="-1" height="50"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -193,9 +191,9 @@
               <component id="800aa" class="javax.swing.JButton" binding="options">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                    <minimum-size width="60" height="60"/>
-                    <preferred-size width="60" height="60"/>
-                    <maximum-size width="60" height="60"/>
+                    <minimum-size width="50" height="50"/>
+                    <preferred-size width="50" height="50"/>
+                    <maximum-size width="50" height="50"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -272,9 +270,9 @@
                   <component id="a43d8" class="javax.swing.JButton" binding="unlock">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false">
-                        <minimum-size width="-1" height="60"/>
-                        <preferred-size width="-1" height="60"/>
-                        <maximum-size width="-1" height="60"/>
+                        <minimum-size width="-1" height="50"/>
+                        <preferred-size width="-1" height="50"/>
+                        <maximum-size width="-1" height="50"/>
                       </grid>
                     </constraints>
                     <properties>
@@ -342,8 +340,7 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <horizontalAlignment value="4"/>
-                      <horizontalTextPosition value="2"/>
+                      <horizontalTextPosition value="10"/>
                       <iconTextGap value="12"/>
                       <text value="Salute" noi18n="true"/>
                     </properties>
@@ -353,8 +350,7 @@
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <horizontalAlignment value="4"/>
-                      <horizontalTextPosition value="2"/>
+                      <horizontalTextPosition value="10"/>
                       <iconTextGap value="12"/>
                       <text value="Danno" noi18n="true"/>
                     </properties>
@@ -364,8 +360,8 @@
                       <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <horizontalTextPosition value="2"/>
-                      <iconTextGap value="12"/>
+                      <horizontalTextPosition value="10"/>
+                      <iconTextGap value="16"/>
                       <text value="Velocità" noi18n="true"/>
                     </properties>
                   </component>
@@ -382,8 +378,7 @@
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <horizontalAlignment value="4"/>
-                      <horizontalTextPosition value="2"/>
+                      <horizontalTextPosition value="10"/>
                       <iconTextGap value="12"/>
                       <text value="Scudo" noi18n="true"/>
                     </properties>

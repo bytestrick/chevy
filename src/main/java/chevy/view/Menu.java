@@ -23,11 +23,13 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -43,6 +45,7 @@ import java.awt.image.BufferedImage;
 import java.util.stream.Stream;
 
 public class Menu {
+    public static final ImageIcon ex = Load.icon("x", 48, 48);
     // @formatter:off
     private static final String[][] quotes = new String[][]{
             {"Ho giurato di proteggere il regno, difendere i deboli e… sì, anche\n" +
@@ -68,7 +71,7 @@ public class Menu {
             Load.icon("shield", 36, 36), Load.icon("sword", 32, 32), Load.icon("boot", 28, 28)};
     private static final ImageIcon[] statsIconsGreyScale = new ImageIcon[]{Load.icon(
             "heart_greyscale", 32, 32), Load.icon("shield_greyscale", 36, 36), Load.icon(
-                    "sword_greyscale", 32, 32), Load.icon("boot_greyscale", 28, 28)};
+            "sword_greyscale", 32, 32), Load.icon("boot_greyscale", 28, 28)};
     private static final String[] statsTooltipPrefixes = new String[]{"Salute: ", "Scudo: ",
             "Danno: ", "Velocità: "};
     public static Player.Type playerType = Player.Type.valueOf(Data.get("state.menu.playerType"));
@@ -81,8 +84,6 @@ public class Menu {
     private final Window window;
     public JPanel root;
     private JComboBox<String> levelSelector;
-    private final LevelSelectorRenderer levelSelectorRenderer =
-            new LevelSelectorRenderer(levelSelector);
     private JButton play;
     private JButton playerCycleNext;
     private JButton playerCyclePrev;
@@ -116,33 +117,38 @@ public class Menu {
 
     public Menu(final Window window) {
         this.window = window;
-        ChamberManager.menu = this;
-        initListeners();
+        attachListeners();
         initializeComponents();
-        loadCharacterSprites();
+        loadCharactersSprites();
         setPlayerType(playerType);
     }
 
-    public void setLevel() {levelSelector.setSelectedIndex(level);}
-
-    public void incrementLevel() {
+    public static void incrementLevel() {
         ++level;
         Data.set("progress.lastUnlockedLevel", level);
         LevelSelectorRenderer.setEnabledInterval(0, level);
     }
 
     /**
-     * Procedura che fa parte del costruttore: costruzione dell'interfaccia
+     * Impostare l'elemento attivo per JComboBox richiede che il componente sia visibile
+     */
+    public void updateLevel() {levelSelector.setSelectedIndex(level);}
+
+    /**
+     * Procedura del costruttore: costruzione dell'interfaccia
      */
     private void initializeComponents() {
+        root.setBackground(new Color(33, 6, 47));
         coins.setText(Data.get("progress.coins").toString());
         keys.setText(Data.get("progress.keys").toString());
+        levelSelector.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        levelSelector.setRenderer(new LevelSelectorRenderer());
+        LevelSelectorRenderer.setEnabledInterval(0, Data.get("progress.lastUnlockedLevel"));
         for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS + 1; ++i) {
             levelSelector.addItem("Livello " + i);
         }
-        LevelSelectorRenderer.setEnabledInterval(0, Data.get("progress.lastUnlockedLevel"));
-        final Font normalFont = Window.handjet.deriveFont(40f);
-        Stream.of(quit, play, keys, cost, coins, unlock).forEach(c -> c.setFont(normalFont));
+        final Font menuFont = UIManager.getFont("defaultFont").deriveFont(35f);
+        Stream.of(quit, play, keys, cost, coins, unlock).forEach(c -> c.setFont(menuFont));
         playerCycleNext.setIcon(Load.icon("right-chevron", 32, 32));
         playerCyclePrev.setIcon(Load.icon("left-chevron", 32, 32));
         play.setIcon(Load.icon("Play", 32, 32));
@@ -151,15 +157,15 @@ public class Menu {
         coins.setIcon(Load.icon("Coin2", 32, 32));
         keys.setIcon(Load.icon("Key", 32, 32));
         cost.setIcon(coin);
-        characterName.setFont(Window.handjet.deriveFont(50f));
+        characterName.setFont(UIManager.getFont("defaultFont").deriveFont(Font.BOLD, 50f));
         unlock.setIcon(Load.icon("Unlocked", 30, 30));
     }
 
     /**
-     * Procedura che fa parte del costruttore: inizializza i listener dei componenti
+     * Procedura del costruttore: inizializza i listener dei componenti
      * dell'interfaccia
      */
-    private void initListeners() {
+    private void attachListeners() {
         options.addActionListener(e -> {
             window.setScene(Window.Scene.OPTIONS);
             stopCharacterAnimation();
@@ -181,25 +187,28 @@ public class Menu {
 
     private void changeLevelAction() {
         final int i = levelSelector.getSelectedIndex();
-        if (levelSelectorRenderer.isInsideInterval(i)) {
+        if (LevelSelectorRenderer.isInsideInterval(i)) {
             level = i;
             Data.set("state.menu.level", level);
+            Log.info("Cambiato livello: " + level);
         } else {
+            levelSelector.hidePopup();
             levelSelector.setSelectedIndex(level);
-            levelSelector.showPopup();
+            JOptionPane.showMessageDialog(window, "Il livello " + (i + 1) + " è bloccato.", null,
+                    JOptionPane.WARNING_MESSAGE, ex);
+            SwingUtilities.invokeLater(levelSelector::showPopup);
         }
-        Log.info("Cambiato livello: " + level);
     }
 
     private void unlockPlayerAction() {
         int actualCost = playerType == Player.Type.ARCHER ? archerCost : ninjaCost;
         if (JOptionPane.showOptionDialog(window,
-                "Sbloccare " + playerType + " per " + actualCost + " monete?", "Conferma",
+                "Sbloccare " + playerType + " per " + actualCost + " monete?", null,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Load.icon("Unlocked", 48
                         , 48), new String[]{"Si", "No"}, "No") == 0) {
             if (actualCost > (int) Data.get("progress.coins")) {
                 JOptionPane.showMessageDialog(window, "Monete insufficienti", null,
-                        JOptionPane.PLAIN_MESSAGE, Load.icon("x", 48, 48));
+                        JOptionPane.WARNING_MESSAGE, ex);
                 return;
             }
             currentPlayerLocked = false;
@@ -308,7 +317,7 @@ public class Menu {
     /**
      * Carica le sprite usate per mostrare il personaggio
      */
-    private void loadCharacterSprites() {
+    private void loadCharactersSprites() {
         for (Player.Type t : Player.Type.values()) {
             String substring = "";
             int nSprites = 2;
@@ -375,16 +384,18 @@ public class Menu {
      * Chiamato dal form dell'interfaccia per la creazione personalizzata dei componenti
      */
     private void createUIComponents() {
+        final Color purple = UIManager.getColor("Chevy.color.purpleDark");
+        final Color pink = UIManager.getColor("Chevy.color.pinkDark");
         root = new JPanel() {
+            private static final float[] fractions = new float[]{0f, .6f, 1f};
+            private final Color[] colors = new Color[]{purple, purple, pink};
+
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-                Color bg = getBackground();
-                g2d.setPaint(new LinearGradientPaint(0, 0, 0, getHeight(), new float[]{.1f, .8f,
-                        1}, new Color[]{bg, new Color(70, 0, 94), new Color(122, 9, 161)}));
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setPaint(new LinearGradientPaint(0, 0, getWidth() * .1f, getHeight(), fractions, colors));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
@@ -410,16 +421,16 @@ public class Menu {
     }
 
     /**
-     * Rende possibile avere elementi non selezionabili in JComboBox.
-     * <a href="https://stackoverflow.com/a/23724201">StackOverflow</a>.
-     * Funziona in combinazione con l'ActionListener di Menu.levelSelector
+     * Rende possibile avere elementi non selezionabili in JComboBox (
+     * <a href="https://stackoverflow.com/a/23724201">StackOverflow</a>).
+     * <p>
+     * Funziona in combinazione con l'{@link java.awt.event.ActionListener} di
+     * {@link #levelSelector}
      */
     private static class LevelSelectorRenderer extends BasicComboBoxRenderer {
         private static final ListSelectionModel model = new DefaultListSelectionModel();
         private static int enabledFirst = 0;
         private static int enabledLast = 0;
-
-        private LevelSelectorRenderer(JComboBox<?> comboBox) {comboBox.setRenderer(this);}
 
         /**
          * Imposta l'intervallo di opzioni selezionabile in JComboBox
@@ -438,7 +449,7 @@ public class Menu {
          * @return true se l'indice è compreso nell'intervallo degli elementi attivi, false
          * altrimenti
          */
-        private boolean isInsideInterval(final int x) {return x >= enabledFirst && x <= enabledLast;}
+        private static boolean isInsideInterval(final int x) {return x >= enabledFirst && x <= enabledLast;}
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index,
@@ -451,7 +462,7 @@ public class Menu {
                 } else {
                     c.setBackground(super.getBackground());
                 }
-                c.setForeground(new Color(86, 86, 86));
+                c.setForeground(UIManager.getColor("PopupMenu.foreground").darker());
             } else {
                 c.setBackground(super.getBackground());
                 c.setForeground(super.getForeground());

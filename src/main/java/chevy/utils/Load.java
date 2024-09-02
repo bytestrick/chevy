@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public class Load {
     /**
-     * @param path il percorso, tipo "/sprites/img.png"
+     * @param path il percorso, come "/sprites/img.png"
      * @return l'immagine caricata dalle risorse
      */
     public static BufferedImage image(final String path) {
@@ -62,8 +62,8 @@ public class Load {
     }
 
     /**
-     * @param prefix è il nome della clip senza l'estensione, esempio: coin.wav -> coin
-     * @return la Clip caricata, aperta e pronta all'uso
+     * @param prefix è il nome della clip senza l'estensione, esempio: {@code coin.wav -> coin}
+     * @return la {@link Clip} caricata, aperta e pronta all'uso
      */
     public static Clip clip(final String prefix) {
         try {
@@ -76,8 +76,7 @@ public class Load {
             Log.error(Load.class + ": caricamento traccia fallito: " + prefix + " (" + e.getMessage() + ")");
             System.exit(1);
         } catch (LineUnavailableException e) {
-            Log.warn("Si è tentato di caricare una clip il cui formato non è supportato dalla configurazione audio\n " +
-                    "   del sistema. Questo problema è risolvibile modificando la configurazione audio del sistema.");
+            Log.warn(e.getMessage());
         }
         return null;
     }

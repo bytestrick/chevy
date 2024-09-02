@@ -11,6 +11,12 @@ Lifecycle phases:
 
 Le fasi si possono concatenare, esempio: `mvn clean compile` rimuove `target/` e ricompila il progetto da capo.
 
+### Colori
+
+Il menù principale usa una palette **monocromatica** basata sul viola (`HSB(280, 80, 60)`). Elementi dell'interfaccia che si intende fare risaltare usano i **colori vicini**, blu e rosa.
+
+![Palette image](src/main/resources/style/palette.png)
+
 ### Cose
 
 - I nemici:
