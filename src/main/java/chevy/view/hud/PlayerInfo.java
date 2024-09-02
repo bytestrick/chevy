@@ -77,5 +77,7 @@ public class PlayerInfo extends JPanel {
     public PowerUpEquippedView getPowerUpEquippedView() {
         return powerUpEquippedView;
     }
+
+    public PlayerFrame getPlayerFrame() { return playerFrame; }
 }
 
