@@ -42,7 +42,6 @@ public class PowerUpEquippedView extends JComponent {
             case LONG_SWORD -> path += "longSword";
             case SLIME_PIECE -> path += "slimePiece";
             case STONE_BOOTS -> path += "stoneBoots";
-            case PIECE_OF_BONE -> path += "pieceOfBone";
             case VAMPIRE_FANGS -> path += "vampireFangs";
         }
 

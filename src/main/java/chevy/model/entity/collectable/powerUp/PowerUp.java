@@ -40,7 +40,6 @@ public abstract class PowerUp extends Collectable {
             case AGILITY -> new Agility(position);
             case HEDGEHOG_SPINES -> new HedgehogSpines(position);
             case SLIME_PIECE -> new SlimePiece(position);
-            case PIECE_OF_BONE -> new PieceOfBone(position);
             case GOLD_ARROW -> new GoldArrow(position);
             case HEALING_FLOOD -> new HealingFlood(position);
             case KEY_S_KEEPER -> new KeySKeeper(position);
@@ -105,8 +104,7 @@ public abstract class PowerUp extends Collectable {
 
     public enum Type implements CommonEntityType {
         HOLY_SHIELD, VAMPIRE_FANGS, ANGEL_RING, LONG_SWORD, HOBNAIL_BOOTS, COIN_OF_GREED, HOT_HEART, COLD_HEART,
-        STONE_BOOTS, BROKEN_ARROWS, AGILITY, HEDGEHOG_SPINES, SLIME_PIECE, PIECE_OF_BONE, GOLD_ARROW, HEALING_FLOOD,
-        KEY_S_KEEPER;
+        STONE_BOOTS, BROKEN_ARROWS, AGILITY, HEDGEHOG_SPINES, SLIME_PIECE, GOLD_ARROW, HEALING_FLOOD, KEY_S_KEEPER;
 
         public static Type getRandom() {
             Type[] types = values();
