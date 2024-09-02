@@ -29,8 +29,8 @@ import java.util.Objects;
 public class ChamberManager {
     public static final int NUMBER_OF_CHAMBERS = 6;
     private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
-    public static Menu menu;
-    private static Integer currentChamberIndex = 0; // Indice della stanza corrente nel gioco.
+    /** Indice della stanza corrente nel gioco. */
+    private static Integer currentChamberIndex = 0;
 
     /**
      * Carica un layer che comporrà la stanza.
@@ -108,7 +108,7 @@ public class ChamberManager {
      * Sblocca e passa alla stanza successiva
      */
     public static void nextChamber() {
-        menu.incrementLevel();
+        Menu.incrementLevel();
         enterChamber(currentChamberIndex + 1);
     }
 
