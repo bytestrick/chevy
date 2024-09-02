@@ -21,18 +21,30 @@ public class ChestView extends AnimatedEntityView {
 
     private void initAnimation() {
         float idleDuration = 0f;
-        createAnimation(Chest.State.IDLE_LOCKED, 0, 1, idleDuration, CHEST_RESOURCES + "idle/locked", ".png");
+        Vector2<Integer> offset = new Vector2<>(0, -4);
+        createAnimation(Chest.State.IDLE_LOCKED, 0, 1, idleDuration, offset, 1, CHEST_RESOURCES + "idle/locked", ".png");
 
-        createAnimation(Chest.State.IDLE_UNLOCKED, 0, 1, idleDuration, CHEST_RESOURCES + "idle/unlocked", ".png");
+        createAnimation(Chest.State.IDLE_UNLOCKED, 0, 1, idleDuration, offset, 1, CHEST_RESOURCES + "idle/unlocked", ".png");
 
-        createAnimation(Chest.State.CLOSE, 0, 5, chest.getState(Chest.State.CLOSE).getDuration(), CHEST_RESOURCES +
+        createAnimation(Chest.State.CLOSE, 0, 5, chest.getState(Chest.State.CLOSE).getDuration(), offset, 1, CHEST_RESOURCES +
                 "close", ".png");
 
-        createAnimation(Chest.State.OPEN, 0, 6, chest.getState(Chest.State.OPEN).getDuration(), CHEST_RESOURCES +
+        createAnimation(Chest.State.OPEN, 0, 6, chest.getState(Chest.State.OPEN).getDuration(), offset, 1,  CHEST_RESOURCES +
                 "open", ".png");
 
-        createAnimation(Chest.State.UNLOCK, 0, 3, chest.getState(Chest.State.UNLOCK).getDuration(),
+        createAnimation(Chest.State.UNLOCK, 0, 3, chest.getState(Chest.State.UNLOCK).getDuration(), offset, 1,
                 CHEST_RESOURCES + "unlock", ".png");
+    }
+
+    @Override
+    public Vector2<Integer> getOffset() {
+        CommonState currentState = chest.getCurrentState();
+        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, 0);
+
+        if (currentAnimatedSprite != null)
+            return currentAnimatedSprite.getOffset();
+
+        return super.getOffset();
     }
 
     @Override
