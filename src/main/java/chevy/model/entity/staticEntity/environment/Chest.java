@@ -20,7 +20,7 @@ public class Chest extends Environment {
     private final GlobalState idleLocked = new GlobalState(State.IDLE_LOCKED);
     private final GlobalState idleUnlocked = new GlobalState(State.IDLE_UNLOCKED);
     private final GlobalState open = new GlobalState(State.OPEN, 0.8f);
-    private final GlobalState unlock = new GlobalState(State.UNLOCK, 0.5f);
+    private final GlobalState unlock = new GlobalState(State.UNLOCK, 0.3f);
     private final GlobalState close = new GlobalState(State.CLOSE, 0.8f);
     private final int maxDrop = 6;
     private final int minDrop = 3;
