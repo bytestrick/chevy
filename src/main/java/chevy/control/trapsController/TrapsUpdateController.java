@@ -1,6 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -52,7 +52,7 @@ public class TrapsUpdateController implements Update {
         addTraps();
 
         for (Trap trap : traps) {
-            trapsController.handleInteraction(InteractionType.UPDATE, trap, null);
+            trapsController.handleInteraction(Interaction.UPDATE, trap, null);
         }
     }
 

@@ -1,6 +1,6 @@
 package chevy.control.projectileController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
@@ -41,7 +41,7 @@ public class ProjectileController {
      * @param subject     l'entità che avvia l'interazione
      * @param object      l'entità che subisce l'interazione
      */
-    public void handleInteraction(InteractionType interaction, DynamicEntity subject, Projectile object) {
+    public void handleInteraction(Interaction interaction, DynamicEntity subject, Projectile object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, object);
             case UPDATE -> updateProjectile((Projectile) subject);

@@ -46,7 +46,5 @@ public class LayerManager {
         layer.add(entity);
     }
 
-    public synchronized List<Layer> getDrawOrder() {
-        return drawOrder;
-    }
+    public synchronized List<Layer> getDrawOrder() { return drawOrder; }
 }

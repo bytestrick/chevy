@@ -1,6 +1,6 @@
 package chevy.control.projectileController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
@@ -37,7 +37,7 @@ public class SlimeShotController {
         if (projectile.changeState(SlimeShot.State.END)) {
             chamber.findAndRemoveEntity(projectile);
             projectile.setCollision(true);
-            playerController.handleInteraction(InteractionType.PROJECTILE, projectile);
+            playerController.handleInteraction(Interaction.PROJECTILE, projectile);
         }
     }
 
@@ -52,9 +52,9 @@ public class SlimeShotController {
 
             switch (nextEntity.getGenericType()) {
                 case LiveEntity.Type.PLAYER ->
-                        playerController.handleInteraction(InteractionType.PROJECTILE, projectile);
+                        playerController.handleInteraction(Interaction.PROJECTILE, projectile);
                 case LiveEntity.Type.ENEMY ->
-                        enemyController.handleInteraction(InteractionType.PROJECTILE, projectile, (Enemy) nextEntity);
+                        enemyController.handleInteraction(Interaction.PROJECTILE, projectile, (Enemy) nextEntity);
                 default -> { }
             }
 

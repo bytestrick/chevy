@@ -31,7 +31,7 @@ public class ChamberManager {
     public static final int NUMBER_OF_CHAMBERS = 6;
     private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
     /** Indice della stanza corrente nel gioco. */
-    private static Integer currentChamberIndex = 0;
+    private static int currentChamberIndex = 0;
 
     /**
      * Carica un layer che comporrà la stanza.
@@ -133,8 +133,8 @@ public class ChamberManager {
             ChamberController.refresh();
             // Invalida la view del player corrente
             EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer());
-            GameLoop.getInstance().start();
-            Sound.getInstance().startMusic(); // 🎵
+            GameLoop.start();
+            Sound.startMusic(); // 🎵
         }
     }
 

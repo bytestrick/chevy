@@ -1,6 +1,6 @@
 package chevy.control.environmentController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -55,7 +55,7 @@ public class EnvironmentUpdateController implements Update {
                 it.remove();
                 return;
             }
-            environmentController.handleInteraction(InteractionType.UPDATE, environment, null);
+            environmentController.handleInteraction(Interaction.UPDATE, environment, null);
         }
     }
 

@@ -60,7 +60,6 @@ public class Window extends JFrame {
         setScene(Scene.MENU);
         setVisible(true);
         requestFocus();
-        Sound.getInstance(); // pre-inizializza
         SwingUtilities.invokeLater(() -> { // esecuzione asincrona
             ChamberView.topBarHeight = getInsets().top;
             setResizable(resizable);
@@ -108,14 +107,10 @@ public class Window extends JFrame {
     /**
      * Unico punto di uscita (corretto) dall'app.
      * Il {@link WindowController} collega l'evento di chiusura del {@code JFrame} a questo
-     * metodo, perciò
-     * premere la 'X' della cornice della finestra passa il controllo qui.
-     *
-     * @return {@code true} quando l'utente ha scelto di non uscire dall'app, altrimenti non ritorna
-     * affatto.
+     * metodo, perciò premere la 'X' della cornice della finestra passa il controllo qui.
      */
-    public boolean quitAction() {
-        Sound.getInstance().play(Sound.Effect.STOP);
+    public void quitAction() {
+        Sound.play(Sound.Effect.STOP);
         if (JOptionPane.showOptionDialog(this, "Uscire da Chevy?", null,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, new String[]{"Si",
                         "No"}, "No") == 0) {
@@ -124,7 +119,6 @@ public class Window extends JFrame {
             Log.info("Chevy: TERMINAZIONE");
             System.exit(0);
         }
-        return true;
     }
 
     /**

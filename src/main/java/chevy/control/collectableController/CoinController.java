@@ -16,7 +16,7 @@ public class CoinController {
 
     public void playerInInteraction(Coin coin) {
         if (coin.changeState(Coin.State.COLLECTED)) {
-            Sound.getInstance().play(Sound.Effect.COIN);
+            Sound.play(Sound.Effect.COIN);
             coin.collect();
             hudController.addCoin(coin.getValue());
             chamber.findAndRemoveEntity(coin);

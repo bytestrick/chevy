@@ -49,12 +49,13 @@ public class Chamber {
     private final List<Collectable> collectables = new LinkedList<>();
     /** Elementi dinamici dell'ambiente (casse, scale) */
     private final List<Environment> environments = new LinkedList<>();
+    /** Ordine delle in cui le entità vanno disegnate */
+    private final LayerManager drawOrderChamber = new LayerManager();
     /**
      * Una struttura dati tridimensionale che rappresenta la griglia di gioco.
      * Ogni cella della griglia può contenere una lista di entità.
      */
     private List<List<List<Entity>>> chamber;
-    private LayerManager drawOrderChamber; // Ordine delle in cui le entità vanno disegnate
     /** Righe e colonne della griglia di gioco */
     private Dimension size;
     private boolean init = false; // Indica se il mondo è stato inizializzato
@@ -77,7 +78,6 @@ public class Chamber {
             chamber.add(row);
         }
 
-        drawOrderChamber = new LayerManager();
         init = true;
     }
 

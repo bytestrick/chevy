@@ -38,8 +38,8 @@ public class WindowController implements WindowListener, KeyListener, ComponentL
     public void windowIconified(WindowEvent windowEvent) {
         switch (window.getScene()) {
             case PLAYING -> {
-                GameLoop.getInstance().stop();
-                Sound.getInstance().pauseMusic();
+                GameLoop.stop();
+                Sound.pauseMusic();
             }
             case MENU, OPTIONS -> Sound.stopMenuMusic();
         }
