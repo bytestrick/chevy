@@ -41,6 +41,7 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.stream.Stream;
 
@@ -48,18 +49,18 @@ public class Menu {
     public static final ImageIcon ex = Load.icon("x", 48, 48);
     // @formatter:off
     private static final String[][] quotes = new String[][]{
-            {"Ho giurato di proteggere il regno, difendere i deboli e… sì, anche\n" +
-                "cercare di capire come si monta questa maledetta armatura!",
-             "Il mio cavallo è coraggioso, la mia spada è affilata, e io… beh,\n" +
-                "io mi sono già perso due volte cercando di arrivare qui."},
-            {"Precisione millimetrica, occhio di falco, respiro controllato...\n" +
-                "ma se c’è una zanzara che mi gira intorno, non garantisco nulla.",
-             "Posso colpire una moneta a 100 passi, ma non\n" +
-                "chiedermi di trovare le chiavi quando ho fretta."},
-            {"Muovermi nell’ombra, sparire nel nulla, essere silenzioso\n" +
-                "come il vento... e poi inciampo su una foglia secca.",
-             "Mi alleno per anni a diventare un maestro del silenzio...\n" +
-                "e poi la mia pancia decide di brontolare nel momento più critico."}};
+            {"“Ho giurato di proteggere il regno, difendere i deboli e… sì, anche\n" +
+                "cercare di capire come si monta questa maledetta armatura!”",
+             "“Il mio cavallo è coraggioso, la mia spada è affilata, e io… beh,\n" +
+                "io mi sono già perso due volte cercando di arrivare qui.”"},
+            {"“Precisione millimetrica, occhio di falco, respiro controllato...\n" +
+                "ma se c’è una zanzara che mi gira intorno, non garantisco nulla.”",
+             "“Posso colpire una moneta a 100 passi, ma non\n" +
+                "chiedermi di trovare le chiavi quando ho fretta.”"},
+            {"“Muovermi nell’ombra, sparire nel nulla, essere silenzioso\n" +
+                "come il vento... e poi inciampo su una foglia secca.”",
+             "“Mi alleno per anni a diventare un maestro del silenzio...\n" +
+                "e poi la mia pancia decide di brontolare nel momento più critico.”"}};
     // @formatter:on
     private static final Dimension spriteSize = new Dimension(200, 200);
     private static final Color[] barsColors = new Color[]{new Color(153, 255, 153), new Color(189
@@ -167,16 +168,47 @@ public class Menu {
      */
     private void attachListeners() {
         options.addActionListener(e -> {
+            Sound.getInstance().play(Sound.Effect.BUTTON);
             window.setScene(Window.Scene.OPTIONS);
             stopCharacterAnimation();
         });
+        play.addActionListener(actionEvent -> {
+            Sound.getInstance().play(Sound.Effect.PLAY_BUTTON);
+            playAction();
+        });
+        quit.addActionListener(e -> {
+            Sound.getInstance().play(Sound.Effect.BUTTON);
+            window.quitAction();
+        });
+        playerCycleNext.addActionListener(e -> {
+            Sound.getInstance().play(Sound.Effect.BUTTON);
+            playerCycleNextAction();
+        });
+        playerCyclePrev.addActionListener(e -> {
+            Sound.getInstance().play(Sound.Effect.BUTTON);
+            playerCyclePrevAction();
+        });
+        levelSelector.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {}
 
-        play.addActionListener(actionEvent -> playAction());
-        quit.addActionListener(e -> window.quitAction());
-        playerCycleNext.addActionListener(e -> playerCycleNextAction());
-        playerCyclePrev.addActionListener(e -> playerCyclePrevAction());
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {Sound.getInstance().play(Sound.Effect.BUTTON);}
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {}
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {}
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {}
+        });
         levelSelector.addActionListener(actionEvent -> changeLevelAction());
-        unlock.addActionListener(e -> unlockPlayerAction());
+        unlock.addActionListener(e -> {
+            Sound.getInstance().play(Sound.Effect.BUTTON);
+            unlockPlayerAction();
+        });
 
         Stream<JComponent> components = Stream.of(playerCycleNext, playerCyclePrev,
                 characterAnimation, coins, keys, options, healthBar, shieldBar, damageBar,
@@ -194,6 +226,7 @@ public class Menu {
         } else {
             levelSelector.hidePopup();
             levelSelector.setSelectedIndex(level);
+            Sound.getInstance().play(Sound.Effect.STOP);
             JOptionPane.showMessageDialog(window, "Il livello " + (i + 1) + " è bloccato.", null,
                     JOptionPane.WARNING_MESSAGE, ex);
             SwingUtilities.invokeLater(levelSelector::showPopup);
@@ -207,10 +240,12 @@ public class Menu {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Load.icon("Unlocked", 48
                         , 48), new String[]{"Si", "No"}, "No") == 0) {
             if (actualCost > (int) Data.get("progress.coins")) {
+                Sound.getInstance().play(Sound.Effect.STOP);
                 JOptionPane.showMessageDialog(window, "Monete insufficienti", null,
                         JOptionPane.WARNING_MESSAGE, ex);
                 return;
             }
+            Sound.getInstance().play(Sound.Effect.UNLOCK_CHARACTER);
             currentPlayerLocked = false;
             Data.set("progress.player." + playerType.toString().toLowerCase() + ".locked", false);
             int coinsLeft = (int) Data.get("progress.coins") - actualCost;
@@ -394,8 +429,10 @@ public class Menu {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2d.setPaint(new LinearGradientPaint(0, 0, getWidth() * .1f, getHeight(), fractions, colors));
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setPaint(new LinearGradientPaint(0, 0, getWidth() * .1f, getHeight(),
+                        fractions, colors));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };

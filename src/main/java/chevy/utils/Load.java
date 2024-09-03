@@ -36,8 +36,8 @@ public class Load {
     }
 
     /**
-     * @param name il nome dell'icona senza estensione
-     * @param width larghezza dell'icona desiderata
+     * @param name   il nome dell'icona senza estensione
+     * @param width  larghezza dell'icona desiderata
      * @param height altezza dell'icona desiderata
      * @return l'icona caricata e scalata.
      */
@@ -53,7 +53,9 @@ public class Load {
     public static Font font(final String name) {
         Font font = null;
         try {
-            InputStream is = Objects.requireNonNull(Load.class.getResourceAsStream("/fonts/" + name + ".ttf"));
+            InputStream is =
+                    Objects.requireNonNull(Load.class.getResourceAsStream("/fonts/" + name +
+                            ".ttf"));
             font = Font.createFont(Font.TRUETYPE_FONT, is);
         } catch (IOException | FontFormatException | NullPointerException e) {
             Log.warn("Font '" + name + "' non caricato: (" + e.getMessage() + ")");
@@ -63,20 +65,29 @@ public class Load {
 
     /**
      * @param prefix è il nome della clip senza l'estensione, esempio: {@code coin.wav -> coin}
-     * @return la {@link Clip} caricata, aperta e pronta all'uso
+     * @return la {@link javax.sound.sampled.Clip} caricata, aperta e pronta all'uso
      */
     public static Clip clip(final String prefix) {
+        Clip clip;
+        try {
+            clip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
         try {
             URL path = Load.class.getResource("/sounds/" + prefix + ".wav");
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(Objects.requireNonNull(path));
-            Clip clip = AudioSystem.getClip();
+            if (path == null) {
+                throw new NullPointerException();
+            }
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(path);
             clip.open(audioIn);
             return clip;
-        } catch (NullPointerException | IOException | UnsupportedAudioFileException | SecurityException e) {
-            Log.error(Load.class + ": caricamento traccia fallito: " + prefix + " (" + e.getMessage() + ")");
-            System.exit(1);
+        } catch (NullPointerException | IOException | UnsupportedAudioFileException |
+                 SecurityException e) {
+            Log.error(prefix + ": " + e.getMessage());
         } catch (LineUnavailableException e) {
-            Log.warn(e.getMessage());
+            Log.error("Apertura clip fallita: " + e.getMessage());
+            System.exit(13);
         }
         return null;
     }
