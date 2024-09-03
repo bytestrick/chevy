@@ -6,7 +6,9 @@ import chevy.utils.Utils;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class Sound {
@@ -49,19 +51,27 @@ public class Sound {
      * @param percentage valore decimale compreso tra 0 e 1, rappresenta il volume
      */
     private static void applyGain(Clip clip, final float percentage) {
-        assert clip != null;
-        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        final float beg = Math.abs(gainControl.getMinimum()), end = Math.abs(gainControl.getMaximum());
-        gainControl.setValue((beg + end) * percentage - beg);
+        if (clip != null) {
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            final float beg = Math.abs(gainControl.getMinimum()), end = Math.abs(gainControl.getMaximum());
+            gainControl.setValue((beg + end) * percentage - beg);
+        }
     }
+
 
     public static void startMenuMusic() {
-        currentPlayingLoop = loops[Utils.random.nextInt(loops.length)];
-        applyGain(currentPlayingLoop, musicGainPercent);
-        currentPlayingLoop.loop(Clip.LOOP_CONTINUOUSLY);
+        if (Arrays.stream(loops).allMatch(Objects::nonNull)) {
+            currentPlayingLoop = loops[Utils.random.nextInt(loops.length)];
+            applyGain(currentPlayingLoop, musicGainPercent);
+            currentPlayingLoop.loop(Clip.LOOP_CONTINUOUSLY);
+        }
     }
 
-    public static void stopMenuMusic() { currentPlayingLoop.stop(); }
+    public static void stopMenuMusic() {
+        if (currentPlayingLoop != null) {
+            currentPlayingLoop.stop();
+        }
+    }
 
     /**
      * Riproduce un effetto
@@ -71,15 +81,17 @@ public class Sound {
      */
     public void play(Effect effect) {
         Clip clip = effects[effect.ordinal()];
-        if (clip.isActive() || clip.isRunning()) {
-            clip.stop();
-            clip.flush();
-            clip.drain();
+        if (clip != null) {
+            if (clip.isActive() || clip.isRunning()) {
+                clip.stop();
+                clip.flush();
+                clip.drain();
+            }
+            if (clip.getMicrosecondPosition() > 0) {
+                clip.setMicrosecondPosition(0);
+            }
+            clip.start();
         }
-        if (clip.getMicrosecondPosition() > 0) {
-            clip.setMicrosecondPosition(0);
-        }
-        clip.start();
     }
 
     /**
@@ -122,41 +134,43 @@ public class Sound {
      * partire la prossima.
      */
     public void startMusic() {
-        stopMusic();
-        musicRunning = true;
-        Thread.ofPlatform().start(() -> {
-            Log.info("Thread per la musica avviato");
-            while (musicRunning) {
-                // Scegli la canzone successiva escludendo la precedente.
-                final Clip finalPreviousSong = previousSong;
-                final List<Clip> choices = Stream.of(songs).filter(clip -> !clip.equals(finalPreviousSong)).toList();
-                final Clip song = choices.get(Utils.random.nextInt(choices.size()));
-                song.setFramePosition(0);
-                previousSong = song;
-                final long len = song.getMicrosecondLength();
-                synchronized (musicMutex) { // Acquisisci il monitor di musicMutex
-                    while (song.getMicrosecondPosition() < len) {
-                        if (musicRunning) {
-                            try {
-                                if (musicPaused) {
-                                    song.stop();
-                                    musicMutex.wait(); // Aspetta una chiamata di resumeMusic()
-                                } else {
-                                    song.start();
-                                    musicMutex.wait((len - song.getMicrosecondPosition()) / 1000);
+        if (Arrays.stream(songs).allMatch(Objects::nonNull)) {
+            stopMusic();
+            musicRunning = true;
+            Thread.ofPlatform().start(() -> {
+                Log.info("Thread per la musica avviato");
+                while (musicRunning) {
+                    // Scegli la canzone successiva escludendo la precedente.
+                    final Clip finalPreviousSong = previousSong;
+                    final List<Clip> choices = Stream.of(songs).filter(clip -> !clip.equals(finalPreviousSong)).toList();
+                    final Clip song = choices.get(Utils.random.nextInt(choices.size()));
+                    song.setFramePosition(0);
+                    previousSong = song;
+                    final long len = song.getMicrosecondLength();
+                    synchronized (musicMutex) { // Acquisisci il monitor di musicMutex
+                        while (song.getMicrosecondPosition() < len) {
+                            if (musicRunning) {
+                                try {
+                                    if (musicPaused) {
+                                        song.stop();
+                                        musicMutex.wait(); // Aspetta una chiamata di resumeMusic()
+                                    } else {
+                                        song.start();
+                                        musicMutex.wait((len - song.getMicrosecondPosition()) / 1000);
+                                    }
+                                } catch (InterruptedException e) {
+                                    break;
                                 }
-                            } catch (InterruptedException e) {
-                                break;
+                            } else {
+                                song.stop();
+                                Log.info("Thread per la musica terminato");
+                                return;
                             }
-                        } else {
-                            song.stop();
-                            Log.info("Thread per la musica terminato");
-                            return;
                         }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void stopMusic() {
@@ -196,8 +210,8 @@ public class Sound {
     public enum Effect {
         HUMAN_DEATH, ARROW_SWOOSH, WIN, CLAW_HIT, PUNCH, BLADE_SLASH, SPIKE, ARCHER_FOOTSTEPS, NINJA_FOOTSTEPS,
         KNIGHT_FOOTSTEPS, ZOMBIE_BITE, ZOMBIE_CHOCKING, ZOMBIE_HIT, SKELETON_HIT, SKELETON_DISASSEMBLED,
-        SKELETON_ATTACK, SLIDE, SLIME_HIT, SLIME_DEATH, ROBOTIC_INSECT, BEETLE_ATTACK, BEETLE_DEATH, GHOST_ATTACK,
-        GHOST_HIT, GHOST_DEATH, MUD, COIN, KEY_EQUIPPED, POWER_UP_UI, HEALTH_POTION
+        SKELETON_ATTACK, SLIDE, SLIME_HIT, SLIME_DEATH, ROBOTIC_INSECT, BEETLE_ATTACK, BEETLE_DEATH, WRAITH_ATTACK,
+        WRAITH_HIT, WRAITH_DEATH, MUD, COIN, KEY_EQUIPPED, POWER_UP_UI, HEALTH_POTION, LOST, PLAY_BUTTON, BUTTON, STOP, UNLOCK_CHARACTER
     }
 
     public enum Song {

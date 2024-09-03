@@ -47,7 +47,7 @@ public class WraithController {
         switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, il Wraith viene danneggiato in base al danno del giocatore.
             case Player.State.ATTACK -> {
-                Sound.getInstance().play(Sound.Effect.GHOST_HIT);
+                Sound.getInstance().play(Sound.Effect.WRAITH_HIT);
                 wraith.setDirection(DirectionsModel.positionToDirection(player, wraith));
                 hitWraith(wraith, -1 * player.getDamage());
             }
@@ -71,7 +71,7 @@ public class WraithController {
             }
         } else if (wraith.getCurrentHealth() <= 0 && wraith.checkAndChangeState(Wraith.State.DEAD)) {
             chamber.spawnSlime(wraith); // power up
-            Sound.getInstance().play(Sound.Effect.GHOST_DEATH);
+            Sound.getInstance().play(Sound.Effect.WRAITH_DEATH);
             wraith.kill();
         }
 
@@ -85,7 +85,7 @@ public class WraithController {
             } else if (wraith.canChange(Wraith.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(wraith, direction);
                 if (entity instanceof Player && wraith.changeState(Wraith.State.ATTACK)) {
-                    Sound.getInstance().play(Sound.Effect.GHOST_ATTACK);
+                    Sound.getInstance().play(Sound.Effect.WRAITH_ATTACK);
                     wraith.setCanAttack(true);
                 }
             }
@@ -96,7 +96,7 @@ public class WraithController {
             if (direction != null) {
                 Entity entity = chamber.getNearEntityOnTop(wraith, direction);
                 if (entity instanceof Player) {
-                    Sound.getInstance().play(Sound.Effect.GHOST_ATTACK);
+                    Sound.getInstance().play(Sound.Effect.WRAITH_ATTACK);
                     playerController.handleInteraction(InteractionType.ENEMY, wraith);
                     wraith.setCanAttack(false);
                 }
@@ -133,9 +133,7 @@ public class WraithController {
 
     public void trapInteraction(Trap trap, Wraith wraith) {
         switch (trap.getSpecificType()) {
-            case Trap.Type.SPIKED_FLOOR -> {
-                hitWraith(wraith, -1 * trap.getDamage());
-            }
+            case Trap.Type.SPIKED_FLOOR -> hitWraith(wraith, -1 * trap.getDamage());
             default -> { }
         }
     }

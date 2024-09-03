@@ -6,8 +6,10 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,9 +21,8 @@ import java.util.Objects;
  */
 public class Load {
     /**
-     * Carica un'immagine dalle risorse
-     *
-     * @param path il percorso, tipo "/sprites/img.png".
+     * @param path il percorso, come "/sprites/img.png"
+     * @return l'immagine caricata dalle risorse
      */
     public static BufferedImage image(final String path) {
         BufferedImage image = null;
@@ -35,14 +36,26 @@ public class Load {
     }
 
     /**
-     * Carica un Font
-     *
+     * @param name   il nome dell'icona senza estensione
+     * @param width  larghezza dell'icona desiderata
+     * @param height altezza dell'icona desiderata
+     * @return l'icona caricata e scalata.
+     */
+    public static ImageIcon icon(String name, int width, int height) {
+        Image image = image("/icons/" + name + ".png");
+        return new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
+    }
+
+    /**
      * @param name il percorso della risorsa
+     * @return il font caricato
      */
     public static Font font(final String name) {
         Font font = null;
         try {
-            InputStream is = Objects.requireNonNull(Load.class.getResourceAsStream("/fonts/" + name + ".ttf"));
+            InputStream is =
+                    Objects.requireNonNull(Load.class.getResourceAsStream("/fonts/" + name +
+                            ".ttf"));
             font = Font.createFont(Font.TRUETYPE_FONT, is);
         } catch (IOException | FontFormatException | NullPointerException e) {
             Log.warn("Font '" + name + "' non caricato: (" + e.getMessage() + ")");
@@ -51,25 +64,30 @@ public class Load {
     }
 
     /**
-     * Carica una Clip per la classe Sound
-     *
-     * @param prefix è il nome della clip senza l'estensione, esempio: coin.wav -> coin
-     * @return la Clip caricata, aperta e pronta all'uso.
+     * @param prefix è il nome della clip senza l'estensione, esempio: {@code coin.wav -> coin}
+     * @return la {@link javax.sound.sampled.Clip} caricata, aperta e pronta all'uso
      */
     public static Clip clip(final String prefix) {
+        Clip clip;
+        try {
+            clip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
         try {
             URL path = Load.class.getResource("/sounds/" + prefix + ".wav");
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(Objects.requireNonNull(path));
-            Clip clip = AudioSystem.getClip();
+            if (path == null) {
+                throw new NullPointerException();
+            }
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(path);
             clip.open(audioIn);
             return clip;
-        } catch (NullPointerException | IOException | UnsupportedAudioFileException | SecurityException e) {
-            Log.error(Load.class + ": caricamento traccia fallito: " + prefix + " (" + e.getMessage() + ")");
-            System.exit(1);
+        } catch (NullPointerException | IOException | UnsupportedAudioFileException |
+                 SecurityException e) {
+            Log.error(prefix + ": " + e.getMessage());
         } catch (LineUnavailableException e) {
-            Log.warn("Si è tentato di caricare una clip il cui formato non è supportato dalla configurazione " +
-                    "audio\ndel sistema. Questo problema è risolvibile modificando la configurazione audio del " +
-                    "sistema.");
+            Log.error("Apertura clip fallita: " + e.getMessage());
+            System.exit(13);
         }
         return null;
     }
