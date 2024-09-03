@@ -28,14 +28,14 @@ public class IcyFloorController {
      */
     public void playerInInteraction(Player player, IcyFloor icyFloor) {
         if (canChangeInGlide(player)) {
-            Sound.getInstance().play(Sound.Effect.SLIDE);
+            Sound.play(Sound.Effect.SLIDE);
             player.changeState(Player.State.GLIDE);
         }
     }
 
     public void playerOutInteraction(Player player, IcyFloor icyFloor) {
         if (canChangeInGlide(player)) {
-            Sound.getInstance().play(Sound.Effect.SLIDE);
+            Sound.play(Sound.Effect.SLIDE);
             player.changeState(Player.State.GLIDE);
         }
     }

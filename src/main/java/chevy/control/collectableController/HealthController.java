@@ -18,7 +18,7 @@ public class HealthController {
     public void playerInInteraction(Player player, Health health) {
         if (health.changeState(Health.State.COLLECTED)) {
             player.increaseCurrentHealth(health.getRecoverHealth());
-            Sound.getInstance().play(Sound.Effect.HEALTH_POTION);
+            Sound.play(Sound.Effect.HEALTH_POTION);
             health.collect();
             hudController.changeHealth(player.getCurrentHealth());
             chamber.findAndRemoveEntity(health);

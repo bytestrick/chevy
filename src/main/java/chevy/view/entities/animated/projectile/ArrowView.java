@@ -100,8 +100,8 @@ public class ArrowView extends AnimatedEntityView {
             firstTimeInState = false;
         }
 
-        currentViewPosition.changeFirst(moveInterpolationX.getValue());
-        currentViewPosition.changeSecond(moveInterpolationY.getValue());
+        currentViewPosition.first = moveInterpolationX.getValue();
+        currentViewPosition.second = moveInterpolationY.getValue();
         return currentViewPosition;
     }
 

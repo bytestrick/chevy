@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
@@ -47,7 +47,7 @@ public class SlimeController {
         switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, lo Slime viene danneggiato in base al danno del giocatore.
             case Player.State.ATTACK -> {
-                Sound.getInstance().play(Sound.Effect.SLIME_HIT);
+                Sound.play(Sound.Effect.SLIME_HIT);
                 slime.setDirection(DirectionsModel.positionToDirection(player, slime));
                 hitSlime(slime, -1 * player.getDamage());
             }
@@ -70,7 +70,7 @@ public class SlimeController {
                 return;
             }
         } else if (slime.getCurrentHealth() <= 0 && slime.checkAndChangeState(Slime.State.DEAD)) {
-            Sound.getInstance().play(Sound.Effect.SLIME_DEATH);
+            Sound.play(Sound.Effect.SLIME_DEATH);
             slime.kill();
         }
 
@@ -84,8 +84,8 @@ public class SlimeController {
             } else if (slime.canChange(Slime.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(slime, direction);
                 if (entity instanceof Player && slime.changeState(Slime.State.ATTACK)) {
-                    Sound.getInstance().play(Sound.Effect.SLIME_HIT);
-                    playerController.handleInteraction(InteractionType.ENEMY, slime);
+                    Sound.play(Sound.Effect.SLIME_HIT);
+                    playerController.handleInteraction(Interaction.ENEMY, slime);
                     slime.setCanAttack(true);
                 }
             }
@@ -96,7 +96,7 @@ public class SlimeController {
             if (direction != null) {
                 Entity entity = chamber.getNearEntityOnTop(slime, direction);
                 if (entity instanceof Player) {
-                    playerController.handleInteraction(InteractionType.ENEMY, slime);
+                    playerController.handleInteraction(Interaction.ENEMY, slime);
                     slime.setCanAttack(false);
                 }
             }

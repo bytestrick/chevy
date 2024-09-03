@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
@@ -51,7 +51,7 @@ public class BeetleController {
             case Player.State.ATTACK -> {
                 beetle.setDirection(DirectionsModel.positionToDirection(player, beetle));
                 hitBeetle(beetle, -1 * player.getDamage());
-                Sound.getInstance().play(Sound.Effect.ROBOTIC_INSECT);
+                Sound.play(Sound.Effect.ROBOTIC_INSECT);
             }
             default -> Log.warn("Il BeetleController non gestisce questa azione: " + player.getCurrentState());
         }
@@ -66,7 +66,7 @@ public class BeetleController {
     public void projectileInteraction(Projectile projectile, Beetle beetle) {
         beetle.setDirection(DirectionsModel.positionToDirection(projectile, beetle));
         hitBeetle(beetle, -1 * projectile.getDamage());
-        Sound.getInstance().play(Sound.Effect.ROBOTIC_INSECT);
+        Sound.play(Sound.Effect.ROBOTIC_INSECT);
     }
 
     /**
@@ -88,7 +88,7 @@ public class BeetleController {
         } else if (beetle.getCurrentHealth() <= 0 && beetle.checkAndChangeState(Beetle.State.DEAD)) {
             // Se la salute del Beetle è zero o inferiore, cambia lo stato del Beetle a "DEAD".
             chamber.spawnSlime(beetle); // power up
-            Sound.getInstance().play(Sound.Effect.BEETLE_DEATH);
+            Sound.play(Sound.Effect.BEETLE_DEATH);
             beetle.kill();
         }
 
@@ -121,7 +121,7 @@ public class BeetleController {
                         chamber.addEntityOnTop(slimeShot);
                         break;
                     } else if (distance == 1 && entity instanceof Player && beetle.changeState(Beetle.State.ATTACK)) {
-                        Sound.getInstance().play(Sound.Effect.BEETLE_ATTACK);
+                        Sound.play(Sound.Effect.BEETLE_ATTACK);
                         beetle.setCanAttack(true);
                     }
                 }
@@ -133,7 +133,7 @@ public class BeetleController {
             if (direction != null) {
                 Entity entity = chamber.getNearEntityOnTop(beetle, direction);
                 if (entity instanceof Player) {
-                    playerController.handleInteraction(InteractionType.ENEMY, beetle);
+                    playerController.handleInteraction(Interaction.ENEMY, beetle);
                     beetle.setCanAttack(false);
                 }
             }

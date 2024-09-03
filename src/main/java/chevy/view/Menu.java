@@ -168,24 +168,24 @@ public class Menu {
      */
     private void attachListeners() {
         options.addActionListener(e -> {
-            Sound.getInstance().play(Sound.Effect.BUTTON);
+            Sound.play(Sound.Effect.BUTTON);
             window.setScene(Window.Scene.OPTIONS);
             stopCharacterAnimation();
         });
         play.addActionListener(actionEvent -> {
-            Sound.getInstance().play(Sound.Effect.PLAY_BUTTON);
+            Sound.play(Sound.Effect.PLAY_BUTTON);
             playAction();
         });
         quit.addActionListener(e -> {
-            Sound.getInstance().play(Sound.Effect.BUTTON);
+            Sound.play(Sound.Effect.BUTTON);
             window.quitAction();
         });
         playerCycleNext.addActionListener(e -> {
-            Sound.getInstance().play(Sound.Effect.BUTTON);
+            Sound.play(Sound.Effect.BUTTON);
             playerCycleNextAction();
         });
         playerCyclePrev.addActionListener(e -> {
-            Sound.getInstance().play(Sound.Effect.BUTTON);
+            Sound.play(Sound.Effect.BUTTON);
             playerCyclePrevAction();
         });
         levelSelector.addMouseListener(new MouseListener() {
@@ -193,7 +193,7 @@ public class Menu {
             public void mouseClicked(MouseEvent mouseEvent) {}
 
             @Override
-            public void mousePressed(MouseEvent mouseEvent) {Sound.getInstance().play(Sound.Effect.BUTTON);}
+            public void mousePressed(MouseEvent mouseEvent) {Sound.play(Sound.Effect.BUTTON);}
 
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {}
@@ -206,7 +206,7 @@ public class Menu {
         });
         levelSelector.addActionListener(actionEvent -> changeLevelAction());
         unlock.addActionListener(e -> {
-            Sound.getInstance().play(Sound.Effect.BUTTON);
+            Sound.play(Sound.Effect.BUTTON);
             unlockPlayerAction();
         });
 
@@ -226,7 +226,7 @@ public class Menu {
         } else {
             levelSelector.hidePopup();
             levelSelector.setSelectedIndex(level);
-            Sound.getInstance().play(Sound.Effect.STOP);
+            Sound.play(Sound.Effect.STOP);
             JOptionPane.showMessageDialog(window, "Il livello " + (i + 1) + " è bloccato.", null,
                     JOptionPane.WARNING_MESSAGE, ex);
             SwingUtilities.invokeLater(levelSelector::showPopup);
@@ -240,12 +240,12 @@ public class Menu {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Load.icon("Unlocked", 48
                         , 48), new String[]{"Si", "No"}, "No") == 0) {
             if (actualCost > (int) Data.get("progress.coins")) {
-                Sound.getInstance().play(Sound.Effect.STOP);
+                Sound.play(Sound.Effect.STOP);
                 JOptionPane.showMessageDialog(window, "Monete insufficienti", null,
                         JOptionPane.WARNING_MESSAGE, ex);
                 return;
             }
-            Sound.getInstance().play(Sound.Effect.UNLOCK_CHARACTER);
+            Sound.play(Sound.Effect.UNLOCK_CHARACTER);
             currentPlayerLocked = false;
             Data.set("progress.player." + playerType.toString().toLowerCase() + ".locked", false);
             int coinsLeft = (int) Data.get("progress.coins") - actualCost;

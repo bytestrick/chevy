@@ -1,6 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
@@ -47,7 +47,7 @@ public class TrapsController {
      * @param subject     l'entità che avvia l'interazione
      * @param object      l'entità che riceve l'interazione
      */
-    public synchronized void handleInteraction(InteractionType interaction, Entity subject, Trap object) {
+    public synchronized void handleInteraction(Interaction interaction, Entity subject, Trap object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, object);
             case PLAYER_OUT -> playerOutInteraction((Player) subject, object);

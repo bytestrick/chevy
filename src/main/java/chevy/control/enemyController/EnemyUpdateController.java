@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -66,7 +66,7 @@ public class EnemyUpdateController implements Update {
         Iterator<Enemy> it = enemies.iterator();
         while (it.hasNext()) {
             Enemy enemy = it.next();
-            enemyController.handleInteraction(InteractionType.UPDATE, enemy, null);
+            enemyController.handleInteraction(Interaction.UPDATE, enemy, null);
             if (enemy.canRemoveToUpdate()) {
                 it.remove();
             }

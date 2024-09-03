@@ -16,7 +16,7 @@ public class KeyController {
 
     public void playerInInteraction(Key key) {
         if (key.changeState(Key.State.COLLECTED)) {
-            Sound.getInstance().play(Sound.Effect.KEY_EQUIPPED);
+            Sound.play(Sound.Effect.KEY_EQUIPPED);
             key.collect();
             hudController.addKey(1);
             chamber.findAndRemoveEntity(key);

@@ -1,6 +1,6 @@
 package chevy.control.projectileController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -75,7 +75,7 @@ public class ProjectileUpdateController implements Update {
         Iterator<Projectile> it = projectiles.iterator();
         while (it.hasNext()) {
             Projectile projectile = it.next();
-            projectileController.handleInteraction(InteractionType.UPDATE, projectile, null); // Gestisce
+            projectileController.handleInteraction(Interaction.UPDATE, projectile, null); // Gestisce
             // l'aggiornamento del proiettile
             if (projectile.isCollision()) { // Se il proiettile collide, si rimuove dalla lista
                 it.remove();

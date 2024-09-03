@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
@@ -47,7 +47,7 @@ public class SkeletonController {
         switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, lo Skeleton viene danneggiato in base al danno del giocatore.
             case Player.State.ATTACK -> {
-                Sound.getInstance().play(Sound.Effect.SKELETON_HIT);
+                Sound.play(Sound.Effect.SKELETON_HIT);
                 hitSkeleton(skeleton, -1 * player.getDamage());
                 skeleton.setDirection(DirectionsModel.positionToDirection(player, skeleton));
             }
@@ -72,7 +72,7 @@ public class SkeletonController {
             }
         } else if (skeleton.getCurrentHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.State.DEAD)) {
             chamber.spawnSlime(skeleton); // power up
-            Sound.getInstance().play(Sound.Effect.SKELETON_DISASSEMBLED);
+            Sound.play(Sound.Effect.SKELETON_DISASSEMBLED);
             skeleton.kill();
         }
 
@@ -87,7 +87,7 @@ public class SkeletonController {
             } else if (skeleton.canChange(Skeleton.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
                 if (entity instanceof Player && skeleton.changeState(Skeleton.State.ATTACK)) {
-                    Sound.getInstance().play(Sound.Effect.SKELETON_HIT);
+                    Sound.play(Sound.Effect.SKELETON_HIT);
                     skeleton.setCanAttack(true);
                 }
             }
@@ -98,8 +98,8 @@ public class SkeletonController {
             if (direction != null) {
                 Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
                 if (entity instanceof Player) {
-                    Sound.getInstance().play(Sound.Effect.SKELETON_HIT);
-                    playerController.handleInteraction(InteractionType.ENEMY, skeleton);
+                    Sound.play(Sound.Effect.SKELETON_HIT);
+                    playerController.handleInteraction(Interaction.ENEMY, skeleton);
                     skeleton.setCanAttack(false);
                 }
             }

@@ -1,6 +1,6 @@
 package chevy.control.projectileController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
@@ -47,7 +47,7 @@ public class ArrowController {
         if (arrow.changeState(Arrow.State.END)) {
             chamber.findAndRemoveEntity(arrow);
             arrow.setCollision(true);
-            playerController.handleInteraction(InteractionType.PROJECTILE, arrow);
+            playerController.handleInteraction(Interaction.PROJECTILE, arrow);
         }
     }
 
@@ -61,9 +61,9 @@ public class ArrowController {
             Entity nextEntity = chamber.getNearEntityOnTop(arrow, arrow.getDirection());
 
             switch (nextEntity.getGenericType()) {
-                case LiveEntity.Type.PLAYER -> playerController.handleInteraction(InteractionType.PROJECTILE, arrow);
+                case LiveEntity.Type.PLAYER -> playerController.handleInteraction(Interaction.PROJECTILE, arrow);
                 case LiveEntity.Type.ENEMY ->
-                        enemyController.handleInteraction(InteractionType.PROJECTILE, arrow, (Enemy) nextEntity);
+                        enemyController.handleInteraction(Interaction.PROJECTILE, arrow, (Enemy) nextEntity);
                 default -> { }
             }
 

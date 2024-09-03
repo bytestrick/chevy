@@ -1,6 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
@@ -25,7 +25,7 @@ public class TrapdoorController {
      */
     public void playerInInteraction(Trapdoor trapdoor) {
         if (!trapdoor.isSafeToCross()) {
-            playerController.handleInteraction(InteractionType.TRAP, trapdoor);
+            playerController.handleInteraction(Interaction.TRAP, trapdoor);
         }
     }
 
