@@ -1,0 +1,28 @@
+{
+  "progress": {
+    "coins": 1492,
+    "keys": 0,
+    "lastUnlockedLevel": 0,
+    "player": {
+      "knight": {
+        "locked": false
+      },
+      "archer": {
+        "locked": true
+      },
+      "ninja": {
+        "locked": true
+      }
+    }
+  },
+  "state": {
+    "menu": {
+      "playerType": "KNIGHT",
+      "level": 0
+    },
+    "window": {
+    },
+    "options": {
+    }
+  }
+}

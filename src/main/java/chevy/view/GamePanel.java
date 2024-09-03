@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
-import java.awt.Image;
+import java.awt.*;
 
 public class GamePanel extends JPanel {
     private static final ImageIcon playPause = new ImageIcon(Load.image("/icons/PlayPause.png").getScaledInstance(48,
@@ -79,13 +79,14 @@ public class GamePanel extends JPanel {
             GameLoop.getInstance().stop();
             boolean pauseMusic = true;
             pauseDialogActive = true;
-            switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa fare.", "Chevy - Pausa " +
-                    "(dialogo)", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, playPause, new String[]{"Esci"
-                    , "Opzioni", "Torna al menù", "Riprendi"}, "Riprendi")) {
+            switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa " + "fare" +
+                    ".", null, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, playPause,
+                    new String[]{"Esci", "Opzioni", "Torna " + "al menù", "Riprendi"},
+                    "Riprendi")) {
                 case 0 -> {
                     pauseDialogActive = false;
                     if (window.quitAction()) {
-                        pauseDialog(); // Ricorsione ☺️
+                        pauseDialog();
                     }
                 }
                 case 1 -> {
@@ -94,18 +95,19 @@ public class GamePanel extends JPanel {
                     window.setScene(Window.Scene.OPTIONS);
                 }
                 case 2 -> {
-                    if (JOptionPane.showOptionDialog(window, "Se torni al menù perderai il progresso. Continuare?",
-                            "Chevy - " + "Conferma (dialogo)", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-                            caution, new String[]{"Si", "No"}, "No") == 0) {
+                    if (JOptionPane.showOptionDialog(window, "Se torni al menù perderai il " +
+                            "progresso. Continuare?", null, JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.PLAIN_MESSAGE, caution, new String[]{"Si", "No"}, "No") == 0) {
                         window.setScene(Window.Scene.MENU);
                         GameLoop.getInstance().stop();
                     } else {
                         pauseDialogActive = false;
-                        pauseDialog(); // Ricorsione ☺️
+                        pauseDialog();
                     }
                 }
                 default -> { // e case 3
-                    // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
+                    // Considera anche il caso in cui l'utente chiude la
+                    // finestra di dialogo.
                     GameLoop.getInstance().start();
                     pauseMusic = false;
                     Sound.getInstance().resumeMusic();
@@ -189,7 +191,7 @@ public class GamePanel extends JPanel {
 
     public void windowResized(float scale) { hudView.windowResized(scale); }
 
-    public ChamberView getChamberView() { return chamberView; }
+    public ChamberView getChamberView() {return chamberView;}
 
-    public HUDView getHudView() { return hudView; }
+    public HUDView getHudView() {return hudView;}
 }

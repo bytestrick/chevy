@@ -5,6 +5,7 @@ import chevy.model.entity.Entity;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
 
+import java.awt.Dimension;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -14,13 +15,11 @@ import java.util.PriorityQueue;
  */
 public class AStar {
     private final Chamber chamber;
-    private final int nRows;
-    private final int nCols;
+    private final Dimension size;
 
     public AStar(Chamber chamber) {
         this.chamber = chamber;
-        this.nCols = chamber.getNCols();
-        this.nRows = chamber.getNRows();
+        this.size = chamber.getSize();
     }
 
     /**
@@ -89,8 +88,8 @@ public class AStar {
             return null;
         }
 
-        boolean[][] closedList = new boolean[nRows][nCols]; // Celle già esplorate
-        Cell[][] cellDetails = new Cell[nRows][nCols];
+        boolean[][] closedList = new boolean[size.height][size.width]; // Celle già esplorate
+        Cell[][] cellDetails = new Cell[size.height][size.width];
         PriorityQueue<Details> openList = new PriorityQueue<>(); // Celle da visitare
 
         // Inizializzazione della cella di partenza
@@ -101,7 +100,8 @@ public class AStar {
         cellDetails[currentCell.first][currentCell.second].h = 0.0;
         cellDetails[currentCell.first][currentCell.second].parent = new Vector2<>(currentCell.first,
                 currentCell.second);
-        // Aggiunge la prima cella nella coda dei nodi da esplorare con valore della funzione euristica pari a 0
+        // Aggiunge la prima cella nella coda dei nodi da esplorare con valore della funzione
+        // euristica pari a 0
         openList.add(new Details(0.0d, currentCell.first, currentCell.second));
 
         while (!openList.isEmpty()) {
@@ -119,11 +119,12 @@ public class AStar {
                         continue; // non spostarti in diagonale
                     }
 
-                    Vector2<Integer> neighbor = new Vector2<>(currentCell.first + i, currentCell.second + j);
+                    Vector2<Integer> neighbor = new Vector2<>(currentCell.first + i,
+                            currentCell.second + j);
                     if (isValid(neighbor)) {
                         // crea una riga della matrice se non esiste
                         if (cellDetails[neighbor.first] == null) {
-                            cellDetails[neighbor.first] = new Cell[nCols];
+                            cellDetails[neighbor.first] = new Cell[size.width];
                         }
                         // crea la cella se non esiste
                         if (cellDetails[neighbor.first][neighbor.second] == null) {
@@ -131,18 +132,23 @@ public class AStar {
                         }
 
                         if (isDestination(neighbor, destination)) {
-                            cellDetails[neighbor.first][neighbor.second].parent = new Vector2<>(currentCell.first,
+                            cellDetails[neighbor.first][neighbor.second].parent =
+                                    new Vector2<>(currentCell.first,
                                     currentCell.second);
                             Log.info("Punto d'arrivo trovato");
                             return tracePath(cellDetails, destination);
                         } else if (!closedList[neighbor.first][neighbor.second] && !isBlocked(neighbor)) {
-                            // se la cella del vicinato non è stata esplorata e ci si può passare sopra
+                            // se la cella del vicinato non è stata esplorata e ci si può passare
+                            // sopra
 
-                            double gNew = cellDetails[currentCell.first][currentCell.second].g + 1.0d; // costo del
+                            double gNew =
+                                    cellDetails[currentCell.first][currentCell.second].g + 1.0d;
+                            // costo del
                             // cammino fino al nodo corrente + 1
                             double hNew = calculateHValue(neighbor, destination);
                             double fNew = gNew + hNew;
-                            // se la cella del vicinato non ha valore f, oppure, ha un valore migliore
+                            // se la cella del vicinato non ha valore f, oppure, ha un valore
+                            // migliore
                             if (cellDetails[neighbor.first][neighbor.second].f == -1 || cellDetails[neighbor.first][neighbor.second].f > fNew) {
                                 openList.add(new Details(fNew, neighbor.first, neighbor.second)); // aggiungi la
                                 // cella del vicinato come visitabile
@@ -150,7 +156,8 @@ public class AStar {
                                 cellDetails[neighbor.first][neighbor.second].g = gNew;
                                 cellDetails[neighbor.first][neighbor.second].h = hNew;
                                 cellDetails[neighbor.first][neighbor.second].f = fNew;
-                                cellDetails[neighbor.first][neighbor.second].parent = new Vector2<>(currentCell.first
+                                cellDetails[neighbor.first][neighbor.second].parent =
+                                        new Vector2<>(currentCell.first
                                         , currentCell.second);
                             }
                         }

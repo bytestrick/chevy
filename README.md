@@ -1,15 +1,21 @@
 ### Maven
 
 > [!TIP]
-> Eseguire `./mvnw` compila ed esegue il progetto in un colpo solo.
+> Eseguire `mvn` compila ed esegue il progetto in un colpo solo.
 
 Lifecycle phases:
-  - `./mvnw clean` rimuove `target/` dopo la build
-  - `./mvnw compile` compila il progetto
-  - `./mvnw exec:exec` esegue il progetto compilato
-  - `./mvnw package` crea l'archivio `jar` compreso di dipendenze
+  - `mvn clean` rimuove `target/` dopo la build
+  - `mvn compile` compila il progetto
+  - `mvn exec:exec` esegue il progetto compilato
+  - `mvn package` crea l'archivio `jar` compreso di dipendenze
 
-Le fasi si possono concatenare, esempio: `./mvnw clean compile` rimuove `target/` e ricompila il progetto da capo.
+Le fasi si possono concatenare, esempio: `mvn clean compile` rimuove `target/` e ricompila il progetto da capo.
+
+### Colori
+
+Il menù principale usa una palette **monocromatica** basata sul viola (`HSB(280, 80, 60)`). Elementi dell'interfaccia che si intende fare risaltare usano i **colori vicini**, blu e rosa.
+
+![Palette image](src/main/resources/style/palette.png)
 
 ### Cose
 

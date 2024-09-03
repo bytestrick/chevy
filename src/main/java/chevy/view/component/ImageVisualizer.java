@@ -1,7 +1,6 @@
 package chevy.view.component;
 
 
-import chevy.settings.WindowSettings;
 import chevy.utils.Load;
 
 import javax.swing.*;

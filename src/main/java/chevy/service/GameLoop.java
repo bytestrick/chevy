@@ -1,14 +1,15 @@
 package chevy.service;
 
-import chevy.settings.GameSettings;
 import chevy.utils.Log;
 
 import java.awt.Toolkit;
 
 /**
- * Il thread che aggiorna il gioco.
+ * Il thread che aggiorna il gioco
  */
 public class GameLoop implements Runnable {
+    /** FPS del gioco */
+    public static final int TARGET_FRAME_RATE = 60;
     private static GameLoop instance;
     private static boolean isRunning;
     private static Thread worker;
@@ -24,8 +25,8 @@ public class GameLoop implements Runnable {
     public synchronized void start() {
         isPaused = false;
         isRunning = true;
-        if (worker == null || worker.isInterrupted() || !worker.isAlive()) {
-            worker = Thread.ofPlatform().priority(Thread.MAX_PRIORITY).name("Game loop").start(this);
+        if (worker == null) {
+            worker = Thread.ofPlatform().priority(Thread.MAX_PRIORITY).start(this);
         } else {
             notify();
         }
@@ -44,10 +45,11 @@ public class GameLoop implements Runnable {
     @Override
     public void run() {
         Log.info("Game loop avviato");
+        final int frameDuration = 1000 / TARGET_FRAME_RATE;
         long lastTime = System.currentTimeMillis();
         while (isRunning) {
-            final long timeToWait = GameSettings.FRAME_TARGET_TIME - (System.currentTimeMillis() - lastTime);
-            if (timeToWait > 0 && timeToWait <= GameSettings.FRAME_TARGET_TIME) {
+            final long timeToWait = frameDuration - (System.currentTimeMillis() - lastTime);
+            if (timeToWait > 0 && timeToWait <= frameDuration) {
                 try {
                     synchronized (this) {
                         wait(timeToWait);
@@ -56,9 +58,10 @@ public class GameLoop implements Runnable {
                             wait();
                         }
                     }
-                } catch (InterruptedException ignored) { }
+                } catch (InterruptedException ignored) {}
             }
-            final double delta = (System.currentTimeMillis() - lastTime) / 1000.0d; // conversione in secondi
+            final double delta = (System.currentTimeMillis() - lastTime) / 1000.0d; //
+            // conversione in secondi
             lastTime = System.currentTimeMillis();
 
             UpdateManager.update(delta);
