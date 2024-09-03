@@ -18,6 +18,7 @@ import chevy.view.chamber.EntityToEntityView;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
@@ -40,15 +41,16 @@ public class ChamberManager {
      * @return l'immagine della stanza, o null se l'immagine non può essere caricata
      */
     private static BufferedImage loadLayer(int chamber, int layer) {
-        final String chamberPath = "/chambers/chamber" + chamber + "/layer" + layer + ".png";
-        BufferedImage chamberImage = null;
+        final String path = "/chambers/chamber" + chamber + "/layer" + layer + ".png";
         try {
-            chamberImage =
-                    ImageIO.read(Objects.requireNonNull(ChamberManager.class.getResource(chamberPath)));
-        } catch (NullPointerException | IOException ignored) {
-            Log.warn(chamberPath + ": il layer" + ".png non è stato caricato");
+            return ImageIO.read(Objects.requireNonNull(ChamberManager.class.getResource(path)));
+        } catch (NullPointerException ignored) {
+            Log.info("La stanza " + chamber + " ha " + layer + " strati");
+        } catch (IOException e) {
+            Log.warn("Caricamento della stanza " + chamber + " fallito: " + e.getMessage());
+            System.exit(96);
         }
-        return chamberImage;
+        return null;
     }
 
     /**
@@ -64,35 +66,35 @@ public class ChamberManager {
         BufferedImage chamberImage = loadLayer(index, layer);
 
         while (chamberImage != null) {
-            int nRows = chamberImage.getHeight();
-            int nCols = chamberImage.getWidth();
+            final Dimension size = new Dimension(chamberImage.getWidth(), chamberImage.getHeight());
             if (!chamber.isInitialized()) {
-                chamber.initWorld(nRows, nCols);
+                chamber.initWorld(size);
             }
 
-            for (int i = 0; i < nRows; ++i) {
-                for (int j = 0; j < nCols; ++j) {
+            for (int i = 0; i < size.height; ++i) {
+                for (int j = 0; j < size.width; ++j) {
                     Color color = new Color(chamberImage.getRGB(j, i));
                     int r = color.getRed();
                     if (r != 0) {
                         Entity entity = EntityFromColor.get(r, i, j);
-                        assert entity != null;
-                        switch (entity.getGenericType()) {
-                            case Environment.Type.TRAP -> chamber.addTraps((Trap) entity);
-                            case DynamicEntity.Type.PROJECTILE ->
-                                    chamber.addProjectile((Projectile) entity);
-                            case LiveEntity.Type.ENEMY -> chamber.addEnemy((Enemy) entity);
-                            case LiveEntity.Type.PLAYER -> {
-                                entity.setToDraw(false);
-                                chamber.setPlayer((Player) entity);
+                        if (entity != null) {
+                            switch (entity.getGenericType()) {
+                                case Environment.Type.TRAP -> chamber.addTraps((Trap) entity);
+                                case DynamicEntity.Type.PROJECTILE ->
+                                        chamber.addProjectile((Projectile) entity);
+                                case LiveEntity.Type.ENEMY -> chamber.addEnemy((Enemy) entity);
+                                case LiveEntity.Type.PLAYER -> {
+                                    entity.setToDraw(false);
+                                    chamber.setPlayer((Player) entity);
+                                }
+                                case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
+                                        chamber.addCollectable((Collectable) entity);
+                                case Entity.Type.ENVIRONMENT ->
+                                        chamber.addEnvironment((Environment) entity);
+                                default -> {}
                             }
-                            case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
-                                    chamber.addCollectable((Collectable) entity);
-                            case Entity.Type.ENVIRONMENT ->
-                                    chamber.addEnvironment((Environment) entity);
-                            default -> {}
+                            chamber.addEntityOnTop(entity);
                         }
-                        chamber.addEntityOnTop(entity);
                     }
                 }
             }
@@ -129,8 +131,8 @@ public class ChamberManager {
             currentChamberIndex = index;
             chambers[currentChamberIndex] = loadChamber(index);
             ChamberController.refresh();
-            EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer()); // Invalida la
-            // view del player corrente
+            // Invalida la view del player corrente
+            EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer());
             GameLoop.getInstance().start();
             Sound.getInstance().startMusic(); // 🎵
         }

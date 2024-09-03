@@ -1,6 +1,6 @@
 package chevy.view.hud;
 
-import chevy.settings.WindowSettings;
+import chevy.view.Window;
 
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
@@ -23,7 +23,7 @@ public class HUDView extends JPanel {
 
         setOpaque(false);
         setLayout(springLayout);
-        setConstraints(WindowSettings.scale);
+        setConstraints(Window.scale);
 
         add(powerUpText);
         add(playerInfo);

@@ -19,7 +19,7 @@ public class Options {
         quit.addActionListener(e -> {
             if (sceneToReturnTo == Window.Scene.PLAYING) {
                 window.setScene(sceneToReturnTo);
-                window.gamePanel.pauseDialog();
+                window.getGamePanel().pauseDialog();
             } else {
                 window.setScene(sceneToReturnTo);
             }

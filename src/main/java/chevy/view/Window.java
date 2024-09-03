@@ -3,9 +3,9 @@ package chevy.view;
 import chevy.control.WindowController;
 import chevy.service.Data;
 import chevy.service.Sound;
-import chevy.settings.WindowSettings;
 import chevy.utils.Load;
 import chevy.utils.Log;
+import chevy.view.chamber.ChamberView;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.util.SystemInfo;
@@ -19,20 +19,37 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.Toolkit;
 
 /**
  * Finestra principale
  */
 public class Window extends JFrame {
-    public static final Dimension size = new Dimension(WindowSettings.WINDOW_WIDTH,
-            WindowSettings.WINDOW_HEIGHT);
     public static final Color bg = new Color(24, 20, 37);
+    private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private static final Dimension aspectRatio = new Dimension(4, 3);
     private static final ImageIcon icon = Load.icon("Power", 42, 42);
-    public GamePanel gamePanel = new GamePanel(this);
-    public Options options = new Options(this);
-    public Menu menu = new Menu(this);
+    public static float scale = .8f; // questa non è la scala
+    public static Dimension size = new Dimension();
+
+    static {
+        final int maxSideLength = Math.round(Math.min(screenSize.width, screenSize.height) * scale);
+        if (screenSize.width < screenSize.height) {
+            size.height = Math.round(1.f * maxSideLength * aspectRatio.height / aspectRatio.width);
+        } else {
+            size.height = maxSideLength;
+        }
+        if (screenSize.width > screenSize.height) {
+            size.width = Math.round(1.f * maxSideLength * aspectRatio.width / aspectRatio.height);
+        } else {
+            size.width = maxSideLength;
+        }
+        scale = Math.min(size.width / screenSize.width, size.height / screenSize.height);
+    }
+
+    private GamePanel gamePanel = new GamePanel(this);
+    private Options options = new Options(this);
+    private Menu menu = new Menu(this);
     private Scene scene;
 
     public Window(boolean resizable) {
@@ -43,23 +60,26 @@ public class Window extends JFrame {
         setScene(Scene.MENU);
         setVisible(true);
         requestFocus();
-        // assicura l'esecuzione del codice solamente dopo la creazione del componente JFrame
-        SwingUtilities.invokeLater(() -> {
-            WindowSettings.SIZE_TOP_BAR = getInsets().top;
+        Sound.getInstance(); // pre-inizializza
+        SwingUtilities.invokeLater(() -> { // esecuzione asincrona
+            ChamberView.topBarHeight = getInsets().top;
             setResizable(resizable);
             if (resizable) {
                 // visto che componentResized() non viene chiamata sempre all'avvio questo
-                // assicura il corretto scale
-                // dei componenti
-                WindowSettings.updateValue(getHeight(), getWidth());
-                gamePanel.windowResized(WindowSettings.scale);
-                // ---
-                makeResponsive();
+                // assicura il corretto scale dei componenti
+                updateSize(getSize());
+                gamePanel.windowResized(scale);
             }
         });
-        Sound.getInstance(); // inizializza il Sound
-
         Log.info("Window: creazione terminata [w: " + size.width + ", h: " + size.height + "]");
+    }
+
+    public static void updateSize(Dimension size) {
+        Window.size = size;
+        ChamberView.updateSize();
+        float scaleX = 1.f * size.width / screenSize.width * aspectRatio.width;
+        float scaleY = 1.f * size.height / screenSize.height * aspectRatio.height;
+        scale = Math.min(scaleX, scaleY);
     }
 
     /**
@@ -71,28 +91,19 @@ public class Window extends JFrame {
     public static void create() {
         FlatLaf.registerCustomDefaultsSource("style");
         FlatDarkLaf.setup();
-
         // Le decorazioni della finestra personalizzate sono già abilitate su Windows e non sono
         // supportate su Mac.
         if (SystemInfo.isLinux) {
             JFrame.setDefaultLookAndFeelDecorated(true);
             JDialog.setDefaultLookAndFeelDecorated(true);
         }
-
         UIManager.put("defaultFont", Load.font("VT323"));
-
         new Window(true);
     }
 
-    private void makeResponsive() {
-        this.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent componentEvent) {
-                WindowSettings.updateValue(getHeight(), getWidth());
-                System.out.println("update:  " + WindowSettings.scale);
-                gamePanel.windowResized(WindowSettings.scale);
-            }
-        });
-    }
+    public GamePanel getGamePanel() {return gamePanel;}
+
+    public Menu getMenu() {return menu;}
 
     /**
      * Unico punto di uscita (corretto) dall'app.
@@ -104,6 +115,7 @@ public class Window extends JFrame {
      * affatto.
      */
     public boolean quitAction() {
+        Sound.getInstance().play(Sound.Effect.STOP);
         if (JOptionPane.showOptionDialog(this, "Uscire da Chevy?", null,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, new String[]{"Si",
                         "No"}, "No") == 0) {

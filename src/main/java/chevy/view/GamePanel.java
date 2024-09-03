@@ -109,6 +109,7 @@ public class GamePanel extends JPanel {
         playerDeathDialogActive = true;
         GameLoop.getInstance().stop();
         Sound.getInstance().stopMusic();
+        Sound.getInstance().play(Sound.Effect.LOST);
         switch (JOptionPane.showOptionDialog(window,
                 deathMessages[Utils.random.nextInt(deathMessages.length)], "Chevy - Morte",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, skull, new String[]{"Esci"

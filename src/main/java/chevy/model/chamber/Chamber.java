@@ -20,11 +20,12 @@ import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.model.pathFinding.AStar;
-import chevy.settings.GameSettings;
 import chevy.utils.Log;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
+import chevy.view.chamber.ChamberView;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -54,28 +55,23 @@ public class Chamber {
      */
     private List<List<List<Entity>>> chamber;
     private LayerManager drawOrderChamber; // Ordine delle in cui le entità vanno disegnate
-    private int nRows; // Righe della griglia di gioco
-    private int nCols; // Colonne della griglia di gioco
+    /** Righe e colonne della griglia di gioco */
+    private Dimension size;
     private boolean init = false; // Indica se il mondo è stato inizializzato
     private Player player; // Il giocatore attuale
     private int enemyCounter = 0;
 
     /**
-     * Inizializza la griglia di gioco con le dimensioni specificate e aggiorna le impostazioni
-     * di gioco.
-     *
-     * @param nRow numero di righe che avrà la griglia
-     * @param nCol numero di colonne che avrà la griglia
+     * @param size numero di colonne e righe della griglia di gioco
      */
-    public void initWorld(int nRow, int nCol) {
-        this.nRows = nRow;
-        this.nCols = nCol;
-        GameSettings.updateValue(nCol, nRow);
+    public void initWorld(Dimension size) {
+        this.size = size;
+        ChamberView.updateSize(size);
 
-        chamber = new ArrayList<>(nRow);
-        for (int i = 0; i < nRow; ++i) {
+        chamber = new ArrayList<>(size.height);
+        for (int i = 0; i < size.height; ++i) {
             List<List<Entity>> row = new LinkedList<>();
-            for (int j = 0; j < nCol; ++j) {
+            for (int j = 0; j < size.width; ++j) {
                 row.add(new LinkedList<>());
             }
             chamber.add(row);
@@ -93,7 +89,7 @@ public class Chamber {
      */
     public boolean validatePosition(Vector2<Integer> vector2) {
         if (init) {
-            return vector2.first >= 0 && vector2.first < nRows && vector2.second >= 0 && vector2.second < nCols;
+            return vector2.first >= 0 && vector2.first < size.height && vector2.second >= 0 && vector2.second < size.width;
         }
         return false;
     }
@@ -107,7 +103,7 @@ public class Chamber {
      */
     public boolean validatePosition(int row, int col) {
         if (init) {
-            return row >= 0 && row < nRows && col >= 0 && col < nCols;
+            return row >= 0 && row < size.height && col >= 0 && col < size.width;
         }
         return false;
     }
@@ -219,7 +215,7 @@ public class Chamber {
 
         Vector2<Integer> vector2 =
                 new Vector2<>(dynamicEntity.getRow() + direction.row() * distanceCell,
-                dynamicEntity.getCol() + direction.col() * distanceCell);
+                        dynamicEntity.getCol() + direction.col() * distanceCell);
         if (validatePosition(vector2)) {
             return getEntityOnTop(vector2);
         }
@@ -263,7 +259,7 @@ public class Chamber {
             for (DirectionsModel direction : directionsModel) {
                 Vector2<Integer> checkPosition =
                         new Vector2<>(entity.getRow() + direction.row() * i,
-                        entity.getCol() + direction.col() * i);
+                                entity.getCol() + direction.col() * i);
                 if (validatePosition(checkPosition) && getEntityOnTop(checkPosition) instanceof Player) {
                     if (entity instanceof DynamicEntity dynamicEntity) {
                         dynamicEntity.setDirection(direction);
@@ -307,7 +303,7 @@ public class Chamber {
                                                Vector2<Integer> nextPosition) {
         DirectionsModel direction =
                 DirectionsModel.positionToDirection(new Vector2<>(dynamicEntity.getRow(),
-                dynamicEntity.getCol()), nextPosition);
+                        dynamicEntity.getCol()), nextPosition);
 
         if (canCross(nextPosition) && direction != null) {
             moveDynamicEntity(dynamicEntity, direction);
@@ -624,9 +620,7 @@ public class Chamber {
 
     public boolean isInitialized() {return init;}
 
-    public int getNRows() {return nRows;}
-
-    public int getNCols() {return nCols;}
+    public Dimension getSize() {return size;}
 
     public Player getPlayer() {return this.player;}
 
