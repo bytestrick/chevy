@@ -1,8 +1,8 @@
 package chevy.view.component;
 
-import chevy.settings.WindowSettings;
 import chevy.utils.Load;
 import chevy.utils.Log;
+import chevy.view.Window;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -52,7 +52,7 @@ public class ProgressBar extends JPanel {
         this.value = value;
 
         addStep();
-        setDimension(scale * WindowSettings.scale);
+        setDimension(scale * Window.scale);
     }
 
     private void setConstraints() {
@@ -86,7 +86,7 @@ public class ProgressBar extends JPanel {
 
     public void setTexture(int i, String path) {
         ui.setTexture(i, path);
-        setDimension(scale * WindowSettings.scale);
+        setDimension(scale * Window.scale);
     }
 
     public void setStepTexture(String path) {
@@ -104,13 +104,13 @@ public class ProgressBar extends JPanel {
             if (i < nComponents) {
                 containerImage.remove(i);
             }
-            containerImage.add(new ImageVisualizer(stepTexture, scale * WindowSettings.scale), i);
+            containerImage.add(new ImageVisualizer(stepTexture, scale * Window.scale), i);
             if (i >= value) {
                 containerImage.getComponent(i).setVisible(false);
             }
         }
 
-        setDimension(scale * WindowSettings.scale);
+        setDimension(scale * Window.scale);
     }
 
     public int getValue() {

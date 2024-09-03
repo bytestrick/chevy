@@ -25,14 +25,14 @@ public class Data {
     private static final File file = findFile();
     private static String root; // È un oggetto JSON: {...}
 
-    public static <T> T get(String path) {
+    public synchronized static <T> T get(String path) {
         if (root == null) {
             read();
         }
         return JsonPath.read(root, "$." + path);
     }
 
-    public static void set(String path, Object value) {
+    public synchronized static void set(String path, Object value) {
         if (root == null) {
             read();
         }

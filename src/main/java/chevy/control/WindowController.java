@@ -4,6 +4,8 @@ import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.view.Window;
 
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
@@ -12,7 +14,7 @@ import java.awt.event.WindowListener;
 /**
  * Cattura gli eventi di Window
  */
-public class WindowController implements WindowListener, KeyListener {
+public class WindowController implements WindowListener, KeyListener, ComponentListener {
     public static PlayerController playerController;
     private final Window window;
 
@@ -20,6 +22,7 @@ public class WindowController implements WindowListener, KeyListener {
         this.window = window;
         this.window.addKeyListener(this);
         this.window.addWindowListener(this);
+        this.window.addComponentListener(this);
     }
 
     @Override
@@ -45,7 +48,7 @@ public class WindowController implements WindowListener, KeyListener {
     @Override
     public void windowDeiconified(WindowEvent windowEvent) {
         switch (window.getScene()) {
-            case PLAYING -> window.gamePanel.pauseDialog();
+            case PLAYING -> window.getGamePanel().pauseDialog();
             case MENU, OPTIONS -> Sound.startMenuMusic();
         }
     }
@@ -66,10 +69,25 @@ public class WindowController implements WindowListener, KeyListener {
                 assert playerController != null;
                 playerController.keyPressed(keyEvent);
             }
-            case Window.Scene.MENU -> window.menu.handleKeyPress(keyEvent);
+            case Window.Scene.MENU -> window.getMenu().handleKeyPress(keyEvent);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {}
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+        Window.updateSize(window.getSize());
+        window.getGamePanel().windowResized(Window.scale);
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {}
+
+    @Override
+    public void componentShown(ComponentEvent e) {}
+
+    @Override
+    public void componentHidden(ComponentEvent e) {}
 }
