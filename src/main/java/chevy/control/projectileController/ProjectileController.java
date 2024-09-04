@@ -14,7 +14,7 @@ import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
  * Gestisce le interazioni e gli aggiornamenti dei proiettili nel gioco, delegando la gestione specifica a controller
  * più specifici come ArrowController e SlimeShotController.
  */
-public class ProjectileController {
+public final class ProjectileController {
     /**
      * Controller per la gestione delle frecce.
      */

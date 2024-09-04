@@ -19,7 +19,7 @@ import chevy.model.entity.staticEntity.environment.traps.Void;
  * specifici per ogni tipo di trappola e
  * gestisce le interazioni con il giocatore.
  */
-public class TrapsController {
+public final class TrapsController {
     private final SludgeController sludgeController;
     private final IcyFloorController icyFloorController;
     private final VoidController voidController;

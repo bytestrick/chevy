@@ -6,7 +6,7 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Key;
 import chevy.service.Sound;
 
-public class KeyController {
+public final class KeyController {
     private final Chamber chamber;
     private final HUDController hudController;
 

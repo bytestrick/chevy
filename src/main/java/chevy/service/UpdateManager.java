@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Aggiorna tutti gli oggetti di model.
+ * Aggiorna tutti gli oggetti di {@link chevy.model}
  */
 public class UpdateManager {
     private static final List<Update> updateList = new LinkedList<>();

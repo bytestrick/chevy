@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.enemy;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Beetle;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Vector2;
@@ -18,9 +18,9 @@ public class BeetleView extends AnimatedEntityView {
         super();
         this.beetle = beetle;
         this.currentViewPosition = new Vector2<>((double) beetle.getCol(), (double) beetle.getRow());
-        currentGlobalState = beetle.getState(beetle.getCurrentState());
+        currentVertex = beetle.getState(beetle.getCurrentState());
 
-        float duration = currentGlobalState.getDuration();
+        float duration = currentVertex.getDuration();
         moveInterpolationX = new Interpolation(currentViewPosition.first, beetle.getCol(), duration,
                 Interpolation.Type.EASE_OUT_SINE);
         moveInterpolationY = new Interpolation(currentViewPosition.second, beetle.getRow(), duration,
@@ -93,7 +93,7 @@ public class BeetleView extends AnimatedEntityView {
     }
 
     private int getAnimationType(CommonState currentState) {
-        DirectionsModel currentDirection = beetle.getDirection();
+        Direction currentDirection = beetle.getDirection();
         return switch (currentState) {
             case Beetle.State.ATTACK, Beetle.State.IDLE, Beetle.State.MOVE, Beetle.State.HIT ->
                     switch (currentDirection) {
@@ -103,7 +103,7 @@ public class BeetleView extends AnimatedEntityView {
                         case LEFT -> 3;
                     };
             case Beetle.State.DEAD -> {
-                if (currentDirection == DirectionsModel.RIGHT) {
+                if (currentDirection == Direction.RIGHT) {
                     yield 1;
                 } else {
                     yield 0;
@@ -115,11 +115,11 @@ public class BeetleView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (currentGlobalState.isFinished()) {
-            currentGlobalState = beetle.getState(beetle.getCurrentState());
+        if (currentVertex.isFinished()) {
+            currentVertex = beetle.getState(beetle.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
-            float duration = currentGlobalState.getDuration();
+            float duration = currentVertex.getDuration();
             moveInterpolationX.changeStart(currentViewPosition.first);
             moveInterpolationX.changeEnd(beetle.getCol());
             moveInterpolationX.changeDuration(duration);

@@ -1,7 +1,7 @@
 package chevy.view.entities.animated;
 
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.utils.Pair;
@@ -19,7 +19,7 @@ public abstract class AnimatedEntityView extends EntityView {
     protected Interpolation moveInterpolationX;
     protected Interpolation moveInterpolationY;
     protected Vector2<Double> currentViewPosition;
-    protected GlobalState currentGlobalState;
+    protected Vertex currentVertex;
     protected boolean firstTimeInState = false;
 
     protected void createAnimation(CommonState state, int type, int frames, float secDurationFrame,

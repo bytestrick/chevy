@@ -3,16 +3,16 @@ package chevy.model.entity.collectable.powerUp;
 import chevy.model.entity.CommonEntityType;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
 public abstract class PowerUp extends Collectable {
     private final Type type;
-    private final GlobalState idle = new GlobalState(State.IDLE, 0.5f);
-    private final GlobalState selected = new GlobalState(State.SELECTED, 0.2f);
-    private final GlobalState deselected = new GlobalState(State.DESELECTED, 0.2f);
-    private final GlobalState collected = new GlobalState(State.COLLECTED, 0.8f);
+    private final Vertex idle = new Vertex(State.IDLE, 0.5f);
+    private final Vertex selected = new Vertex(State.SELECTED, 0.2f);
+    private final Vertex deselected = new Vertex(State.DESELECTED, 0.2f);
+    private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
     protected String name = "No name";
     protected String description = "No description";
     protected int occurringPercentage = 0;
@@ -67,7 +67,7 @@ public abstract class PowerUp extends Collectable {
         return description;
     }
 
-    public GlobalState getState(CommonState commState) {
+    public Vertex getState(CommonState commState) {
         State powerUpState = (State) commState;
         return switch (powerUpState) {
             case IDLE -> idle;

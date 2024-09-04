@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class EnvironmentUpdateController implements Update {
+public final class EnvironmentUpdateController implements Update {
     private final EnvironmentController environmentController;
     private final List<Environment> environments = new ArrayList<>();
     private final List<Environment> environmentsToAdd;

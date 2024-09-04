@@ -7,7 +7,7 @@ import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 
-public class HealthController {
+public final class HealthController {
     private final Chamber chamber;
     private final HUDController hudController;
 

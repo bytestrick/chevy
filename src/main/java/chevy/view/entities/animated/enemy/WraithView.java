@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.enemy;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Wraith;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Vector2;
@@ -18,7 +18,7 @@ public class WraithView extends AnimatedEntityView {
         super();
         this.wraith = wraith;
         this.currentViewPosition = new Vector2<>((double) wraith.getCol(), (double) wraith.getRow());
-        currentGlobalState = wraith.getState(wraith.getCurrentState());
+        currentVertex = wraith.getState(wraith.getCurrentState());
 
         float duration = wraith.getState(wraith.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentViewPosition.first, wraith.getCol(), duration,
@@ -81,7 +81,7 @@ public class WraithView extends AnimatedEntityView {
     }
 
     private int getAnimationType(CommonState currentState) {
-        DirectionsModel currentDirection = wraith.getDirection();
+        Direction currentDirection = wraith.getDirection();
         return switch (currentState) {
             case Wraith.State.ATTACK, Wraith.State.IDLE, Wraith.State.MOVE -> switch (currentDirection) {
                 case UP -> 0;
@@ -90,7 +90,7 @@ public class WraithView extends AnimatedEntityView {
                 case LEFT -> 3;
             };
             case Wraith.State.DEAD -> {
-                if (currentDirection == DirectionsModel.RIGHT) {
+                if (currentDirection == Direction.RIGHT) {
                     yield 1;
                 } else {
                     yield 0;
@@ -102,11 +102,11 @@ public class WraithView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (currentGlobalState.isFinished()) {
-            currentGlobalState = wraith.getState(wraith.getCurrentState());
+        if (currentVertex.isFinished()) {
+            currentVertex = wraith.getState(wraith.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
-            float duration = currentGlobalState.getDuration();
+            float duration = currentVertex.getDuration();
             moveInterpolationX.changeStart(currentViewPosition.first);
             moveInterpolationX.changeEnd(wraith.getCol());
             moveInterpolationX.changeDuration(duration);

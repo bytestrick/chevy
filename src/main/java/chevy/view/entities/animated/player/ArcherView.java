@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.player;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Archer;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.stateMachine.CommonState;
@@ -20,7 +20,7 @@ public class ArcherView extends AnimatedEntityView {
         super();
         this.archer = archer;
         currentViewPosition = new Vector2<>((double) archer.getCol(), (double) archer.getRow());
-        currentGlobalState = archer.getState(archer.getCurrentState());
+        currentVertex = archer.getState(archer.getCurrentState());
 
         float duration = archer.getState(archer.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentViewPosition.first, archer.getCol(), duration,
@@ -91,7 +91,7 @@ public class ArcherView extends AnimatedEntityView {
     }
 
     private int getAnimationType(CommonState currentState) {
-        DirectionsModel currentDirection = archer.getDirection();
+        Direction currentDirection = archer.getDirection();
         return switch (currentState) {
             case Player.State.ATTACK, Player.State.IDLE, Player.State.MOVE, Player.State.HIT ->
                     switch (currentDirection) {
@@ -101,7 +101,7 @@ public class ArcherView extends AnimatedEntityView {
                         case LEFT -> 3;
                     };
             case Player.State.GLIDE, Player.State.SLUDGE, Player.State.DEAD, Player.State.FALL -> {
-                if (currentDirection == DirectionsModel.RIGHT) {
+                if (currentDirection == Direction.RIGHT) {
                     yield 0;
                 } else {
                     yield 1;
@@ -113,11 +113,11 @@ public class ArcherView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (currentGlobalState.isFinished()) {
-            currentGlobalState = archer.getState(archer.getCurrentState());
+        if (currentVertex.isFinished()) {
+            currentVertex = archer.getState(archer.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
-            float duration = currentGlobalState.getDuration();
+            float duration = currentVertex.getDuration();
             moveInterpolationX.changeStart(currentViewPosition.first);
             moveInterpolationX.changeEnd(archer.getCol());
             moveInterpolationX.changeDuration(duration);

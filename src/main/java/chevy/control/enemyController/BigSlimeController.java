@@ -5,7 +5,7 @@ import chevy.control.PlayerController;
 import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.BigSlime;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
@@ -18,7 +18,7 @@ import chevy.utils.Log;
  * Gestisce come il BigSlime risponde agli attacchi del giocatore, ai colpi dei proiettili e coordina il suo stato e
  * i suoi movimenti.
  */
-public class BigSlimeController {
+public final class BigSlimeController {
     /**
      * Riferimento alla stanza di gioco in cui si trova il BigSlime. Utilizzato per verificare le posizioni,
      * aggiungere/rimuovere entità e gestire le interazioni.
@@ -48,7 +48,7 @@ public class BigSlimeController {
         switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, il BigSlime viene danneggiato in base al danno del giocatore.
             case Player.State.ATTACK -> {
-                bigSlime.setDirection(DirectionsModel.positionToDirection(player, bigSlime));
+                bigSlime.setDirection(Direction.positionToDirection(player, bigSlime));
                 hitBigSlime(bigSlime, -1 * player.getDamage());
             }
             default -> Log.warn("Il BigSlimeController non gestisce questa azione");
@@ -81,14 +81,14 @@ public class BigSlimeController {
 
         // Movimento e attacco
         if (bigSlime.canChange(BigSlime.State.MOVE)) {
-            DirectionsModel direction = chamber.getHitDirectionPlayer(bigSlime);
+            Direction direction = chamber.getDirectionToHitPlayer(bigSlime);
             if (direction == null) {
                 if (chamber.wanderChasePlus(bigSlime, 3)) {
                     bigSlime.changeState(BigSlime.State.MOVE);
                     bigSlime.setCanAttack(false);
                 }
             } else if (bigSlime.canChange(BigSlime.State.ATTACK)) {
-                Entity entity = chamber.getNearEntityOnTop(bigSlime, direction);
+                Entity entity = chamber.getEntityNearOnTop(bigSlime, direction);
                 if (entity instanceof Player && bigSlime.changeState(BigSlime.State.ATTACK)) {
                     Sound.play(Sound.Effect.SLIME_HIT);
                     bigSlime.setCanAttack(true);
@@ -97,9 +97,9 @@ public class BigSlimeController {
         }
 
         if (bigSlime.canAttack() && bigSlime.getState(BigSlime.State.ATTACK).isFinished()) {
-            DirectionsModel direction = chamber.getHitDirectionPlayer(bigSlime);
+            Direction direction = chamber.getDirectionToHitPlayer(bigSlime);
             if (direction != null) {
-                Entity entity = chamber.getNearEntityOnTop(bigSlime, direction);
+                Entity entity = chamber.getEntityNearOnTop(bigSlime, direction);
                 if (entity instanceof Player) {
                     Sound.play(Sound.Effect.SLIME_HIT);
                     playerController.handleInteraction(Interaction.ENEMY, bigSlime);
@@ -120,7 +120,7 @@ public class BigSlimeController {
      * @param bigSlime   il BigSlime che subisce l'interazione
      */
     public void projectileInteraction(Projectile projectile, BigSlime bigSlime) {
-        bigSlime.setDirection(DirectionsModel.positionToDirection(projectile, bigSlime));
+        bigSlime.setDirection(Direction.positionToDirection(projectile, bigSlime));
         hitBigSlime(bigSlime, -1 * projectile.getDamage());
     }
 

@@ -19,12 +19,19 @@ import java.util.Objects;
 /**
  * Dati dell'app in formato
  * <a href="https://ecma-international.org/publications-and-standards/standards/ecma-404/">JSON</a>
- * persistenti attraverso esecuzioni.
+ * persistenti attraverso esecuzioni
  */
-public class Data {
+public final class Data {
+    /** Posizione del file determinata alla creazione dell'app */
     private static final File file = findFile();
-    private static String root; // È un oggetto JSON: {...}
+    /** La radice della struttura, è un <code>JSON Object</code> */
+    private static String root;
 
+    /**
+     * @param path per il dato desiderato
+     * @return il valore contenuto a quel percorso
+     * @param <T> può essere qualsiasi cosa
+     */
     public synchronized static <T> T get(String path) {
         if (root == null) {
             read();
@@ -32,6 +39,10 @@ public class Data {
         return JsonPath.read(root, "$." + path);
     }
 
+    /**
+     * @param path per il dato che si vuole modificare
+     * @param value il valore da impostare
+     */
     public synchronized static void set(String path, Object value) {
         if (root == null) {
             read();
@@ -40,7 +51,7 @@ public class Data {
     }
 
     /**
-     * Assicura che il file JSON esista e sia utilizzabile.
+     * Assicura che il file JSON esista e sia utilizzabile
      */
     private static void checkFile() {
         if (file.exists()) {
@@ -60,7 +71,7 @@ public class Data {
     }
 
     /**
-     * Crea il file JSON con i dati predefiniti.
+     * Crea il file JSON con i dati predefiniti
      */
     public static void createPristineFile() {
         try {
@@ -99,7 +110,7 @@ public class Data {
     }
 
     /**
-     * Carica il contenuto del file JSON in root.
+     * Carica il contenuto del file JSON in {@link #root}
      */
     public static void read() {
         checkFile();
@@ -111,7 +122,7 @@ public class Data {
     }
 
     /**
-     * Salva root nel file JSON e lo invalida, cosicché al prossimo utilizzo andrà ricaricato.
+     * Salva {@link #root} nel file JSON e lo invalida, cosicché al prossimo utilizzo andrà ricaricato
      */
     public static void write() {
         if (root != null) {

@@ -25,7 +25,7 @@ import java.awt.Toolkit;
 /**
  * Finestra principale
  */
-public class Window extends JFrame {
+public final class Window extends JFrame {
     public static final Color bg = new Color(24, 20, 37);
     private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private static final Dimension aspectRatio = new Dimension(4, 3);
@@ -52,9 +52,10 @@ public class Window extends JFrame {
     private Options options = new Options(this);
     private Menu menu = new Menu(this);
     private Scene scene;
+    private WindowController windowController;
 
     public Window(boolean resizable) {
-        new WindowController(this);
+        windowController = new WindowController(this);
         setSize(size);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -100,10 +101,6 @@ public class Window extends JFrame {
         UIManager.put("defaultFont", Load.font("VT323"));
         new Window(true);
     }
-
-    public GamePanel getGamePanel() {return gamePanel;}
-
-    public Menu getMenu() {return menu;}
 
     /**
      * Unico punto di uscita (corretto) dall'app.
@@ -170,6 +167,12 @@ public class Window extends JFrame {
             validate();
         }
     }
+
+    public GamePanel getGamePanel() {return gamePanel;}
+
+    public Menu getMenu() {return menu;}
+
+    public WindowController getWindowController() {return windowController;}
 
     public enum Scene {MENU, PLAYING, OPTIONS}
 }

@@ -10,7 +10,7 @@ import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.Stair;
 import chevy.view.GamePanel;
 
-public class EnvironmentController {
+public final class EnvironmentController {
     private final ChestController chestController;
 
     public EnvironmentController(Chamber chamber, HUDController hudController, GamePanel gamePanel) {

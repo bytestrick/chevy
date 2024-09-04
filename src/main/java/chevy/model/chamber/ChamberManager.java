@@ -28,7 +28,7 @@ import java.util.Objects;
  * Utilizza il pattern Singleton per garantire che esista una sola istanza di ChamberManager.
  */
 public class ChamberManager {
-    public static final int NUMBER_OF_CHAMBERS = 6;
+    public static final int NUMBER_OF_CHAMBERS = 7;
     private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
     /** Indice della stanza corrente nel gioco. */
     private static int currentChamberIndex = 0;

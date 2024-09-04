@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.enemy;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Vector2;
@@ -18,7 +18,7 @@ public class SkeletonView extends AnimatedEntityView {
         super();
         this.skeleton = skeleton;
         this.currentViewPosition = new Vector2<>((double) skeleton.getCol(), (double) skeleton.getRow());
-        currentGlobalState = skeleton.getState(skeleton.getCurrentState());
+        currentVertex = skeleton.getState(skeleton.getCurrentState());
 
         float duration = skeleton.getState(skeleton.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentViewPosition.first, skeleton.getCol(), duration,
@@ -81,7 +81,7 @@ public class SkeletonView extends AnimatedEntityView {
     }
 
     private int getAnimationType(CommonState currentState) {
-        DirectionsModel currentDirection = skeleton.getDirection();
+        Direction currentDirection = skeleton.getDirection();
         return switch (currentState) {
             case Skeleton.State.ATTACK, Skeleton.State.IDLE, Skeleton.State.MOVE -> switch (currentDirection) {
                 case UP -> 0;
@@ -90,7 +90,7 @@ public class SkeletonView extends AnimatedEntityView {
                 case LEFT -> 3;
             };
             case Skeleton.State.DEAD -> {
-                if (currentDirection == DirectionsModel.RIGHT) {
+                if (currentDirection == Direction.RIGHT) {
                     yield 1;
                 } else {
                     yield 0;
@@ -102,11 +102,11 @@ public class SkeletonView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (currentGlobalState.isFinished()) {
-            currentGlobalState = skeleton.getState(skeleton.getCurrentState());
+        if (currentVertex.isFinished()) {
+            currentVertex = skeleton.getState(skeleton.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
-            float duration = currentGlobalState.getDuration();
+            float duration = currentVertex.getDuration();
             moveInterpolationX.changeStart(currentViewPosition.first);
             moveInterpolationX.changeEnd(skeleton.getCol());
             moveInterpolationX.changeDuration(duration);

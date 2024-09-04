@@ -3,7 +3,7 @@ package chevy.view.hud;
 import chevy.view.component.MyPanelUI;
 import chevy.view.component.ProgressBar;
 
-public class HealthBar extends ProgressBar {
+public final class HealthBar extends ProgressBar {
     private static final String PROGRESS_BAR_PATH = "/sprites/component/progressBar/";
     private static final String HEALTH_BAR_PATH = PROGRESS_BAR_PATH + "healthBar/";
 

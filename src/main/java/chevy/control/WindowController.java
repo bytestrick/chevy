@@ -14,8 +14,8 @@ import java.awt.event.WindowListener;
 /**
  * Cattura gli eventi di Window
  */
-public class WindowController implements WindowListener, KeyListener, ComponentListener {
-    public static PlayerController playerController;
+public final class WindowController implements WindowListener, KeyListener, ComponentListener {
+    private PlayerController playerController;
     private final Window window;
 
     public WindowController(final Window window) {
@@ -65,10 +65,7 @@ public class WindowController implements WindowListener, KeyListener, ComponentL
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         switch (window.getScene()) {
-            case Window.Scene.PLAYING -> {
-                assert playerController != null;
-                playerController.keyPressed(keyEvent);
-            }
+            case Window.Scene.PLAYING -> playerController.keyPressed(keyEvent);
             case Window.Scene.MENU -> window.getMenu().handleKeyPress(keyEvent);
         }
     }
@@ -90,4 +87,8 @@ public class WindowController implements WindowListener, KeyListener, ComponentL
 
     @Override
     public void componentHidden(ComponentEvent e) {}
+
+    public void setPlayerController(PlayerController playerController) {
+        this.playerController = playerController;
+    }
 }

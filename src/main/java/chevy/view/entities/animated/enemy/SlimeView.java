@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.enemy;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Vector2;
@@ -18,7 +18,7 @@ public class SlimeView extends AnimatedEntityView {
         super();
         this.slime = slime;
         this.currentViewPosition = new Vector2<>((double) slime.getCol(), (double) slime.getRow());
-        currentGlobalState = slime.getState(slime.getCurrentState());
+        currentVertex = slime.getState(slime.getCurrentState());
 
         float duration = slime.getState(slime.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentViewPosition.first, slime.getCol(), duration,
@@ -71,7 +71,7 @@ public class SlimeView extends AnimatedEntityView {
     }
 
     private int getAnimationType(CommonState currentState) {
-        DirectionsModel currentDirection = slime.getDirection();
+        Direction currentDirection = slime.getDirection();
         return switch (currentState) {
             case Slime.State.ATTACK -> switch (currentDirection) {
                 case UP -> 0;
@@ -85,11 +85,11 @@ public class SlimeView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (currentGlobalState.isFinished()) {
-            currentGlobalState = slime.getState(slime.getCurrentState());
+        if (currentVertex.isFinished()) {
+            currentVertex = slime.getState(slime.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
-            float duration = currentGlobalState.getDuration();
+            float duration = currentVertex.getDuration();
             moveInterpolationX.changeStart(currentViewPosition.first);
             moveInterpolationX.changeEnd(slime.getCol());
             moveInterpolationX.changeDuration(duration);

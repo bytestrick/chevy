@@ -7,12 +7,12 @@ import java.util.Objects;
 /**
  * Rappresenta uno stato all'interno di una macchina a stati.
  */
-public class GlobalState {
+public class Vertex {
     private final CommonState commonState; // L'enumerazione associata a questo stato.
     private final boolean selfEdge; // Indica se questo stato ha un auto-arco.
     private final float duration; // La durata di questo stato.
     // Gli stati collegati a questo stato.
-    private final Dictionary<CommonState, GlobalState> linkedStates = new Hashtable<>();
+    private final Dictionary<CommonState, Vertex> linkedStates = new Hashtable<>();
     private final Timer timer;
 
     /**
@@ -20,7 +20,7 @@ public class GlobalState {
      *
      * @param commonState l'enumerazione associata a questo stato
      */
-    public GlobalState(CommonState commonState) {
+    public Vertex(CommonState commonState) {
         this.commonState = commonState;
         this.selfEdge = false;
         this.duration = 0.f;
@@ -33,7 +33,7 @@ public class GlobalState {
      * @param commonState l'enumerazione associata a questo stato
      * @param secDuration la durata di questo stato in secondi
      */
-    public GlobalState(CommonState commonState, float secDuration) {
+    public Vertex(CommonState commonState, float secDuration) {
         this.commonState = commonState;
         this.selfEdge = false;
         this.duration = secDuration;
@@ -46,7 +46,7 @@ public class GlobalState {
      * @param commonState l'enumerazione associata a questo stato
      * @param selfEdge    indica se questo stato ha un auto-arco
      */
-    public GlobalState(CommonState commonState, boolean selfEdge) {
+    public Vertex(CommonState commonState, boolean selfEdge) {
         this.commonState = commonState;
         this.selfEdge = selfEdge;
         this.duration = 0.f;
@@ -60,7 +60,7 @@ public class GlobalState {
      * @param duration    la durata di questo stato in secondi
      * @param selfEdge    indica se questo stato ha un auto-arco
      */
-    public GlobalState(CommonState commonState, float duration, boolean selfEdge) {
+    public Vertex(CommonState commonState, float duration, boolean selfEdge) {
         this.commonState = commonState;
         this.selfEdge = selfEdge;
         this.duration = duration;
@@ -79,10 +79,10 @@ public class GlobalState {
     /**
      * Collega un altro stato a questo stato.
      *
-     * @param globalState lo stato da collegare a questo stato
+     * @param vertex lo stato da collegare a questo stato
      */
-    public void linkState(GlobalState globalState) {
-        linkedStates.put(globalState.getState(), globalState);
+    public void linkState(Vertex vertex) {
+        linkedStates.put(vertex.getState(), vertex);
     }
 
     /**
@@ -91,7 +91,7 @@ public class GlobalState {
      * @param commonEnumStates l'enumerazione dello stato da trovare
      * @return lo stato collegato a questo stato, o null se non esiste
      */
-    public GlobalState findLinkedState(CommonState commonEnumStates) {
+    public Vertex findLinkedState(CommonState commonEnumStates) {
         if (selfEdge && Objects.equals(this.commonState, commonEnumStates)) {
             return this;
         }
@@ -139,8 +139,8 @@ public class GlobalState {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        GlobalState globalState1 = (GlobalState) o;
-        return Objects.equals(commonState, globalState1.commonState);
+        Vertex vertex1 = (Vertex) o;
+        return Objects.equals(commonState, vertex1.commonState);
     }
 
     @Override

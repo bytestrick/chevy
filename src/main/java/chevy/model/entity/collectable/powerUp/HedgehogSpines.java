@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.utils.Vector2;
 
-public class HedgehogSpines extends PowerUp {
+public final class HedgehogSpines extends PowerUp {
     private final float damagePercentage = 0.2f;
 
     public HedgehogSpines(Vector2<Integer> initVelocity) {

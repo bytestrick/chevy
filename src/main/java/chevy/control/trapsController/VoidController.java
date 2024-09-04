@@ -8,7 +8,7 @@ import chevy.model.entity.staticEntity.environment.traps.Void;
 /**
  * Controller per gestire l'interazione del giocatore con la trappola Void.
  */
-public class VoidController {
+public final class VoidController {
     /**
      * Controller del giocatore per gestire l'interazioni con il giocatore
      */

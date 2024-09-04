@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.utils.Vector2;
 
-public class HealingFlood extends PowerUp {
+public final class HealingFlood extends PowerUp {
     private final float increaseDropPercentage = .3f;
 
     public HealingFlood(Vector2<Integer> initVelocity) {

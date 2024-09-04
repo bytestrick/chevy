@@ -12,7 +12,7 @@ import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
 /**
  * Gestisce le interazioni e gli aggiornamenti specifici dei proiettili di tipo Slime Shot nel gioco.
  */
-public class SlimeShotController {
+public final class SlimeShotController {
     private final Chamber chamber;
     private final PlayerController playerController;
     private final EnemyController enemyController;
@@ -48,7 +48,7 @@ public class SlimeShotController {
      */
     public void update(SlimeShot projectile) {
         if (projectile.checkAndChangeState(SlimeShot.State.LOOP)) {
-            Entity nextEntity = chamber.getNearEntityOnTop(projectile, projectile.getDirection());
+            Entity nextEntity = chamber.getEntityNearOnTop(projectile, projectile.getDirection());
 
             switch (nextEntity.getGenericType()) {
                 case LiveEntity.Type.PLAYER ->
