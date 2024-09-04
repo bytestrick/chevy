@@ -1,6 +1,7 @@
 package chevy.view;
 
 import chevy.control.WindowController;
+import chevy.model.Statistics;
 import chevy.service.Data;
 import chevy.service.Sound;
 import chevy.utils.Load;
@@ -120,6 +121,7 @@ public class Window extends JFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, new String[]{"Si",
                         "No"}, "No") == 0) {
             Log.info("Salvataggio dei dati ...");
+            Statistics.saveAll();
             Data.write();
             Log.info("Chevy: TERMINAZIONE");
             System.exit(0);
@@ -134,6 +136,7 @@ public class Window extends JFrame {
         menu = new Menu(this);
         gamePanel = new GamePanel(this);
         options = new Options(this);
+        gamePanel.windowResized(Window.scale);
     }
 
     public Scene getScene() {return scene;}
@@ -162,6 +165,7 @@ public class Window extends JFrame {
                 }
                 case OPTIONS -> {
                     setTitle("Chevy - Opzioni");
+                    options.updateStatistics();
                     yield options.root;
                 }
             };

@@ -27,22 +27,22 @@ public abstract class PowerUp extends Collectable {
 
     public static PowerUp getPowerUp(Vector2<Integer> position) {
         return switch (Type.getRandom()) {
-            case HOLY_SHIELD -> new HolyShield(position);
-            case VAMPIRE_FANGS -> new VampireFangs(position);
-            case ANGEL_RING -> new AngelRing(position);
-            case LONG_SWORD -> new LongSword(position);
-            case HOBNAIL_BOOTS -> new HobnailBoots(position);
-            case COIN_OF_GREED -> new CoinOfGreed(position);
-            case HOT_HEART -> new HotHeart(position);
-            case COLD_HEART -> new ColdHeart(position);
-            case STONE_BOOTS -> new StoneBoots(position);
-            case BROKEN_ARROWS -> new BrokenArrows(position);
             case AGILITY -> new Agility(position);
-            case HEDGEHOG_SPINES -> new HedgehogSpines(position);
-            case SLIME_PIECE -> new SlimePiece(position);
+            case ANGEL_RING -> new AngelRing(position);
+            case BROKEN_ARROWS -> new BrokenArrows(position);
+            case COIN_OF_GREED -> new CoinOfGreed(position);
+            case COLD_HEART -> new ColdHeart(position);
             case GOLD_ARROW -> new GoldArrow(position);
             case HEALING_FLOOD -> new HealingFlood(position);
+            case HEDGEHOG_SPINES -> new HedgehogSpines(position);
+            case HOBNAIL_BOOTS -> new HobnailBoots(position);
+            case HOLY_SHIELD -> new HolyShield(position);
+            case HOT_HEART -> new HotHeart(position);
             case KEY_S_KEEPER -> new KeySKeeper(position);
+            case LONG_SWORD -> new LongSword(position);
+            case SLIME_PIECE -> new SlimePiece(position);
+            case STONE_BOOTS -> new StoneBoots(position);
+            case VAMPIRE_FANGS -> new VampireFangs(position);
         };
     }
 

@@ -2,6 +2,7 @@ package chevy.control.enemyController;
 
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
+import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dynamicEntity.DirectionsModel;
@@ -67,6 +68,8 @@ public class ZombieController {
                 zombie.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(zombie);
+                Statistics.increase(Statistics.KILLED_ENEMY, 1);
+                Statistics.increase(Statistics.KILLED_ZOMBIE, 1);
                 return;
             }
         } else if (zombie.getCurrentHealth() <= 0 && zombie.checkAndChangeState(Zombie.State.DEAD)) {

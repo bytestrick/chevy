@@ -3,6 +3,7 @@ package chevy.control.collectableController;
 import chevy.control.HUDController;
 import chevy.control.enemyController.EnemyUpdateController;
 import chevy.control.projectileController.ProjectileUpdateController;
+import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.powerUp.*;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
@@ -26,8 +27,29 @@ public class PowerUpController {
             powerUp.collect();
             chamber.findAndRemoveEntity(powerUp);
             hudController.hidePowerUpText();
-            if (player.acquirePowerUp((PowerUp.Type) powerUp.getSpecificType(), powerUp))
+            if (player.acquirePowerUp((PowerUp.Type) powerUp.getSpecificType(), powerUp)) {
                 hudController.addPowerUpIcon(powerUp);
+                Statistics.increase(Statistics.COLLECTED_POWER_UP, 1);
+
+                switch ((PowerUp.Type) powerUp.getSpecificType()) {
+                    case HOLY_SHIELD -> Statistics.increase(Statistics.COLLECTED_HOLY_SHIELD, 1);
+                    case VAMPIRE_FANGS -> Statistics.increase(Statistics.COLLECTED_VAMPIRE_FANGS, 1);
+                    case ANGEL_RING -> Statistics.increase(Statistics.COLLECTED_ANGEL_RING, 1);
+                    case LONG_SWORD -> Statistics.increase(Statistics.COLLECTED_LONG_SWORD, 1);
+                    case HOBNAIL_BOOTS -> Statistics.increase(Statistics.COLLECTED_HOBNAIL_BOOTS, 1);
+                    case COIN_OF_GREED -> Statistics.increase(Statistics.COLLECTED_COIN_OF_GREED, 1);
+                    case HOT_HEART -> Statistics.increase(Statistics.COLLECTED_HOT_HEART, 1);
+                    case COLD_HEART -> Statistics.increase(Statistics.COLLECTED_COLD_HEART, 1);
+                    case STONE_BOOTS -> Statistics.increase(Statistics.COLLECTED_STONE_BOOTS, 1);
+                    case BROKEN_ARROWS -> Statistics.increase(Statistics.COLLECTED_BROKEN_ARROWS, 1);
+                    case AGILITY -> Statistics.increase(Statistics.COLLECTED_AGILITY, 1);
+                    case HEDGEHOG_SPINES -> Statistics.increase(Statistics.COLLECTED_HEDGEHOG_SPINES, 1);
+                    case SLIME_PIECE -> Statistics.increase(Statistics.COLLECTED_SLIME_PIECE, 1);
+                    case GOLD_ARROW -> Statistics.increase(Statistics.COLLECTED_GOLD_ARROWS, 1);
+                    case HEALING_FLOOD -> Statistics.increase(Statistics.COLLECTED_HEALING_FLOOD, 1);
+                    case KEY_S_KEEPER -> Statistics.increase(Statistics.COLLECTED_KEY_S_KEEPER, 1);
+                }
+            }
 
             switch (powerUp.getSpecificType()) {
                 case PowerUp.Type.COIN_OF_GREED -> {

@@ -42,7 +42,7 @@ public class Utils {
      *         <li> l'indice 0 ha il 10% di possibilità di essere estratto </li>
      *         <li> l'indice 1 ha il 50% di possibilità di essere estratto </li>
      *     </ul>
-     * p/>
+     * <p/>
      */
     public static int isOccurring(int[] occurringPercentages) {
         List<Integer> result = new ArrayList<>();
