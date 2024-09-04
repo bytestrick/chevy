@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
@@ -48,7 +48,7 @@ public class ZombieController {
         switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, lo Zombie viene danneggiato in base al danno del giocatore.
             case Player.State.ATTACK -> {
-                Sound.getInstance().play(Sound.Effect.ZOMBIE_HIT);
+                Sound.play(Sound.Effect.ZOMBIE_HIT);
                 zombie.setDirection(DirectionsModel.positionToDirection(player, zombie));
                 hitZombie(zombie, -1 * player.getDamage());
             }
@@ -73,7 +73,7 @@ public class ZombieController {
                 return;
             }
         } else if (zombie.getCurrentHealth() <= 0 && zombie.checkAndChangeState(Zombie.State.DEAD)) {
-            Sound.getInstance().play(Sound.Effect.ZOMBIE_CHOCKING);
+            Sound.play(Sound.Effect.ZOMBIE_CHOCKING);
             chamber.spawnSlime(zombie); // power up
             zombie.kill();
         }
@@ -98,8 +98,8 @@ public class ZombieController {
             if (direction != null) {
                 Entity entity = chamber.getNearEntityOnTop(zombie, direction);
                 if (entity instanceof Player) {
-                    Sound.getInstance().play(Sound.Effect.ZOMBIE_BITE);
-                    playerController.handleInteraction(InteractionType.ENEMY, zombie);
+                    Sound.play(Sound.Effect.ZOMBIE_BITE);
+                    playerController.handleInteraction(Interaction.ENEMY, zombie);
                     zombie.setCanAttack(false);
                 }
             }

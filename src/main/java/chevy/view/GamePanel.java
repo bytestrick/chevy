@@ -76,7 +76,7 @@ public class GamePanel extends JPanel {
     public void pauseDialog() {
         if (!(pauseDialogActive || playerDeathDialogActive || winDialogActive)) {
             window.setTitle("Chevy - Pausa");
-            GameLoop.getInstance().stop();
+            GameLoop.stop();
             boolean pauseMusic = true;
             pauseDialogActive = true;
             switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa " + "fare" +
@@ -85,12 +85,11 @@ public class GamePanel extends JPanel {
                     "Riprendi")) {
                 case 0 -> {
                     pauseDialogActive = false;
-                    if (window.quitAction()) {
-                        pauseDialog();
-                    }
+                    window.quitAction();
+                    pauseDialog();
                 }
                 case 1 -> {
-                    GameLoop.getInstance().stop();
+                    GameLoop.stop();
                     pauseMusic = false;
                     window.setScene(Window.Scene.OPTIONS);
                 }
@@ -99,7 +98,7 @@ public class GamePanel extends JPanel {
                             "progresso. Continuare?", null, JOptionPane.DEFAULT_OPTION,
                             JOptionPane.PLAIN_MESSAGE, caution, new String[]{"Si", "No"}, "No") == 0) {
                         window.setScene(Window.Scene.MENU);
-                        GameLoop.getInstance().stop();
+                        GameLoop.stop();
                     } else {
                         pauseDialogActive = false;
                         pauseDialog();
@@ -108,14 +107,14 @@ public class GamePanel extends JPanel {
                 default -> { // e case 3
                     // Considera anche il caso in cui l'utente chiude la
                     // finestra di dialogo.
-                    GameLoop.getInstance().start();
+                    GameLoop.start();
                     pauseMusic = false;
-                    Sound.getInstance().resumeMusic();
+                    Sound.resumeMusic();
                     window.setTitle("Chevy");
                 }
             }
             if (pauseMusic)
-                Sound.getInstance().pauseMusic();
+                Sound.pauseMusic();
             pauseDialogActive = false;
         }
     }
@@ -125,16 +124,15 @@ public class GamePanel extends JPanel {
      */
     public void playerDeathDialog() {
         playerDeathDialogActive = true;
-        GameLoop.getInstance().stop();
+        GameLoop.stop();
         boolean pauseMusic = true;
 
         switch (JOptionPane.showOptionDialog(window, deathMessages[Utils.random.nextInt(deathMessages.length)],
                 "Chevy - Morte", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, skull, new String[]{"Esci",
                         "Torna al menù", "Rigioca livello"}, "Rigioca livello")) {
             case 0 -> {
-                if (window.quitAction()) {
-                    playerDeathDialog();
-                }
+                window.quitAction();
+                playerDeathDialog();
             }
             case 1 -> window.setScene(Window.Scene.MENU);
             case 2 ->  {
@@ -145,13 +143,13 @@ public class GamePanel extends JPanel {
         }
 
         if (pauseMusic)
-            Sound.getInstance().pauseMusic();
+            Sound.pauseMusic();
         playerDeathDialogActive = false;
     }
 
     public void winDialog() {
         winDialogActive = true;
-        GameLoop.getInstance().stop();
+        GameLoop.stop();
         boolean pauseMusic = true;
         String[] option = new String[]{"Esci", "Torna al menù", "Rigioca livello", "Continua"};
         int defaultOption = 3;
@@ -167,11 +165,7 @@ public class GamePanel extends JPanel {
                 JOptionPane.PLAIN_MESSAGE,
                 trophy,
                 option, option[defaultOption])) {
-            case 0 -> {
-                if (window.quitAction()) {
-                    winDialog();
-                }
-            }
+            case 0 -> window.quitAction();
             case 1 -> window.setScene(Window.Scene.MENU);
             case 2 -> {
                 pauseMusic = false;
@@ -185,7 +179,7 @@ public class GamePanel extends JPanel {
         }
 
         if (pauseMusic)
-            Sound.getInstance().pauseMusic();
+            Sound.pauseMusic();
         winDialogActive = false;
     }
 

@@ -44,14 +44,15 @@ public class Data {
      */
     private static void checkFile() {
         if (file.exists()) {
+            final String path = file.getAbsolutePath();
             if (file.isDirectory()) {
-                throw new RuntimeException(file.getAbsolutePath() + " is a directory, move it or remove it.");
+                throw new RuntimeException(path + " is a directory, move it or remove it.");
             }
             if (!file.canRead()) {
-                throw new RuntimeException(file.getAbsolutePath() + " is not readable, check its permissions.");
+                throw new RuntimeException(path + " is not readable, check its permissions.");
             }
             if (!file.canWrite()) {
-                throw new RuntimeException(file.getAbsolutePath() + " is not writeable, check its permissions.");
+                throw new RuntimeException(path + " is not writeable, check its permissions.");
             }
         } else {
             createPristineFile();
@@ -71,7 +72,8 @@ public class Data {
                 }
             }
             URL url = Data.class.getResource("/defaultChevyData.json");
-            // .toURI() risolve il problema per cui il path comincia con / su window, es: /C:/Users/...
+            // .toURI() risolve il problema per cui il path comincia con / su window, es:
+            // /C:/Users/...
             Path from = Paths.get(Objects.requireNonNull(url).toURI());
             Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
             root = null;
@@ -82,9 +84,11 @@ public class Data {
     }
 
     /**
-     * Il file JSON è salvato nella cartella dei dati dell'utente. Per esempio, su un sistema POSIX aderente a
+     * Il file JSON è salvato nella cartella dei dati dell'utente. Per esempio, su un sistema
+     * POSIX aderente a
      * <a href="https://specifications.freedesktop.org/basedir-spec/0.6/">XDG Base Directory Specification</a>
-     * la posizione sarà <code>$XDG_DATA_HOME/chevy/data.json</code>. Mentre su MS Windows la posizione sarà
+     * la posizione sarà <code>$XDG_DATA_HOME/chevy/data.json</code>. Mentre su MS Windows la
+     * posizione sarà
      * <code>%LocalAppData%\chevy\data.json</code>.
      */
     private static File findFile() {

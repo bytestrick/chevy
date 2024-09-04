@@ -1,7 +1,7 @@
 package chevy.control.environmentController;
 
 import chevy.control.HUDController;
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
@@ -18,7 +18,7 @@ public class EnvironmentController {
         StairController.setGamePanel(gamePanel);
     }
 
-    public synchronized void handleInteraction(InteractionType interaction, Entity subject, Entity object) {
+    public synchronized void handleInteraction(Interaction interaction, Entity subject, Entity object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, (Environment) object);
             case UPDATE -> updateTraps((Environment) subject);

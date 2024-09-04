@@ -7,43 +7,41 @@ import java.awt.Toolkit;
 /**
  * Il thread che aggiorna il gioco
  */
-public class GameLoop implements Runnable {
+public class GameLoop {
     /** FPS del gioco */
     public static final int TARGET_FRAME_RATE = 60;
-    private static GameLoop instance;
+    private static final Thread.Builder.OfPlatform worker =
+            Thread.ofPlatform().priority(Thread.MAX_PRIORITY);
+    private static final Object mutex = new Object();
     private static boolean isRunning;
-    private static Thread worker;
     private static boolean isPaused = false;
 
-    public static GameLoop getInstance() {
-        if (instance == null) {
-            instance = new GameLoop();
-        }
-        return instance;
-    }
-
-    public synchronized void start() {
-        isPaused = false;
-        isRunning = true;
-        if (worker == null) {
-            worker = Thread.ofPlatform().priority(Thread.MAX_PRIORITY).start(this);
-        } else {
-            notify();
+    public static void start() {
+        synchronized (mutex) {
+            isPaused = false;
+            if (!isRunning) {
+                isRunning = true;
+                worker.start(GameLoop::run);
+            } else {
+                mutex.notify();
+            }
         }
     }
 
-    public synchronized void stop() {
-        if (!isPaused) {
-            isPaused = true;
-            notify();
+    public static void stop() {
+        synchronized (mutex) {
+            if (!isPaused) {
+                isPaused = true;
+                mutex.notify();
+            }
         }
     }
 
     /**
-     * A intervalli calcolati aggiorna il model tramite UpdateManager e view tramite RenderManager
+     * A intervalli calcolati aggiorna il model tramite {@link UpdateManager} e view tramite
+     * {@link RenderManager}
      */
-    @Override
-    public void run() {
+    private static void run() {
         Log.info("Game loop avviato");
         final int frameDuration = 1000 / TARGET_FRAME_RATE;
         long lastTime = System.currentTimeMillis();
@@ -51,23 +49,22 @@ public class GameLoop implements Runnable {
             final long timeToWait = frameDuration - (System.currentTimeMillis() - lastTime);
             if (timeToWait > 0 && timeToWait <= frameDuration) {
                 try {
-                    synchronized (this) {
-                        wait(timeToWait);
+                    synchronized (mutex) {
+                        mutex.wait(timeToWait);
                         while (isPaused) {
                             Log.info("Game loop in pausa");
-                            wait();
+                            mutex.wait();
                         }
                     }
                 } catch (InterruptedException ignored) {}
             }
-            final double delta = (System.currentTimeMillis() - lastTime) / 1000.0d; //
-            // conversione in secondi
+            final double delta = (System.currentTimeMillis() - lastTime) / 1000d; // secondi
             lastTime = System.currentTimeMillis();
 
             UpdateManager.update(delta);
             RenderManager.render(delta);
             Toolkit.getDefaultToolkit().sync();
         }
-        worker = null;
+        Log.error("Game loop terminato");
     }
 }
