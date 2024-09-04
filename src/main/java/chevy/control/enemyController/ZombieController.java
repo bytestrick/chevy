@@ -5,7 +5,7 @@ import chevy.control.PlayerController;
 import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
@@ -18,7 +18,7 @@ import chevy.utils.Log;
  * risponde agli attacchi del giocatore,
  * ai colpi dei proiettili e coordina il suo stato e i suoi movimenti.
  */
-public class ZombieController {
+public final class ZombieController {
     /**
      * Riferimento alla stanza di gioco in cui si trova lo Zombie. Utilizzato per verificare le posizioni,
      * aggiungere/rimuovere entità.
@@ -49,7 +49,7 @@ public class ZombieController {
             // Se il giocatore è in stato di attacco, lo Zombie viene danneggiato in base al danno del giocatore.
             case Player.State.ATTACK -> {
                 Sound.play(Sound.Effect.ZOMBIE_HIT);
-                zombie.setDirection(DirectionsModel.positionToDirection(player, zombie));
+                zombie.setDirection(Direction.positionToDirection(player, zombie));
                 hitZombie(zombie, -1 * player.getDamage());
             }
             default -> Log.warn("Lo ZombieController non gestisce questa azione: " + player.getCurrentState());
@@ -79,14 +79,14 @@ public class ZombieController {
         }
 
         if (zombie.canChange(Zombie.State.MOVE)) {
-            DirectionsModel direction = chamber.getHitDirectionPlayer(zombie);
+            Direction direction = chamber.getDirectionToHitPlayer(zombie);
             // Se non c'è un giocatore nelle vicinanze, lo Zombie vaga casualmente.
             if (direction == null) {
                 if (chamber.wanderChase(zombie, 4)) {
                     zombie.changeState(Zombie.State.MOVE);
                 }
             } else if (zombie.changeState(Zombie.State.ATTACK)) {
-                Entity entity = chamber.getNearEntityOnTop(zombie, direction);
+                Entity entity = chamber.getEntityNearOnTop(zombie, direction);
                 if (entity instanceof Player) {
                     zombie.setCanAttack(true);
                 }
@@ -94,9 +94,9 @@ public class ZombieController {
         }
 
         if (zombie.canAttack() && zombie.getState(Zombie.State.ATTACK).isFinished()) {
-            DirectionsModel direction = chamber.getHitDirectionPlayer(zombie);
+            Direction direction = chamber.getDirectionToHitPlayer(zombie);
             if (direction != null) {
-                Entity entity = chamber.getNearEntityOnTop(zombie, direction);
+                Entity entity = chamber.getEntityNearOnTop(zombie, direction);
                 if (entity instanceof Player) {
                     Sound.play(Sound.Effect.ZOMBIE_BITE);
                     playerController.handleInteraction(Interaction.ENEMY, zombie);
@@ -117,7 +117,7 @@ public class ZombieController {
      * @param zombie     lo Zombie che subisce l'interazione
      */
     public void projectileInteraction(Projectile projectile, Zombie zombie) {
-        zombie.setDirection(DirectionsModel.positionToDirection(projectile, zombie));
+        zombie.setDirection(Direction.positionToDirection(projectile, zombie));
         hitZombie(zombie, -1 * projectile.getDamage());
     }
 

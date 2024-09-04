@@ -9,7 +9,7 @@ import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.collectable.powerUp.SlimePiece;
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Slime;
@@ -19,7 +19,6 @@ import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Void;
-import chevy.model.pathFinding.AStar;
 import chevy.utils.Log;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
@@ -38,7 +37,7 @@ import java.util.NoSuchElementException;
  * Gestisce l'inizializzazione della griglia di gioco, il posizionamento e il movimento delle
  * entità.
  */
-public class Chamber {
+public final class Chamber {
     /** Nemici nella stanza */
     private final List<Enemy> enemies = new LinkedList<>();
     /** Trappole nella stanza */
@@ -58,7 +57,8 @@ public class Chamber {
     private List<List<List<Entity>>> chamber;
     /** Righe e colonne della griglia di gioco */
     private Dimension size;
-    private boolean init = false; // Indica se il mondo è stato inizializzato
+    /** Indica se il mondo è stato inizializzato */
+    private boolean initialized = false;
     private Player player; // Il giocatore attuale
     private int enemyCounter = 0;
 
@@ -78,7 +78,7 @@ public class Chamber {
             chamber.add(row);
         }
 
-        init = true;
+        initialized = true;
     }
 
     /**
@@ -88,7 +88,7 @@ public class Chamber {
      * @return true se valida, false altrimenti
      */
     public boolean validatePosition(Vector2<Integer> vector2) {
-        if (init) {
+        if (initialized) {
             return vector2.first >= 0 && vector2.first < size.height && vector2.second >= 0 && vector2.second < size.width;
         }
         return false;
@@ -102,7 +102,7 @@ public class Chamber {
      * @return true se è valida, false altrimenti
      */
     public boolean validatePosition(int row, int col) {
-        if (init) {
+        if (initialized) {
             return row >= 0 && row < size.height && col >= 0 && col < size.width;
         }
         return false;
@@ -115,7 +115,7 @@ public class Chamber {
      * @param direction direzione in cui l'entità si deve muovere
      * @return true se è valida, false altrimenti
      */
-    public boolean validatePosition(Entity entity, DirectionsModel direction) {
+    public boolean validatePosition(Entity entity, Direction direction) {
         Vector2<Integer> vector2 = new Vector2<>(entity.getRow() + direction.row(),
                 entity.getCol() + direction.col());
 
@@ -130,7 +130,7 @@ public class Chamber {
      * @param direction     direzione in cui l'entità si deve spostare.
      * @return true se si può passare, false altrimenti.
      */
-    public synchronized boolean canCross(DynamicEntity dynamicEntity, DirectionsModel direction) {
+    public synchronized boolean canCross(DynamicEntity dynamicEntity, Direction direction) {
         Vector2<Integer> vector2 = new Vector2<>(dynamicEntity.getRow() + direction.row(),
                 dynamicEntity.getCol() + direction.col());
 
@@ -164,7 +164,7 @@ public class Chamber {
      * @param direction     direzione in cui si deve spostare
      * @return true se lo spostamento non danneggerà l'entità dinamica, false altrimenti
      */
-    public boolean isSafeToCross(DynamicEntity dynamicEntity, DirectionsModel direction) {
+    public boolean isSafeToCross(DynamicEntity dynamicEntity, Direction direction) {
         Vector2<Integer> vector2 = new Vector2<>(dynamicEntity.getRow() + direction.row(),
                 dynamicEntity.getCol() + direction.col());
         return isSafeToCross(vector2);
@@ -191,9 +191,9 @@ public class Chamber {
      * @param direction     direzione in cui si deve spostare l'entità dinamica
      * @return entità in cima alla griglia.
      */
-    public synchronized Entity getNearEntityOnTop(DynamicEntity dynamicEntity,
-                                                  DirectionsModel direction) {
-        return getNearEntityOnTop(dynamicEntity, direction, 1);
+    public synchronized Entity getEntityNearOnTop(DynamicEntity dynamicEntity,
+                                                  Direction direction) {
+        return getEntityNearOnTop(dynamicEntity, direction, 1);
     }
 
     /**
@@ -206,8 +206,8 @@ public class Chamber {
      *                      selezionata
      * @return entità in cima alla griglia
      */
-    public synchronized Entity getNearEntityOnTop(DynamicEntity dynamicEntity,
-                                                  DirectionsModel direction,
+    public synchronized Entity getEntityNearOnTop(DynamicEntity dynamicEntity,
+                                                  Direction direction,
                                                   int distanceCell) {
         if (direction == null || dynamicEntity == null) {
             return null;
@@ -240,8 +240,8 @@ public class Chamber {
      * @param entity entità da considerare per il calcolo della direzione
      * @return direzione in cui si trova il player
      */
-    public synchronized DirectionsModel getHitDirectionPlayer(Entity entity) {
-        return getHitDirectionPlayer(entity, 1);
+    public synchronized Direction getDirectionToHitPlayer(Entity entity) {
+        return getDirectionToHitPlayer(entity, 1);
     }
 
     /**
@@ -252,11 +252,9 @@ public class Chamber {
      *                     selezionata
      * @return direzione in cui si trova il player
      */
-    public synchronized DirectionsModel getHitDirectionPlayer(Entity entity, int distanceCell) {
-        DirectionsModel[] directionsModel = DirectionsModel.values();
-
+    public synchronized Direction getDirectionToHitPlayer(Entity entity, int distanceCell) {
         for (int i = 1; i <= distanceCell; ++i) {
-            for (DirectionsModel direction : directionsModel) {
+            for (Direction direction : Direction.values()) {
                 Vector2<Integer> checkPosition =
                         new Vector2<>(entity.getRow() + direction.row() * i,
                                 entity.getCol() + direction.col() * i);
@@ -279,7 +277,7 @@ public class Chamber {
      * @param direction     direzione in cui l'entità dinamica si deve spostare
      */
     public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity,
-                                               DirectionsModel direction) {
+                                               Direction direction) {
         Vector2<Integer> nextPosition = new Vector2<>(dynamicEntity.getRow() + direction.row(),
                 dynamicEntity.getCol() + direction.col());
 
@@ -301,8 +299,8 @@ public class Chamber {
      */
     public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity,
                                                Vector2<Integer> nextPosition) {
-        DirectionsModel direction =
-                DirectionsModel.positionToDirection(new Vector2<>(dynamicEntity.getRow(),
+        Direction direction =
+                Direction.positionToDirection(new Vector2<>(dynamicEntity.getRow(),
                         dynamicEntity.getCol()), nextPosition);
 
         if (canCross(nextPosition) && direction != null) {
@@ -487,7 +485,7 @@ public class Chamber {
      * @return true se il nemico è stato spostato, false altrimenti
      */
     public synchronized boolean moveRandom(Enemy enemy) {
-        DirectionsModel directionMove = DirectionsModel.getRandom();
+        Direction directionMove = Direction.getRandom();
         if (isSafeToCross(enemy, directionMove)) {
             moveDynamicEntity(enemy, directionMove);
             return true;
@@ -505,7 +503,7 @@ public class Chamber {
      * @return true se il nemico è stato spostato, false altrimenti
      */
     public synchronized boolean moveRandomPlus(Enemy enemy) {
-        DirectionsModel[] directions = DirectionsModel.values();
+        Direction[] directions = Direction.values();
         int index = Utils.random.nextInt(directions.length);
         for (int i = 0; i <= directions.length; ++i) {
             if (isSafeToCross(enemy, directions[index])) {
@@ -618,7 +616,7 @@ public class Chamber {
 
     public synchronized List<List<List<Entity>>> getChamber() {return Collections.unmodifiableList(chamber);}
 
-    public boolean isInitialized() {return init;}
+    public boolean isInitialized() {return initialized;}
 
     public Dimension getSize() {return size;}
 
@@ -657,7 +655,7 @@ public class Chamber {
 
     public void addEnvironment(Environment environment) {environments.add(environment);}
 
-    public List<Environment> getEnvironment() {return environments;}
+    public List<Environment> getEnvironments() {return environments;}
 
     private void addEntityToDraw(Entity entity, int layer) {drawOrderChamber.add(entity, layer);}
 

@@ -1,26 +1,26 @@
 package chevy.model.entity.dynamicEntity.projectile;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
-public class Arrow extends Projectile {
-    private static int ADD_DAMAGE = 0;
-    private final GlobalState loop = new GlobalState(State.LOOP, .2f, true);
-    private final GlobalState end = new GlobalState(State.END, .5f);
+public final class Arrow extends Projectile {
+    private static int addDamage;
+    private final Vertex loop = new Vertex(State.LOOP, .2f, true);
+    private final Vertex end = new Vertex(State.END, .5f);
 
-    public Arrow(Vector2<Integer> initPosition, DirectionsModel direction) {
+    public Arrow(Vector2<Integer> initPosition, Direction direction) {
         super(initPosition, Type.ARROW, direction);
 
-        this.maxDamage = 1 + ADD_DAMAGE;
-        this.minDamage = 1 + ADD_DAMAGE;
+        this.maxDamage = 1 + addDamage;
+        this.minDamage = 1 + addDamage;
 
         initStateMachine();
     }
 
     public static void changeAddDamage(int value) {
-        ADD_DAMAGE = value;
+        addDamage = value;
     }
 
     private void initStateMachine() {
@@ -30,7 +30,7 @@ public class Arrow extends Projectile {
         loop.linkState(end);
     }
 
-    public GlobalState getState(CommonState commonState) {
+    public Vertex getState(CommonState commonState) {
         State arrowState = (State) commonState;
         return switch (arrowState) {
             case LOOP -> loop;

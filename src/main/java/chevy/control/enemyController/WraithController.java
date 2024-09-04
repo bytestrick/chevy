@@ -5,7 +5,7 @@ import chevy.control.PlayerController;
 import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Wraith;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
@@ -18,7 +18,7 @@ import chevy.utils.Log;
  * attacchi del giocatore,
  * ai colpi dei proiettili e coordina il suo stato e i suoi movimenti.
  */
-public class WraithController {
+public final class WraithController {
     /**
      * Riferimento alla stanza di gioco in cui si trova il Wraith. Utilizzato per verificare le posizioni,
      * aggiungere/rimuovere entità.
@@ -49,7 +49,7 @@ public class WraithController {
             // Se il giocatore è in stato di attacco, il Wraith viene danneggiato in base al danno del giocatore.
             case Player.State.ATTACK -> {
                 Sound.play(Sound.Effect.WRAITH_HIT);
-                wraith.setDirection(DirectionsModel.positionToDirection(player, wraith));
+                wraith.setDirection(Direction.positionToDirection(player, wraith));
                 hitWraith(wraith, -1 * player.getDamage());
             }
             default -> Log.warn("Il WraithController non gestisce questa azione: " + player.getCurrentState());
@@ -79,14 +79,14 @@ public class WraithController {
         }
 
         if (wraith.canChange(Wraith.State.MOVE)) {
-            DirectionsModel direction = chamber.getHitDirectionPlayer(wraith);
+            Direction direction = chamber.getDirectionToHitPlayer(wraith);
             if (direction == null) {
                 if (chamber.moveRandomPlus(wraith)) {
                     wraith.changeState(Wraith.State.MOVE);
                     wraith.setCanAttack(false);
                 }
             } else if (wraith.canChange(Wraith.State.ATTACK)) {
-                Entity entity = chamber.getNearEntityOnTop(wraith, direction);
+                Entity entity = chamber.getEntityNearOnTop(wraith, direction);
                 if (entity instanceof Player && wraith.changeState(Wraith.State.ATTACK)) {
                     Sound.play(Sound.Effect.WRAITH_ATTACK);
                     wraith.setCanAttack(true);
@@ -95,9 +95,9 @@ public class WraithController {
         }
 
         if (wraith.canAttack() && wraith.getState(Wraith.State.ATTACK).isFinished()) {
-            DirectionsModel direction = chamber.getHitDirectionPlayer(wraith);
+            Direction direction = chamber.getDirectionToHitPlayer(wraith);
             if (direction != null) {
-                Entity entity = chamber.getNearEntityOnTop(wraith, direction);
+                Entity entity = chamber.getEntityNearOnTop(wraith, direction);
                 if (entity instanceof Player) {
                     Sound.play(Sound.Effect.WRAITH_ATTACK);
                     playerController.handleInteraction(Interaction.ENEMY, wraith);
@@ -118,7 +118,7 @@ public class WraithController {
      * @param wraith     il Wraith che subisce l'interazione
      */
     public void projectileInteraction(Projectile projectile, Wraith wraith) {
-        wraith.setDirection(DirectionsModel.positionToDirection(projectile, wraith));
+        wraith.setDirection(Direction.positionToDirection(projectile, wraith));
         hitWraith(wraith, -1 * projectile.getDamage());
     }
 

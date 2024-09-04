@@ -15,7 +15,7 @@ import java.util.List;
  * aggiornamento del gioco. Gestisce l'aggiornamento e la rimozione degli aggetti collezionabili
  * dall'aggiornamento.
  */
-public class CollectableUpdateController implements Update {
+public final class CollectableUpdateController implements Update {
     private final CollectableController collectableController;
     private final List<Collectable> collectables = new ArrayList<>();
     private final List<Collectable> collectablesToAdd;

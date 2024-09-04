@@ -45,7 +45,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.stream.Stream;
 
-public class Menu {
+public final class Menu {
     public static final ImageIcon ex = Load.icon("x", 48, 48);
     // @formatter:off
     private static final String[][] quotes = new String[][]{
@@ -76,8 +76,8 @@ public class Menu {
     private static final String[] statsTooltipPrefixes = new String[]{"Salute: ", "Scudo: ",
             "Danno: ", "Velocità: "};
     public static Player.Type playerType = Player.Type.valueOf(Data.get("state.menu.playerType"));
-    protected static int level = Data.get("state.menu.level");
-    private static boolean currentPlayerLocked = false;
+    private static int level = Data.get("state.menu.level");
+    private static boolean currentPlayerLocked;
     final int[][] playerStats = new int[][]{new Knight(null).getStats(),
             new Archer(null).getStats(), new Ninja(null).getStats()};
     private final Image[][] sprites = new Image[3][4];
@@ -95,7 +95,7 @@ public class Menu {
     private JRadioButton knightIndicator;
     private JRadioButton archerIndicator;
     private JRadioButton ninjaIndicator;
-    final JRadioButton[] indicators = new JRadioButton[]{knightIndicator, archerIndicator,
+    private final JRadioButton[] indicators = new JRadioButton[]{knightIndicator, archerIndicator,
             ninjaIndicator};
     private JPanel characterAnimation;
     private JLabel characterName;
@@ -114,7 +114,7 @@ public class Menu {
     private JButton unlock;
     private JLabel cost;
     private boolean alternateAnimation = true;
-    private boolean animationRunning = false;
+    private boolean animationRunning;
 
     public Menu(final Window window) {
         this.window = window;
@@ -466,8 +466,8 @@ public class Menu {
      */
     private static class LevelSelectorRenderer extends BasicComboBoxRenderer {
         private static final ListSelectionModel model = new DefaultListSelectionModel();
-        private static int enabledFirst = 0;
-        private static int enabledLast = 0;
+        private static int enabledFirst;
+        private static int enabledLast;
 
         /**
          * Imposta l'intervallo di opzioni selezionabile in JComboBox
@@ -489,7 +489,7 @@ public class Menu {
         private static boolean isInsideInterval(final int x) {return x >= enabledFirst && x <= enabledLast;}
 
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index,
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected,
                     cellHasFocus);

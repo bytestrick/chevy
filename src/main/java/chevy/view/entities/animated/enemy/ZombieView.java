@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.enemy;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Vector2;
@@ -18,7 +18,7 @@ public class ZombieView extends AnimatedEntityView {
         super();
         this.zombie = zombie;
         this.currentViewPosition = new Vector2<>((double) zombie.getCol(), (double) zombie.getRow());
-        currentGlobalState = zombie.getState(zombie.getCurrentState());
+        currentVertex = zombie.getState(zombie.getCurrentState());
 
         float duration = zombie.getState(zombie.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentViewPosition.first, zombie.getCol(), duration,
@@ -81,7 +81,7 @@ public class ZombieView extends AnimatedEntityView {
     }
 
     private int getAnimationType(CommonState currentState) {
-        DirectionsModel currentDirection = zombie.getDirection();
+        Direction currentDirection = zombie.getDirection();
         return switch (currentState) {
             case Zombie.State.ATTACK, Zombie.State.IDLE, Zombie.State.MOVE -> switch (currentDirection) {
                 case UP -> 0;
@@ -90,7 +90,7 @@ public class ZombieView extends AnimatedEntityView {
                 case LEFT -> 3;
             };
             case Zombie.State.DEAD -> {
-                if (currentDirection == DirectionsModel.RIGHT) {
+                if (currentDirection == Direction.RIGHT) {
                     yield 1;
                 } else {
                     yield 0;
@@ -102,11 +102,11 @@ public class ZombieView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (currentGlobalState.isFinished()) {
-            currentGlobalState = zombie.getState(zombie.getCurrentState());
+        if (currentVertex.isFinished()) {
+            currentVertex = zombie.getState(zombie.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
-            float duration = currentGlobalState.getDuration();
+            float duration = currentVertex.getDuration();
             moveInterpolationX.changeStart(currentViewPosition.first);
             moveInterpolationX.changeEnd(zombie.getCol());
             moveInterpolationX.changeDuration(duration);

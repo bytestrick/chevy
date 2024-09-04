@@ -13,7 +13,7 @@ import java.util.List;
  * Gestisce gli aggiornamenti dei proiettili nel gioco.
  * Gestisce l'aggiunta, la rimozione e l'aggiornamento dei proiettili.
  */
-public class ProjectileUpdateController implements Update {
+public final class ProjectileUpdateController implements Update {
     private static boolean STOP_UPDATE = false;
     /**
      * Controller dei proiettili per gestire gli aggiornamenti specifici dei proiettili.

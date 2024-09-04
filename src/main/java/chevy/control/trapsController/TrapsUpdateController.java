@@ -12,7 +12,7 @@ import java.util.List;
  * Gestisce gli aggiornamenti delle trappole del gioco. Implementa l'interfaccia Update per integrarsi con il ciclo di
  * aggiornamento del gioco. Gestisce l'aggiunta, l'aggiornamento delle trappole.
  */
-public class TrapsUpdateController implements Update {
+public final class TrapsUpdateController implements Update {
     private final TrapsController trapsController;
     private final List<Trap> traps = new ArrayList<>();
     private final List<Trap> trapsToAdd;

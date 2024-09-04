@@ -12,7 +12,7 @@ import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 
-public class CollectableController {
+public final class CollectableController {
     private final PlayerController playerController;
     private final CoinController coinController;
     private final HealthController healthController;

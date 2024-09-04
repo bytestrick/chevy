@@ -8,7 +8,7 @@ import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 /**
  * Gestisce le interazioni del giocatore con la botola nel gioco.
  */
-public class TrapdoorController {
+public final class TrapdoorController {
     /**
      * Stanza di gioco in cui si trova la botola da gestire
      */

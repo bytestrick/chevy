@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.utils.Vector2;
 
-public class KeySKeeper extends PowerUp {
+public final class KeySKeeper extends PowerUp {
     private final float increaseDropPercentage = .3f;
 
     public KeySKeeper(Vector2<Integer> initVelocity) {

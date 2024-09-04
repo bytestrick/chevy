@@ -20,7 +20,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 
-public class PowerUpText extends JPanel {
+public final class PowerUpText extends JPanel {
     private static final String FONT_PATH = "PixelatedPusab";
     private static final int TITLE_FONT_SIZE = 24;
     private static final int DESCRIPTION_FONT_SIZE = 16;

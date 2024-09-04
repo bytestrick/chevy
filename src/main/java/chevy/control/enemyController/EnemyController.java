@@ -20,7 +20,7 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
  * Coordina i sotto controller specifici per ogni tipo di nemico (Wraith, Zombie, Slime, BigSlime, Skeleton, Beetle)
  * e gestisce le interazioni tra giocatore, proiettili e nemici.
  */
-public class EnemyController {
+public final class EnemyController {
     private final WraithController wraithController;
     private final ZombieController zombieController;
     private final SlimeController slimeController;

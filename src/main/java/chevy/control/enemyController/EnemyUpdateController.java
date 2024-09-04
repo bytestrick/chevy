@@ -14,7 +14,7 @@ import java.util.List;
  * Implementa l'interfaccia Update per integrarsi con il ciclo di aggiornamento del gioco.
  * Gestisce l'aggiunta, l'aggiornamento e la rimozione dei nemici dall'aggiornamento.
  */
-public class EnemyUpdateController implements Update {
+public final class EnemyUpdateController implements Update {
     private static boolean STOP_UPDATE = false;
     private final EnemyController enemyController;
     private final List<Enemy> enemies = new ArrayList<>();

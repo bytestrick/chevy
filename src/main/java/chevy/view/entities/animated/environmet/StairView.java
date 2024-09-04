@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.environmet;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.staticEntity.environment.Stair;
 import chevy.utils.Vector2;
@@ -25,7 +25,7 @@ public class StairView extends AnimatedEntityView {
         Vector2<Integer> offset = new Vector2<>(0, -5);
         String folder = "right/";
 
-        if (stair.getDirections() == DirectionsModel.LEFT) {
+        if (stair.getDirections() == Direction.LEFT) {
             offset = new Vector2<>(-16, -5);
             folder = "left/";
         }

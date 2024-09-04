@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.utils.Vector2;
 
-public class CoinOfGreed extends PowerUp {
+public final class CoinOfGreed extends PowerUp {
     private final float increaseDropPercentage = .3f;
 
     public CoinOfGreed(Vector2<Integer> initVelocity) {

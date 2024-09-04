@@ -11,13 +11,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class Sound {
+/**
+ * Effetti sonori e musica del gioco
+ */
+public final class Sound {
     private static final Clip[] effects = new Clip[Effect.values().length];
     private static final Clip[] songs = new Clip[Song.values().length];
     private static final Clip[] loops = new Clip[]{Load.clip("loop0"), Load.clip("loop1")};
     private static final Object mutex = new Object();
-    public static float effectGainPercentage = .8f; // valore predefinito volume effetti
-    public static float musicGainPercentage = .7f; // valore predefinito volume musica
+    /** Valore corrente per il volume degli effetti sonori, in percentuale */
+    public static float effectGainPercentage = .8f;
+    /** Valore corrente per il volume della musica, in percentuale */
+    public static float musicGainPercentage = .7f;
     private static Clip currentLoop;
     private static boolean musicPaused = false;
     private static boolean musicRunning = false;
@@ -37,7 +42,7 @@ public class Sound {
     }
 
     /**
-     * Mappa l'intervallo decimale tra 0 e 1 al dominio del gain della clip specificata
+     * Mappa l'intervallo decimale tra 0 e 1 al dominio del gain della {@link Clip} specificata
      *
      * @param clip       a cui applicare il gain
      * @param percentage valore decimale compreso tra 0 e 1, rappresenta il volume
@@ -52,6 +57,9 @@ public class Sound {
         }
     }
 
+    /**
+     * Avvia la musica di gioco
+     */
     public static void startMenuMusic() {
         if (Arrays.stream(loops).allMatch(Objects::nonNull)) {
             currentLoop = loops[Utils.random.nextInt(loops.length)];
@@ -204,13 +212,10 @@ public class Sound {
 
     public enum Effect {
         HUMAN_DEATH, ARROW_SWOOSH, WIN, CLAW_HIT, PUNCH, BLADE_SLASH, SPIKE, ARCHER_FOOTSTEPS,
-        NINJA_FOOTSTEPS,
-        KNIGHT_FOOTSTEPS, ZOMBIE_BITE, ZOMBIE_CHOCKING, ZOMBIE_HIT, SKELETON_HIT,
-        SKELETON_DISASSEMBLED,
-        SKELETON_ATTACK, SLIDE, SLIME_HIT, SLIME_DEATH, ROBOTIC_INSECT, BEETLE_ATTACK,
-        BEETLE_DEATH, WRAITH_ATTACK,
-        WRAITH_HIT, WRAITH_DEATH, MUD, COIN, KEY_EQUIPPED, POWER_UP_UI, HEALTH_POTION, LOST,
-        PLAY_BUTTON, BUTTON, STOP, UNLOCK_CHARACTER
+        NINJA_FOOTSTEPS, KNIGHT_FOOTSTEPS, ZOMBIE_BITE, ZOMBIE_CHOCKING, ZOMBIE_HIT, SKELETON_HIT,
+        SKELETON_DISASSEMBLED, SKELETON_ATTACK, SLIDE, SLIME_HIT, SLIME_DEATH, ROBOTIC_INSECT,
+        BEETLE_ATTACK, BEETLE_DEATH, WRAITH_ATTACK, WRAITH_HIT, WRAITH_DEATH, MUD, COIN,
+        KEY_EQUIPPED, POWER_UP_UI, HEALTH_POTION, LOST, PLAY_BUTTON, BUTTON, STOP, UNLOCK_CHARACTER
     }
 
     private enum Song {

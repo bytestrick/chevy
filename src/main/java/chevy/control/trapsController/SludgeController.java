@@ -8,7 +8,7 @@ import chevy.service.Sound;
 /**
  * Gestisce le interazioni del giocatore con la melma nel gioco.
  */
-public class SludgeController {
+public final class SludgeController {
     private final Chamber chamber;
 
     /**

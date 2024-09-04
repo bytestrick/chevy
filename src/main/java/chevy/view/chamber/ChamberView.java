@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Disegna la stanza
  */
-public class ChamberView extends JPanel implements Render {
+public final class ChamberView extends JPanel implements Render {
     /** Offset per centrare il contenuto in {@link Window} */
     public static final Dimension windowOffset = new Dimension();
     public static final boolean DRAW_COLLISIONS = true;

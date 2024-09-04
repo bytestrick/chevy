@@ -5,7 +5,7 @@ import chevy.control.PlayerController;
 import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
@@ -18,7 +18,7 @@ import chevy.utils.Log;
  * Gestisce come lo Skeleton risponde agli attacchi del giocatore, ai colpi dei proiettili e coordina il suo stato e
  * i suoi movimenti.
  */
-public class SkeletonController {
+public final class SkeletonController {
     /**
      * Riferimento alla stanza di gioco in cui si trova lo Skeleton. Utilizzato per verificare le posizioni,
      * aggiungere/rimuovere entità e gestire le interazioni.
@@ -50,7 +50,7 @@ public class SkeletonController {
             case Player.State.ATTACK -> {
                 Sound.play(Sound.Effect.SKELETON_HIT);
                 hitSkeleton(skeleton, -1 * player.getDamage());
-                skeleton.setDirection(DirectionsModel.positionToDirection(player, skeleton));
+                skeleton.setDirection(Direction.positionToDirection(player, skeleton));
             }
             default -> Log.warn("Lo SkeletonController non gestisce questa azione: " + player.getCurrentState());
         }
@@ -81,14 +81,14 @@ public class SkeletonController {
 
         // Gestione del movimento/attacco
         if (skeleton.canChange(Skeleton.State.MOVE)) {
-            DirectionsModel direction = chamber.getHitDirectionPlayer(skeleton);
+            Direction direction = chamber.getDirectionToHitPlayer(skeleton);
             if (direction == null) {
                 if (chamber.chase(skeleton)) {
                     skeleton.changeState(Skeleton.State.MOVE);
                     skeleton.setCanAttack(false);
                 }
             } else if (skeleton.canChange(Skeleton.State.ATTACK)) {
-                Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
+                Entity entity = chamber.getEntityNearOnTop(skeleton, direction);
                 if (entity instanceof Player && skeleton.changeState(Skeleton.State.ATTACK)) {
                     Sound.play(Sound.Effect.SKELETON_HIT);
                     skeleton.setCanAttack(true);
@@ -97,9 +97,9 @@ public class SkeletonController {
         }
 
         if (skeleton.canAttack() && skeleton.getState(Skeleton.State.ATTACK).isFinished()) {
-            DirectionsModel direction = chamber.getHitDirectionPlayer(skeleton);
+            Direction direction = chamber.getDirectionToHitPlayer(skeleton);
             if (direction != null) {
-                Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
+                Entity entity = chamber.getEntityNearOnTop(skeleton, direction);
                 if (entity instanceof Player) {
                     Sound.play(Sound.Effect.SKELETON_HIT);
                     playerController.handleInteraction(Interaction.ENEMY, skeleton);
@@ -120,7 +120,7 @@ public class SkeletonController {
      * @param skeleton   lo Skeleton che subisce l'interazione
      */
     public void projectileInteraction(Projectile projectile, Skeleton skeleton) {
-        skeleton.setDirection(DirectionsModel.positionToDirection(projectile, skeleton));
+        skeleton.setDirection(Direction.positionToDirection(projectile, skeleton));
         hitSkeleton(skeleton, -1 * projectile.getDamage());
     }
 

@@ -14,7 +14,7 @@ import chevy.model.entity.collectable.powerUp.HedgehogSpines;
 import chevy.model.entity.collectable.powerUp.HolyShield;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.collectable.powerUp.VampireFangs;
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
 import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
@@ -42,7 +42,7 @@ import static chevy.model.entity.staticEntity.environment.Environment.Type.TRAP;
  * Gestisce le interazioni del giocatore con i nemici, i proiettili e le trappole.
  * Implementa l'interfaccia Update per aggiornare lo stato del giocatore a ogni ciclo di gioco.
  */
-public class PlayerController implements Update {
+public final class PlayerController implements Update {
     private final Chamber chamber;
     private final Player player;
     private final GamePanel gamePanel;
@@ -61,7 +61,6 @@ public class PlayerController implements Update {
         this.gamePanel = gamePanel;
         this.chamber = chamber;
         this.player = chamber.getPlayer();
-        WindowController.playerController = this;
 
         // Aggiunge il controller del giocatore all'UpdateManager.
         UpdateManager.addToUpdate(this);
@@ -78,11 +77,11 @@ public class PlayerController implements Update {
         if (key == KeyEvent.VK_ESCAPE) {
             gamePanel.pauseDialog();
         } else if (currentPlayerState != Player.State.DEAD && currentPlayerState != Player.State.GLIDE) {
-            final DirectionsModel direction = switch (key) {
-                case KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_I -> DirectionsModel.UP;
-                case KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_J -> DirectionsModel.LEFT;
-                case KeyEvent.VK_S, KeyEvent.VK_DOWN, KeyEvent.VK_K -> DirectionsModel.DOWN;
-                case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> DirectionsModel.RIGHT;
+            final Direction direction = switch (key) {
+                case KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_I -> Direction.UP;
+                case KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_J -> Direction.LEFT;
+                case KeyEvent.VK_S, KeyEvent.VK_DOWN, KeyEvent.VK_K -> Direction.DOWN;
+                case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> Direction.RIGHT;
                 default -> null;
             };
             if (direction != null) {
@@ -100,7 +99,7 @@ public class PlayerController implements Update {
      */
     public synchronized void handleInteraction(Interaction interaction, Object subject, boolean attack) {
         switch (interaction) {
-            case KEYBOARD -> keyBoardInteraction((DirectionsModel) subject, attack);
+            case KEYBOARD -> keyBoardInteraction((Direction) subject, attack);
             case ENEMY -> enemyInteraction((Enemy) subject);
             case PROJECTILE -> projectileInteraction((Projectile) subject);
             case TRAP -> trapInteraction((Trap) subject);
@@ -185,7 +184,7 @@ public class PlayerController implements Update {
      *
      * @param direction la direzione in cui il giocatore si muove
      */
-    private void keyBoardInteraction(DirectionsModel direction, boolean attack) {
+    private void keyBoardInteraction(Direction direction, boolean attack) {
         Entity entityCurrentCell = chamber.getEntityBelowTheTop(player);
 
         // Player on
@@ -194,7 +193,7 @@ public class PlayerController implements Update {
             default -> { }
         }
 
-        Entity entityNextCell = chamber.getNearEntityOnTop(player, direction);
+        Entity entityNextCell = chamber.getEntityNearOnTop(player, direction);
         // Player in
         if (attack) {
             // Attacco libero

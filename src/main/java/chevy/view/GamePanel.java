@@ -15,32 +15,25 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import java.awt.*;
 
-public class GamePanel extends JPanel {
-    private static final ImageIcon playPause = new ImageIcon(Load.image("/icons/PlayPause.png").getScaledInstance(48,
-            48, Image.SCALE_SMOOTH));
-    private static final ImageIcon caution = new ImageIcon(Load.image("/icons/caution.png").getScaledInstance(48, 48,
-            Image.SCALE_SMOOTH));
-    private static final ImageIcon skull = new ImageIcon(Load.image("/icons/Skull.png").getScaledInstance(48, 48,
-            Image.SCALE_SMOOTH));
-
-    private static final ImageIcon trophy = new ImageIcon(Load.image("/icons/Trophy.png").getScaledInstance(48, 48,
-            Image.SCALE_SMOOTH));
-
-    private static final String[] deathMessages =
-            new String[]{"Complimenti, hai vinto un biglietto per l'aldilà! " + "Prossima fermata: riprova!", "Sembra" +
-                    " che il tuo personaggio abbia deciso di prendersi una pausa... dalla" + " vita.", "Ecco un " +
-                    "esempio perfetto di cosa NON fare. Riprovaci!", "Il tuo personaggio ha appena scoperto" + " il " +
-                    "modo più veloce per tornare al menu principale!", "Se ti consola, anche i bot rideranno di " +
-                    "questa " + "mossa!", "Complimenti, hai vinto un biglietto per l'aldilà! Prossima fermata: " +
-                    "riprova!"};
-
-    private static final String[] winMessages =
-            new String[] {"Grandioso! Ogni mossa è stata perfetta, livello conquistato!",
-                    "Impressionante! Non c'è nulla che possa fermarti, grande performance!",
-                    "Superbo! Questo livello non aveva alcuna chance contro di te!",
-                    "Complimenti! La tua strategia ha fatto la differenza, livello completato!",
-                    "Complimenti! Hai dimostrato ancora una volta la tua abilità!"};
-
+public final class GamePanel extends JPanel {
+    private static final ImageIcon playPause = Load.icon("PlayPause", 48, 48);
+    private static final ImageIcon caution = Load.icon("caution", 48, 48);
+    private static final ImageIcon skull = Load.icon("Skull", 48, 48);
+    private static final ImageIcon trophy = Load.icon("Trophy.png", 48, 48);
+    // @formatter:off
+    private static final String[] deathMessages = new String[]{
+            "Complimenti, hai vinto un biglietto per l'aldilà! Prossima fermata: riprova!",
+            "Sembra che il tuo personaggio abbia deciso di prendersi una pausa... dalla vita.",
+            "Ecco un esempio perfetto di cosa NON fare. Riprovaci!",
+            "Il tuo personaggio ha appena scoperto il modo più veloce per tornare al menu principale!",
+            "Se ti consola, anche i bot rideranno di questa mossa!"};
+    private static final String[] winMessages = new String[] {
+            "Grandioso! Ogni mossa è stata perfetta, livello conquistato!",
+            "Impressionante! Non c'è nulla che possa fermarti, grande performance!",
+            "Superbo! Questo livello non aveva alcuna chance contro di te!",
+            "Complimenti! La tua strategia ha fatto la differenza, livello completato!",
+            "Complimenti! Hai dimostrato ancora una volta la tua abilità!"};
+    // @formatter:on
     private static final ChamberView chamberView = new ChamberView();
     private static boolean pauseDialogActive = false;
     private static boolean playerDeathDialogActive = false;
@@ -188,4 +181,6 @@ public class GamePanel extends JPanel {
     public ChamberView getChamberView() {return chamberView;}
 
     public HUDView getHudView() {return hudView;}
+
+    public Window getWindow() {return window;}
 }

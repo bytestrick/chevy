@@ -11,7 +11,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
 
-public class PowerUpController {
+public final class PowerUpController {
     private final Chamber chamber;
     private final HUDController hudController;
 
@@ -130,9 +130,8 @@ public class PowerUpController {
                 powerUp.setToDraw(false);
                 powerUp.removeFromUpdate();
             }
-        }
-        else {
-            if (chamber.getHitDirectionPlayer(powerUp) != null) {
+        } else {
+            if (chamber.getDirectionToHitPlayer(powerUp) != null) {
                 if (powerUp.changeState(PowerUp.State.SELECTED)) {
                     EnemyUpdateController.stopUpdate();
                     ProjectileUpdateController.stopUpdate();

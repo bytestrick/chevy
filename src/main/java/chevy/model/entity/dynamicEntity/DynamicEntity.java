@@ -6,8 +6,7 @@ import chevy.utils.Vector2;
 
 public abstract class DynamicEntity extends Entity {
     private final Type type;
-    private final boolean canRemove = false;
-    protected DirectionsModel direction = DirectionsModel.getRandom();
+    protected Direction direction = Direction.getRandom();
 
     public DynamicEntity(Vector2<Integer> initPosition, Type type) {
         super(initPosition, Entity.Type.DYNAMIC);
@@ -20,18 +19,18 @@ public abstract class DynamicEntity extends Entity {
         this.position.change(velocity);
     }
 
-    public DirectionsModel getDirection() { return direction; }
+    public Direction getDirection() {return direction;}
 
-    public void setDirection(DirectionsModel direction) { this.direction = direction; }
-
-    @Override
-    public CommonEntityType getSpecificType() { return type; }
+    public void setDirection(Direction direction) {this.direction = direction;}
 
     @Override
-    public CommonEntityType getGenericType() { return super.getSpecificType(); }
+    public CommonEntityType getSpecificType() {return type;}
 
     @Override
-    public String toString() { return "DYNAMIC ENTITY"; }
+    public CommonEntityType getGenericType() {return super.getSpecificType();}
+
+    @Override
+    public String toString() {return "DYNAMIC ENTITY";}
 
     public enum Type implements CommonEntityType {
         LIVE_ENTITY, PROJECTILE

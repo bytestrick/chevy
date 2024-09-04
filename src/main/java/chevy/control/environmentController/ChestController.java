@@ -4,7 +4,7 @@ import chevy.control.HUDController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.staticEntity.environment.Chest;
 
-public class ChestController {
+public final  class ChestController {
     private final Chamber chamber;
     private final HUDController hudController;
 
@@ -14,7 +14,7 @@ public class ChestController {
     }
 
     public void update(Chest chest) {
-        if (chamber.getHitDirectionPlayer(chest) != null) {
+        if (chamber.getDirectionToHitPlayer(chest) != null) {
             if (chest.checkAndChangeState(Chest.State.OPEN)) {
                 if (chest.isFirstOpen()) {
                     chamber.spawnCollectableAroundChest(chest, chest.getSpawnQuantity());

@@ -1,8 +1,8 @@
 package chevy.model.entity.staticEntity.environment;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
 /**
@@ -11,12 +11,12 @@ import chevy.utils.Vector2;
  * tutti si apre e permette il passaggio a un altra stanza.
  */
 public class Stair extends Environment {
-    private final GlobalState idle = new GlobalState(State.IDLE);
-    private final GlobalState open = new GlobalState(State.OPEN, 0.3f);
-    private final GlobalState idleEntry = new GlobalState(State.IDLE_ENTRY, 0.5f);
-    private final DirectionsModel directions;
+    private final Vertex idle = new Vertex(State.IDLE);
+    private final Vertex open = new Vertex(State.OPEN, 0.3f);
+    private final Vertex idleEntry = new Vertex(State.IDLE_ENTRY, 0.5f);
+    private final Direction directions;
 
-    public Stair(Vector2<Integer> initVelocity, DirectionsModel directions) {
+    public Stair(Vector2<Integer> initVelocity, Direction directions) {
         super(initVelocity, Type.STAIR);
 
         this.directions = directions;
@@ -34,12 +34,12 @@ public class Stair extends Environment {
         open.linkState(idleEntry);
     }
 
-    public DirectionsModel getDirections() {
+    public Direction getDirections() {
         return directions;
     }
 
     @Override
-    public GlobalState getState(CommonState commonEnumStates) {
+    public Vertex getState(CommonState commonEnumStates) {
         State stairState = (State) commonEnumStates;
         return switch (stairState) {
             case IDLE -> idle;

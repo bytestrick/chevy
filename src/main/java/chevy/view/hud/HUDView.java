@@ -5,7 +5,7 @@ import chevy.view.Window;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
-public class HUDView extends JPanel {
+public final class HUDView extends JPanel {
     private final CoinBar coinBar;
     private final KeyBar keyBar;
     private final PlayerInfo playerInfo;

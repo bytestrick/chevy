@@ -15,7 +15,7 @@ import chevy.service.Sound;
 /**
  * Controller per gestire le interazioni del giocatore e delle entità con il pavimento spinato nel gioco.
  */
-public class SpikedFloorController {
+public final class SpikedFloorController {
     private final Chamber chamber;
     private final PlayerController playerController;
     private final EnemyController enemyController;

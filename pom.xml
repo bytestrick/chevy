@@ -147,7 +147,9 @@
                 <version>3.13.0</version>
                 <configuration>
                     <compilerArgs>
+                        <arg>-Xlint:-serial</arg>
                         <arg>-Xlint</arg>
+                        <!-- <arg>-Xdoclint</arg> -->
                     </compilerArgs>
                 </configuration>
             </plugin>

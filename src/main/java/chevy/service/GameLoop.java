@@ -7,15 +7,19 @@ import java.awt.Toolkit;
 /**
  * Il thread che aggiorna il gioco
  */
-public class GameLoop {
-    /** FPS del gioco */
+public final class GameLoop {
+    /** FPS ottimali del gioco */
     public static final int TARGET_FRAME_RATE = 60;
     private static final Thread.Builder.OfPlatform worker =
             Thread.ofPlatform().priority(Thread.MAX_PRIORITY);
     private static final Object mutex = new Object();
     private static boolean isRunning;
-    private static boolean isPaused = false;
+    private static boolean isPaused;
 
+    /**
+     * La prima volta crea il {@link #worker} e lo avvia. Tutte le successiva chiamate
+     * interrompono la pausa.
+     */
     public static void start() {
         synchronized (mutex) {
             isPaused = false;
@@ -28,6 +32,9 @@ public class GameLoop {
         }
     }
 
+    /**
+     * Mette il {@link #worker} stato di attesa
+     */
     public static void stop() {
         synchronized (mutex) {
             if (!isPaused) {
@@ -38,8 +45,8 @@ public class GameLoop {
     }
 
     /**
-     * A intervalli calcolati aggiorna il model tramite {@link UpdateManager} e view tramite
-     * {@link RenderManager}
+     * A intervalli calcolati aggiorna {@link chevy.model} tramite {@link UpdateManager} e
+     * {@link chevy.view} tramite {@link RenderManager}
      */
     private static void run() {
         Log.info("Game loop avviato");

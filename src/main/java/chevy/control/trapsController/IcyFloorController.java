@@ -10,7 +10,7 @@ import chevy.service.Sound;
 /**
  * Gestisce le interazioni del giocatore con il pavimento ghiacciato nel gioco.
  */
-public class IcyFloorController {
+public final class IcyFloorController {
     private final PlayerController playerController;
 
     /**

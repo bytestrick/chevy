@@ -1,6 +1,5 @@
-package chevy.model.pathFinding;
+package chevy.model.chamber;
 
-import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
@@ -11,9 +10,9 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /**
- * Algoritmo euristico per la ricerca del cammino minimo.
+ * Algoritmo euristico per la ricerca del cammino minimo
  */
-public class AStar {
+public final class AStar {
     private final Chamber chamber;
     private final Dimension size;
 
@@ -134,7 +133,7 @@ public class AStar {
                         if (isDestination(neighbor, destination)) {
                             cellDetails[neighbor.first][neighbor.second].parent =
                                     new Vector2<>(currentCell.first,
-                                    currentCell.second);
+                                            currentCell.second);
                             Log.info("Punto d'arrivo trovato");
                             return tracePath(cellDetails, destination);
                         } else if (!closedList[neighbor.first][neighbor.second] && !isBlocked(neighbor)) {
@@ -158,7 +157,7 @@ public class AStar {
                                 cellDetails[neighbor.first][neighbor.second].f = fNew;
                                 cellDetails[neighbor.first][neighbor.second].parent =
                                         new Vector2<>(currentCell.first
-                                        , currentCell.second);
+                                                , currentCell.second);
                             }
                         }
                     }
@@ -167,5 +166,38 @@ public class AStar {
         }
         Log.warn("Percorso non trovato");
         return null;
+    }
+
+    /**
+     * Contiene le informazioni necessarie per ricostruire il cammino minimo
+     */
+    private static class Cell {
+        public Vector2<Integer> parent = new Vector2<>(-1, -1);
+        /** Valore di valutazione <code>f = {@link #h} + {@link #g}</code> */
+        public double f = -1;
+        /** Costo esatto del cammino fino al nodo corrente */
+        public double g = -1;
+        /** Costo stimato del cammino fino all'obiettivo */
+        public double h = -1;
+    }
+
+    /**
+     * Contiene informazioni sul nodo (row, col) {@link #f} è il valore della funzione euristica
+     */
+    private static class Details implements Comparable<Details> {
+        public double f;
+        public int row;
+        public int col;
+
+        public Details(double f, int row, int col) {
+            this.f = f;
+            this.row = row;
+            this.col = col;
+        }
+
+        @Override
+        public int compareTo(Details o) {
+            return (int) Math.round(f - o.f);
+        }
     }
 }
