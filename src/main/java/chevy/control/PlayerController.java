@@ -5,6 +5,7 @@ import chevy.control.enemyController.EnemyController;
 import chevy.control.environmentController.EnvironmentController;
 import chevy.control.projectileController.ProjectileController;
 import chevy.control.trapsController.TrapsController;
+import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.Collectable;
@@ -334,6 +335,14 @@ public class PlayerController implements Update {
                 chamber.findAndRemoveEntity(player, false);
                 player.removeFromUpdate();
                 updateFinished = true;
+
+                Statistics.increase(Statistics.PLAYER_DEATH, 1);
+                switch (player.getSpecificType()) {
+                    case KNIGHT -> Statistics.increase(Statistics.KNIGHT_DEATH, 1);
+                    case NINJA -> Statistics.increase(Statistics.NINJA_DEATH, 1);
+                    case ARCHER -> Statistics.increase(Statistics.ARCHER_DEATH, 1);
+                }
+
                 gamePanel.playerDeathDialog();
                 return;
             }

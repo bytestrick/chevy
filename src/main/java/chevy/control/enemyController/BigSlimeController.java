@@ -2,6 +2,7 @@ package chevy.control.enemyController;
 
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
+import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dynamicEntity.DirectionsModel;
@@ -68,6 +69,8 @@ public class BigSlimeController {
                 bigSlime.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(bigSlime);
+                Statistics.increase(Statistics.KILLED_ENEMY, 1);
+                Statistics.increase(Statistics.KILLED_BIG_SLIME, 1);
                 return;
             }
         } else if (bigSlime.getCurrentHealth() <= 0 && bigSlime.checkAndChangeState(BigSlime.State.DEAD)) {

@@ -2,6 +2,7 @@ package chevy.control.enemyController;
 
 import chevy.control.InteractionType;
 import chevy.control.PlayerController;
+import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dynamicEntity.DirectionsModel;
@@ -83,6 +84,8 @@ public class BeetleController {
                 beetle.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(beetle);
+                Statistics.increase(Statistics.KILLED_ENEMY, 1);
+                Statistics.increase(Statistics.KILLED_BEETLE, 1);
                 return;
             }
         } else if (beetle.getCurrentHealth() <= 0 && beetle.checkAndChangeState(Beetle.State.DEAD)) {

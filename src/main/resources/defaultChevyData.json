@@ -1,6 +1,6 @@
 {
   "progress": {
-    "coins": 1492,
+    "coins": 0,
     "keys": 0,
     "lastUnlockedLevel": 0,
     "player": {
@@ -23,6 +23,49 @@
     "window": {
     },
     "options": {
+      "statistics" : {
+        "playingTime" : 0,
+        "enemyKills" : {
+          "total" : 0,
+          "wraith" : 0,
+          "slime" : 0,
+          "bigSlime" : 0,
+          "zombie" : 0,
+          "skeleton" : 0,
+          "beetle" : 0
+        },
+        "playerDeath" : {
+          "total" : 0,
+          "archer" : 0,
+          "knight" : 0,
+          "ninja" : 0
+        },
+        "collectibleCollected" : {
+          "total" : 0,
+          "keys" : 0,
+          "coins" : 0,
+          "healthPotions" : 0,
+          "powerUpCollected" : {
+            "total" : 0,
+            "agility": 0,
+            "angelRing": 0,
+            "brokenArrows": 0,
+            "coinOfGreed": 0,
+            "coldHeart": 0,
+            "goldenArrows": 0,
+            "healingFlood": 0,
+            "hedgehogSpines": 0,
+            "hobnailBoots": 0,
+            "holyShield": 0,
+            "hotHeart": 0,
+            "keySKeeper": 0,
+            "longSword": 0,
+            "slimePiece": 0,
+            "stoneBoots": 0,
+            "vampireFangs": 0
+          }
+        }
+      }
     }
   }
 }
