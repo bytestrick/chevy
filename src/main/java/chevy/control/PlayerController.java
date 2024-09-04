@@ -87,7 +87,7 @@ public class PlayerController implements Update {
             };
             if (direction != null) {
                 final boolean attack = key >= KeyEvent.VK_I && key <= KeyEvent.VK_L;
-                handleInteraction(InteractionType.KEYBOARD, direction, attack);
+                handleInteraction(Interaction.KEYBOARD, direction, attack);
             }
         }
     }
@@ -98,7 +98,7 @@ public class PlayerController implements Update {
      * @param interaction il tipo di interazione
      * @param subject     l'oggetto con cui il giocatore interagisce
      */
-    public synchronized void handleInteraction(InteractionType interaction, Object subject, boolean attack) {
+    public synchronized void handleInteraction(Interaction interaction, Object subject, boolean attack) {
         switch (interaction) {
             case KEYBOARD -> keyBoardInteraction((DirectionsModel) subject, attack);
             case ENEMY -> enemyInteraction((Enemy) subject);
@@ -126,7 +126,7 @@ public class PlayerController implements Update {
     /**
      * Overload di handleInteraction che non ha l'argomento opzionale attack.
      */
-    public synchronized void handleInteraction(InteractionType interaction, Object subject) {
+    public synchronized void handleInteraction(Interaction interaction, Object subject) {
         handleInteraction(interaction, subject, false);
     }
 
@@ -172,7 +172,7 @@ public class PlayerController implements Update {
     }
 
     private void playerMoveSound(Player player) {
-        Sound.getInstance().play(switch (player.getSpecificType()) {
+        Sound.play(switch (player.getSpecificType()) {
             case ARCHER -> Sound.Effect.ARCHER_FOOTSTEPS;
             case NINJA -> Sound.Effect.NINJA_FOOTSTEPS;
             case KNIGHT -> Sound.Effect.KNIGHT_FOOTSTEPS;
@@ -190,7 +190,7 @@ public class PlayerController implements Update {
 
         // Player on
         switch (entityCurrentCell.getGenericType()) {
-            case TRAP -> trapsController.handleInteraction(InteractionType.PLAYER, player, (Trap) entityCurrentCell);
+            case TRAP -> trapsController.handleInteraction(Interaction.PLAYER, player, (Trap) entityCurrentCell);
             default -> { }
         }
 
@@ -205,20 +205,22 @@ public class PlayerController implements Update {
                 switch (player.getSpecificType()) {
                     case Player.Type.KNIGHT, Player.Type.NINJA -> {
                         if (player.getSpecificType() == Player.Type.NINJA) {
-                            Sound.getInstance().play(Sound.Effect.PUNCH);
+                            Sound.play(Sound.Effect.PUNCH);
                         } else {
-                            Sound.getInstance().play(Sound.Effect.BLADE_SLASH);
+                            Sound.play(Sound.Effect.BLADE_SLASH);
                         }
                         if (entityNextCell.getGenericType() == LiveEntity.Type.ENEMY) {
-                            enemyController.handleInteraction(InteractionType.PLAYER_IN, player,
+                            enemyController.handleInteraction(Interaction.PLAYER_IN, player,
                                     (Enemy) entityNextCell);
                         }
                     }
                     case ARCHER -> { // Spara freccia
                         Arrow arrow = new Arrow(new Vector2<>(player.getRow(), player.getCol()), player.getDirection());
+
                         arrow.changeMinDamage(player.getMinDamage());
                         arrow.changeMaxDamage(player.getMaxDamage());
-                        Sound.getInstance().play(Sound.Effect.ARROW_SWOOSH);
+                        Sound.play(Sound.Effect.ARROW_SWOOSH);
+
                         chamber.addProjectile(arrow);
                         chamber.addEntityOnTop(arrow);
                     }
@@ -239,11 +241,11 @@ public class PlayerController implements Update {
                             player.setDirection(direction);
                         }
                         switch (player.getSpecificType()) {
-                            case Player.Type.NINJA -> Sound.getInstance().play(Sound.Effect.PUNCH);
-                            case Player.Type.ARCHER -> Sound.getInstance().play(Sound.Effect.ARROW_SWOOSH);
-                            case Player.Type.KNIGHT -> Sound.getInstance().play(Sound.Effect.BLADE_SLASH);
+                            case Player.Type.NINJA -> Sound.play(Sound.Effect.PUNCH);
+                            case Player.Type.ARCHER -> Sound.play(Sound.Effect.ARROW_SWOOSH);
+                            case Player.Type.KNIGHT -> Sound.play(Sound.Effect.BLADE_SLASH);
                         }
-                        enemyController.handleInteraction(InteractionType.PLAYER_IN, player, (Enemy) entityNextCell);
+                        enemyController.handleInteraction(Interaction.PLAYER_IN, player, (Enemy) entityNextCell);
                     }
                     player.checkAndChangeState(Player.State.IDLE);
                 }
@@ -251,14 +253,14 @@ public class PlayerController implements Update {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
                         playerMoveSound(player);
                         chamber.moveDynamicEntity(player, direction);
-                        trapsController.handleInteraction(InteractionType.PLAYER_IN, player, (Trap) entityNextCell);
+                        trapsController.handleInteraction(Interaction.PLAYER_IN, player, (Trap) entityNextCell);
                     }
                 }
                 case DynamicEntity.Type.PROJECTILE -> {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
                         playerMoveSound(player);
                         chamber.moveDynamicEntity(player, direction);
-                        projectileController.handleInteraction(InteractionType.PLAYER_IN, player,
+                        projectileController.handleInteraction(Interaction.PLAYER_IN, player,
                                 (Projectile) entityNextCell);
                     }
                 }
@@ -266,7 +268,7 @@ public class PlayerController implements Update {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
                         playerMoveSound(player);
                         chamber.moveDynamicEntity(player, direction);
-                        collectableController.handleInteraction(InteractionType.PLAYER_IN, player,
+                        collectableController.handleInteraction(Interaction.PLAYER_IN, player,
                                 (Collectable) entityNextCell);
                     }
                 }
@@ -274,7 +276,7 @@ public class PlayerController implements Update {
                     if (chamber.canCross(player, direction) && player.checkAndChangeState(Player.State.MOVE)) {
                         playerMoveSound(player);
                         chamber.moveDynamicEntity(player, direction);
-                        environmentController.handleInteraction(InteractionType.PLAYER_IN, player, entityNextCell);
+                        environmentController.handleInteraction(Interaction.PLAYER_IN, player, entityNextCell);
                     }
                 }
                 default -> {
@@ -289,7 +291,7 @@ public class PlayerController implements Update {
         // Player out
         switch (entityCurrentCell.getGenericType()) {
             case TRAP ->
-                    trapsController.handleInteraction(InteractionType.PLAYER_OUT, player, (Trap) entityCurrentCell);
+                    trapsController.handleInteraction(Interaction.PLAYER_OUT, player, (Trap) entityCurrentCell);
             default -> { }
         }
     }
@@ -313,7 +315,7 @@ public class PlayerController implements Update {
             player.changeMaxDamage(partialDamage);
 
             player.changeState(Player.State.ATTACK);
-            enemyController.handleInteraction(InteractionType.PLAYER_IN, player, enemy);
+            enemyController.handleInteraction(Interaction.PLAYER_IN, player, enemy);
 
             player.changeMinDamage(minDamage);
             player.changeMaxDamage(maxDamage);
@@ -354,7 +356,7 @@ public class PlayerController implements Update {
             }
 
             if (canKill && player.changeState(Player.State.DEAD)) {
-                Sound.getInstance().play(Sound.Effect.HUMAN_DEATH);
+                Sound.play(Sound.Effect.HUMAN_DEATH);
                 player.kill();
             } else {
                 int health = player.getHealth();
@@ -371,22 +373,22 @@ public class PlayerController implements Update {
 
             switch (previousEntityBelowTheTop.getGenericType()) {
                 case TRAP ->
-                        trapsController.handleInteraction(InteractionType.PLAYER_OUT, player,
+                        trapsController.handleInteraction(Interaction.PLAYER_OUT, player,
                                 (Trap) previousEntityBelowTheTop);
                 case DynamicEntity.Type.PROJECTILE ->
-                        projectileController.handleInteraction(InteractionType.PLAYER_IN, player,
+                        projectileController.handleInteraction(Interaction.PLAYER_IN, player,
                                 (Projectile) previousEntityBelowTheTop);
                 default -> { }
             }
             switch (nextEntityBelowTheTop.getGenericType()) {
                 case TRAP ->
-                        trapsController.handleInteraction(InteractionType.PLAYER_IN, player,
+                        trapsController.handleInteraction(Interaction.PLAYER_IN, player,
                                 (Trap) nextEntityBelowTheTop);
                 case DynamicEntity.Type.PROJECTILE ->
-                        projectileController.handleInteraction(InteractionType.PLAYER_IN, player,
+                        projectileController.handleInteraction(Interaction.PLAYER_IN, player,
                                 (Projectile) nextEntityBelowTheTop);
                 case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
-                        collectableController.handleInteraction(InteractionType.PLAYER_IN, player,
+                        collectableController.handleInteraction(Interaction.PLAYER_IN, player,
                                 (Collectable) nextEntityBelowTheTop);
                 default -> { }
             }

@@ -19,7 +19,7 @@ public class CoinController {
         if (coin.changeState(Coin.State.COLLECTED)) {
             int value = coin.getValue();
             coin.collect();
-            Sound.getInstance().play(Sound.Effect.COIN);
+            Sound.play(Sound.Effect.COIN);
             Statistics.increase(Statistics.COLLECTED_COLLECTABLE, value);
             Statistics.increase(Statistics.COLLECTED_COIN, value);
             hudController.addCoin(value);

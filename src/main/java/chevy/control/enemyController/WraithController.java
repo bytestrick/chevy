@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
@@ -48,7 +48,7 @@ public class WraithController {
         switch (player.getCurrentState()) {
             // Se il giocatore è in stato di attacco, il Wraith viene danneggiato in base al danno del giocatore.
             case Player.State.ATTACK -> {
-                Sound.getInstance().play(Sound.Effect.WRAITH_HIT);
+                Sound.play(Sound.Effect.WRAITH_HIT);
                 wraith.setDirection(DirectionsModel.positionToDirection(player, wraith));
                 hitWraith(wraith, -1 * player.getDamage());
             }
@@ -74,7 +74,7 @@ public class WraithController {
             }
         } else if (wraith.getCurrentHealth() <= 0 && wraith.checkAndChangeState(Wraith.State.DEAD)) {
             chamber.spawnSlime(wraith); // power up
-            Sound.getInstance().play(Sound.Effect.WRAITH_DEATH);
+            Sound.play(Sound.Effect.WRAITH_DEATH);
             wraith.kill();
         }
 
@@ -88,7 +88,7 @@ public class WraithController {
             } else if (wraith.canChange(Wraith.State.ATTACK)) {
                 Entity entity = chamber.getNearEntityOnTop(wraith, direction);
                 if (entity instanceof Player && wraith.changeState(Wraith.State.ATTACK)) {
-                    Sound.getInstance().play(Sound.Effect.WRAITH_ATTACK);
+                    Sound.play(Sound.Effect.WRAITH_ATTACK);
                     wraith.setCanAttack(true);
                 }
             }
@@ -99,8 +99,8 @@ public class WraithController {
             if (direction != null) {
                 Entity entity = chamber.getNearEntityOnTop(wraith, direction);
                 if (entity instanceof Player) {
-                    Sound.getInstance().play(Sound.Effect.WRAITH_ATTACK);
-                    playerController.handleInteraction(InteractionType.ENEMY, wraith);
+                    Sound.play(Sound.Effect.WRAITH_ATTACK);
+                    playerController.handleInteraction(Interaction.ENEMY, wraith);
                     wraith.setCanAttack(false);
                 }
             }
