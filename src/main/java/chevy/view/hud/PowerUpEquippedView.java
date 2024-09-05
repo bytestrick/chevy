@@ -7,7 +7,7 @@ import chevy.view.component.ImageVisualizer;
 import javax.swing.*;
 import java.awt.*;
 
-public class PowerUpEquippedView extends JComponent {
+public final class PowerUpEquippedView extends JComponent {
     private static final String POWER_UP_RESOURCES = "/sprites/powerUpIcons/";
     private float scale;
     private final int nFrame = 2;
@@ -56,7 +56,6 @@ public class PowerUpEquippedView extends JComponent {
     private void setDimension() {
         calculateFrameWidth();
         Dimension dimension = new Dimension(nFrame * frameWidth, Window.HEIGHT);
-        System.out.println(dimension);
         setMaximumSize(dimension);
         setMinimumSize(dimension);
         setPreferredSize(dimension);

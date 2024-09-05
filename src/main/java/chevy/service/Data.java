@@ -50,6 +50,14 @@ public final class Data {
         root = JsonPath.parse(root).set("$." + path, value).jsonString();
     }
 
+    public synchronized static void increase(String path, Integer value) {
+        Integer oldValue = get(path);
+        set(path, oldValue + value);
+    }
+
+    public synchronized static void increment(String path) {increase(path, 1);}
+
+
     /**
      * Assicura che il file JSON esista e sia utilizzabile
      */

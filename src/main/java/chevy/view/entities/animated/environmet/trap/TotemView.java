@@ -9,7 +9,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class TotemView extends AnimatedEntityView {
+public final class TotemView extends AnimatedEntityView {
     private static final String TOTEM_PATH = "/sprites/traps/totem/";
     private final Totem totem;
 

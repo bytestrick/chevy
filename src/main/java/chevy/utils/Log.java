@@ -3,7 +3,7 @@ package chevy.utils;
 /**
  * Messaggi diagnostici
  */
-public class Log {
+public final class Log {
     /** Valore globale per la granularità della diagnostica */
     public static Log.Level logLevel = Level.INFO;
 

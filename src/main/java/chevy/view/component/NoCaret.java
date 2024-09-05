@@ -9,7 +9,7 @@ import java.awt.Point;
 /**
  * Classe usata nel JTextPane quando non si vuole avere un caret
  */
-public class NoCaret implements Caret {
+public final class NoCaret implements Caret {
     @Override
     public void install(JTextComponent c) {
 

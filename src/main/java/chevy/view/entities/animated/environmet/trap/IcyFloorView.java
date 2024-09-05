@@ -8,7 +8,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class IcyFloorView extends AnimatedEntityView {
+public final class IcyFloorView extends AnimatedEntityView {
     private static final String ICY_FLOOR_PATH = "/sprites/traps/icyFloor/";
     private final IcyFloor icyFloor;
 

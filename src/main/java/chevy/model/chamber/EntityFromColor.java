@@ -46,7 +46,7 @@ import chevy.view.Menu;
 /**
  * Mappa i valori di Rosso dei pixel dell'immagine di un livello a entità del gioco
  */
-public class EntityFromColor {
+public final class EntityFromColor {
     // Wall
     private static final int WALL_INTERIOR_CORNER_BOTTOM_LEFT = 255;
     private static final int WALL_BOTTOM = 254;

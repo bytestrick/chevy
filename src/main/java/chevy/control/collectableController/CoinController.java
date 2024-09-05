@@ -1,9 +1,9 @@
 package chevy.control.collectableController;
 
 import chevy.control.HUDController;
-import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Coin;
+import chevy.service.Data;
 import chevy.service.Sound;
 
 public final class CoinController {
@@ -20,8 +20,9 @@ public final class CoinController {
             int value = coin.getValue();
             coin.collect();
             Sound.play(Sound.Effect.COIN);
-            Statistics.increase(Statistics.COLLECTED_COLLECTABLE, value);
-            Statistics.increase(Statistics.COLLECTED_COIN, value);
+            Data.increase("progress.coins", value);
+            Data.increase("stats.collectable.total.count", value);
+            Data.increase("stats.collectable.commons.coins.count", value);
             hudController.addCoin(value);
             chamber.findAndRemoveEntity(coin);
         }

@@ -9,17 +9,16 @@ import chevy.utils.Utils;
 import chevy.view.chamber.ChamberView;
 import chevy.view.hud.HUDView;
 
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
-import java.awt.*;
 
 public final class GamePanel extends JPanel {
-    private static final ImageIcon playPause = Load.icon("PlayPause", 48, 48);
-    private static final ImageIcon caution = Load.icon("caution", 48, 48);
-    private static final ImageIcon skull = Load.icon("Skull", 48, 48);
-    private static final ImageIcon trophy = Load.icon("Trophy.png", 48, 48);
+    public static final Icon caution = Load.icon("caution", 48, 48);
+    private static final Icon playPause = Load.icon("PlayPause", 48, 48);
+    private static final Icon skull = Load.icon("Skull", 48, 48);
+    private static final Icon trophy = Load.icon("Trophy", 48, 48);
     // @formatter:off
     private static final String[] deathMessages = new String[]{
             "Complimenti, hai vinto un biglietto per l'aldilà! Prossima fermata: riprova!",
@@ -35,16 +34,22 @@ public final class GamePanel extends JPanel {
             "Complimenti! Hai dimostrato ancora una volta la tua abilità!"};
     // @formatter:on
     private static final ChamberView chamberView = new ChamberView();
-    private static boolean pauseDialogActive = false;
-    private static boolean playerDeathDialogActive = false;
-    private static boolean winDialogActive = false;
+    private static boolean pauseDialogActive;
+    private static boolean playerDeathDialogActive;
+    private static boolean winDialogActive;
     private final HUDView hudView = new HUDView(1.3f);
     private final Window window;
 
     public GamePanel(Window window) {
         this.window = window;
         ChamberController.setGamePanel(this);
+        setLayout();
+        add(hudView);
+        add(chamberView);
+        setBackground(Window.bg);
+    }
 
+    private void setLayout() {
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
 
@@ -57,39 +62,32 @@ public final class GamePanel extends JPanel {
         springLayout.putConstraint(SpringLayout.EAST, hudView, 0, SpringLayout.EAST, this);
         springLayout.putConstraint(SpringLayout.WEST, hudView, 0, SpringLayout.WEST, this);
         springLayout.putConstraint(SpringLayout.SOUTH, hudView, 0, SpringLayout.SOUTH, this);
-
-        add(hudView);
-        add(chamberView);
-        setBackground(Window.bg);
     }
 
     /**
      * Dialogo di pausa del gioco. È innescato dalla pressione di ESC.
      */
     public void pauseDialog() {
-        if (!(pauseDialogActive || playerDeathDialogActive || winDialogActive)) {
+        if (!(pauseDialogActive || playerDeathDialogActive || winDialogActive || window.isQuitDialogActive())) {
+            pauseDialogActive = true;
             window.setTitle("Chevy - Pausa");
             GameLoop.stop();
-            boolean pauseMusic = true;
-            pauseDialogActive = true;
-            switch (JOptionPane.showOptionDialog(window, "Chevy è in pausa, scegli cosa " + "fare" +
-                    ".", null, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, playPause,
+            Sound.stopMusic();
+            String message = "Chevy è in pausa, scegli cosa fare.";
+            switch (JOptionPane.showOptionDialog(window, message, null,
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, playPause,
                     new String[]{"Esci", "Opzioni", "Torna " + "al menù", "Riprendi"},
                     "Riprendi")) {
                 case 0 -> {
-                    pauseDialogActive = false;
                     window.quitAction();
+                    pauseDialogActive = false;
                     pauseDialog();
                 }
-                case 1 -> {
-                    GameLoop.stop();
-                    pauseMusic = false;
-                    window.setScene(Window.Scene.OPTIONS);
-                }
+                case 1 -> window.setScene(Window.Scene.OPTIONS);
                 case 2 -> {
                     if (JOptionPane.showOptionDialog(window, "Se torni al menù perderai il " +
-                            "progresso. Continuare?", null, JOptionPane.DEFAULT_OPTION,
-                            JOptionPane.PLAIN_MESSAGE, caution, new String[]{"Si", "No"}, "No") == 0) {
+                                    "progresso. Continuare?", null, JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE, caution, new String[]{"Si", "No"}, "No") == 0) {
                         window.setScene(Window.Scene.MENU);
                         GameLoop.stop();
                     } else {
@@ -98,89 +96,77 @@ public final class GamePanel extends JPanel {
                     }
                 }
                 default -> { // e case 3
-                    // Considera anche il caso in cui l'utente chiude la
-                    // finestra di dialogo.
+                    // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
                     GameLoop.start();
-                    pauseMusic = false;
-                    Sound.resumeMusic();
+                    Sound.startMusic(false);
                     window.setTitle("Chevy");
                 }
             }
-            if (pauseMusic)
-                Sound.pauseMusic();
             pauseDialogActive = false;
         }
     }
 
     /**
-     * Dialogo innescato dalla morte del giocatore.
+     * Dialogo innescato dalla morte del giocatore
      */
     public void playerDeathDialog() {
         playerDeathDialogActive = true;
         GameLoop.stop();
-        boolean pauseMusic = true;
-
-        switch (JOptionPane.showOptionDialog(window, deathMessages[Utils.random.nextInt(deathMessages.length)],
-                "Chevy - Morte", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, skull, new String[]{"Esci",
+        Sound.stopMusic();
+        switch (JOptionPane.showOptionDialog(window,
+                deathMessages[Utils.random.nextInt(deathMessages.length)],
+                "Chevy - Morte", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, skull,
+                new String[]{"Esci",
                         "Torna al menù", "Rigioca livello"}, "Rigioca livello")) {
             case 0 -> {
                 window.quitAction();
+                playerDeathDialogActive = false;
                 playerDeathDialog();
             }
             case 1 -> window.setScene(Window.Scene.MENU);
-            case 2 ->  {
-                pauseMusic = false;
-                ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
-            }
+            case 2 -> ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
             default -> playerDeathDialog(); // Questo dialogo non può essere ignorato
         }
-
-        if (pauseMusic)
-            Sound.pauseMusic();
         playerDeathDialogActive = false;
     }
 
+    /**
+     * Dialogo innescato quando l'utente fa entrare il Player nella botola
+     */
     public void winDialog() {
         winDialogActive = true;
         GameLoop.stop();
-        boolean pauseMusic = true;
+        Sound.stopMusic();
         String[] option = new String[]{"Esci", "Torna al menù", "Rigioca livello", "Continua"};
         int defaultOption = 3;
         if (ChamberManager.isLastChamber()) {
             option = new String[]{"Esci", "Torna al menù", "Rigioca livello"};
             defaultOption = 2;
         }
-
         switch (JOptionPane.showOptionDialog(window,
-                winMessages[Utils.random.nextInt(winMessages.length)],
-                "Chevy - Vittoria",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                trophy,
-                option, option[defaultOption])) {
-            case 0 -> window.quitAction();
+                winMessages[Utils.random.nextInt(winMessages.length)], "Chevy - Vittoria",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, trophy, option,
+                option[defaultOption])) {
+            case 0 -> {
+                window.quitAction();
+                winDialogActive = false;
+                winDialog();
+            }
             case 1 -> window.setScene(Window.Scene.MENU);
-            case 2 -> {
-                pauseMusic = false;
-                ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
-            }
-            case 3 -> {
-                pauseMusic = false;
-                ChamberManager.nextChamber();
-            }
+            case 2 -> ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
+            case 3 -> ChamberManager.nextChamber();
             default -> winDialog(); // Questo dialogo non può essere ignorato
         }
-
-        if (pauseMusic)
-            Sound.pauseMusic();
         winDialogActive = false;
     }
 
-    public void windowResized(float scale) { hudView.windowResized(scale); }
+    public void windowResized(float scale) {hudView.windowResized(scale);}
 
     public ChamberView getChamberView() {return chamberView;}
 
     public HUDView getHudView() {return hudView;}
+
+    public static boolean isPauseDialogNotActive() {return !pauseDialogActive;}
 
     public Window getWindow() {return window;}
 }

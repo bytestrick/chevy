@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Utils {
+public final class Utils {
     /** Generatore di numeri casuali */
     public static final Random random = new Random();
 
     /**
-     * Questa funzione prende un valore e un intervallo definito da min e max, e restituisce un valore equivalente
-     * all’interno di quell’intervallo. Se il valore fornito è al di fuori dell’intervallo, la funzione lo “avvolge”
+     * Questa funzione prende un valore e un intervallo definito da min e max, e restituisce un
+     * valore equivalente
+     * all’interno di quell’intervallo. Se il valore fornito è al di fuori dell’intervallo, la
+     * funzione lo “avvolge”
      * per riportarlo all’interno dell’intervallo.
      *
      * @param value valore da "avvolgere"
@@ -19,9 +21,11 @@ public class Utils {
      */
     public static int wrap(int value, int min, int max) {
         int range = max - min + 1; // numero di valori nel range
-        if (value < min) { // se il valore è più piccolo del minimo riporta il valore nell'intervallo
+        if (value < min) { // se il valore è più piccolo del minimo riporta il valore
+            // nell'intervallo
             return max - ((min - value - 1) % range);
-        } else if (value > max) { // se il valore è più grande del massimo riporta il valore nell'intervallo
+        } else if (value > max) { // se il valore è più grande del massimo riporta il valore
+            // nell'intervallo
             return min + ((value - max - 1) % range);
         }
         return value; // il valore è già nell'intervallo
@@ -32,7 +36,8 @@ public class Utils {
     }
 
     /**
-     * Dato un array di valori da 0 a 100 la funzione estrae, con le probabilità inserite, un indice dell'array.
+     * Dato un array di valori da 0 a 100 la funzione estrae, con le probabilità inserite, un
+     * indice dell'array.
      * Se sono presenti più indici ne sceglie uno a caso.
      * <p>
      * <br/>
@@ -57,5 +62,16 @@ public class Utils {
             return -1;
         }
         return result.get(random.nextInt(result.size()));
+    }
+
+    /**
+     * @param ms tempo in millisecondi
+     * @return stringa formattata con questo formato: {@code "%02d ore, %02d minuti, %02d secondi"}
+     */
+    public static String msToString(final int ms) {
+        int s = ms / 1000 % 60;
+        int min = ms / (1000 * 60) % 60;
+        int h = ms / (1000 * 60 * 60) % 24;
+        return String.format("%02d ore, %02d minuti, %02d secondi", h, min, s);
     }
 }

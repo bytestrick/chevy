@@ -10,7 +10,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class WraithView extends AnimatedEntityView {
+public final class WraithView extends AnimatedEntityView {
     private static final String WRAITH_RESOURCES = "/sprites/enemy/wraith/";
     private final Wraith wraith;
 

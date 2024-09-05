@@ -2,7 +2,6 @@ package chevy.control.enemyController;
 
 import chevy.control.Interaction;
 import chevy.control.PlayerController;
-import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dynamicEntity.Direction;
@@ -10,6 +9,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.enemy.Wraith;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.service.Data;
 import chevy.service.Sound;
 import chevy.utils.Log;
 
@@ -68,8 +68,8 @@ public final class WraithController {
                 wraith.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(wraith);
-                Statistics.increase(Statistics.KILLED_ENEMY, 1);
-                Statistics.increase(Statistics.KILLED_WRAITH, 1);
+                Data.increment("stats.kills.total.total");
+                Data.increment("stats.kills.wraith.total");
                 return;
             }
         } else if (wraith.getCurrentHealth() <= 0 && wraith.checkAndChangeState(Wraith.State.DEAD)) {

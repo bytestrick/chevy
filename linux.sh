@@ -14,9 +14,12 @@ elif [ "$1" = install ]
 then
   set -x
   mvn package
-  install -D target/chevy.jar "$LOCAL"/opt/
-  install -D src/main/resources/chevy.desktop "$LOCAL"/share/applications
-  install -D src/main/resources/Chevy.png "$LOCAL"/share/icons/hicolor/256x256/apps/
+  mkdir -p "$LOCAL"/opt/
+  cp target/chevy.jar "$LOCAL"/opt/
+  mkdir -p "$LOCAL"/share/applications
+  cp src/main/resources/chevy.desktop "$LOCAL"/share/applications
+  mkdir -p "$LOCAL"/share/icons/hicolor/256x256/apps/
+  cp src/main/resources/Chevy.png "$LOCAL"/share/icons/hicolor/256x256/apps/
 else
   echo "Usage:"
   echo "  $0 install - to install the app locally for the current user"

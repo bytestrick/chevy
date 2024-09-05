@@ -5,7 +5,7 @@ import chevy.view.component.MyPanelUI;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 
-public class PlayerFrame extends JPanel {
+public final class PlayerFrame extends JPanel {
     private static final String PANEL_PATH = "/sprites/component/panel/";
     private final MyPanelUI ui;
     private final float scale;

@@ -10,7 +10,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class BigSlimeView extends AnimatedEntityView {
+public final class BigSlimeView extends AnimatedEntityView {
     private static final String BIG_SLIME_RESOURCES = "/sprites/enemy/bigSlime/";
     private final BigSlime bigSlime;
 

@@ -1,9 +1,9 @@
 package chevy.control.collectableController;
 
 import chevy.control.HUDController;
-import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Key;
+import chevy.service.Data;
 import chevy.service.Sound;
 
 public final class KeyController {
@@ -19,8 +19,9 @@ public final class KeyController {
         if (key.changeState(Key.State.COLLECTED)) {
             Sound.play(Sound.Effect.KEY_EQUIPPED);
             key.collect();
-            Statistics.increase(Statistics.COLLECTED_COLLECTABLE, 1);
-            Statistics.increase(Statistics.COLLECTED_KEY, 1);
+            Data.increment("progress.keys");
+            Data.increment("stats.collectable.total.count");
+            Data.increment("stats.collectable.commons.keys.count");
             hudController.addKey(1);
             chamber.findAndRemoveEntity(key);
         }

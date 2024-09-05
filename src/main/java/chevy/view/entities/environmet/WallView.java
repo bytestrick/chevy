@@ -7,7 +7,7 @@ import chevy.view.entities.EntityView;
 
 import java.awt.image.BufferedImage;
 
-public class WallView extends EntityView {
+public final class WallView extends EntityView {
     private static final String COMMON_PATH = "/sprites/chamberTiles/wallTiles/";
     private static BufferedImage TOP_IMAGE = null;
     private static BufferedImage BOTTOM_IMAGE = null;

@@ -7,7 +7,7 @@ import javax.swing.plaf.PanelUI;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public class MyPanelUI extends PanelUI {
+public final class MyPanelUI extends PanelUI {
     public static final int CENTER = 0;
     public static final int CORNER_TL = 1;
     public static final int CORNER_TR = 2;

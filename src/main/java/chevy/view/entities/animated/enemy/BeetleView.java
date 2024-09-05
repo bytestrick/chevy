@@ -10,7 +10,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class BeetleView extends AnimatedEntityView {
+public final class BeetleView extends AnimatedEntityView {
     private static final String BEETLE_RESOURCES = "/sprites/enemy/beetle/";
     private final Beetle beetle;
 

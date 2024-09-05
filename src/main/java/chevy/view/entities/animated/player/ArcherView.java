@@ -12,7 +12,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class ArcherView extends AnimatedEntityView {
+public final class ArcherView extends AnimatedEntityView {
     private static final String ARCHER_RESOURCES = "/sprites/player/archer/";
     private final Archer archer;
 
