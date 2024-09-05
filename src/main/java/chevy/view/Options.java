@@ -68,12 +68,16 @@ public final class Options {
         Sound.play(Sound.Effect.STOP);
         final String message = "L'app sarà riportata allo stato predefinito. Il progresso di " +
                 "gioco e le impostazioni andranno perse. Continuare?";
-        if (JOptionPane.showOptionDialog(window, message, null, JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE, caution, new String[]{"Si", "No"}, "No") == 0) {
+        final int ans = JOptionPane.showOptionDialog(window, message, null, JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE, caution, new String[]{"Si", "No"}, "No");
+        if (ans == 0) {
+            Sound.play(Sound.Effect.BUTTON);
             Data.createPristineFile();
             Data.read();
             window.refresh();
             window.setScene(Window.Scene.MENU);
+        } else if (ans == 1) {
+            Sound.play(Sound.Effect.BUTTON);
         }
     }
 

@@ -129,9 +129,9 @@ public final class GamePanel extends JPanel {
         playerDeathDialogActive = true;
         GameLoop.stop();
         Sound.stopMusic();
-        switch (JOptionPane.showOptionDialog(window,
-                deathMessages[Utils.random.nextInt(deathMessages.length)],
-                "Chevy - Morte", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, skull,
+        window.setTitle("Chevy - Morte");
+        switch (JOptionPane.showOptionDialog(window, deathMessages[Utils.random.nextInt(deathMessages.length)],
+                null, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, skull,
                 new String[]{"Esci",
                         "Torna al menù", "Rigioca livello"}, "Rigioca livello")) {
             case 0 -> {
@@ -150,6 +150,7 @@ public final class GamePanel extends JPanel {
             }
             default -> playerDeathDialog(); // Questo dialogo non può essere ignorato
         }
+        window.setTitle("Chevy - Morte");
         playerDeathDialogActive = false;
     }
 
@@ -158,16 +159,17 @@ public final class GamePanel extends JPanel {
      */
     public void winDialog() {
         winDialogActive = true;
-        GameLoop.stop();
         Sound.stopMusic();
-        String[] option = new String[]{"Esci", "Torna al menù", "Rigioca livello", "Continua"};
+        window.setTitle("Chevy - Vittoria");
+        GameLoop.stop();
+        String[] option = new String[]{"Esci", "Rigioca livello", "Torna al menù", "Prossimo livello"};
         int defaultOption = 3;
         if (ChamberManager.isLastChamber()) {
-            option = new String[]{"Esci", "Torna al menù", "Rigioca livello"};
+            option = new String[]{"Esci", "Rigioca livello", "Torna al menù"};
             defaultOption = 2;
         }
         switch (JOptionPane.showOptionDialog(window,
-                winMessages[Utils.random.nextInt(winMessages.length)], "Chevy - Vittoria",
+                winMessages[Utils.random.nextInt(winMessages.length)], null,
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, trophy, option,
                 option[defaultOption])) {
             case 0 -> {
@@ -178,11 +180,11 @@ public final class GamePanel extends JPanel {
             }
             case 1 -> {
                 Sound.play(Sound.Effect.BUTTON);
-                window.setScene(Window.Scene.MENU);
+                ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
             }
             case 2 -> {
                 Sound.play(Sound.Effect.BUTTON);
-                ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
+                window.setScene(Window.Scene.MENU);
             }
             case 3 -> {
                 Sound.play(Sound.Effect.BUTTON);
@@ -190,6 +192,7 @@ public final class GamePanel extends JPanel {
             }
             default -> winDialog(); // Questo dialogo non può essere ignorato
         }
+        window.setTitle("Chevy");
         winDialogActive = false;
     }
 

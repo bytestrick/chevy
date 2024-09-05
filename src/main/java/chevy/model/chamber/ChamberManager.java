@@ -13,7 +13,6 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Log;
-import chevy.view.Menu;
 import chevy.view.chamber.EntityToEntityView;
 
 import javax.imageio.ImageIO;
@@ -30,7 +29,7 @@ public final class ChamberManager {
     public static final int NUMBER_OF_CHAMBERS = 6;
     private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
     /** Indice della stanza corrente nel gioco. */
-    private static int currentChamberIndex = 0;
+    private static int currentChamberIndex;
 
     /**
      * Carica un layer che comporrà la stanza.
@@ -109,7 +108,6 @@ public final class ChamberManager {
      * Sblocca e passa alla stanza successiva
      */
     public static void nextChamber() {
-        Menu.incrementLevel();
         enterChamber(currentChamberIndex + 1);
     }
 
