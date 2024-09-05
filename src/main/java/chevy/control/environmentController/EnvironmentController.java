@@ -16,6 +16,7 @@ public final class EnvironmentController {
     public EnvironmentController(Chamber chamber, HUDController hudController, GamePanel gamePanel) {
         this.chestController = new ChestController(chamber, hudController);
         StairController.setGamePanel(gamePanel);
+        StairController.setHUDController(hudController);
     }
 
     public synchronized void handleInteraction(Interaction interaction, Entity subject, Entity object) {
