@@ -4,13 +4,15 @@ import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.view.Window;
 import chevy.view.component.ImageVisualizer;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import javax.swing.ToolTipManager;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 public final class PowerUpEquippedView extends JComponent {
     private static final String POWER_UP_RESOURCES = "/sprites/powerUpIcons/";
-    private float scale;
     private final int nFrame = 2;
+    private float scale;
     private int frameWidth = 0;
     private int spacing = 2;
 
@@ -46,8 +48,10 @@ public final class PowerUpEquippedView extends JComponent {
         }
 
         ImageVisualizer frame = new ImageVisualizer(path + ".png", scale * Window.scale);
-        ToolTipManager.sharedInstance().setInitialDelay(100);  // Ritardo prima della comparsa del tooltip (in millisecondi)
-        ToolTipManager.sharedInstance().setDismissDelay(10000); // Tempo di permanenza del tooltip (in millisecondi)
+        ToolTipManager.sharedInstance().setInitialDelay(100);  // Ritardo prima della comparsa
+        // del tooltip (in millisecondi)
+        ToolTipManager.sharedInstance().setDismissDelay(10000); // Tempo di permanenza del
+        // tooltip (in millisecondi)
         frame.setToolTipText(powerUp.getDescription());
         add(frame);
         setDimension();
@@ -55,7 +59,7 @@ public final class PowerUpEquippedView extends JComponent {
 
     private void setDimension() {
         calculateFrameWidth();
-        Dimension dimension = new Dimension(nFrame * frameWidth, Window.HEIGHT);
+        Dimension dimension = new Dimension(nFrame * frameWidth, Window.size.height);
         setMaximumSize(dimension);
         setMinimumSize(dimension);
         setPreferredSize(dimension);
@@ -65,8 +69,7 @@ public final class PowerUpEquippedView extends JComponent {
     private void calculateFrameWidth() {
         if (getComponentCount() > 0) {
             frameWidth = getComponent(0).getWidth() + 1 + spacing;
-        }
-        else
+        } else
             frameWidth = 0;
     }
 
