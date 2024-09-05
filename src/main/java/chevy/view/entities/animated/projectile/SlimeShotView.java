@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.projectile;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Vector2;
@@ -10,7 +10,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class SlimeShotView extends AnimatedEntityView {
+public final class SlimeShotView extends AnimatedEntityView {
     private static final String SLIME_SHOT_RESOURCES = "/sprites/projectile/slimeShot/";
     private final SlimeShot slimeShot;
 
@@ -20,7 +20,7 @@ public class SlimeShotView extends AnimatedEntityView {
         this.currentViewPosition = new Vector2<>((double) slimeShot.getCol(), (double) slimeShot.getRow());
 
         final float duration = slimeShot.getState(slimeShot.getCurrentState()).getDuration();
-        currentGlobalState = slimeShot.getState(slimeShot.getCurrentState());
+        currentVertex = slimeShot.getState(slimeShot.getCurrentState());
         moveInterpolationX = new Interpolation(currentViewPosition.first, slimeShot.getCol(), duration,
                 Interpolation.Type.LINEAR);
         moveInterpolationY = new Interpolation(currentViewPosition.second, slimeShot.getRow(), duration,
@@ -82,7 +82,7 @@ public class SlimeShotView extends AnimatedEntityView {
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, type);
 
         if (currentAnimatedSprite != null) {
-            if (currentEnumState == SlimeShot.State.END && currentGlobalState.isFinished()) {
+            if (currentEnumState == SlimeShot.State.END && currentVertex.isFinished()) {
                 slimeShot.setToDraw(false);
             } else if (!currentAnimatedSprite.isRunning()) {
                 currentAnimatedSprite.start();
@@ -107,7 +107,7 @@ public class SlimeShotView extends AnimatedEntityView {
     }
 
     private int getAnimationType(CommonState currentState) {
-        DirectionsModel currentDirection = slimeShot.getDirection();
+        Direction currentDirection = slimeShot.getDirection();
         return switch (currentState) {
             case SlimeShot.State.START, SlimeShot.State.LOOP, SlimeShot.State.END -> switch (currentDirection) {
                 case UP -> 0;
@@ -121,11 +121,11 @@ public class SlimeShotView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (currentGlobalState.isFinished()) {
-            currentGlobalState = slimeShot.getState(slimeShot.getCurrentState());
+        if (currentVertex.isFinished()) {
+            currentVertex = slimeShot.getState(slimeShot.getCurrentState());
             firstTimeInState = true;
-        } else if (firstTimeInState && currentGlobalState.getState() != SlimeShot.State.END) {
-            float duration = currentGlobalState.getDuration();
+        } else if (firstTimeInState && currentVertex.getState() != SlimeShot.State.END) {
+            float duration = currentVertex.getDuration();
             moveInterpolationX.changeStart(currentViewPosition.first);
             moveInterpolationX.changeEnd(slimeShot.getCol());
             moveInterpolationX.changeDuration(duration);

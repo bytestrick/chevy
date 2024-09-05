@@ -1,14 +1,15 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Skeleton;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.service.Data;
 import chevy.service.Sound;
 import chevy.utils.Log;
 
@@ -17,7 +18,7 @@ import chevy.utils.Log;
  * Gestisce come lo Skeleton risponde agli attacchi del giocatore, ai colpi dei proiettili e coordina il suo stato e
  * i suoi movimenti.
  */
-public class SkeletonController {
+public final class SkeletonController {
     /**
      * Riferimento alla stanza di gioco in cui si trova lo Skeleton. Utilizzato per verificare le posizioni,
      * aggiungere/rimuovere entità e gestire le interazioni.
@@ -44,14 +45,13 @@ public class SkeletonController {
      * @param skeleton lo Skeleton che subisce l'interazione
      */
     public void playerInInteraction(Player player, Skeleton skeleton) {
-        switch (player.getCurrentState()) {
-            // Se il giocatore è in stato di attacco, lo Skeleton viene danneggiato in base al danno del giocatore.
-            case Player.State.ATTACK -> {
-                Sound.getInstance().play(Sound.Effect.SKELETON_HIT);
-                hitSkeleton(skeleton, -1 * player.getDamage());
-                skeleton.setDirection(DirectionsModel.positionToDirection(player, skeleton));
-            }
-            default -> Log.warn("Lo SkeletonController non gestisce questa azione: " + player.getCurrentState());
+        // Se il giocatore è in stato di attacco, lo Skeleton viene danneggiato in base al danno del giocatore.
+        if (player.getCurrentState().equals(Player.State.ATTACK)) {
+            Sound.play(Sound.Effect.SKELETON_HIT);
+            hitSkeleton(skeleton, -1 * player.getDamage());
+            skeleton.setDirection(Direction.positionToDirection(player, skeleton));
+        } else {
+            Log.warn("Lo SkeletonController non gestisce questa azione: " + player.getCurrentState());
         }
     }
 
@@ -68,38 +68,40 @@ public class SkeletonController {
                 skeleton.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(skeleton);
+                Data.increment("stats.kills.total.count");
+                Data.increment("stats.kills.enemies.slime.count");
                 return;
             }
         } else if (skeleton.getCurrentHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.State.DEAD)) {
             chamber.spawnSlime(skeleton); // power up
-            Sound.getInstance().play(Sound.Effect.SKELETON_DISASSEMBLED);
+            Sound.play(Sound.Effect.SKELETON_DISASSEMBLED);
             skeleton.kill();
         }
 
         // Gestione del movimento/attacco
         if (skeleton.canChange(Skeleton.State.MOVE)) {
-            DirectionsModel direction = chamber.getHitDirectionPlayer(skeleton);
+            Direction direction = chamber.getDirectionToHitPlayer(skeleton);
             if (direction == null) {
                 if (chamber.chase(skeleton)) {
                     skeleton.changeState(Skeleton.State.MOVE);
                     skeleton.setCanAttack(false);
                 }
             } else if (skeleton.canChange(Skeleton.State.ATTACK)) {
-                Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
+                Entity entity = chamber.getEntityNearOnTop(skeleton, direction);
                 if (entity instanceof Player && skeleton.changeState(Skeleton.State.ATTACK)) {
-                    Sound.getInstance().play(Sound.Effect.SKELETON_HIT);
+                    Sound.play(Sound.Effect.SKELETON_HIT);
                     skeleton.setCanAttack(true);
                 }
             }
         }
 
         if (skeleton.canAttack() && skeleton.getState(Skeleton.State.ATTACK).isFinished()) {
-            DirectionsModel direction = chamber.getHitDirectionPlayer(skeleton);
+            Direction direction = chamber.getDirectionToHitPlayer(skeleton);
             if (direction != null) {
-                Entity entity = chamber.getNearEntityOnTop(skeleton, direction);
+                Entity entity = chamber.getEntityNearOnTop(skeleton, direction);
                 if (entity instanceof Player) {
-                    Sound.getInstance().play(Sound.Effect.SKELETON_HIT);
-                    playerController.handleInteraction(InteractionType.ENEMY, skeleton);
+                    Sound.play(Sound.Effect.SKELETON_HIT);
+                    playerController.handleInteraction(Interaction.ENEMY, skeleton);
                     skeleton.setCanAttack(false);
                 }
             }
@@ -117,7 +119,7 @@ public class SkeletonController {
      * @param skeleton   lo Skeleton che subisce l'interazione
      */
     public void projectileInteraction(Projectile projectile, Skeleton skeleton) {
-        skeleton.setDirection(DirectionsModel.positionToDirection(projectile, skeleton));
+        skeleton.setDirection(Direction.positionToDirection(projectile, skeleton));
         hitSkeleton(skeleton, -1 * projectile.getDamage());
     }
 
@@ -134,11 +136,8 @@ public class SkeletonController {
     }
 
     public void trapInteraction(Trap trap, Skeleton skeleton) {
-        switch (trap.getSpecificType()) {
-            case Trap.Type.SPIKED_FLOOR -> {
-                hitSkeleton(skeleton, -1 * trap.getDamage());
-            }
-            default -> { }
+        if (trap.getSpecificType().equals(Trap.Type.SPIKED_FLOOR)) {
+            hitSkeleton(skeleton, -1 * trap.getDamage());
         }
     }
 }

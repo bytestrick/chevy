@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.utils.Vector2;
 
-public class VampireFangs extends PowerUp {
+public final class VampireFangs extends PowerUp {
     private final int recoveryHealth = 1;
 
     public VampireFangs(Vector2<Integer> initVelocity) {

@@ -1,15 +1,21 @@
 ### Maven
 
 > [!TIP]
-> Eseguire `./mvnw` compila ed esegue il progetto in un colpo solo.
+> Eseguire `mvn` compila ed esegue il progetto in un colpo solo.
 
 Lifecycle phases:
-  - `./mvnw clean` rimuove `target/` dopo la build
-  - `./mvnw compile` compila il progetto
-  - `./mvnw exec:exec` esegue il progetto compilato
-  - `./mvnw package` crea l'archivio `jar` compreso di dipendenze
+  - `mvn clean` rimuove `target/` dopo la build
+  - `mvn compile` compila il progetto
+  - `mvn exec:exec` esegue il progetto compilato
+  - `mvn package` crea l'archivio `jar` compreso di dipendenze
 
-Le fasi si possono concatenare, esempio: `./mvnw clean compile` rimuove `target/` e ricompila il progetto da capo.
+Le fasi si possono concatenare, esempio: `mvn clean compile` rimuove `target/` e ricompila il progetto da capo.
+
+### Colori
+
+Il menù principale usa una palette **monocromatica** basata sul viola (`HSB(280, 80, 60)`). Elementi dell'interfaccia che si intende fare risaltare usano i **colori vicini**, blu e rosa.
+
+![Palette image](src/main/resources/style/palette.png)
 
 ### Cose
 
@@ -210,3 +216,4 @@ stateDiagram-v2
 - Font per l'interfaccia: [Handjet](https://fonts.google.com/specimen/Handjet)
 - Le citazioni dei personaggi nella schermata iniziale e i messaggi del dialogo di morte sono generati da [ChatGPT](https://chatgpt.com/)
 - Varie risorse provengono da [itch.io](https://itch.io/gameView-assets), i file sono accompagnati dalle rispettive licenze.
+- Alcune icone provengono da [flaticon.com](https://www.flaticon.com)

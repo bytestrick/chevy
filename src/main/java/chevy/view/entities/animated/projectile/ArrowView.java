@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.projectile;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Vector2;
@@ -10,7 +10,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class ArrowView extends AnimatedEntityView {
+public final class ArrowView extends AnimatedEntityView {
     private static final String ARROW_PATH = "/sprites/projectile/arrow/";
     private final Arrow arrow;
 
@@ -18,7 +18,7 @@ public class ArrowView extends AnimatedEntityView {
         super();
         this.arrow = arrow;
         this.currentViewPosition = new Vector2<>((double) arrow.getCol(), (double) arrow.getRow());
-        currentGlobalState = arrow.getState(arrow.getCurrentState());
+        currentVertex = arrow.getState(arrow.getCurrentState());
 
         final float duration = arrow.getState(arrow.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentViewPosition.first, arrow.getCol(), duration,
@@ -52,7 +52,7 @@ public class ArrowView extends AnimatedEntityView {
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, type);
 
         if (currentAnimatedSprite != null) {
-            if (currentEnumState == Arrow.State.END && currentGlobalState.isFinished()) {
+            if (currentEnumState == Arrow.State.END && currentVertex.isFinished()) {
                 arrow.setToDraw(false);
             } else if (!currentAnimatedSprite.isRunning()) {
                 currentAnimatedSprite.restart();
@@ -70,7 +70,7 @@ public class ArrowView extends AnimatedEntityView {
     }
 
     private int getAnimationType(CommonState currentState) {
-        DirectionsModel currentDirection = arrow.getDirection();
+        Direction currentDirection = arrow.getDirection();
         return switch (currentState) {
             case Arrow.State.LOOP, Arrow.State.END -> switch (currentDirection) {
                 case UP -> 0;
@@ -84,11 +84,11 @@ public class ArrowView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (currentGlobalState.isFinished()) {
-            currentGlobalState = arrow.getState(arrow.getCurrentState());
+        if (currentVertex.isFinished()) {
+            currentVertex = arrow.getState(arrow.getCurrentState());
             firstTimeInState = true;
-        } else if (firstTimeInState && currentGlobalState.getState() != Arrow.State.END) {
-            float duration = currentGlobalState.getDuration();
+        } else if (firstTimeInState && currentVertex.getState() != Arrow.State.END) {
+            float duration = currentVertex.getDuration();
             moveInterpolationX.changeStart(currentViewPosition.first);
             moveInterpolationX.changeEnd(arrow.getCol());
             moveInterpolationX.changeDuration(duration);
@@ -100,8 +100,8 @@ public class ArrowView extends AnimatedEntityView {
             firstTimeInState = false;
         }
 
-        currentViewPosition.changeFirst(moveInterpolationX.getValue());
-        currentViewPosition.changeSecond(moveInterpolationY.getValue());
+        currentViewPosition.first = moveInterpolationX.getValue();
+        currentViewPosition.second = moveInterpolationY.getValue();
         return currentViewPosition;
     }
 

@@ -20,7 +20,7 @@ import chevy.model.entity.collectable.powerUp.LongSword;
 import chevy.model.entity.collectable.powerUp.SlimePiece;
 import chevy.model.entity.collectable.powerUp.StoneBoots;
 import chevy.model.entity.collectable.powerUp.VampireFangs;
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Beetle;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.BigSlime;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Skeleton;
@@ -44,10 +44,9 @@ import chevy.utils.Vector2;
 import chevy.view.Menu;
 
 /**
- * Crea entità in base a valori di colore.
- * Ogni valore di colore corrisponde a un tipo specifico di entità nel gioco.
+ * Mappa i valori di Rosso dei pixel dell'immagine di un livello a entità del gioco
  */
-public class EntityFromColor {
+public final class EntityFromColor {
     // Wall
     private static final int WALL_INTERIOR_CORNER_BOTTOM_LEFT = 255;
     private static final int WALL_BOTTOM = 254;
@@ -98,7 +97,7 @@ public class EntityFromColor {
     private static final int TOTEM_DOWN = 141;
     private static final int TOTEM_LEFT = 140;
 
-    // Players
+    // Player
     private static final int PLAYER = 1;
 
     // Enemy
@@ -143,30 +142,25 @@ public class EntityFromColor {
     public static Entity get(int r, int row, int col) {
         Vector2<Integer> startPosition = new Vector2<>(row, col);
         return switch (r) {
+            //@formatter:off
             // Wall
             case WALL_TOP -> new Wall(startPosition, Wall.WallTypes.TOP);
             case WALL_INTERIOR_CORNER_TOP_LEFT -> new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_TOP_LEFT);
             case WALL_INTERIOR_CORNER_TOP_RIGHT -> new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_TOP_RIGHT);
-            case WALL_INTERIOR_CORNER_BOTTOM_LEFT ->
-                    new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_BOTTOM_LEFT);
-            case WALL_INTERIOR_CORNER_BOTTOM_RIGHT ->
-                    new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_BOTTOM_RIGHT);
+            case WALL_INTERIOR_CORNER_BOTTOM_LEFT -> new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_BOTTOM_LEFT);
+            case WALL_INTERIOR_CORNER_BOTTOM_RIGHT -> new Wall(startPosition, Wall.WallTypes.CORNER_INTERIOR_BOTTOM_RIGHT);
             case WALL_BOTTOM -> new Wall(startPosition, Wall.WallTypes.BOTTOM);
             case WALL_LEFT -> new Wall(startPosition, Wall.WallTypes.LEFT);
             case WALL_RIGHT -> new Wall(startPosition, Wall.WallTypes.RIGHT);
-            case WALL_EXTERNAL_CORNER_BOTTOM_LEFT ->
-                    new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
-            case WALL_EXTERNAL_CORNER_BOTTOM_RIGHT ->
-                    new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
+            case WALL_EXTERNAL_CORNER_BOTTOM_LEFT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
+            case WALL_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
             case WALL_EXTERNAL_CORNER_TOP_LEFT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_TOP_LEFT);
             case WALL_EXTERNAL_CORNER_TOP_RIGHT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_TOP_RIGHT);
 
             // Ground
             case GROUND_TOP -> new Ground(startPosition, Ground.GroundTypes.TOP);
-            case GROUND_INTERIOR_CORNER_TOP_LEFT ->
-                    new Ground(startPosition, Ground.GroundTypes.INTERIOR_CORNER_TOP_LEFT);
-            case GROUND_INTERIOR_CORNER_TOP_RIGHT ->
-                    new Ground(startPosition, Ground.GroundTypes.INTERIOR_CORNER_TOP_RIGHT);
+            case GROUND_INTERIOR_CORNER_TOP_LEFT -> new Ground(startPosition, Ground.GroundTypes.INTERIOR_CORNER_TOP_LEFT);
+            case GROUND_INTERIOR_CORNER_TOP_RIGHT -> new Ground(startPosition, Ground.GroundTypes.INTERIOR_CORNER_TOP_RIGHT);
             case GROUND_LEFT -> new Ground(startPosition, Ground.GroundTypes.LEFT);
             case GROUND_CENTRAL -> new Ground(startPosition, Ground.GroundTypes.CENTRAL);
             case GROUND_CENTRAL_PATTERNED -> new Ground(startPosition, Ground.GroundTypes.CENTRAL_PATTERNED);
@@ -175,22 +169,15 @@ public class EntityFromColor {
             case GROUND_CENTRAL_BROKEN_2 -> new Ground(startPosition, Ground.GroundTypes.CENTRAL_BROKEN_2);
             case GROUND_CENTRAL_BROKEN_3 -> new Ground(startPosition, Ground.GroundTypes.CENTRAL_BROKEN_3);
             case GROUND_RIGHT -> new Ground(startPosition, Ground.GroundTypes.RIGHT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT ->
-                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT ->
-                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM ->
-                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT ->
-                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT ->
-                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT);
-            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM ->
-                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM);
-            case GROUND_EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT ->
-                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT);
-            case GROUND_EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT ->
-                    new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT);
+            case GROUND_EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM);
+            case GROUND_EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT);
+            case GROUND_EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT -> new Ground(startPosition, Ground.GroundTypes.EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT);
+            //@formatter:on
 
             // Trap
             case VOID -> new Void(startPosition);
@@ -198,10 +185,10 @@ public class EntityFromColor {
             case SLUDGE -> new Sludge(startPosition);
             case TRAPDOOR -> new Trapdoor(startPosition);
             case SPIKED_FLOOR -> new SpikedFloor(startPosition);
-            case TOTEM_UP -> new Totem(startPosition, DirectionsModel.UP);
-            case TOTEM_RIGHT -> new Totem(startPosition, DirectionsModel.RIGHT);
-            case TOTEM_DOWN -> new Totem(startPosition, DirectionsModel.DOWN);
-            case TOTEM_LEFT -> new Totem(startPosition, DirectionsModel.LEFT);
+            case TOTEM_UP -> new Totem(startPosition, Direction.UP);
+            case TOTEM_RIGHT -> new Totem(startPosition, Direction.RIGHT);
+            case TOTEM_DOWN -> new Totem(startPosition, Direction.DOWN);
+            case TOTEM_LEFT -> new Totem(startPosition, Direction.LEFT);
 
             // Player
             case PLAYER -> switch (Menu.playerType) {
@@ -242,8 +229,8 @@ public class EntityFromColor {
 
             // ---
             case CHEST -> new Chest(startPosition);
-            case STAIR_LEFT -> new Stair(startPosition, DirectionsModel.LEFT);
-            case STAIR_RIGHT -> new Stair(startPosition, DirectionsModel.RIGHT);
+            case STAIR_LEFT -> new Stair(startPosition, Direction.LEFT);
+            case STAIR_RIGHT -> new Stair(startPosition, Direction.RIGHT);
 
             // ---
             case NULL -> null;

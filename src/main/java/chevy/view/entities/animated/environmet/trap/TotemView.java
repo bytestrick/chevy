@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.environmet.trap;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
 import chevy.utils.Vector2;
@@ -9,7 +9,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class TotemView extends AnimatedEntityView {
+public final class TotemView extends AnimatedEntityView {
     private static final String TOTEM_PATH = "/sprites/traps/totem/";
     private final Totem totem;
 
@@ -38,7 +38,7 @@ public class TotemView extends AnimatedEntityView {
     }
 
     private int getAnimationType(CommonState currentState) {
-        DirectionsModel currentDirection = totem.getDirectionShot();
+        Direction currentDirection = totem.getDirectionShot();
         return switch (currentState) {
             case Totem.EnumState.SHOT, Totem.EnumState.RELOAD -> switch (currentDirection) {
                 case UP -> 0;

@@ -6,7 +6,7 @@ import chevy.view.component.MyPanelUI;
 import java.awt.Color;
 import java.awt.Dimension;
 
-public class KeyBar extends CounterBar {
+public final class KeyBar extends CounterBar {
     private static final String KEY_BAR_PATH = "/sprites/component/label/";
 
     public KeyBar(int width, int height, float scale) {

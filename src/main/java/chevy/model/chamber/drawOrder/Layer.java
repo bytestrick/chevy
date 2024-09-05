@@ -10,7 +10,7 @@ import java.util.List;
  * un entità con layer 5 verrà disegnata sopra un entità con layer 3 (o un qualsiasi numero inferiore al 5), se
  * il layer è lo stesso avrà la priorità inserita dopo nella lista.
  */
-public class Layer implements Comparable<Layer> {
+public final class Layer implements Comparable<Layer> {
     /**
      * Livello di priorità.
      */

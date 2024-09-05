@@ -1,18 +1,18 @@
 package chevy.model.entity.dynamicEntity.liveEntity.player;
 
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
-public class Archer extends Player {
-    private final GlobalState idle;
-    private final GlobalState move;
-    private final GlobalState attack;
-    private final GlobalState hit;
-    private final GlobalState dead;
-    private final GlobalState glide;
-    private final GlobalState sludge;
-    private final GlobalState fall;
+public final class Archer extends Player {
+    private final Vertex idle;
+    private final Vertex move;
+    private final Vertex attack;
+    private final Vertex hit;
+    private final Vertex dead;
+    private final Vertex glide;
+    private final Vertex sludge;
+    private final Vertex fall;
 
     public Archer(Vector2<Integer> initPosition) {
         super(initPosition, Type.ARCHER);
@@ -25,14 +25,14 @@ public class Archer extends Player {
         this.maxDamage = 5;
         this.minDamage = 3;
 
-        this.idle = new GlobalState(State.IDLE);
-        this.move = new GlobalState(State.MOVE, speed, true);
-        this.attack = new GlobalState(State.ATTACK, 0.6f, true);
-        this.hit = new GlobalState(State.HIT, .2f);
-        this.dead = new GlobalState(State.DEAD, .3f);
-        this.glide = new GlobalState(State.GLIDE, speed, true);
-        this.sludge = new GlobalState(State.SLUDGE, speed);
-        this.fall = new GlobalState(State.FALL);
+        this.idle = new Vertex(State.IDLE);
+        this.move = new Vertex(State.MOVE, speed, true);
+        this.attack = new Vertex(State.ATTACK, .6f, true);
+        this.hit = new Vertex(State.HIT, .2f);
+        this.dead = new Vertex(State.DEAD, .3f);
+        this.glide = new Vertex(State.GLIDE, speed, true);
+        this.sludge = new Vertex(State.SLUDGE, speed);
+        this.fall = new Vertex(State.FALL);
         initStateMachine();
     }
 
@@ -67,7 +67,7 @@ public class Archer extends Player {
     }
 
     @Override
-    public synchronized GlobalState getState(CommonState state) {
+    public synchronized Vertex getState(CommonState state) {
         return switch ((State) state) {
             case IDLE -> idle;
             case ATTACK -> attack;

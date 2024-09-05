@@ -1,14 +1,13 @@
 package chevy.view.component;
 
 
-import chevy.settings.WindowSettings;
 import chevy.utils.Load;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ImageVisualizer extends JComponent {
+public final class ImageVisualizer extends JComponent {
     private BufferedImage image;
     private float scale = 1f;
     private int width;

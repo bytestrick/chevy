@@ -9,8 +9,9 @@ import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
+import chevy.service.Data;
 
-public class PowerUpController {
+public final class PowerUpController {
     private final Chamber chamber;
     private final HUDController hudController;
 
@@ -26,8 +27,28 @@ public class PowerUpController {
             powerUp.collect();
             chamber.findAndRemoveEntity(powerUp);
             hudController.hidePowerUpText();
-            if (player.acquirePowerUp((PowerUp.Type) powerUp.getSpecificType(), powerUp))
+            if (player.acquirePowerUp((PowerUp.Type) powerUp.getSpecificType(), powerUp)) {
                 hudController.addPowerUpIcon(powerUp);
+                Data.increment("stats.collectable.powerUp.total.count");
+                switch ((PowerUp.Type) powerUp.getSpecificType()) {
+                    case HOLY_SHIELD -> Data.increment("stats.collectable.powerUp.specific.holyShield.count");
+                    case VAMPIRE_FANGS -> Data.increment("stats.collectable.powerUp.specific.vampireFangs.count");
+                    case ANGEL_RING -> Data.increment("stats.collectable.powerUp.specific.angelRing.count");
+                    case LONG_SWORD -> Data.increment("stats.collectable.powerUp.specific.longSword.count");
+                    case HOBNAIL_BOOTS -> Data.increment("stats.collectable.powerUp.specific.hobnailBoots.count");
+                    case COIN_OF_GREED -> Data.increment("stats.collectable.powerUp.specific.coinOfGreed.count");
+                    case HOT_HEART -> Data.increment("stats.collectable.powerUp.specific.hotHeart.count");
+                    case COLD_HEART -> Data.increment("stats.collectable.powerUp.specific.coldHeart.count");
+                    case STONE_BOOTS -> Data.increment("stats.collectable.powerUp.specific.stoneBoots.count");
+                    case BROKEN_ARROWS -> Data.increment("stats.collectable.powerUp.specific.brokenArrows.count");
+                    case AGILITY -> Data.increment("stats.collectable.powerUp.specific.agility.count");
+                    case HEDGEHOG_SPINES -> Data.increment("stats.collectable.powerUp.specific.hedgehogSpines.count");
+                    case SLIME_PIECE -> Data.increment("stats.collectable.powerUp.specific.slimePiece.count");
+                    case GOLD_ARROW -> Data.increment("stats.collectable.powerUp.specific.goldArrow.count");
+                    case HEALING_FLOOD -> Data.increment("stats.collectable.powerUp.specific.healingFlood.count");
+                    case KEY_S_KEEPER -> Data.increment("stats.collectable.powerUp.specific.keySKeeper.count");
+                }
+            }
 
             switch (powerUp.getSpecificType()) {
                 case PowerUp.Type.COIN_OF_GREED -> {
@@ -108,9 +129,8 @@ public class PowerUpController {
                 powerUp.setToDraw(false);
                 powerUp.removeFromUpdate();
             }
-        }
-        else {
-            if (chamber.getHitDirectionPlayer(powerUp) != null) {
+        } else {
+            if (chamber.getDirectionToHitPlayer(powerUp) != null) {
                 if (powerUp.changeState(PowerUp.State.SELECTED)) {
                     EnemyUpdateController.stopUpdate();
                     ProjectileUpdateController.stopUpdate();

@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.environmet;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.staticEntity.environment.Stair;
 import chevy.utils.Vector2;
@@ -9,7 +9,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class StairView extends AnimatedEntityView {
+public final class StairView extends AnimatedEntityView {
     private static final String STAIR_RESOURCES = "/sprites/stair/";
     private final Stair stair;
     private CommonState previousAnimationState = null;
@@ -25,7 +25,7 @@ public class StairView extends AnimatedEntityView {
         Vector2<Integer> offset = new Vector2<>(0, -5);
         String folder = "right/";
 
-        if (stair.getDirections() == DirectionsModel.LEFT) {
+        if (stair.getDirections() == Direction.LEFT) {
             offset = new Vector2<>(-16, -5);
             folder = "left/";
         }

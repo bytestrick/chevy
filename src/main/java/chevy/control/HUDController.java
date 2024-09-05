@@ -7,7 +7,7 @@ import chevy.view.hud.HUDView;
 import chevy.view.hud.HealthBar;
 import chevy.view.hud.ShieldBar;
 
-public class HUDController {
+public final class HUDController {
     private final HUDView hudView;
     private final HUD hud;
 

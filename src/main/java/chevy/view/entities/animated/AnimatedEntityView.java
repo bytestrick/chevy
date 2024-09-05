@@ -1,7 +1,7 @@
 package chevy.view.entities.animated;
 
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.utils.Pair;
@@ -19,46 +19,54 @@ public abstract class AnimatedEntityView extends EntityView {
     protected Interpolation moveInterpolationX;
     protected Interpolation moveInterpolationY;
     protected Vector2<Double> currentViewPosition;
-    protected GlobalState currentGlobalState;
+    protected Vertex currentVertex;
     protected boolean firstTimeInState = false;
 
-    protected void createAnimation(CommonState enumStates, int type, int nFrame, float secDurationFrame,
+    protected void createAnimation(CommonState state, int type, int frames, float secDurationFrame,
                                    String folderPath, String extension) {
-        createAnimation(enumStates, type, nFrame, false, 1, secDurationFrame, new Vector2<>(0, 0), 1f, folderPath,
+        createAnimation(state, type, frames, false, 1, secDurationFrame, new Vector2<>(0, 0), 1f,
+                folderPath,
                 extension);
     }
 
-    protected void createAnimation(CommonState enumStates, int type, int nFrame, float secDurationFrame,
-                                   Vector2<Integer> offset, float scale, String folderPath, String extension) {
-        createAnimation(enumStates, type, nFrame, false, 1, secDurationFrame, offset, scale, folderPath, extension);
+    protected void createAnimation(CommonState state, int type, int frames,
+                                   float frameDurationSeconds,
+                                   Vector2<Integer> offset, float scale, String folderPath,
+                                   String extension) {
+        createAnimation(state, type, frames, false, 1, frameDurationSeconds, offset, scale,
+                folderPath, extension);
     }
 
-    protected void createAnimation(CommonState enumStates, int type, int nFrame, boolean loop, int times,
-                                   float animationDuration, String folderPath, String extension) {
+    protected void createAnimation(CommonState enumStates, int type, int frames, boolean loop,
+                                   int times,
+                                   float duration, String folderPath, String extension) {
         if (!loop) {
             times = 1;
         }
-        createAnimation(enumStates, type, nFrame, loop, times, animationDuration, new Vector2<>(0, 0), 1f, folderPath
+        createAnimation(enumStates, type, frames, loop, times, duration, new Vector2<>(0, 0), 1f,
+                folderPath
                 , extension);
     }
 
     /**
-     * @param enumStates        stato a cui l'animazione deve essere associata
-     * @param type              tipo di animazione associata all'enumState
-     * @param nFrame            numero di frame totali di cui è composta l'animazione
-     * @param loop              se l'animazione può andare in loop
-     * @param times             (disponibile solo se loop è true) numero di volte che l'animazione verrà ripetuta
-     * @param animationDuration durata totale, in secondi, dell'animazione
-     * @param offset            offset per la posizione dei frame
-     * @param scale             scale per la grandezza dei frame
-     * @param folderPath        percorso della cartella dove sono contenuti i frame
-     * @param extension         estensione comune dei frame
+     * @param state      stato a cui l'animazione deve essere associata
+     * @param type       tipo di animazione associata a <code>state</code>
+     * @param frames     numero di frame totali di cui è composta l'animazione
+     * @param loop       se l'animazione può andare in loop
+     * @param times      (solo se <code>loop</code> è <code>true</code>) ripetizioni per
+     *                   l'animazione
+     * @param duration   durata totale, in secondi, dell'animazione
+     * @param offset     offset per la posizione dei frame
+     * @param scale      scale per la grandezza dei frame
+     * @param folderPath percorso della cartella dove sono contenuti i frame
+     * @param extension  estensione comune dei frame
      */
-    protected void createAnimation(CommonState enumStates, int type, int nFrame, boolean loop, int times,
-                                   float animationDuration, Vector2<Integer> offset, float scale, String folderPath,
+    protected void createAnimation(CommonState state, int type, int frames, boolean loop, int times,
+                                   float duration, Vector2<Integer> offset, float scale,
+                                   String folderPath,
                                    String extension) {
-        AnimatedSprite animatedSprite = new AnimatedSprite(new Pair<>(enumStates, type), nFrame,
-                animationDuration / (times * nFrame), loop, offset, scale);
+        AnimatedSprite animatedSprite = new AnimatedSprite(new Pair<>(state, type), frames,
+                duration / (times * frames), loop, offset, scale);
         initAnimation(animatedSprite, folderPath, extension);
     }
 
@@ -69,7 +77,8 @@ public abstract class AnimatedEntityView extends EntityView {
         addAnimation(animation.getAnimationTypes(), animation);
     }
 
-    protected void addAnimation(Pair<CommonState, Integer> animationTypes, AnimatedSprite animatedSprite) {
+    protected void addAnimation(Pair<CommonState, Integer> animationTypes,
+                                AnimatedSprite animatedSprite) {
         if (animations.containsKey(animationTypes)) {
             Log.warn("L'animazione " + animationTypes + " è già presente");
         } else {

@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.utils.Vector2;
 
-public class HobnailBoots extends PowerUp {
+public final class HobnailBoots extends PowerUp {
     public HobnailBoots(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.HOBNAIL_BOOTS);
 
