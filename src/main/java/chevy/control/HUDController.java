@@ -14,7 +14,7 @@ public final class HUDController {
     public HUDController(HUD hud, HUDView hudView) {
         this.hudView = hudView;
         this.hud = hud;
-
+        hudView.getPlayerInfo().getPlayerFrame().setIconFrame();
         hudView.getPlayerInfo().getPowerUpEquippedView().clear();
     }
 
