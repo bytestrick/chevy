@@ -165,7 +165,7 @@ public final class Window extends JFrame {
                     }
                     getRootPane().setBackground(menu.getRoot().getBackground());
                     menu.startCharacterAnimation();
-                    menu.updateLevel();
+                    menu.updateComponents();
                     setTitle("Chevy");
                     yield menu.getRoot();
                 }

@@ -78,6 +78,10 @@ public final class Menu {
     public static Player.Type playerType = Player.Type.valueOf(Data.get("menu.playerType"));
     private static int level = Data.get("menu.level");
     private static boolean currentPlayerLocked;
+    private static boolean animationPaused;
+    private static boolean alternateAnimation = true;
+    private static boolean animationRunning;
+    private static Thread animationWorker;
     final int[][] playerStats = new int[][]{new Knight(null).getStats(),
             new Archer(null).getStats(), new Ninja(null).getStats()};
     private final Image[][] sprites = new Image[3][4];
@@ -113,9 +117,6 @@ public final class Menu {
             speedLabel};
     private JButton unlock;
     private JLabel cost;
-    private boolean alternateAnimation = true;
-    private boolean animationRunning;
-    private static boolean animationPaused;
 
     public Menu(final Window window) {
         this.window = window;
@@ -123,15 +124,30 @@ public final class Menu {
         initializeComponents();
         loadCharactersSprites();
         setPlayerType(playerType);
+
+        animationPaused = animationRunning = false;
+        animationWorker = null;
     }
 
     /**
      * Aggiorna il livello corrente nel menù quando si passa a un nuovo livello nel gioco
      */
     public static void incrementLevel() {
-        ++level;
-        Data.set("progress.lastUnlockedLevel", level);
-        LevelSelectorRenderer.setEnabledInterval(0, level);
+        if (level < ChamberManager.NUMBER_OF_CHAMBERS - 1) {
+            ++level;
+            Data.set("progress.lastUnlockedLevel", level);
+            LevelSelectorRenderer.setEnabledInterval(0, level);
+        }
+    }
+
+    /**
+     * Aggiorna i componenti dopo il cambio scena
+     * Impostare l'elemento attivo per JComboBox richiede che il componente sia visibile
+     */
+    public void updateComponents() {
+        coins.setText(Data.get("progress.coins").toString());
+        keys.setText(Data.get("progress.keys").toString());
+        levelSelector.setSelectedIndex(level);
     }
 
     /**
@@ -139,8 +155,6 @@ public final class Menu {
      */
     private void initializeComponents() {
         root.setBackground(new Color(33, 6, 47));
-        coins.setText(Data.get("progress.coins").toString());
-        keys.setText(Data.get("progress.keys").toString());
         levelSelector.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         levelSelector.setRenderer(new LevelSelectorRenderer());
         LevelSelectorRenderer.setEnabledInterval(0, Data.get("progress.lastUnlockedLevel"));
@@ -382,54 +396,49 @@ public final class Menu {
     }
 
     /**
-     * Impostare l'elemento attivo per JComboBox richiede che il componente sia visibile
-     */
-    public void updateLevel() {levelSelector.setSelectedIndex(level);}
-
-    /**
      * Crea un thread the anima il personaggio nel menu
      * Da usare quando si entra nella scena MENU.
      */
     public void startCharacterAnimation() {
-        if (animationRunning) {
+        if (animationWorker == null) {
+            animationWorker = Thread.ofPlatform().start(() -> {
+                Log.info("Thread per l'animazione del personaggio creato");
+                animationRunning = true;
+                while (animationRunning) {
+                    characterAnimation.repaint();
+                    alternateAnimation = !alternateAnimation;
+
+                    // Ridisegna dopo un certo intervallo, tranne quando riceve updateAnimation
+                    // .notify(), in quel caso  ridisegna subito e questo evento è innescato dal
+                    // cambiamento del personaggio da parte dell'utente.
+                    synchronized (updateAnimation) {
+                        try {
+                            while (animationPaused) {
+                                Log.info("Animazione personaggio in pausa");
+                                updateAnimation.wait();
+                            }
+                            updateAnimation.wait(386);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+                Log.warn("Thread per l'animazione del personaggio terminato");
+            });
+        } else if (animationPaused) {
             synchronized (updateAnimation) {
                 animationPaused = false;
                 updateAnimation.notify();
             }
-            return;
         }
-        animationRunning = true;
-        Thread.ofPlatform().start(() -> {
-            Log.info("Thread per l'animazione del personaggio nel menù avviato");
-            while (animationRunning) {
-                characterAnimation.repaint();
-                alternateAnimation = !alternateAnimation;
-
-                // Ridisegna dopo un certo intervallo, tranne quando riceve updateAnimation
-                // .notify(), in quel caso  ridisegna subito e questo evento è innescato dal
-                // cambiamento del personaggio da parte dell'utente.
-                synchronized (updateAnimation) {
-                    try {
-                        while (animationPaused) {
-                            Log.info("Animazione personaggio in pausa");
-                            updateAnimation.wait();
-                        }
-                        updateAnimation.wait(386);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-            Log.info("Thread per l'animazione del personaggio nel menù terminato");
-        });
     }
 
     /**
-     * Cancella il thread che si occupa dell'animazione del personaggio
+     * Fa attendere il thread che si occupa dell'animazione del personaggio
      * Da usare quando si lascia la scena MENU.
      */
     public void stopCharacterAnimation() {
-        if (animationRunning) {
+        if (!animationPaused) {
             synchronized (updateAnimation) {
                 animationPaused = true;
                 updateAnimation.notify(); // termina subito l'attesa
