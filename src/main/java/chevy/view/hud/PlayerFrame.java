@@ -1,5 +1,6 @@
 package chevy.view.hud;
 
+import chevy.view.Menu;
 import chevy.view.component.MyPanelUI;
 
 import javax.swing.JPanel;
@@ -7,6 +8,7 @@ import java.awt.Dimension;
 
 public final class PlayerFrame extends JPanel {
     private static final String PANEL_PATH = "/sprites/component/panel/";
+    private static final String PAYER_RESOURCES_PATH = "/sprites/player/";
     private final MyPanelUI ui;
     private final float scale;
     private final Dimension dimension;
@@ -39,6 +41,16 @@ public final class PlayerFrame extends JPanel {
         this.setMinimumSize(scaledDimension);
         revalidate();
         repaint();
+    }
+
+    public void setIconFrame() {
+        String path = PAYER_RESOURCES_PATH;
+        switch (Menu.playerType) {
+            case ARCHER -> path += "archerIcon.png";
+            case NINJA -> path += "ninjaIcon.png";
+            case KNIGHT -> path += "knightIcon.png";
+        }
+        ui.setTexture(MyPanelUI.CENTER, path);
     }
 
     public void windowResized(float scale) {
