@@ -1,6 +1,6 @@
 package chevy.control.projectileController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.control.enemyController.EnemyController;
 import chevy.model.chamber.Chamber;
@@ -12,7 +12,7 @@ import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
 /**
  * Gestisce le interazioni e gli aggiornamenti specifici dei proiettili di tipo Slime Shot nel gioco.
  */
-public class SlimeShotController {
+public final class SlimeShotController {
     private final Chamber chamber;
     private final PlayerController playerController;
     private final EnemyController enemyController;
@@ -37,7 +37,7 @@ public class SlimeShotController {
         if (projectile.changeState(SlimeShot.State.END)) {
             chamber.findAndRemoveEntity(projectile);
             projectile.setCollision(true);
-            playerController.handleInteraction(InteractionType.PROJECTILE, projectile);
+            playerController.handleInteraction(Interaction.PROJECTILE, projectile);
         }
     }
 
@@ -48,13 +48,13 @@ public class SlimeShotController {
      */
     public void update(SlimeShot projectile) {
         if (projectile.checkAndChangeState(SlimeShot.State.LOOP)) {
-            Entity nextEntity = chamber.getNearEntityOnTop(projectile, projectile.getDirection());
+            Entity nextEntity = chamber.getEntityNearOnTop(projectile, projectile.getDirection());
 
             switch (nextEntity.getGenericType()) {
                 case LiveEntity.Type.PLAYER ->
-                        playerController.handleInteraction(InteractionType.PROJECTILE, projectile);
+                        playerController.handleInteraction(Interaction.PROJECTILE, projectile);
                 case LiveEntity.Type.ENEMY ->
-                        enemyController.handleInteraction(InteractionType.PROJECTILE, projectile, (Enemy) nextEntity);
+                        enemyController.handleInteraction(Interaction.PROJECTILE, projectile, (Enemy) nextEntity);
                 default -> { }
             }
 

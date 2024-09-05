@@ -1,11 +1,11 @@
 package chevy.view.hud;
 
-import chevy.settings.WindowSettings;
+import chevy.view.Window;
 
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
-public class HUDView extends JPanel {
+public final class HUDView extends JPanel {
     private final CoinBar coinBar;
     private final KeyBar keyBar;
     private final PlayerInfo playerInfo;
@@ -23,7 +23,7 @@ public class HUDView extends JPanel {
 
         setOpaque(false);
         setLayout(springLayout);
-        setConstraints(WindowSettings.scale);
+        setConstraints(Window.scale);
 
         add(powerUpText);
         add(playerInfo);

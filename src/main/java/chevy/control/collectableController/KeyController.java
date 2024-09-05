@@ -3,9 +3,10 @@ package chevy.control.collectableController;
 import chevy.control.HUDController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Key;
+import chevy.service.Data;
 import chevy.service.Sound;
 
-public class KeyController {
+public final class KeyController {
     private final Chamber chamber;
     private final HUDController hudController;
 
@@ -16,8 +17,11 @@ public class KeyController {
 
     public void playerInInteraction(Key key) {
         if (key.changeState(Key.State.COLLECTED)) {
-            Sound.getInstance().play(Sound.Effect.KEY_EQUIPPED);
+            Sound.play(Sound.Effect.KEY_EQUIPPED);
             key.collect();
+            Data.increment("progress.keys");
+            Data.increment("stats.collectable.total.count");
+            Data.increment("stats.collectable.commons.keys.count");
             hudController.addKey(1);
             chamber.findAndRemoveEntity(key);
         }

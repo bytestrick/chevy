@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.utils.Vector2;
 
-public class GoldArrow extends PowerUp {
+public final class GoldArrow extends PowerUp {
     private final int increaseDamage = 2;
 
     public GoldArrow(Vector2<Integer> initVelocity) {

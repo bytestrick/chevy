@@ -8,7 +8,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class TrapdoorView extends AnimatedEntityView {
+public final class TrapdoorView extends AnimatedEntityView {
     private static final String TRAPDOOR_PATH = "/sprites/traps/trapdoor/";
     private final Trapdoor trapdoor;
 

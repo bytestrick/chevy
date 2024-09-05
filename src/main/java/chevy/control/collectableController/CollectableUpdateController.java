@@ -1,6 +1,6 @@
 package chevy.control.collectableController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.model.entity.collectable.Collectable;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -15,7 +15,7 @@ import java.util.List;
  * aggiornamento del gioco. Gestisce l'aggiornamento e la rimozione degli aggetti collezionabili
  * dall'aggiornamento.
  */
-public class CollectableUpdateController implements Update {
+public final class CollectableUpdateController implements Update {
     private final CollectableController collectableController;
     private final List<Collectable> collectables = new ArrayList<>();
     private final List<Collectable> collectablesToAdd;
@@ -55,7 +55,7 @@ public class CollectableUpdateController implements Update {
         Iterator<Collectable> it = collectables.iterator();
         while (it.hasNext()) {
             Collectable collectable = it.next();
-            collectableController.handleInteraction(InteractionType.UPDATE, collectable, null);
+            collectableController.handleInteraction(Interaction.UPDATE, collectable, null);
             if (collectable.canRemoveToUpdate()) {
                 it.remove();
             }

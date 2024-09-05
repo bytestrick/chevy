@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class PlayerInfo extends JPanel {
+public final class PlayerInfo extends JPanel {
     private final HealthBar healthBar;
     private final ShieldBar shieldBar;
     private final AttackBar attackBar;

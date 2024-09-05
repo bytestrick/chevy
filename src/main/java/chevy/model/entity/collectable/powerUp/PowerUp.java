@@ -3,16 +3,16 @@ package chevy.model.entity.collectable.powerUp;
 import chevy.model.entity.CommonEntityType;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
 public abstract class PowerUp extends Collectable {
     private final Type type;
-    private final GlobalState idle = new GlobalState(State.IDLE, 0.5f);
-    private final GlobalState selected = new GlobalState(State.SELECTED, 0.2f);
-    private final GlobalState deselected = new GlobalState(State.DESELECTED, 0.2f);
-    private final GlobalState collected = new GlobalState(State.COLLECTED, 0.8f);
+    private final Vertex idle = new Vertex(State.IDLE, 0.5f);
+    private final Vertex selected = new Vertex(State.SELECTED, 0.2f);
+    private final Vertex deselected = new Vertex(State.DESELECTED, 0.2f);
+    private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
     protected String name = "No name";
     protected String description = "No description";
     protected int occurringPercentage = 0;
@@ -27,22 +27,22 @@ public abstract class PowerUp extends Collectable {
 
     public static PowerUp getPowerUp(Vector2<Integer> position) {
         return switch (Type.getRandom()) {
-            case HOLY_SHIELD -> new HolyShield(position);
-            case VAMPIRE_FANGS -> new VampireFangs(position);
-            case ANGEL_RING -> new AngelRing(position);
-            case LONG_SWORD -> new LongSword(position);
-            case HOBNAIL_BOOTS -> new HobnailBoots(position);
-            case COIN_OF_GREED -> new CoinOfGreed(position);
-            case HOT_HEART -> new HotHeart(position);
-            case COLD_HEART -> new ColdHeart(position);
-            case STONE_BOOTS -> new StoneBoots(position);
-            case BROKEN_ARROWS -> new BrokenArrows(position);
             case AGILITY -> new Agility(position);
-            case HEDGEHOG_SPINES -> new HedgehogSpines(position);
-            case SLIME_PIECE -> new SlimePiece(position);
+            case ANGEL_RING -> new AngelRing(position);
+            case BROKEN_ARROWS -> new BrokenArrows(position);
+            case COIN_OF_GREED -> new CoinOfGreed(position);
+            case COLD_HEART -> new ColdHeart(position);
             case GOLD_ARROW -> new GoldArrow(position);
             case HEALING_FLOOD -> new HealingFlood(position);
+            case HEDGEHOG_SPINES -> new HedgehogSpines(position);
+            case HOBNAIL_BOOTS -> new HobnailBoots(position);
+            case HOLY_SHIELD -> new HolyShield(position);
+            case HOT_HEART -> new HotHeart(position);
             case KEY_S_KEEPER -> new KeySKeeper(position);
+            case LONG_SWORD -> new LongSword(position);
+            case SLIME_PIECE -> new SlimePiece(position);
+            case STONE_BOOTS -> new StoneBoots(position);
+            case VAMPIRE_FANGS -> new VampireFangs(position);
         };
     }
 
@@ -67,7 +67,7 @@ public abstract class PowerUp extends Collectable {
         return description;
     }
 
-    public GlobalState getState(CommonState commState) {
+    public Vertex getState(CommonState commState) {
         State powerUpState = (State) commState;
         return switch (powerUpState) {
             case IDLE -> idle;

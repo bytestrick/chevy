@@ -6,7 +6,7 @@ import chevy.utils.Vector2;
 
 import java.awt.image.BufferedImage;
 
-public class TrapView extends EntityView {
+public final class TrapView extends EntityView {
     private static final String TRAP_RESOURCES = "/sprites/chamberTiles/trapTiles/";
     private static BufferedImage TRAP_VOID = null;
     private final Trap trap;

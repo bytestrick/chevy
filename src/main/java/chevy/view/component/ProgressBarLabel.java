@@ -1,7 +1,7 @@
 package chevy.view.component;
 
-import chevy.settings.WindowSettings;
 import chevy.utils.Load;
+import chevy.view.Window;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -59,7 +59,7 @@ public class ProgressBarLabel extends JPanel {
     }
 
     private void resizeFont() {
-        font = font.deriveFont(fontSize * WindowSettings.scale);
+        font = font.deriveFont(fontSize * Window.scale);
         label.setFont(font);
     }
 

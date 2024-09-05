@@ -1,12 +1,12 @@
 package chevy.model.entity.collectable;
 
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
-public class Key extends Collectable {
-    private final GlobalState idle = new GlobalState(State.IDLE, 1.8f);
-    private final GlobalState collected = new GlobalState(State.COLLECTED, 0.8f);
+public final class Key extends Collectable {
+    private final Vertex idle = new Vertex(State.IDLE, 1.8f);
+    private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
 
     public Key(Vector2<Integer> initPosition) {
         super(initPosition, Type.KEY);
@@ -21,7 +21,7 @@ public class Key extends Collectable {
         idle.linkState(collected);
     }
 
-    public synchronized GlobalState getState(CommonState commonState) {
+    public synchronized Vertex getState(CommonState commonState) {
         State keyState = (State) commonState;
         return switch (keyState) {
             case IDLE -> idle;

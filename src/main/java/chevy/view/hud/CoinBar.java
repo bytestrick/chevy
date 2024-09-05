@@ -6,7 +6,7 @@ import chevy.view.component.MyPanelUI;
 import java.awt.Color;
 import java.awt.Dimension;
 
-public class CoinBar extends CounterBar {
+public final class CoinBar extends CounterBar {
     private static final String COIN_BAR_PATH = "/sprites/component/label/";
 
     public CoinBar(int width, int height, float scale) {

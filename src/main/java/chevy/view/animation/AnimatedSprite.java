@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 /**
  * Gestisce le animazioni sprite nel gioco.
  */
-public class AnimatedSprite implements Render {
+public final class AnimatedSprite implements Render {
     private final Pair<CommonState, Integer> animationTypes; // Tipi di animazione.
     private final BufferedImage[] frames; // Array di frame per l'animazione.
     private final int nFrame; // Numero totale di frame nell'animazione.
@@ -19,10 +19,10 @@ public class AnimatedSprite implements Render {
     private final boolean loop; // Se l'animazione deve ripetersi o meno.
     private final float scale; // Scala dell'animazione.
     private final Vector2<Integer> offset; // Offset dell'animazione.
-    private int currentIndexFrame = 0; // Indice del frame corrente nell'animazione.
-    private boolean isRunning = false; // Se l'animazione è attualmente in esecuzione.
+    private int currentIndexFrame; // Indice del frame corrente nell'animazione.
+    private boolean isRunning; // Se l'animazione è attualmente in esecuzione.
     private boolean delete = true; // Se l'animazione deve essere eliminata.
-    private double time = 0d; // Tempo trascorso dall'inizio.
+    private double time; // Tempo trascorso dall'inizio.
 
     /**
      * @param animationTypes   tipi di animazione

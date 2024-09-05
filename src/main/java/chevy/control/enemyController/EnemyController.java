@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
@@ -20,7 +20,7 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
  * Coordina i sotto controller specifici per ogni tipo di nemico (Wraith, Zombie, Slime, BigSlime, Skeleton, Beetle)
  * e gestisce le interazioni tra giocatore, proiettili e nemici.
  */
-public class EnemyController {
+public final class EnemyController {
     private final WraithController wraithController;
     private final ZombieController zombieController;
     private final SlimeController slimeController;
@@ -48,7 +48,7 @@ public class EnemyController {
      * @param subject     l'entità che avvia l'interazione
      * @param object      l'entità che subisce l'interazione
      */
-    public synchronized void handleInteraction(InteractionType interaction, Entity subject, Enemy object) {
+    public synchronized void handleInteraction(Interaction interaction, Entity subject, Enemy object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, object);
             case UPDATE -> updateEnemy((Enemy) subject);

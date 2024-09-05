@@ -3,7 +3,7 @@ package chevy.view.hud;
 import chevy.view.component.MyPanelUI;
 import chevy.view.component.ProgressBarLabel;
 
-public class AttackBar extends ProgressBarLabel {
+public final class AttackBar extends ProgressBarLabel {
     private static final String PROGRESS_BAR_PATH = "/sprites/component/progressBar/";
     private static final String ATTACK_BAR_PATH = PROGRESS_BAR_PATH + "attackBar/";
 
