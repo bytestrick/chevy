@@ -4,16 +4,14 @@ import chevy.utils.Log;
 import com.jayway.jsonpath.JsonPath;
 import net.harawata.appdirs.AppDirsFactory;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 /**
@@ -29,8 +27,8 @@ public final class Data {
 
     /**
      * @param path per il dato desiderato
+     * @param <T>  può essere qualsiasi cosa
      * @return il valore contenuto a quel percorso
-     * @param <T> può essere qualsiasi cosa
      */
     public synchronized static <T> T get(String path) {
         if (root == null) {
@@ -40,7 +38,7 @@ public final class Data {
     }
 
     /**
-     * @param path per il dato che si vuole modificare
+     * @param path  per il dato che si vuole modificare
      * @param value il valore da impostare
      */
     public synchronized static void set(String path, Object value) {
@@ -56,7 +54,6 @@ public final class Data {
     }
 
     public synchronized static void increment(String path) {increase(path, 1);}
-
 
     /**
      * Assicura che il file JSON esista e sia utilizzabile
@@ -83,24 +80,23 @@ public final class Data {
      */
     public static void createPristineFile() {
         try {
-            Path to = Paths.get(file.getPath());
-            Path parent = to.getParent();
-            if (parent != null) {
-                if (Files.notExists(parent)) {
-                    Files.createDirectories(parent);
+            if (file.getParentFile().mkdirs()) {
+                Log.info("Directory create");
+            }
+            try (InputStream in = Data.class.getResourceAsStream("/defaultChevyData.json")) {
+                try (BufferedOutputStream out =
+                             new BufferedOutputStream(new FileOutputStream(file))) {
+                    out.write(Objects.requireNonNull(in).readAllBytes());
                 }
             }
-            URL url = Data.class.getResource("/defaultChevyData.json");
-            // .toURI() risolve il problema per cui il path comincia con / su window, es:
-            // /C:/Users/...
-            Path from = Paths.get(Objects.requireNonNull(url).toURI());
-            Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
             root = null;
-            Log.info(to + " è stato creato");
-        } catch (NullPointerException | IOException | URISyntaxException e) {
+            Log.info(file + " è stato creato");
+        } catch (NullPointerException | IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+    //Files.copy(Objects.requireNonNull(from), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
     /**
      * Il file JSON è salvato nella cartella dei dati dell'utente. Per esempio, su un sistema
@@ -130,7 +126,8 @@ public final class Data {
     }
 
     /**
-     * Salva {@link #root} nel file JSON e lo invalida, cosicché al prossimo utilizzo andrà ricaricato
+     * Salva {@link #root} nel file JSON e lo invalida, cosicché al prossimo utilizzo andrà
+     * ricaricato
      */
     public static void write() {
         if (root != null) {
