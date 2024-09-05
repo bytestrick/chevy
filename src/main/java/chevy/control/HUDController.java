@@ -1,7 +1,9 @@
 package chevy.control;
 
 import chevy.model.HUD;
+import chevy.model.chamber.ChamberManager;
 import chevy.model.entity.collectable.powerUp.PowerUp;
+import chevy.service.Data;
 import chevy.view.hud.AttackBar;
 import chevy.view.hud.HUDView;
 import chevy.view.hud.HealthBar;
@@ -14,6 +16,10 @@ public final class HUDController {
     public HUDController(HUD hud, HUDView hudView) {
         this.hudView = hudView;
         this.hud = hud;
+
+        addKey(Data.get("progress.keys"));
+        addCoin(Data.get("progress.coins"));
+
         hudView.getPlayerInfo().getPlayerFrame().setIconFrame();
         hudView.getPlayerInfo().getPowerUpEquippedView().clear();
     }
@@ -62,11 +68,15 @@ public final class HUDController {
     public void addCoin(int value) {
         hud.addCoin(value);
         hudView.getCoinBar().setCoin(hud.getCoin());
+        if (ChamberManager.getCurrentChamber().getEnemyCounter() == 0)
+            Data.set("progress.coins", hud.getCoin());
     }
 
     public void addKey(int value) {
         hud.addKey(value);
         hudView.getKeyBar().setKey(hud.getKey());
+        if (ChamberManager.getCurrentChamber().getEnemyCounter() == 0)
+            Data.set("progress.keys", hud.getKey());
     }
 
     public int getKey() {

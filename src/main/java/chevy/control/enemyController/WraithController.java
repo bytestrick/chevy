@@ -68,8 +68,8 @@ public final class WraithController {
                 wraith.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(wraith);
-                Data.increment("stats.kills.total.total");
-                Data.increment("stats.kills.wraith.total");
+                Data.increment("stats.kills.total.count");
+                Data.increment("stats.kills.enemies.wraith.count");
                 return;
             }
         } else if (wraith.getCurrentHealth() <= 0 && wraith.checkAndChangeState(Wraith.State.DEAD)) {

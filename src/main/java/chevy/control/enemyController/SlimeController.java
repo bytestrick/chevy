@@ -68,7 +68,7 @@ public final class SlimeController {
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(slime);
                 Data.increment("stats.kills.total.count");
-                Data.increment("stats.kills.slime.count");
+                Data.increment("stats.kills.enemies.slime.count");
                 return;
             }
         } else if (slime.getCurrentHealth() <= 0 && slime.checkAndChangeState(Slime.State.DEAD)) {

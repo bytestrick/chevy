@@ -20,7 +20,6 @@ public final class CoinController {
             int value = coin.getValue();
             coin.collect();
             Sound.play(Sound.Effect.COIN);
-            Data.increase("progress.coins", value);
             Data.increase("stats.collectable.total.count", value);
             Data.increase("stats.collectable.commons.coins.count", value);
             hudController.addCoin(value);
