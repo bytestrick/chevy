@@ -15,6 +15,8 @@ public final class GameLoop {
     private static final Object mutex = new Object();
     private static boolean isRunning;
     private static boolean isPaused;
+    /** Serve a tenere traccia del tempo di gioco */
+    private static long timeStarted;
 
     /**
      * La prima volta crea il {@link #worker} e lo avvia. Tutte le successiva chiamate
@@ -22,11 +24,13 @@ public final class GameLoop {
      */
     public static void start() {
         synchronized (mutex) {
-            isPaused = false;
             if (!isRunning) {
+                timeStarted = System.currentTimeMillis();
                 isRunning = true;
                 worker.start(GameLoop::run);
-            } else {
+            } else if (isPaused) {
+                timeStarted = System.currentTimeMillis();
+                isPaused = false;
                 mutex.notify();
             }
         }
@@ -40,6 +44,9 @@ public final class GameLoop {
             if (!isPaused) {
                 isPaused = true;
                 mutex.notify();
+                // narrowing conversion
+                Integer value = Long.valueOf(System.currentTimeMillis() - timeStarted).intValue();
+                Data.increase("stats.time.played.count", value);
             }
         }
     }

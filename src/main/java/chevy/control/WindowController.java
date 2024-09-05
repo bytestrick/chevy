@@ -2,6 +2,7 @@ package chevy.control;
 
 import chevy.service.GameLoop;
 import chevy.service.Sound;
+import chevy.utils.Log;
 import chevy.view.Window;
 
 import java.awt.event.ComponentEvent;
@@ -15,8 +16,8 @@ import java.awt.event.WindowListener;
  * Cattura gli eventi di Window
  */
 public final class WindowController implements WindowListener, KeyListener, ComponentListener {
-    private PlayerController playerController;
     private final Window window;
+    private PlayerController playerController;
 
     public WindowController(final Window window) {
         this.window = window;
@@ -39,9 +40,9 @@ public final class WindowController implements WindowListener, KeyListener, Comp
         switch (window.getScene()) {
             case PLAYING -> {
                 GameLoop.stop();
-                Sound.pauseMusic();
+                Sound.stopMusic();
             }
-            case MENU, OPTIONS -> Sound.stopMenuMusic();
+            case MENU, OPTIONS -> Sound.stopLoop();
         }
     }
 
@@ -49,7 +50,7 @@ public final class WindowController implements WindowListener, KeyListener, Comp
     public void windowDeiconified(WindowEvent windowEvent) {
         switch (window.getScene()) {
             case PLAYING -> window.getGamePanel().pauseDialog();
-            case MENU, OPTIONS -> Sound.startMenuMusic();
+            case MENU, OPTIONS -> Sound.startLoop(false);
         }
     }
 

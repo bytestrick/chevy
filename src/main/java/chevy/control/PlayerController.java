@@ -5,7 +5,6 @@ import chevy.control.enemyController.EnemyController;
 import chevy.control.environmentController.EnvironmentController;
 import chevy.control.projectileController.ProjectileController;
 import chevy.control.trapsController.TrapsController;
-import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.Collectable;
@@ -33,8 +32,10 @@ import chevy.service.UpdateManager;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
 import chevy.view.GamePanel;
+import chevy.service.Data;
 
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 
 import static chevy.model.entity.staticEntity.environment.Environment.Type.TRAP;
 
@@ -48,11 +49,11 @@ public final class PlayerController implements Update {
     private final GamePanel gamePanel;
     private EnemyController enemyController;
     private TrapsController trapsController;
-    private ProjectileController projectileController = null;
-    private CollectableController collectableController = null;
-    private EnvironmentController environmentController = null;
+    private ProjectileController projectileController;
+    private CollectableController collectableController;
+    private EnvironmentController environmentController;
     private HUDController hudController;
-    private boolean updateFinished = false;
+    private boolean updateFinished;
 
     /**
      * @param chamber riferimento alla stanza di gioco
@@ -114,11 +115,9 @@ public final class PlayerController implements Update {
      */
     private void collectableInteraction(Collectable collectable) {
         Collectable.Type collectableType = (Collectable.Type) collectable.getSpecificType();
-        switch (collectableType) {
-            case HEALTH -> {
-                Health health = (Health) collectable;
-                player.increaseCurrentHealth(health.getRecoverHealth());
-            }
+        if (Objects.requireNonNull(collectableType) == Collectable.Type.HEALTH) {
+            Health health = (Health) collectable;
+            player.increaseCurrentHealth(health.getRecoverHealth());
         }
     }
 
@@ -188,9 +187,8 @@ public final class PlayerController implements Update {
         Entity entityCurrentCell = chamber.getEntityBelowTheTop(player);
 
         // Player on
-        switch (entityCurrentCell.getGenericType()) {
-            case TRAP -> trapsController.handleInteraction(Interaction.PLAYER, player, (Trap) entityCurrentCell);
-            default -> { }
+        if (Objects.requireNonNull(entityCurrentCell).getGenericType().equals(TRAP)) {
+            trapsController.handleInteraction(Interaction.PLAYER, player, (Trap) entityCurrentCell);
         }
 
         Entity entityNextCell = chamber.getEntityNearOnTop(player, direction);
@@ -288,10 +286,8 @@ public final class PlayerController implements Update {
         }
 
         // Player out
-        switch (entityCurrentCell.getGenericType()) {
-            case TRAP ->
-                    trapsController.handleInteraction(Interaction.PLAYER_OUT, player, (Trap) entityCurrentCell);
-            default -> { }
+        if (entityCurrentCell.getGenericType().equals(TRAP)) {
+            trapsController.handleInteraction(Interaction.PLAYER_OUT, player, (Trap) entityCurrentCell);
         }
     }
 
@@ -337,11 +333,11 @@ public final class PlayerController implements Update {
                 player.removeFromUpdate();
                 updateFinished = true;
 
-                Statistics.increase(Statistics.PLAYER_DEATH, 1);
+                Data.increment("stats.deaths.total.count");
                 switch (player.getSpecificType()) {
-                    case KNIGHT -> Statistics.increase(Statistics.KNIGHT_DEATH, 1);
-                    case NINJA -> Statistics.increase(Statistics.NINJA_DEATH, 1);
-                    case ARCHER -> Statistics.increase(Statistics.ARCHER_DEATH, 1);
+                    case KNIGHT -> Data.increment("stats.deaths.knight.count");
+                    case NINJA -> Data.increment("stats.deaths.ninja.count");
+                    case ARCHER -> Data.increment("stats.deaths.archer.count");
                 }
 
                 gamePanel.playerDeathDialog();
@@ -370,7 +366,7 @@ public final class PlayerController implements Update {
             chamber.moveDynamicEntity(player, player.getDirection());
             Entity nextEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
 
-            switch (previousEntityBelowTheTop.getGenericType()) {
+            switch (Objects.requireNonNull(previousEntityBelowTheTop).getGenericType()) {
                 case TRAP ->
                         trapsController.handleInteraction(Interaction.PLAYER_OUT, player,
                                 (Trap) previousEntityBelowTheTop);
@@ -379,7 +375,7 @@ public final class PlayerController implements Update {
                                 (Projectile) previousEntityBelowTheTop);
                 default -> { }
             }
-            switch (nextEntityBelowTheTop.getGenericType()) {
+            switch (Objects.requireNonNull(nextEntityBelowTheTop).getGenericType()) {
                 case TRAP ->
                         trapsController.handleInteraction(Interaction.PLAYER_IN, player,
                                 (Trap) nextEntityBelowTheTop);

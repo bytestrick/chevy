@@ -9,7 +9,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class StairView extends AnimatedEntityView {
+public final class StairView extends AnimatedEntityView {
     private static final String STAIR_RESOURCES = "/sprites/stair/";
     private final Stair stair;
     private CommonState previousAnimationState = null;

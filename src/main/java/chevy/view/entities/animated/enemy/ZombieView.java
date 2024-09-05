@@ -10,7 +10,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class ZombieView extends AnimatedEntityView {
+public final class ZombieView extends AnimatedEntityView {
     private static final String ZOMBIE_RESOURCES = "/sprites/enemy/zombie/";
     private final Zombie zombie;
 

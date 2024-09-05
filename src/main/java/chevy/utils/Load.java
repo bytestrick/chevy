@@ -19,7 +19,7 @@ import java.util.Objects;
 /**
  * Raccolta di metodi per caricare risorse
  */
-public class Load {
+public final class Load {
     /**
      * @param path il percorso, come "/sprites/img.png"
      * @return l'immagine caricata dalle risorse

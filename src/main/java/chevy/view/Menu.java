@@ -12,7 +12,7 @@ import chevy.utils.Log;
 import chevy.utils.Utils;
 
 import javax.swing.DefaultListSelectionModel;
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -46,7 +46,7 @@ import java.awt.image.BufferedImage;
 import java.util.stream.Stream;
 
 public final class Menu {
-    public static final ImageIcon ex = Load.icon("x", 48, 48);
+    public static final Icon ex = Load.icon("x", 48, 48);
     // @formatter:off
     private static final String[][] quotes = new String[][]{
             {"“Ho giurato di proteggere il regno, difendere i deboli e… sì, anche\n" +
@@ -67,23 +67,23 @@ public final class Menu {
             , 189, 189), new Color(255, 80, 80), new Color(255, 255, 102)};
     private static final Color progressBarDimmedForeground = new Color(144, 144, 144);
     private static final int archerCost = 500, ninjaCost = 1000;
-    private static final ImageIcon coin = Load.icon("Coin", 32, 32);
-    private static final ImageIcon[] statsIcons = new ImageIcon[]{Load.icon("heart", 32, 32),
+    private static final Icon coin = Load.icon("Coin", 32, 32);
+    private static final Icon[] statsIcons = new Icon[]{Load.icon("heart", 32, 32),
             Load.icon("shield", 36, 36), Load.icon("sword", 32, 32), Load.icon("boot", 28, 28)};
-    private static final ImageIcon[] statsIconsGreyScale = new ImageIcon[]{Load.icon(
+    private static final Icon[] statsIconsGreyScale = new Icon[]{Load.icon(
             "heart_greyscale", 32, 32), Load.icon("shield_greyscale", 36, 36), Load.icon(
             "sword_greyscale", 32, 32), Load.icon("boot_greyscale", 28, 28)};
     private static final String[] statsTooltipPrefixes = new String[]{"Salute: ", "Scudo: ",
             "Danno: ", "Velocità: "};
-    public static Player.Type playerType = Player.Type.valueOf(Data.get("state.menu.playerType"));
-    private static int level = Data.get("state.menu.level");
+    public static Player.Type playerType = Player.Type.valueOf(Data.get("menu.playerType"));
+    private static int level = Data.get("menu.level");
     private static boolean currentPlayerLocked;
     final int[][] playerStats = new int[][]{new Knight(null).getStats(),
             new Archer(null).getStats(), new Ninja(null).getStats()};
     private final Image[][] sprites = new Image[3][4];
     private final Object updateAnimation = new Object();
     private final Window window;
-    public JPanel root;
+    private JPanel root;
     private JComboBox<String> levelSelector;
     private JButton play;
     private JButton playerCycleNext;
@@ -124,16 +124,14 @@ public final class Menu {
         setPlayerType(playerType);
     }
 
+    /**
+     * Aggiorna il livello corrente nel menù quando si passa a un nuovo livello nel gioco
+     */
     public static void incrementLevel() {
         ++level;
         Data.set("progress.lastUnlockedLevel", level);
         LevelSelectorRenderer.setEnabledInterval(0, level);
     }
-
-    /**
-     * Impostare l'elemento attivo per JComboBox richiede che il componente sia visibile
-     */
-    public void updateLevel() {levelSelector.setSelectedIndex(level);}
 
     /**
      * Procedura del costruttore: costruzione dell'interfaccia
@@ -221,7 +219,7 @@ public final class Menu {
         final int i = levelSelector.getSelectedIndex();
         if (LevelSelectorRenderer.isInsideInterval(i)) {
             level = i;
-            Data.set("state.menu.level", level);
+            Data.set("menu.level", level);
             Log.info("Cambiato livello: " + level);
         } else {
             levelSelector.hidePopup();
@@ -236,7 +234,7 @@ public final class Menu {
     private void unlockPlayerAction() {
         int actualCost = playerType == Player.Type.ARCHER ? archerCost : ninjaCost;
         if (JOptionPane.showOptionDialog(window,
-                "Sbloccare " + playerType + " per " + actualCost + " monete?", null,
+                "Sbloccare " + getUIString(playerType) + " per " + actualCost + " monete?", null,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Load.icon("Unlocked", 48
                         , 48), new String[]{"Si", "No"}, "No") == 0) {
             if (actualCost > (int) Data.get("progress.coins")) {
@@ -275,8 +273,19 @@ public final class Menu {
     private void playAction() {
         ChamberManager.enterChamber(level);
         stopCharacterAnimation();
-        Sound.stopMenuMusic();
+        Sound.stopLoop();
         window.setScene(Window.Scene.PLAYING);
+    }
+
+    /**
+     * @return il nome del personaggio tradotto in italiano
+     */
+    private String getUIString(Player.Type playerType) {
+        return switch (playerType) {
+            case KNIGHT -> "CAVALIERE";
+            case ARCHER -> "ARCIERE";
+            case NINJA -> "NINJA";
+        };
     }
 
     /**
@@ -307,10 +316,10 @@ public final class Menu {
     private void setPlayerType(final Player.Type type) {
         indicators[playerType.ordinal()].setSelected(false);
         playerType = type;
-        Data.set("state.menu.playerType", playerType.toString());
-        Data.set("state.menu.level", level);
+        Data.set("menu.playerType", playerType.toString());
+        Data.set("menu.level", level);
         final int p = playerType.ordinal();
-        characterName.setText(playerType.toString());
+        characterName.setText(getUIString(playerType));
         indicators[p].setSelected(true);
         for (int i = 0; i < bars.length; ++i) {
             bars[i].setValue(playerStats[p][i]);
@@ -327,7 +336,7 @@ public final class Menu {
             characterName.setToolTipText("Bloccato");
             characterAnimation.setToolTipText(null);
             play.setEnabled(false);
-            play.setToolTipText(playerType + " è bloccato");
+            play.setToolTipText(getUIString(playerType) + " è bloccato");
             unlock.setVisible(true);
             cost.setText(String.valueOf(playerType == Player.Type.ARCHER ? archerCost : ninjaCost));
             cost.setVisible(true);
@@ -370,6 +379,11 @@ public final class Menu {
             }
         }
     }
+
+    /**
+     * Impostare l'elemento attivo per JComboBox richiede che il componente sia visibile
+     */
+    public void updateLevel() {levelSelector.setSelectedIndex(level);}
 
     /**
      * Crea un thread the anima il personaggio nel menu
@@ -457,8 +471,10 @@ public final class Menu {
         };
     }
 
+    public JPanel getRoot() {return root;}
+
     /**
-     * Rende possibile avere elementi non selezionabili in JComboBox (
+     * Rende possibile avere elementi non selezionabili in {@link JComboBox} (
      * <a href="https://stackoverflow.com/a/23724201">StackOverflow</a>).
      * <p>
      * Funziona in combinazione con l'{@link java.awt.event.ActionListener} di
@@ -470,7 +486,7 @@ public final class Menu {
         private static int enabledLast;
 
         /**
-         * Imposta l'intervallo di opzioni selezionabile in JComboBox
+         * Imposta l'intervallo di opzioni selezionabile in {@link JComboBox}
          *
          * @param first inizio dell'intervallo
          * @param last  fine dell'intervallo
@@ -482,8 +498,9 @@ public final class Menu {
         }
 
         /**
-         * @param x indice di un elemento del JComboBox
-         * @return true se l'indice è compreso nell'intervallo degli elementi attivi, false
+         * @param x indice di un elemento del {@link JComboBox}
+         * @return {@code true} se l'indice è compreso nell'intervallo degli elementi attivi,
+         * {@code false}
          * altrimenti
          */
         private static boolean isInsideInterval(final int x) {return x >= enabledFirst && x <= enabledLast;}

@@ -9,7 +9,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class HealthView extends AnimatedEntityView {
+public final class HealthView extends AnimatedEntityView {
     private static final String HEALT_PATH = "/sprites/collectable/health/";
     private final Health health;
 

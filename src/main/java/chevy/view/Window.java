@@ -1,8 +1,8 @@
 package chevy.view;
 
 import chevy.control.WindowController;
-import chevy.model.Statistics;
 import chevy.service.Data;
+import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Load;
 import chevy.utils.Log;
@@ -11,7 +11,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.util.SystemInfo;
 
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -26,12 +26,13 @@ import java.awt.Toolkit;
  * Finestra principale
  */
 public final class Window extends JFrame {
-    public static final Color bg = new Color(24, 20, 37);
+    public final static Color bg = new Color(24, 20, 37);
     private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private static final Dimension aspectRatio = new Dimension(4, 3);
-    private static final ImageIcon icon = Load.icon("Power", 42, 42);
-    public static float scale = .8f; // questa non è la scala
+    private static final Icon icon = Load.icon("Power", 42, 42);
+    public static float scale = .8f; // TODO: questa non è la scala
     public static Dimension size = new Dimension();
+    private static boolean quitDialogActive;
 
     static {
         final int maxSideLength = Math.round(Math.min(screenSize.width, screenSize.height) * scale);
@@ -48,13 +49,16 @@ public final class Window extends JFrame {
         scale = Math.min(size.width / screenSize.width, size.height / screenSize.height);
     }
 
+    private final WindowController windowController;
     private GamePanel gamePanel = new GamePanel(this);
     private Options options = new Options(this);
     private Menu menu = new Menu(this);
     private Scene scene;
-    private WindowController windowController;
 
     public Window(boolean resizable) {
+        final Color bg = UIManager.getColor("Chevy.color.purpleDark");
+        getRootPane().setBackground(bg);
+        getContentPane().setBackground(bg);
         windowController = new WindowController(this);
         setSize(size);
         setLocationRelativeTo(null);
@@ -90,7 +94,7 @@ public final class Window extends JFrame {
      * componente.
      */
     public static void create() {
-        FlatLaf.registerCustomDefaultsSource("style");
+        FlatLaf.registerCustomDefaultsSource("style"); // collega il foglio di stile
         FlatDarkLaf.setup();
         // Le decorazioni della finestra personalizzate sono già abilitate su Windows e non sono
         // supportate su Mac.
@@ -108,15 +112,23 @@ public final class Window extends JFrame {
      * metodo, perciò premere la 'X' della cornice della finestra passa il controllo qui.
      */
     public void quitAction() {
+        quitDialogActive = true;
+        if (scene == Scene.PLAYING) {
+            GameLoop.stop();
+            Sound.stopMusic();
+        }
         Sound.play(Sound.Effect.STOP);
         if (JOptionPane.showOptionDialog(this, "Uscire da Chevy?", null,
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, new String[]{"Si",
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, icon, new String[]{"Si",
                         "No"}, "No") == 0) {
             Log.info("Salvataggio dei dati ...");
-            Statistics.saveAll();
             Data.write();
-            Log.info("Chevy: TERMINAZIONE");
+            Log.info("Ciao");
             System.exit(0);
+        }
+        quitDialogActive = false;
+        if (scene == Scene.PLAYING) {
+            gamePanel.pauseDialog();
         }
     }
 
@@ -142,12 +154,14 @@ public final class Window extends JFrame {
             Log.info("Cambio scena da " + this.scene + " a " + scene);
             final JPanel panel = switch (scene) {
                 case MENU -> {
-                    Sound.startMenuMusic();
-                    getRootPane().setBackground(menu.root.getBackground());
+                    if (this.scene != Scene.OPTIONS) {
+                        Sound.startLoop(true);
+                    }
+                    getRootPane().setBackground(menu.getRoot().getBackground());
                     menu.startCharacterAnimation();
-                    setTitle("Chevy");
                     menu.updateLevel();
-                    yield menu.root;
+                    setTitle("Chevy");
+                    yield menu.getRoot();
                 }
                 case PLAYING -> {
                     getRootPane().setBackground(bg);
@@ -156,8 +170,7 @@ public final class Window extends JFrame {
                 }
                 case OPTIONS -> {
                     setTitle("Chevy - Opzioni");
-                    options.updateStatistics();
-                    yield options.root;
+                    yield options.getRoot();
                 }
             };
             options.setupReturnAction(this.scene);
@@ -173,6 +186,10 @@ public final class Window extends JFrame {
     public Menu getMenu() {return menu;}
 
     public WindowController getWindowController() {return windowController;}
+
+    public boolean isQuitDialogActive() {return quitDialogActive;}
+
+    public static boolean isQuitDialogNotActive() {return !quitDialogActive;};
 
     public enum Scene {MENU, PLAYING, OPTIONS}
 }

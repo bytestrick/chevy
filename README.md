@@ -216,3 +216,4 @@ stateDiagram-v2
 - Font per l'interfaccia: [Handjet](https://fonts.google.com/specimen/Handjet)
 - Le citazioni dei personaggi nella schermata iniziale e i messaggi del dialogo di morte sono generati da [ChatGPT](https://chatgpt.com/)
 - Varie risorse provengono da [itch.io](https://itch.io/gameView-assets), i file sono accompagnati dalle rispettive licenze.
+- Alcune icone provengono da [flaticon.com](https://www.flaticon.com)

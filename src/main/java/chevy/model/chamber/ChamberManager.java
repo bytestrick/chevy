@@ -24,11 +24,10 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Gestisce l'insieme di stanze (Chamber) nel gioco.
- * Utilizza il pattern Singleton per garantire che esista una sola istanza di ChamberManager.
+ * Gestisce l'insieme di {@link Chamber} nel gioco
  */
-public class ChamberManager {
-    public static final int NUMBER_OF_CHAMBERS = 7;
+public final class ChamberManager {
+    public static final int NUMBER_OF_CHAMBERS = 6;
     private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
     /** Indice della stanza corrente nel gioco. */
     private static int currentChamberIndex = 0;
@@ -138,7 +137,7 @@ public class ChamberManager {
             // Invalida la view del player corrente
             EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer());
             GameLoop.start();
-            Sound.startMusic(); // 🎵
+            Sound.startMusic(true); // 🎵
         }
     }
 

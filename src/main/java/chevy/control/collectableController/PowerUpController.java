@@ -3,13 +3,13 @@ package chevy.control.collectableController;
 import chevy.control.HUDController;
 import chevy.control.enemyController.EnemyUpdateController;
 import chevy.control.projectileController.ProjectileUpdateController;
-import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.powerUp.*;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
+import chevy.service.Data;
 
 public final class PowerUpController {
     private final Chamber chamber;
@@ -29,25 +29,24 @@ public final class PowerUpController {
             hudController.hidePowerUpText();
             if (player.acquirePowerUp((PowerUp.Type) powerUp.getSpecificType(), powerUp)) {
                 hudController.addPowerUpIcon(powerUp);
-                Statistics.increase(Statistics.COLLECTED_POWER_UP, 1);
-
+                Data.increment("stats.collectable.powerUp.total.count");
                 switch ((PowerUp.Type) powerUp.getSpecificType()) {
-                    case HOLY_SHIELD -> Statistics.increase(Statistics.COLLECTED_HOLY_SHIELD, 1);
-                    case VAMPIRE_FANGS -> Statistics.increase(Statistics.COLLECTED_VAMPIRE_FANGS, 1);
-                    case ANGEL_RING -> Statistics.increase(Statistics.COLLECTED_ANGEL_RING, 1);
-                    case LONG_SWORD -> Statistics.increase(Statistics.COLLECTED_LONG_SWORD, 1);
-                    case HOBNAIL_BOOTS -> Statistics.increase(Statistics.COLLECTED_HOBNAIL_BOOTS, 1);
-                    case COIN_OF_GREED -> Statistics.increase(Statistics.COLLECTED_COIN_OF_GREED, 1);
-                    case HOT_HEART -> Statistics.increase(Statistics.COLLECTED_HOT_HEART, 1);
-                    case COLD_HEART -> Statistics.increase(Statistics.COLLECTED_COLD_HEART, 1);
-                    case STONE_BOOTS -> Statistics.increase(Statistics.COLLECTED_STONE_BOOTS, 1);
-                    case BROKEN_ARROWS -> Statistics.increase(Statistics.COLLECTED_BROKEN_ARROWS, 1);
-                    case AGILITY -> Statistics.increase(Statistics.COLLECTED_AGILITY, 1);
-                    case HEDGEHOG_SPINES -> Statistics.increase(Statistics.COLLECTED_HEDGEHOG_SPINES, 1);
-                    case SLIME_PIECE -> Statistics.increase(Statistics.COLLECTED_SLIME_PIECE, 1);
-                    case GOLD_ARROW -> Statistics.increase(Statistics.COLLECTED_GOLD_ARROWS, 1);
-                    case HEALING_FLOOD -> Statistics.increase(Statistics.COLLECTED_HEALING_FLOOD, 1);
-                    case KEY_S_KEEPER -> Statistics.increase(Statistics.COLLECTED_KEY_S_KEEPER, 1);
+                    case HOLY_SHIELD -> Data.increment("stats.collectable.powerUp.specific.holyShield.count");
+                    case VAMPIRE_FANGS -> Data.increment("stats.collectable.powerUp.specific.vampireFangs.count");
+                    case ANGEL_RING -> Data.increment("stats.collectable.powerUp.specific.angelRing.count");
+                    case LONG_SWORD -> Data.increment("stats.collectable.powerUp.specific.longSword.count");
+                    case HOBNAIL_BOOTS -> Data.increment("stats.collectable.powerUp.specific.hobnailBoots.count");
+                    case COIN_OF_GREED -> Data.increment("stats.collectable.powerUp.specific.coinOfGreed.count");
+                    case HOT_HEART -> Data.increment("stats.collectable.powerUp.specific.hotHeart.count");
+                    case COLD_HEART -> Data.increment("stats.collectable.powerUp.specific.coldHeart.count");
+                    case STONE_BOOTS -> Data.increment("stats.collectable.powerUp.specific.stoneBoots.count");
+                    case BROKEN_ARROWS -> Data.increment("stats.collectable.powerUp.specific.brokenArrows.count");
+                    case AGILITY -> Data.increment("stats.collectable.powerUp.specific.agility.count");
+                    case HEDGEHOG_SPINES -> Data.increment("stats.collectable.powerUp.specific.hedgehogSpines.count");
+                    case SLIME_PIECE -> Data.increment("stats.collectable.powerUp.specific.slimePiece.count");
+                    case GOLD_ARROW -> Data.increment("stats.collectable.powerUp.specific.goldArrow.count");
+                    case HEALING_FLOOD -> Data.increment("stats.collectable.powerUp.specific.healingFlood.count");
+                    case KEY_S_KEEPER -> Data.increment("stats.collectable.powerUp.specific.keySKeeper.count");
                 }
             }
 

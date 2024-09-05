@@ -1,7 +1,7 @@
 package chevy.control.collectableController;
 
 import chevy.control.HUDController;
-import chevy.model.Statistics;
+import chevy.service.Data;
 import chevy.service.Sound;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.Health;
@@ -21,8 +21,8 @@ public final class HealthController {
             player.increaseCurrentHealth(health.getRecoverHealth());
             Sound.play(Sound.Effect.HEALTH_POTION);
             health.collect();
-            Statistics.increase(Statistics.COLLECTED_COLLECTABLE, 1);
-            Statistics.increase(Statistics.COLLECTED_HEALTH_POTION, 1);
+            Data.increment("stats.collectable.total.count");
+            Data.increment("stats.collectable.commons.healthPotions.count");
             hudController.changeHealth(player.getCurrentHealth());
             chamber.findAndRemoveEntity(health);
         }

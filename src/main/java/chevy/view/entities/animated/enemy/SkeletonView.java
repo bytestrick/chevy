@@ -10,7 +10,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class SkeletonView extends AnimatedEntityView {
+public final class SkeletonView extends AnimatedEntityView {
     private static final String SKELETON_RESOURCES = "/sprites/enemy/skeleton/";
     private final Skeleton skeleton;
 

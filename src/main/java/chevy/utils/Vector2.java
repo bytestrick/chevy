@@ -1,6 +1,6 @@
 package chevy.utils;
 
-public class Vector2<T extends Number> {
+public final class Vector2<T extends Number> {
     public T first;
     public T second;
 

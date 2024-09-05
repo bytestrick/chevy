@@ -2,7 +2,6 @@ package chevy.control.enemyController;
 
 import chevy.control.Interaction;
 import chevy.control.PlayerController;
-import chevy.model.Statistics;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dynamicEntity.Direction;
@@ -10,6 +9,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.service.Data;
 import chevy.service.Sound;
 import chevy.utils.Log;
 
@@ -45,14 +45,13 @@ public final class SlimeController {
      * @param slime  lo Slime che subisce l'interazione
      */
     public void playerInInteraction(Player player, Slime slime) {
-        switch (player.getCurrentState()) {
-            // Se il giocatore è in stato di attacco, lo Slime viene danneggiato in base al danno del giocatore.
-            case Player.State.ATTACK -> {
-                Sound.play(Sound.Effect.SLIME_HIT);
-                slime.setDirection(Direction.positionToDirection(player, slime));
-                hitSlime(slime, -1 * player.getDamage());
-            }
-            default -> Log.warn("Lo slimeController non gestisce questa azione: " + player.getCurrentState());
+        // Se il giocatore è in stato di attacco, lo Slime viene danneggiato in base al danno del giocatore.
+        if (player.getCurrentState().equals(Player.State.ATTACK)) {
+            Sound.play(Sound.Effect.SLIME_HIT);
+            slime.setDirection(Direction.positionToDirection(player, slime));
+            hitSlime(slime, -1 * player.getDamage());
+        } else {
+            Log.warn("Lo slimeController non gestisce questa azione: " + player.getCurrentState());
         }
     }
 
@@ -68,8 +67,8 @@ public final class SlimeController {
                 slime.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(slime);
-                Statistics.increase(Statistics.KILLED_ENEMY, 1);
-                Statistics.increase(Statistics.KILLED_SLIME, 1);
+                Data.increment("stats.kills.total.count");
+                Data.increment("stats.kills.slime.count");
                 return;
             }
         } else if (slime.getCurrentHealth() <= 0 && slime.checkAndChangeState(Slime.State.DEAD)) {
@@ -134,11 +133,8 @@ public final class SlimeController {
     }
 
     public void trapInteraction(Trap trap, Slime slime) {
-        switch (trap.getSpecificType()) {
-            case Trap.Type.SPIKED_FLOOR -> {
-                hitSlime(slime, -1 * trap.getDamage());
-            }
-            default -> { }
+        if (trap.getSpecificType().equals(Trap.Type.SPIKED_FLOOR)) {
+            hitSlime(slime, -1 * trap.getDamage());
         }
     }
 }

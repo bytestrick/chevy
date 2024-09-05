@@ -8,7 +8,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class ChestView extends AnimatedEntityView {
+public final class ChestView extends AnimatedEntityView {
     private static final String CHEST_RESOURCES = "/sprites/chest/";
     private final Chest chest;
     private CommonState previousAnimationState;

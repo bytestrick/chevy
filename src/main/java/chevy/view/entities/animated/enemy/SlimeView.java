@@ -10,7 +10,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class SlimeView extends AnimatedEntityView {
+public final class SlimeView extends AnimatedEntityView {
     private static final String SLIME_RESOURCES = "/sprites/enemy/slime/";
     private final Slime slime;
 
