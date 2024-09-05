@@ -24,7 +24,7 @@
       "played": {
         "count": 0,
         "string": "Tempo trascorso in gioco",
-        "icon": "clock"
+        "icon": "sandClock"
       }
     },
     "kills": {

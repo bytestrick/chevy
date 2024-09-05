@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Insets;
 import java.util.LinkedHashMap;
@@ -52,6 +53,7 @@ public final class Options {
         restoreApp.addActionListener(e -> restoreAppAction());
 
         back.addActionListener(e -> {
+            Sound.play(Sound.Effect.BUTTON);
             if (sceneToReturnTo == Window.Scene.PLAYING) {
                 window.setScene(sceneToReturnTo);
                 window.getGamePanel().pauseDialog();
@@ -62,6 +64,7 @@ public final class Options {
     }
 
     private void restoreAppAction() {
+        Sound.play(Sound.Effect.BUTTON);
         Sound.play(Sound.Effect.STOP);
         final String message = "L'app sarà riportata allo stato predefinito. Il progresso di " +
                 "gioco e le impostazioni andranno perse. Continuare?";
@@ -81,6 +84,17 @@ public final class Options {
     private void initializeComponents() {
         statistics.setCellRenderer(new ItemRenderer());
         getStats(Data.get("stats"), null, -2);
+
+        back.setIcon(Load.icon("arrow", 32, 32));
+
+        // https://www.formdev.com/flatlaf/client-properties/#JComponent
+        Color destructiveActionBg = UIManager.getColor("Chevy.color.destructiveActionBG");
+        restoreApp.putClientProperty("FlatLaf.style", Map.of(
+                "borderColor", destructiveActionBg.brighter().brighter(),
+                "hoverBorderColor", destructiveActionBg.brighter().brighter(),
+                "focusColor", destructiveActionBg.brighter().brighter().brighter(),
+                "focusedBorderColor", destructiveActionBg.brighter().brighter().brighter()
+        ));
 
         restoreApp.setBackground(UIManager.getColor("Chevy.color.destructiveActionBG"));
         restoreApp.setIcon(basket);
