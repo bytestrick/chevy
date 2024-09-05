@@ -13,22 +13,24 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Log;
+import chevy.view.Menu;
 import chevy.view.chamber.EntityToEntityView;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Gestisce l'insieme di stanze (Chamber) nel gioco.
- * Utilizza il pattern Singleton per garantire che esista una sola istanza di ChamberManager.
+ * Gestisce l'insieme di {@link Chamber} nel gioco
  */
-public class ChamberManager {
+public final class ChamberManager {
     public static final int NUMBER_OF_CHAMBERS = 6;
     private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
-    private static int currentChamberIndex = 0; // Indice della stanza corrente nel gioco.
+    /** Indice della stanza corrente nel gioco. */
+    private static int currentChamberIndex = 0;
 
     /**
      * Carica un layer che comporrà la stanza.
@@ -38,14 +40,16 @@ public class ChamberManager {
      * @return l'immagine della stanza, o null se l'immagine non può essere caricata
      */
     private static BufferedImage loadLayer(int chamber, int layer) {
-        final String chamberPath = "/chambers/chamber" + chamber + "/layer" + layer + ".png";
-        BufferedImage chamberImage = null;
+        final String path = "/chambers/chamber" + chamber + "/layer" + layer + ".png";
         try {
-            chamberImage = ImageIO.read(Objects.requireNonNull(ChamberManager.class.getResource(chamberPath)));
-        } catch (NullPointerException | IOException ignored) {
-            Log.warn(chamberPath + ": il layer" + ".png non è stato caricato");
+            return ImageIO.read(Objects.requireNonNull(ChamberManager.class.getResource(path)));
+        } catch (NullPointerException ignored) {
+            Log.info("La stanza " + chamber + " ha " + layer + " strati");
+        } catch (IOException e) {
+            Log.warn("Caricamento della stanza " + chamber + " fallito: " + e.getMessage());
+            System.exit(96);
         }
-        return chamberImage;
+        return null;
     }
 
     /**
@@ -61,33 +65,35 @@ public class ChamberManager {
         BufferedImage chamberImage = loadLayer(index, layer);
 
         while (chamberImage != null) {
-            int nRows = chamberImage.getHeight();
-            int nCols = chamberImage.getWidth();
+            final Dimension size = new Dimension(chamberImage.getWidth(), chamberImage.getHeight());
             if (!chamber.isInitialized()) {
-                chamber.initWorld(nRows, nCols);
+                chamber.initWorld(size);
             }
 
-            for (int i = 0; i < nRows; ++i) {
-                for (int j = 0; j < nCols; ++j) {
+            for (int i = 0; i < size.height; ++i) {
+                for (int j = 0; j < size.width; ++j) {
                     Color color = new Color(chamberImage.getRGB(j, i));
                     int r = color.getRed();
                     if (r != 0) {
                         Entity entity = EntityFromColor.get(r, i, j);
-                        assert entity != null;
-                        switch (entity.getGenericType()) {
-                            case Environment.Type.TRAP -> chamber.addTraps((Trap) entity);
-                            case DynamicEntity.Type.PROJECTILE -> chamber.addProjectile((Projectile) entity);
-                            case LiveEntity.Type.ENEMY -> chamber.addEnemy((Enemy) entity);
-                            case LiveEntity.Type.PLAYER -> {
-                                entity.setToDraw(false);
-                                chamber.setPlayer((Player) entity);
+                        if (entity != null) {
+                            switch (entity.getGenericType()) {
+                                case Environment.Type.TRAP -> chamber.addTraps((Trap) entity);
+                                case DynamicEntity.Type.PROJECTILE ->
+                                        chamber.addProjectile((Projectile) entity);
+                                case LiveEntity.Type.ENEMY -> chamber.addEnemy((Enemy) entity);
+                                case LiveEntity.Type.PLAYER -> {
+                                    entity.setToDraw(false);
+                                    chamber.setPlayer((Player) entity);
+                                }
+                                case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
+                                        chamber.addCollectable((Collectable) entity);
+                                case Entity.Type.ENVIRONMENT ->
+                                        chamber.addEnvironment((Environment) entity);
+                                default -> {}
                             }
-                            case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
-                                    chamber.addCollectable((Collectable) entity);
-                            case Entity.Type.ENVIRONMENT -> chamber.addEnvironment((Environment) entity);
-                            default -> { }
+                            chamber.addEntityOnTop(entity);
                         }
-                        chamber.addEntityOnTop(entity);
                     }
                 }
             }
@@ -100,13 +106,11 @@ public class ChamberManager {
     }
 
     /**
-     * Passa alla stanza successiva
+     * Sblocca e passa alla stanza successiva
      */
     public static void nextChamber() {
-        if (currentChamberIndex + 1 < NUMBER_OF_CHAMBERS) {
-            enterChamber(currentChamberIndex + 1);
-            // TODO: qui si sbloccano i livelli
-        }
+        Menu.incrementLevel();
+        enterChamber(currentChamberIndex + 1);
     }
 
     public static boolean isLastChamber() {
@@ -116,22 +120,26 @@ public class ChamberManager {
     /**
      * @return la stanza corrente
      */
-    public static Chamber getCurrentChamber() { return chambers[currentChamberIndex]; }
+    public static Chamber getCurrentChamber() {return chambers[currentChamberIndex];}
 
     /**
-     * Imposta la stanza corrente a index. Se la stanza è già caricata la invalida e ne forza il caricamento.
+     * Imposta la stanza corrente a index. Se la stanza è già caricata la invalida e ne forza il
+     * caricamento.
      * Predispone il gioco.
      *
      * @param index della stanza
      */
     public static void enterChamber(final int index) {
-        currentChamberIndex = index;
-        chambers[currentChamberIndex] = loadChamber(index);
-        ChamberController.refresh();
-        EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer()); // Invalida la view del player corrente
-        GameLoop.getInstance().start();
-        Sound.getInstance().startMusic(); // 🎵
+        if (index < NUMBER_OF_CHAMBERS) {
+            currentChamberIndex = index;
+            chambers[currentChamberIndex] = loadChamber(index);
+            ChamberController.refresh();
+            // Invalida la view del player corrente
+            EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer());
+            GameLoop.start();
+            Sound.startMusic(true); // 🎵
+        }
     }
 
-    public static int getCurrentChamberIndex() { return currentChamberIndex; }
+    public static int getCurrentChamberIndex() {return currentChamberIndex;}
 }

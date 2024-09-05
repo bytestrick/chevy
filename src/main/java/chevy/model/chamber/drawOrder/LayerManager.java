@@ -10,7 +10,7 @@ import java.util.List;
  * La classe LayerManager gestisce l'ordine di disegno delle entità nel gioco.
  * Utilizza una lista di Layer, ognuno dei quali contiene un insieme di entità da disegnare.
  */
-public class LayerManager {
+public final class LayerManager {
     private final List<Layer> drawOrder;
 
     public LayerManager() {
@@ -46,7 +46,5 @@ public class LayerManager {
         layer.add(entity);
     }
 
-    public synchronized List<Layer> getDrawOrder() {
-        return drawOrder;
-    }
+    public synchronized List<Layer> getDrawOrder() { return drawOrder; }
 }

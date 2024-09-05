@@ -1,13 +1,13 @@
 package chevy.model.entity.collectable;
 
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
-public class Coin extends Collectable {
-    private final GlobalState idle = new GlobalState(State.IDLE, 0.8f);
-    private final GlobalState collected = new GlobalState(State.COLLECTED, 0.8f);
+public final class Coin extends Collectable {
+    private final Vertex idle = new Vertex(State.IDLE, 0.8f);
+    private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
     private final int maxValue = 5;
     private final int minValue = 2;
 
@@ -28,7 +28,7 @@ public class Coin extends Collectable {
         idle.linkState(collected);
     }
 
-    public synchronized GlobalState getState(CommonState commonState) {
+    public synchronized Vertex getState(CommonState commonState) {
         Coin.State coinState = (State) commonState;
         return switch (coinState) {
             case IDLE -> idle;

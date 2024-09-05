@@ -1,12 +1,12 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
 public class IcyFloor extends Trap {
-    private final GlobalState icyFloor = new GlobalState(EnumState.ICY_FLOOR, 2f);
-    private final GlobalState icyFloorSparkling = new GlobalState(EnumState.ICY_FLOOR_SPARKLING, 0.8f);
+    private final Vertex icyFloor = new Vertex(EnumState.ICY_FLOOR, 2f);
+    private final Vertex icyFloorSparkling = new Vertex(EnumState.ICY_FLOOR_SPARKLING, 0.8f);
 
     public IcyFloor(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.ICY_FLOOR);
@@ -23,7 +23,7 @@ public class IcyFloor extends Trap {
         icyFloorSparkling.linkState(icyFloor);
     }
 
-    public synchronized GlobalState getState(CommonState commonEnumStates) {
+    public synchronized Vertex getState(CommonState commonEnumStates) {
         EnumState icyFloorState = (EnumState) commonEnumStates;
         return switch (icyFloorState) {
             case ICY_FLOOR -> icyFloor;

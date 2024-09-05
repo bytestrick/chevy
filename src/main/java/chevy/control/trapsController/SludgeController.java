@@ -8,7 +8,7 @@ import chevy.service.Sound;
 /**
  * Gestisce le interazioni del giocatore con la melma nel gioco.
  */
-public class SludgeController {
+public final class SludgeController {
     private final Chamber chamber;
 
     /**
@@ -25,7 +25,7 @@ public class SludgeController {
      */
     public void playerInInteraction(Player player, Sludge sludge) {
         player.changeState(Player.State.SLUDGE);
-        Sound.getInstance().play(Sound.Effect.MUD);
+        Sound.play(Sound.Effect.MUD);
     }
 
     /**
@@ -39,7 +39,7 @@ public class SludgeController {
             player.changeState(Player.State.IDLE);
             chamber.findAndRemoveEntity(sludge, false);
         } else {
-            Sound.getInstance().play(Sound.Effect.MUD);
+            Sound.play(Sound.Effect.MUD);
             sludge.decreaseNMoveToUnlock();
         }
     }

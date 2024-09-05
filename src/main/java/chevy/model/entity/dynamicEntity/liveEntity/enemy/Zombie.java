@@ -1,15 +1,15 @@
 package chevy.model.entity.dynamicEntity.liveEntity.enemy;
 
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
-public class Zombie extends Enemy {
-    private final GlobalState idle = new GlobalState(State.IDLE, 1f, true);
-    private final GlobalState move = new GlobalState(State.MOVE, 0.5f);
-    private final GlobalState attack = new GlobalState(State.ATTACK, 0.5f);
-    private final GlobalState hit = new GlobalState(State.HIT, 0.15f);
-    private final GlobalState dead = new GlobalState(State.DEAD, 0.3f);
+public final class Zombie extends Enemy {
+    private final Vertex idle = new Vertex(State.IDLE, 1f, true);
+    private final Vertex move = new Vertex(State.MOVE, 0.5f);
+    private final Vertex attack = new Vertex(State.ATTACK, 0.5f);
+    private final Vertex hit = new Vertex(State.HIT, 0.15f);
+    private final Vertex dead = new Vertex(State.DEAD, 0.3f);
 
     public Zombie(Vector2<Integer> initPosition) {
         super(initPosition, Type.ZOMBIE);
@@ -37,7 +37,7 @@ public class Zombie extends Enemy {
     }
 
     @Override
-    public synchronized GlobalState getState(CommonState commonEnumStates) {
+    public synchronized Vertex getState(CommonState commonEnumStates) {
         State zombieState = (State) commonEnumStates;
         return switch (zombieState) {
             case MOVE -> move;

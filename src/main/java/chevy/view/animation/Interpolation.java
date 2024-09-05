@@ -7,7 +7,7 @@ import chevy.utils.Log;
 /**
  * Gestisce l'interpolazione dei valori nel gioco.
  */
-public class Interpolation implements Render {
+public final class Interpolation implements Render {
     private double time = 0d; // Tempo trascorso dall'inizio dell'interpolazione.
     private boolean isRunning = false; // Se l'interpolazione è attualmente in esecuzione.
     private Type type; // Tipo di interpolazione da utilizzare.
@@ -261,7 +261,6 @@ public class Interpolation implements Render {
     public void changeDuration(float duration) { this.duration = duration; }
 
     /**
-     * TODO: rimuovere se rimane non usato
      *
      * @param type imposta il tipo di interpolazione
      */

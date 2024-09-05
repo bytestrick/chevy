@@ -1,6 +1,6 @@
 package chevy.control.collectableController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.control.HUDController;
 import chevy.model.chamber.Chamber;
@@ -12,7 +12,7 @@ import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 
-public class CollectableController {
+public final class CollectableController {
     private final PlayerController playerController;
     private final CoinController coinController;
     private final HealthController healthController;
@@ -38,7 +38,7 @@ public class CollectableController {
      * @param subject     l'entità che avvia l'interazione.
      * @param object      l'entità che subisce l'interazione.
      */
-    public void handleInteraction(InteractionType interaction, Entity subject, Collectable object) {
+    public void handleInteraction(Interaction interaction, Entity subject, Collectable object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, object);
             case UPDATE -> update(subject);

@@ -1,13 +1,13 @@
 package chevy.view.hud;
 
 import chevy.model.entity.collectable.powerUp.PowerUp;
-import chevy.settings.WindowSettings;
+import chevy.view.Window;
 import chevy.view.component.ImageVisualizer;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class PowerUpEquippedView extends JComponent {
+public final class PowerUpEquippedView extends JComponent {
     private static final String POWER_UP_RESOURCES = "/sprites/powerUpIcons/";
     private float scale;
     private final int nFrame = 2;
@@ -45,7 +45,7 @@ public class PowerUpEquippedView extends JComponent {
             case VAMPIRE_FANGS -> path += "vampireFangs";
         }
 
-        ImageVisualizer frame = new ImageVisualizer(path + ".png", scale * WindowSettings.scale);
+        ImageVisualizer frame = new ImageVisualizer(path + ".png", scale * Window.scale);
         ToolTipManager.sharedInstance().setInitialDelay(100);  // Ritardo prima della comparsa del tooltip (in millisecondi)
         ToolTipManager.sharedInstance().setDismissDelay(10000); // Tempo di permanenza del tooltip (in millisecondi)
         frame.setToolTipText(powerUp.getDescription());
@@ -55,8 +55,7 @@ public class PowerUpEquippedView extends JComponent {
 
     private void setDimension() {
         calculateFrameWidth();
-        Dimension dimension = new Dimension(nFrame * frameWidth, WindowSettings.WINDOW_HEIGHT);
-        System.out.println(dimension);
+        Dimension dimension = new Dimension(nFrame * frameWidth, Window.HEIGHT);
         setMaximumSize(dimension);
         setMinimumSize(dimension);
         setPreferredSize(dimension);

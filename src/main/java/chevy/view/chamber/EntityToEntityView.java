@@ -65,7 +65,7 @@ import java.util.Map;
 /**
  * Mappa le entità alle loro rappresentazioni visive.
  */
-public class EntityToEntityView {
+public final class EntityToEntityView {
     public static final Map<Entity, EntityView> entityView = new HashMap<>();
 
     /**

@@ -1,7 +1,7 @@
 package chevy.view.component;
 
-import chevy.settings.WindowSettings;
 import chevy.utils.Load;
+import chevy.view.Window;
 
 import javax.swing.Box;
 import javax.swing.JLabel;
@@ -37,14 +37,14 @@ public class CounterBar extends JPanel {
         ui = new MyPanelUI(null);
         setUI(ui);
 
-        setDimension(WindowSettings.scale);
+        setDimension(Window.scale);
 
         springLayout = new SpringLayout();
         setLayout(springLayout);
-        setConstraints(WindowSettings.scale);
+        setConstraints(Window.scale);
 
         font = text.getFont();
-        font = font.deriveFont(fontSize * WindowSettings.scale);
+        font = font.deriveFont(fontSize * Window.scale);
         text.setMaximumSize(getMaximumSize());
         text.setAlignmentX(Component.RIGHT_ALIGNMENT);
         text.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -78,7 +78,7 @@ public class CounterBar extends JPanel {
     }
 
     private void resizeFont() {
-        font = font.deriveFont(fontSize * WindowSettings.scale);
+        font = font.deriveFont(fontSize * Window.scale);
         text.setFont(font);
     }
 

@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.player;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Ninja;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.stateMachine.CommonState;
@@ -12,7 +12,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class NinjaView extends AnimatedEntityView {
+public final class NinjaView extends AnimatedEntityView {
     private static final String NINJA_RESOURCES = "/sprites/player/ninja/";
     private final Ninja ninja;
 
@@ -20,7 +20,7 @@ public class NinjaView extends AnimatedEntityView {
         super();
         this.ninja = ninja;
         currentViewPosition = new Vector2<>((double) ninja.getCol(), (double) ninja.getRow());
-        currentGlobalState = ninja.getState(ninja.getCurrentState());
+        currentVertex = ninja.getState(ninja.getCurrentState());
 
         float duration = ninja.getState(ninja.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentViewPosition.first, ninja.getCol(), duration,
@@ -95,7 +95,7 @@ public class NinjaView extends AnimatedEntityView {
     }
 
     private int getAnimationType(CommonState currentState) {
-        DirectionsModel currentDirection = ninja.getDirection();
+        Direction currentDirection = ninja.getDirection();
         return switch (currentState) {
             case Player.State.ATTACK, Player.State.IDLE, Player.State.MOVE, Player.State.HIT, Player.State.GLIDE,
                  Player.State.SLUDGE -> switch (currentDirection) {
@@ -105,7 +105,7 @@ public class NinjaView extends AnimatedEntityView {
                 case LEFT -> 3;
             };
             case Player.State.DEAD, Player.State.FALL -> {
-                if (currentDirection == DirectionsModel.RIGHT) {
+                if (currentDirection == Direction.RIGHT) {
                     yield 0;
                 } else {
                     yield 1;
@@ -117,11 +117,11 @@ public class NinjaView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (currentGlobalState.isFinished()) {
-            currentGlobalState = ninja.getState(ninja.getCurrentState());
+        if (currentVertex.isFinished()) {
+            currentVertex = ninja.getState(ninja.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
-            float duration = currentGlobalState.getDuration();
+            float duration = currentVertex.getDuration();
             moveInterpolationX.changeStart(currentViewPosition.first);
             moveInterpolationX.changeEnd(ninja.getCol());
             moveInterpolationX.changeDuration(duration);

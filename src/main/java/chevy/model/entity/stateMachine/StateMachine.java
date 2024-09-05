@@ -7,9 +7,9 @@ import chevy.utils.Log;
  * diversi stati.
  */
 public class StateMachine {
-    private GlobalState currentGlobalState;
-    private GlobalState previousGlobalState;
-    private GlobalState nextGlobalState;
+    private Vertex currentVertex;
+    private Vertex previousVertex;
+    private Vertex nextVertex;
     private boolean usedWithCanChange = false;
     private String stateMachineName; // solo per capire di chi è la stampa
 
@@ -22,7 +22,7 @@ public class StateMachine {
      * @return true se lo stato è cambiato con successo, false altrimenti.
      */
     public synchronized boolean changeState(CommonState state) {
-        if (currentGlobalState == null) {
+        if (currentVertex == null) {
             Log.error("Non è presente uno stato iniziale");
             return false;
         }
@@ -30,25 +30,25 @@ public class StateMachine {
         // solo per la stampa
         String logMessage = "";
         if (stateMachineName != null) {
-            logMessage += stateMachineName + ": " + currentGlobalState;
+            logMessage += stateMachineName + ": " + currentVertex;
         }
 
         if (!usedWithCanChange) {
-            nextGlobalState = currentGlobalState.findLinkedState(state);
+            nextVertex = currentVertex.findLinkedState(state);
         }
 
-        if (nextGlobalState != null) {
-            previousGlobalState = currentGlobalState;
-            currentGlobalState = nextGlobalState;
+        if (nextVertex != null) {
+            previousVertex = currentVertex;
+            currentVertex = nextVertex;
 
             // solo per la stampa
             if (stateMachineName != null) {
-                Log.info(logMessage + " -> " + nextGlobalState);
+                Log.info(logMessage + " -> " + nextVertex);
             }
 
-            previousGlobalState.stopStateTimer();
-            currentGlobalState.startStateTimer();
-            nextGlobalState = null;
+            previousVertex.stopStateTimer();
+            currentVertex.startStateTimer();
+            nextVertex = null;
             return true;
         }
 
@@ -67,17 +67,17 @@ public class StateMachine {
      * @return true se è possibile cambiare lo stato, false altrimenti.
      */
     public synchronized boolean canChange(CommonState state) {
-        if (currentGlobalState == null) {
+        if (currentVertex == null) {
             Log.error("Non è presente uno stato iniziale");
             return false;
         }
 
-        nextGlobalState = currentGlobalState.findLinkedState(state);
-        if (nextGlobalState == null) {
+        nextVertex = currentVertex.findLinkedState(state);
+        if (nextVertex == null) {
             return false;
         }
 
-        return currentGlobalState.isFinished();
+        return currentVertex.isFinished();
     }
 
     /**
@@ -97,21 +97,21 @@ public class StateMachine {
     }
 
     public synchronized boolean changeToPreviousState() {
-        return changeState(previousGlobalState.getState());
+        return changeState(previousVertex.getState());
     }
 
-    public synchronized GlobalState getCurrentState() {
-        if (currentGlobalState == null) {
+    public synchronized Vertex getCurrentState() {
+        if (currentVertex == null) {
             Log.error("Non è presente uno stato iniziale");
         }
-        return currentGlobalState;
+        return currentVertex;
     }
 
-    public synchronized GlobalState getPreviousState() { return previousGlobalState; }
+    public synchronized Vertex getPreviousState() { return previousVertex; }
 
-    public void setInitialState(GlobalState startGlobalState) {
-        this.currentGlobalState = startGlobalState;
-        this.currentGlobalState.startStateTimer();
+    public void setInitialState(Vertex startVertex) {
+        this.currentVertex = startVertex;
+        this.currentVertex.startStateTimer();
     }
 
     // solo per la stampa

@@ -1,13 +1,13 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
 public class SpikedFloor extends Trap {
-    private final GlobalState activated = new GlobalState(State.ACTIVATED, 0.2f);
-    private final GlobalState disabled = new GlobalState(State.DISABLED, 3f);
-    private final GlobalState damage = new GlobalState(State.DAMAGE, 0.8f);
+    private final Vertex activated = new Vertex(State.ACTIVATED, 0.2f);
+    private final Vertex disabled = new Vertex(State.DISABLED, 3f);
+    private final Vertex damage = new Vertex(State.DAMAGE, 0.8f);
 
     public SpikedFloor(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.SPIKED_FLOOR);
@@ -37,7 +37,7 @@ public class SpikedFloor extends Trap {
         safeToCross = true;
     }
 
-    public synchronized GlobalState getState(CommonState commonState) {
+    public synchronized Vertex getState(CommonState commonState) {
         State spikedFloorState = (State) commonState;
         return switch (spikedFloorState) {
             case ACTIVATED -> activated;

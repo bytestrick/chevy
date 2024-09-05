@@ -9,7 +9,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class PowerUpView extends AnimatedEntityView {
+public final class PowerUpView extends AnimatedEntityView {
     private static final String POWER_UP_PATH = "/sprites/collectable/powerUp/";
     private final Interpolation moveInterpolationY;
     private final PowerUp powerUp;

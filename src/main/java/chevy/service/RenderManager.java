@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Aggiorna i componenti della view.
+ * Aggiorna i componenti di {@link chevy.view}
  */
 public class RenderManager {
     private static final List<Render> renderList = new LinkedList<>();
