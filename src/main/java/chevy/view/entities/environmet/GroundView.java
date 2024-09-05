@@ -7,7 +7,7 @@ import chevy.view.entities.EntityView;
 
 import java.awt.image.BufferedImage;
 
-public class GroundView extends EntityView {
+public final class GroundView extends EntityView {
     private static final String TILES_RESOURCES = "/sprites/chamberTiles/groundTiles/";
     private static BufferedImage GROUND_CENTRAL = null;
     private static BufferedImage GROUND_LEFT = null;

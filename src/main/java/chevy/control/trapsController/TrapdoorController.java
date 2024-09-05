@@ -1,6 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
@@ -8,7 +8,7 @@ import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 /**
  * Gestisce le interazioni del giocatore con la botola nel gioco.
  */
-public class TrapdoorController {
+public final class TrapdoorController {
     /**
      * Stanza di gioco in cui si trova la botola da gestire
      */
@@ -25,7 +25,7 @@ public class TrapdoorController {
      */
     public void playerInInteraction(Trapdoor trapdoor) {
         if (!trapdoor.isSafeToCross()) {
-            playerController.handleInteraction(InteractionType.TRAP, trapdoor);
+            playerController.handleInteraction(Interaction.TRAP, trapdoor);
         }
     }
 

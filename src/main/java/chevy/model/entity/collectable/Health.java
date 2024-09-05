@@ -1,12 +1,12 @@
 package chevy.model.entity.collectable;
 
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
-public class Health extends Collectable {
-    private final GlobalState idle = new GlobalState(State.IDLE, 1.6f);
-    private final GlobalState collected = new GlobalState(State.COLLECTED, 0.8f);
+public final class Health extends Collectable {
+    private final Vertex idle = new Vertex(State.IDLE, 1.6f);
+    private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
     private int recoverHealth = 2;
 
     public Health(Vector2<Integer> initPosition) {
@@ -34,7 +34,7 @@ public class Health extends Collectable {
         return recoverHealth;
     }
 
-    public synchronized GlobalState getState(CommonState commonState) {
+    public synchronized Vertex getState(CommonState commonState) {
         State healthState = (State) commonState;
         return switch (healthState) {
             case IDLE -> idle;

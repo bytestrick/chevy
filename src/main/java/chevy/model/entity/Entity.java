@@ -1,7 +1,7 @@
 package chevy.model.entity;
 
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.model.entity.stateMachine.StateMachine;
 import chevy.utils.Log;
 import chevy.utils.Utils;
@@ -55,6 +55,8 @@ public abstract class Entity {
 
     public final int getCol() { return position.second; }
 
+    public final Vector2<Integer> getPosition() { return position;}
+
     public boolean isCrossable() { return crossable; }
 
     public boolean isSafeToCross() {
@@ -66,7 +68,7 @@ public abstract class Entity {
 
     public int getDrawLayer() { return Math.abs(this.drawLayer); }
 
-    public GlobalState getState(CommonState commonEnumStates) {
+    public Vertex getState(CommonState commonEnumStates) {
         Log.warn("La funzione getState() deve essere ridefinita opportunamente nelle classi figlie");
         return null;
     }
@@ -80,19 +82,19 @@ public abstract class Entity {
     public boolean changeToPreviousState() { return stateMachine.changeToPreviousState(); }
 
     public CommonState getCurrentState() {
-        GlobalState currentGlobalState = stateMachine.getCurrentState();
-        if (currentGlobalState == null) {
+        Vertex currentVertex = stateMachine.getCurrentState();
+        if (currentVertex == null) {
             return null;
         }
-        return currentGlobalState.getState();
+        return currentVertex.getState();
     }
 
     public CommonState getPreviousState() {
-        GlobalState previousGlobalState = stateMachine.getPreviousState();
-        if (previousGlobalState == null) {
+        Vertex previousVertex = stateMachine.getPreviousState();
+        if (previousVertex == null) {
             return null;
         }
-        return previousGlobalState.getState();
+        return previousVertex.getState();
     }
 
     public boolean canRemoveToUpdate() { return !mustBeUpdate; }

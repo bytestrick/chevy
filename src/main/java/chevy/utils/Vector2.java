@@ -1,6 +1,6 @@
 package chevy.utils;
 
-public class Vector2<T extends Number> {
+public final class Vector2<T extends Number> {
     public T first;
     public T second;
 
@@ -14,14 +14,12 @@ public class Vector2<T extends Number> {
         this.second = vector2.second;
     }
 
-    public void changeFirst(T first) { this.first = first; }
+    public void changeFirst(T first) {this.first = first;}
 
-    public void changeSecond(T second) { this.second = second; }
+    public void changeSecond(T second) {this.second = second;}
 
     @Override
-    public String toString() {
-        return "Vector2(" + first + ", " + second + ")";
-    }
+    public String toString() {return "Vector2(" + first + ", " + second + ")";}
 
     @Override
     public boolean equals(Object o) {

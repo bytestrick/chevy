@@ -1,6 +1,6 @@
 package chevy.control.enemyController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -14,7 +14,7 @@ import java.util.List;
  * Implementa l'interfaccia Update per integrarsi con il ciclo di aggiornamento del gioco.
  * Gestisce l'aggiunta, l'aggiornamento e la rimozione dei nemici dall'aggiornamento.
  */
-public class EnemyUpdateController implements Update {
+public final class EnemyUpdateController implements Update {
     private static boolean STOP_UPDATE = false;
     private final EnemyController enemyController;
     private final List<Enemy> enemies = new ArrayList<>();
@@ -66,7 +66,7 @@ public class EnemyUpdateController implements Update {
         Iterator<Enemy> it = enemies.iterator();
         while (it.hasNext()) {
             Enemy enemy = it.next();
-            enemyController.handleInteraction(InteractionType.UPDATE, enemy, null);
+            enemyController.handleInteraction(Interaction.UPDATE, enemy, null);
             if (enemy.canRemoveToUpdate()) {
                 it.remove();
             }

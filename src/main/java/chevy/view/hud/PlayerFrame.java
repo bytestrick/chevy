@@ -6,7 +6,7 @@ import chevy.view.component.MyPanelUI;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 
-public class PlayerFrame extends JPanel {
+public final class PlayerFrame extends JPanel {
     private static final String PANEL_PATH = "/sprites/component/panel/";
     private static final String PAYER_RESOURCES_PATH = "/sprites/player/";
     private final MyPanelUI ui;

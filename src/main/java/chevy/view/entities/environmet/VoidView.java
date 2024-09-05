@@ -7,7 +7,7 @@ import chevy.view.entities.EntityView;
 
 import java.awt.image.BufferedImage;
 
-public class VoidView extends EntityView {
+public final class VoidView extends EntityView {
     private static final String VOID_RESOURCES = "/sprites/chamberTiles/trapTiles/void.png";
     private static final BufferedImage frame = Load.image(VOID_RESOURCES);
 

@@ -1,16 +1,16 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
 public class Totem extends Trap {
-    private final DirectionsModel directionShot;
-    private final GlobalState shot = new GlobalState(EnumState.SHOT, 3f);
-    private final GlobalState reload = new GlobalState(EnumState.RELOAD, 5f);
+    private final Direction directionShot;
+    private final Vertex shot = new Vertex(EnumState.SHOT, 3f);
+    private final Vertex reload = new Vertex(EnumState.RELOAD, 5f);
 
-    public Totem(Vector2<Integer> initVelocity, DirectionsModel directionShot) {
+    public Totem(Vector2<Integer> initVelocity, Direction directionShot) {
         super(initVelocity, Type.TOTEM);
         this.directionShot = directionShot;
         this.crossable = false;
@@ -28,12 +28,12 @@ public class Totem extends Trap {
         shot.linkState(reload);
     }
 
-    public DirectionsModel getDirectionShot() {
+    public Direction getDirectionShot() {
         return directionShot;
     }
 
     @Override
-    public GlobalState getState(CommonState commonStates) {
+    public Vertex getState(CommonState commonStates) {
         EnumState totemState = (EnumState) commonStates;
         return switch (totemState) {
             case SHOT -> shot;

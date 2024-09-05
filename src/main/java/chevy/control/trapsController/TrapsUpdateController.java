@@ -1,6 +1,6 @@
 package chevy.control.trapsController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -12,7 +12,7 @@ import java.util.List;
  * Gestisce gli aggiornamenti delle trappole del gioco. Implementa l'interfaccia Update per integrarsi con il ciclo di
  * aggiornamento del gioco. Gestisce l'aggiunta, l'aggiornamento delle trappole.
  */
-public class TrapsUpdateController implements Update {
+public final class TrapsUpdateController implements Update {
     private final TrapsController trapsController;
     private final List<Trap> traps = new ArrayList<>();
     private final List<Trap> trapsToAdd;
@@ -52,7 +52,7 @@ public class TrapsUpdateController implements Update {
         addTraps();
 
         for (Trap trap : traps) {
-            trapsController.handleInteraction(InteractionType.UPDATE, trap, null);
+            trapsController.handleInteraction(Interaction.UPDATE, trap, null);
         }
     }
 

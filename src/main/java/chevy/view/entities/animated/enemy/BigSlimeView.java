@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.enemy;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.BigSlime;
 import chevy.model.entity.stateMachine.CommonState;
 import chevy.utils.Vector2;
@@ -10,7 +10,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class BigSlimeView extends AnimatedEntityView {
+public final class BigSlimeView extends AnimatedEntityView {
     private static final String BIG_SLIME_RESOURCES = "/sprites/enemy/bigSlime/";
     private final BigSlime bigSlime;
 
@@ -18,7 +18,7 @@ public class BigSlimeView extends AnimatedEntityView {
         super();
         this.bigSlime = bigSlime;
         this.currentViewPosition = new Vector2<>((double) bigSlime.getCol(), (double) bigSlime.getRow());
-        currentGlobalState = bigSlime.getState(bigSlime.getCurrentState());
+        currentVertex = bigSlime.getState(bigSlime.getCurrentState());
 
         float duration = bigSlime.getState(bigSlime.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentViewPosition.first, bigSlime.getCol(), duration,
@@ -71,7 +71,7 @@ public class BigSlimeView extends AnimatedEntityView {
     }
 
     private int getAnimationType(CommonState currentState) {
-        DirectionsModel currentDirection = bigSlime.getDirection();
+        Direction currentDirection = bigSlime.getDirection();
         return switch (currentState) {
             case BigSlime.State.ATTACK -> switch (currentDirection) {
                 case UP -> 0;
@@ -85,11 +85,11 @@ public class BigSlimeView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (currentGlobalState.isFinished()) {
-            currentGlobalState = bigSlime.getState(bigSlime.getCurrentState());
+        if (currentVertex.isFinished()) {
+            currentVertex = bigSlime.getState(bigSlime.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
-            float duration = currentGlobalState.getDuration();
+            float duration = currentVertex.getDuration();
             moveInterpolationX.changeStart(currentViewPosition.first);
             moveInterpolationX.changeEnd(bigSlime.getCol());
             moveInterpolationX.changeDuration(duration);

@@ -1,6 +1,6 @@
 package chevy.view.entities.animated.player;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.stateMachine.CommonState;
@@ -12,7 +12,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class KnightView extends AnimatedEntityView {
+public final class KnightView extends AnimatedEntityView {
     private static final String KNIGHT_RESOURCES = "/sprites/player/knight/";
     private final Knight knight;
 
@@ -21,7 +21,7 @@ public class KnightView extends AnimatedEntityView {
         this.knight = knight;
         this.currentViewPosition = new Vector2<>((double) knight.getCol(), (double) knight.getRow());
 
-        currentGlobalState = knight.getState(knight.getCurrentState());
+        currentVertex = knight.getState(knight.getCurrentState());
         float duration = knight.getState(knight.getCurrentState()).getDuration();
         moveInterpolationX = new Interpolation(currentViewPosition.first, knight.getCol(), duration,
                 Interpolation.Type.EASE_OUT_SINE);
@@ -98,7 +98,7 @@ public class KnightView extends AnimatedEntityView {
     }
 
     private int getAnimationType(CommonState currentState) {
-        DirectionsModel currentDirection = knight.getDirection();
+        Direction currentDirection = knight.getDirection();
         return switch (currentState) {
             case Player.State.ATTACK, Player.State.IDLE, Player.State.MOVE, Player.State.HIT ->
                     switch (currentDirection) {
@@ -108,7 +108,7 @@ public class KnightView extends AnimatedEntityView {
                         case LEFT -> 3;
                     };
             case Player.State.GLIDE, Player.State.SLUDGE, Player.State.DEAD, Player.State.FALL -> {
-                if (currentDirection == DirectionsModel.RIGHT) {
+                if (currentDirection == Direction.RIGHT) {
                     yield 0;
                 } else {
                     yield 1;
@@ -132,11 +132,11 @@ public class KnightView extends AnimatedEntityView {
 
     @Override
     public Vector2<Double> getCurrentViewPosition() {
-        if (currentGlobalState.isFinished()) {
-            currentGlobalState = knight.getState(knight.getCurrentState());
+        if (currentVertex.isFinished()) {
+            currentVertex = knight.getState(knight.getCurrentState());
             firstTimeInState = true;
         } else if (firstTimeInState) {
-            float duration = currentGlobalState.getDuration();
+            float duration = currentVertex.getDuration();
             moveInterpolationX.changeStart(currentViewPosition.first);
             moveInterpolationX.changeEnd(knight.getCol());
             moveInterpolationX.changeDuration(duration);

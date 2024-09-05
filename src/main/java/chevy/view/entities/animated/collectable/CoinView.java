@@ -9,7 +9,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class CoinView extends AnimatedEntityView {
+public final class CoinView extends AnimatedEntityView {
     private static final String COIN_PATH = "/sprites/collectable/coin/";
     private final Coin coin;
 

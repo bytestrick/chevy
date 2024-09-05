@@ -8,7 +8,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class SludgeView extends AnimatedEntityView {
+public final class SludgeView extends AnimatedEntityView {
     private static final String SLUDGE_FLOOR_PATH = "/sprites/traps/sludge/";
     private final Sludge sludge;
 

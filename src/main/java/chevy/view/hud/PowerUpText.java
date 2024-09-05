@@ -2,9 +2,9 @@ package chevy.view.hud;
 
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.service.Sound;
-import chevy.settings.WindowSettings;
 import chevy.utils.Load;
 import chevy.utils.Log;
+import chevy.view.Window;
 import chevy.view.component.NoCaret;
 
 import javax.swing.JPanel;
@@ -20,7 +20,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 
-public class PowerUpText extends JPanel {
+public final class PowerUpText extends JPanel {
     private static final String FONT_PATH = "PixelatedPusab";
     private static final int TITLE_FONT_SIZE = 24;
     private static final int DESCRIPTION_FONT_SIZE = 16;
@@ -77,8 +77,8 @@ public class PowerUpText extends JPanel {
     }
 
     private void updateStyles() {
-        int newTitleFontSize = Math.max(1, (int) (TITLE_FONT_SIZE * WindowSettings.scale));
-        int newDescriptionFontSize = Math.max(1, (int) (DESCRIPTION_FONT_SIZE * WindowSettings.scale));
+        int newTitleFontSize = Math.max(1, (int) (TITLE_FONT_SIZE * Window.scale));
+        int newDescriptionFontSize = Math.max(1, (int) (DESCRIPTION_FONT_SIZE * Window.scale));
 
         StyleConstants.setFontSize(titleStyle, newTitleFontSize);
         StyleConstants.setFontSize(descriptionStyle, newDescriptionFontSize);
@@ -105,7 +105,7 @@ public class PowerUpText extends JPanel {
 
     public void show(PowerUp powerUp) {
         SwingUtilities.invokeLater(() -> {
-            Sound.getInstance().play(Sound.Effect.POWER_UP_UI);
+            Sound.play(Sound.Effect.POWER_UP_UI);
             name = powerUp.getName();
             description = powerUp.getDescription();
             write();

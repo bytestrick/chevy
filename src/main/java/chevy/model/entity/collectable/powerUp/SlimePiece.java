@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.utils.Vector2;
 
-public class SlimePiece extends PowerUp {
+public final class SlimePiece extends PowerUp {
     private final int nSlime = 1;
     private final int damageIncrease = 4;
 

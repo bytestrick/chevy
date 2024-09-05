@@ -1,16 +1,16 @@
 package chevy.model.entity.dynamicEntity.projectile;
 
-import chevy.model.entity.dynamicEntity.DirectionsModel;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
-public class SlimeShot extends Projectile {
-    public final GlobalState start = new GlobalState(SlimeShot.State.START, 0.5f);
-    public final GlobalState loop = new GlobalState(SlimeShot.State.LOOP, 1f, true);
-    public final GlobalState end = new GlobalState(SlimeShot.State.END, 0.5f);
+public final class SlimeShot extends Projectile {
+    public final Vertex start = new Vertex(SlimeShot.State.START, 0.5f);
+    public final Vertex loop = new Vertex(SlimeShot.State.LOOP, 1f, true);
+    public final Vertex end = new Vertex(SlimeShot.State.END, 0.5f);
 
-    public SlimeShot(Vector2<Integer> initPosition, DirectionsModel direction, float advanceTimer) {
+    public SlimeShot(Vector2<Integer> initPosition, Direction direction, float advanceTimer) {
         super(initPosition, Projectile.Type.SLIME_SHOT, direction);
 
         this.maxDamage = 3;
@@ -29,7 +29,7 @@ public class SlimeShot extends Projectile {
     }
 
     @Override
-    public GlobalState getState(CommonState commonState) {
+    public Vertex getState(CommonState commonState) {
         State state = (State) commonState;
         return switch (state) {
             case START -> start;

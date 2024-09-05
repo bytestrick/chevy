@@ -9,7 +9,7 @@ import chevy.view.entities.animated.AnimatedEntityView;
 
 import java.awt.image.BufferedImage;
 
-public class KeyView extends AnimatedEntityView {
+public final class KeyView extends AnimatedEntityView {
     private static final String KEY_PATH = "/sprites/collectable/key/";
     private final Key key;
 

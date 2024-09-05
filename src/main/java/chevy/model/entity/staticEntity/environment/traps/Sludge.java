@@ -1,11 +1,11 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
 import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.GlobalState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
 public class Sludge extends Trap {
-    private final GlobalState active = new GlobalState(EnumState.SLUDGE_BUBBLES, 0.8f);
+    private final Vertex active = new Vertex(EnumState.SLUDGE_BUBBLES, 0.8f);
     private int nMoveToUnlock;
 
     public Sludge(Vector2<Integer> initVelocity) {
@@ -34,7 +34,7 @@ public class Sludge extends Trap {
         return nMoveToUnlock;
     }
 
-    public synchronized GlobalState getState(CommonState commonEnumStates) {
+    public synchronized Vertex getState(CommonState commonEnumStates) {
         EnumState spikedFloorState = (EnumState) commonEnumStates;
         return switch (spikedFloorState) {
             case SLUDGE_BUBBLES -> active;

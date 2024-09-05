@@ -1,6 +1,6 @@
 package chevy.control.environmentController;
 
-import chevy.control.InteractionType;
+import chevy.control.Interaction;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.service.Update;
 import chevy.service.UpdateManager;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class EnvironmentUpdateController implements Update {
+public final class EnvironmentUpdateController implements Update {
     private final EnvironmentController environmentController;
     private final List<Environment> environments = new ArrayList<>();
     private final List<Environment> environmentsToAdd;
@@ -55,7 +55,7 @@ public class EnvironmentUpdateController implements Update {
                 it.remove();
                 return;
             }
-            environmentController.handleInteraction(InteractionType.UPDATE, environment, null);
+            environmentController.handleInteraction(Interaction.UPDATE, environment, null);
         }
     }
 
