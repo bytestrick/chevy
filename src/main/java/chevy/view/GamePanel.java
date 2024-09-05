@@ -49,6 +49,8 @@ public final class GamePanel extends JPanel {
         setBackground(Window.bg);
     }
 
+    public static boolean isPauseDialogNotActive() {return !pauseDialogActive;}
+
     private void setLayout() {
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
@@ -74,28 +76,42 @@ public final class GamePanel extends JPanel {
             GameLoop.stop();
             Sound.stopMusic();
             String message = "Chevy è in pausa, scegli cosa fare.";
-            switch (JOptionPane.showOptionDialog(window, message, null,
+            final int ans = JOptionPane.showOptionDialog(window, message, null,
                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, playPause,
                     new String[]{"Esci", "Opzioni", "Torna " + "al menù", "Riprendi"},
-                    "Riprendi")) {
+                    "Riprendi");
+            switch (ans) {
                 case 0 -> {
+                    Sound.play(Sound.Effect.BUTTON);
                     window.quitAction();
                     pauseDialogActive = false;
                     pauseDialog();
                 }
-                case 1 -> window.setScene(Window.Scene.OPTIONS);
+                case 1 -> {
+                    Sound.play(Sound.Effect.BUTTON);
+                    window.setScene(Window.Scene.OPTIONS);
+                }
                 case 2 -> {
-                    if (JOptionPane.showOptionDialog(window, "Se torni al menù perderai il " +
-                                    "progresso. Continuare?", null, JOptionPane.YES_NO_OPTION,
-                            JOptionPane.WARNING_MESSAGE, caution, new String[]{"Si", "No"}, "No") == 0) {
+                    Sound.play(Sound.Effect.BUTTON);
+                    int subAns = JOptionPane.showOptionDialog(window, "Se torni al menù perderai " +
+                                    "il progresso. Continuare?", null, JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE, caution, new String[]{"Si", "No"}, "No");
+                    if (subAns == 0) {
+                        Sound.play(Sound.Effect.BUTTON);
                         window.setScene(Window.Scene.MENU);
                         GameLoop.stop();
                     } else {
+                        if (subAns == 1) {
+                            Sound.play(Sound.Effect.BUTTON);
+                        }
                         pauseDialogActive = false;
                         pauseDialog();
                     }
                 }
                 default -> { // e case 3
+                    if (ans == 3) {
+                        Sound.play(Sound.Effect.BUTTON);
+                    }
                     // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
                     GameLoop.start();
                     Sound.startMusic(false);
@@ -119,12 +135,19 @@ public final class GamePanel extends JPanel {
                 new String[]{"Esci",
                         "Torna al menù", "Rigioca livello"}, "Rigioca livello")) {
             case 0 -> {
+                Sound.play(Sound.Effect.BUTTON);
                 window.quitAction();
                 playerDeathDialogActive = false;
                 playerDeathDialog();
             }
-            case 1 -> window.setScene(Window.Scene.MENU);
-            case 2 -> ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
+            case 1 -> {
+                Sound.play(Sound.Effect.BUTTON);
+                window.setScene(Window.Scene.MENU);
+            }
+            case 2 -> {
+                Sound.play(Sound.Effect.BUTTON);
+                ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
+            }
             default -> playerDeathDialog(); // Questo dialogo non può essere ignorato
         }
         playerDeathDialogActive = false;
@@ -148,13 +171,23 @@ public final class GamePanel extends JPanel {
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, trophy, option,
                 option[defaultOption])) {
             case 0 -> {
+                Sound.play(Sound.Effect.BUTTON);
                 window.quitAction();
                 winDialogActive = false;
                 winDialog();
             }
-            case 1 -> window.setScene(Window.Scene.MENU);
-            case 2 -> ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
-            case 3 -> ChamberManager.nextChamber();
+            case 1 -> {
+                Sound.play(Sound.Effect.BUTTON);
+                window.setScene(Window.Scene.MENU);
+            }
+            case 2 -> {
+                Sound.play(Sound.Effect.BUTTON);
+                ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
+            }
+            case 3 -> {
+                Sound.play(Sound.Effect.BUTTON);
+                ChamberManager.nextChamber();
+            }
             default -> winDialog(); // Questo dialogo non può essere ignorato
         }
         winDialogActive = false;
@@ -165,8 +198,6 @@ public final class GamePanel extends JPanel {
     public ChamberView getChamberView() {return chamberView;}
 
     public HUDView getHudView() {return hudView;}
-
-    public static boolean isPauseDialogNotActive() {return !pauseDialogActive;}
 
     public Window getWindow() {return window;}
 }

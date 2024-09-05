@@ -115,6 +115,7 @@ public final class Menu {
     private JLabel cost;
     private boolean alternateAnimation = true;
     private boolean animationRunning;
+    private static boolean animationPaused;
 
     public Menu(final Window window) {
         this.window = window;
@@ -391,7 +392,10 @@ public final class Menu {
      */
     public void startCharacterAnimation() {
         if (animationRunning) {
-            Log.warn("Thread per l'animazione del personaggio già in esecuzione");
+            synchronized (updateAnimation) {
+                animationPaused = false;
+                updateAnimation.notify();
+            }
             return;
         }
         animationRunning = true;
@@ -406,6 +410,10 @@ public final class Menu {
                 // cambiamento del personaggio da parte dell'utente.
                 synchronized (updateAnimation) {
                     try {
+                        while (animationPaused) {
+                            Log.info("Animazione personaggio in pausa");
+                            updateAnimation.wait();
+                        }
                         updateAnimation.wait(386);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
@@ -423,7 +431,7 @@ public final class Menu {
     public void stopCharacterAnimation() {
         if (animationRunning) {
             synchronized (updateAnimation) {
-                animationRunning = false;
+                animationPaused = true;
                 updateAnimation.notify(); // termina subito l'attesa
             }
         }

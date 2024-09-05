@@ -106,6 +106,8 @@ public final class Window extends JFrame {
         new Window(true);
     }
 
+    public static boolean isQuitDialogNotActive() {return !quitDialogActive;}
+
     /**
      * Unico punto di uscita (corretto) dall'app.
      * Il {@link WindowController} collega l'evento di chiusura del {@code JFrame} a questo
@@ -118,13 +120,17 @@ public final class Window extends JFrame {
             Sound.stopMusic();
         }
         Sound.play(Sound.Effect.STOP);
-        if (JOptionPane.showOptionDialog(this, "Uscire da Chevy?", null,
+        final int ans = JOptionPane.showOptionDialog(this, "Uscire da Chevy?", null,
                 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, icon, new String[]{"Si",
-                        "No"}, "No") == 0) {
+                        "No"}, "No");
+        if (ans == 0) {
+            Sound.play(Sound.Effect.BUTTON);
             Log.info("Salvataggio dei dati ...");
             Data.write();
             Log.info("Ciao");
             System.exit(0);
+        } else if (ans == 1) {
+            Sound.play(Sound.Effect.BUTTON);
         }
         quitDialogActive = false;
         if (scene == Scene.PLAYING) {
@@ -188,8 +194,6 @@ public final class Window extends JFrame {
     public WindowController getWindowController() {return windowController;}
 
     public boolean isQuitDialogActive() {return quitDialogActive;}
-
-    public static boolean isQuitDialogNotActive() {return !quitDialogActive;};
 
     public enum Scene {MENU, PLAYING, OPTIONS}
 }
