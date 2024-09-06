@@ -2,20 +2,22 @@ package chevy.control;
 
 import chevy.service.GameLoop;
 import chevy.service.Sound;
-import chevy.utils.Log;
 import chevy.view.Window;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 /**
  * Cattura gli eventi di Window
  */
-public final class WindowController implements WindowListener, KeyListener, ComponentListener {
+public final class WindowController implements WindowListener, KeyListener, ComponentListener,
+                                               MouseListener {
     private final Window window;
     private PlayerController playerController;
 
@@ -24,6 +26,7 @@ public final class WindowController implements WindowListener, KeyListener, Comp
         this.window.addKeyListener(this);
         this.window.addWindowListener(this);
         this.window.addComponentListener(this);
+        this.window.addMouseListener(this);
     }
 
     @Override
@@ -92,4 +95,23 @@ public final class WindowController implements WindowListener, KeyListener, Comp
     public void setPlayerController(PlayerController playerController) {
         this.playerController = playerController;
     }
+
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {}
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+        if (window.getScene() == Window.Scene.PLAYING) {
+            playerController.mousePressed(mouseEvent.getPoint());
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {}
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {}
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {}
 }
