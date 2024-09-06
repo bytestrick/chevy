@@ -30,8 +30,8 @@ public class Stair extends Environment {
         stateMachine.setStateMachineName("Stair");
         stateMachine.setInitialState(idle);
 
-        idle.linkState(open);
-        open.linkState(idleEntry);
+        idle.linkVertex(open);
+        open.linkVertex(idleEntry);
     }
 
     public Direction getDirections() {

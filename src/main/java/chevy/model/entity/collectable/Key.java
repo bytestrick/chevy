@@ -18,7 +18,7 @@ public final class Key extends Collectable {
         this.stateMachine.setStateMachineName("Key");
         this.stateMachine.setInitialState(idle);
 
-        idle.linkState(collected);
+        idle.linkVertex(collected);
     }
 
     public synchronized Vertex getState(CommonState commonState) {

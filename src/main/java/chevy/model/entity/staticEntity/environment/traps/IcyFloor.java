@@ -19,8 +19,8 @@ public class IcyFloor extends Trap {
 //        stateMachine.setStateMachineName("Icy floor");
         stateMachine.setInitialState(icyFloor);
 
-        icyFloor.linkState(icyFloorSparkling);
-        icyFloorSparkling.linkState(icyFloor);
+        icyFloor.linkVertex(icyFloorSparkling);
+        icyFloorSparkling.linkVertex(icyFloor);
     }
 
     public synchronized Vertex getState(CommonState commonEnumStates) {

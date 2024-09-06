@@ -12,14 +12,14 @@ import java.util.UUID;
 public abstract class Entity {
     protected final Vector2<Integer> position;
     protected final StateMachine stateMachine = new StateMachine();
-    private final UUID ID = UUID.randomUUID();
+    private final UUID uuid = UUID.randomUUID();
     private final Type type;
     protected int maxDamage;
     protected int minDamage;
     protected boolean safeToCross;
     protected boolean crossable;
     protected int drawLayer;
-    protected boolean mustBeUpdate = false;
+    protected boolean mustBeUpdate;
     private boolean toDraw;
 
     public Entity(Vector2<Integer> initPosition, Type type) {
@@ -33,7 +33,7 @@ public abstract class Entity {
         this.toDraw = false;
     }
 
-    public boolean toDraw() { return toDraw; }
+    public boolean toNotDraw() { return !toDraw; }
 
     public void setToDraw(boolean toDraw) { this.toDraw = toDraw; }
 
@@ -79,22 +79,12 @@ public abstract class Entity {
 
     public boolean checkAndChangeState(CommonState state) { return stateMachine.checkAndChangeState(state); }
 
-    public boolean changeToPreviousState() { return stateMachine.changeToPreviousState(); }
-
     public CommonState getCurrentState() {
         Vertex currentVertex = stateMachine.getCurrentState();
         if (currentVertex == null) {
             return null;
         }
         return currentVertex.getState();
-    }
-
-    public CommonState getPreviousState() {
-        Vertex previousVertex = stateMachine.getPreviousState();
-        if (previousVertex == null) {
-            return null;
-        }
-        return previousVertex.getState();
     }
 
     public boolean canRemoveToUpdate() { return !mustBeUpdate; }
@@ -113,12 +103,12 @@ public abstract class Entity {
             return false;
         }
         Entity entity = (Entity) o;
-        return ID.equals(entity.ID);
+        return uuid.equals(entity.uuid);
     }
 
     @Override
     public int hashCode() {
-        return ID.hashCode();
+        return uuid.hashCode();
     }
 
     public enum Type implements CommonEntityType {

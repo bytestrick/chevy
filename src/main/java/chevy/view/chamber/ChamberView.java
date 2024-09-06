@@ -31,7 +31,7 @@ public final class ChamberView extends JPanel implements Render {
     private static final BufferedImage NULL_IMAGE = Load.image("/sprites/null.png");
     private static final Color collisionBG = new Color(31, 205, 242, 80);
     /** Il valore viene impostato non appena la finestra di gioco si apre */
-    public static int topBarHeight = 0;
+    public static int topBarHeight;
     /** Numero minimo di tile da visualizzare in larghezza e altezza in ogni momento */
     public static Dimension tiles = new Dimension();
     /** Lunghezza ottimale del lato di una cella, scalata rispetto all'altezza della finestra */
@@ -115,7 +115,7 @@ public final class ChamberView extends JPanel implements Render {
 
                         g.drawImage(image, x, y, with, height, null);
 
-                        if (!entity.toDraw()) {
+                        if (entity.toNotDraw()) {
                             it.remove();
                             Log.info("Entity rimossa dal ridisegno: " + entity.getSpecificType());
                             entityView.wasRemoved();
