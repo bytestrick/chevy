@@ -9,10 +9,7 @@ import chevy.utils.Utils;
 import chevy.view.chamber.ChamberView;
 import chevy.view.hud.HUDView;
 
-import javax.swing.Icon;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SpringLayout;
+import javax.swing.*;
 
 public final class GamePanel extends JPanel {
     public static final Icon caution = Load.icon("caution", 48, 48);
@@ -38,15 +35,33 @@ public final class GamePanel extends JPanel {
     private static boolean playerDeathDialogActive;
     private static boolean winDialogActive;
     private final HUDView hudView = new HUDView(1.3f);
+    private final Tutorial tutorial;
     private final Window window;
 
     public GamePanel(Window window) {
         this.window = window;
         ChamberController.setGamePanel(this);
+        tutorial = new Tutorial(window);
+
         setLayout();
-        add(hudView);
-        add(chamberView);
         setBackground(Window.bg);
+    }
+
+    public void addComponents(boolean tutorialBool) {
+        if (tutorialBool) {
+            remove(hudView);
+            remove(chamberView);
+            add(tutorial);
+        }
+        else {
+            remove(tutorial);
+            add(hudView);
+            add(chamberView);
+        }
+
+        revalidate();
+        repaint();
+        setLayout();
     }
 
     public static boolean isPauseDialogNotActive() {return !pauseDialogActive;}
@@ -64,6 +79,12 @@ public final class GamePanel extends JPanel {
         springLayout.putConstraint(SpringLayout.EAST, hudView, 0, SpringLayout.EAST, this);
         springLayout.putConstraint(SpringLayout.WEST, hudView, 0, SpringLayout.WEST, this);
         springLayout.putConstraint(SpringLayout.SOUTH, hudView, 0, SpringLayout.SOUTH, this);
+
+
+        springLayout.putConstraint(SpringLayout.NORTH, tutorial, 0, SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.EAST, tutorial, 0, SpringLayout.EAST, this);
+        springLayout.putConstraint(SpringLayout.WEST, tutorial, 0, SpringLayout.WEST, this);
+        springLayout.putConstraint(SpringLayout.SOUTH, tutorial, 0, SpringLayout.SOUTH, this);
     }
 
     /**
@@ -196,11 +217,15 @@ public final class GamePanel extends JPanel {
         winDialogActive = false;
     }
 
-    public void windowResized(float scale) {hudView.windowResized(scale);}
+    public void windowResized(float scale) {
+        hudView.windowResized(scale);
+    }
 
     public ChamberView getChamberView() {return chamberView;}
 
     public HUDView getHudView() {return hudView;}
 
     public Window getWindow() {return window;}
+
+    public Tutorial getTutorial() { return tutorial; }
 }

@@ -158,7 +158,8 @@ public final class Menu {
         levelSelector.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         levelSelector.setRenderer(new LevelSelectorRenderer());
         LevelSelectorRenderer.setEnabledInterval(0, Data.get("progress.lastUnlockedLevel"));
-        for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS + 1; ++i) {
+        levelSelector.addItem("Tutorial");
+        for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS; ++i) {
             levelSelector.addItem("Livello " + i);
         }
         final Font menuFont = UIManager.getFont("defaultFont").deriveFont(35f);
@@ -286,10 +287,16 @@ public final class Menu {
      * sulla tastiera.
      */
     private void playAction() {
-        ChamberManager.enterChamber(level);
         stopCharacterAnimation();
         Sound.stopLoop();
-        window.setScene(Window.Scene.PLAYING);
+        if (level == 0) {
+            window.getGamePanel().getTutorial().updateDraw(0);
+            window.setScene(Window.Scene.TUTORIAL);
+        }
+        else {
+            ChamberManager.enterChamber(level);
+            window.setScene(Window.Scene.PLAYING);
+        }
     }
 
     /**
