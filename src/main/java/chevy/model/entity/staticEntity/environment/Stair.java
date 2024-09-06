@@ -6,9 +6,10 @@ import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
 /**
- * Classe che rappresenta il punto in cui il player si deve recare per poter passare alla stanza successiva.
- * La scala rimane bloccata finché non si eliminano tutti i nemici presenti nella stanza, dopo averli eliminati
- * tutti si apre e permette il passaggio a un altra stanza.
+ * Classe che rappresenta il punto in cui il player si deve recare per poter passare alla stanza
+ * successiva.
+ * La scala rimane bloccata finché non si eliminano tutti i nemici presenti nella stanza, dopo
+ * averli eliminati tutti si apre e permette il passaggio a un altra stanza.
  */
 public class Stair extends Environment {
     private final Vertex idle = new Vertex(State.IDLE);
@@ -48,7 +49,5 @@ public class Stair extends Environment {
         };
     }
 
-    public enum State implements CommonState {
-        IDLE, OPEN, IDLE_ENTRY
-    }
+    public enum State implements CommonState {IDLE, OPEN, IDLE_ENTRY}
 }

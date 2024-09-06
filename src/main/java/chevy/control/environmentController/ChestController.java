@@ -20,8 +20,8 @@ public final  class ChestController {
                     chamber.spawnCollectableAroundChest(chest, chest.getSpawnQuantity());
                 }
             }
-            if (hudController.getKey() > 0 && chest.checkAndChangeState(Chest.State.UNLOCK)) {
-                hudController.addKey(-1);
+            if (hudController.getKeys() > 0 && chest.checkAndChangeState(Chest.State.UNLOCK)) {
+                hudController.addKeys(-1);
             }
         } else {
             chest.checkAndChangeState(Chest.State.CLOSE);

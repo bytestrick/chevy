@@ -22,7 +22,7 @@ public final class CoinController {
             Sound.play(Sound.Effect.COIN);
             Data.increase("stats.collectable.total.count", value);
             Data.increase("stats.collectable.commons.coins.count", value);
-            hudController.addCoin(value);
+            hudController.addCoins(value);
             chamber.findAndRemoveEntity(coin);
         }
     }

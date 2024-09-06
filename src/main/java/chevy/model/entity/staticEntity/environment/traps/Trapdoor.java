@@ -29,9 +29,7 @@ public class Trapdoor extends Trap {
         open.linkVertex(damage);
     }
 
-    public void activated() {
-        safeToCross = false;
-    }
+    public void activated() {safeToCross = false;}
 
     public synchronized Vertex getState(CommonState commonEnumStates) {
         EnumState trapdoorState = (EnumState) commonEnumStates;
@@ -42,7 +40,5 @@ public class Trapdoor extends Trap {
         };
     }
 
-    public enum EnumState implements CommonState {
-        IDLE, OPEN, DAMAGE
-    }
+    public enum EnumState implements CommonState {IDLE, OPEN, DAMAGE}
 }

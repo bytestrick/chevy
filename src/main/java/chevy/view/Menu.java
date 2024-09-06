@@ -133,7 +133,7 @@ public final class Menu {
      * Aggiorna il livello corrente nel menù quando si passa a un nuovo livello nel gioco
      */
     public static void incrementLevel() {
-        if (level < ChamberManager.NUMBER_OF_CHAMBERS - 1) {
+        if (!ChamberManager.isLastChamber()) {
             ++level;
             Data.set("progress.lastUnlockedLevel", level);
             LevelSelectorRenderer.setEnabledInterval(0, level);
