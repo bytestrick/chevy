@@ -111,9 +111,7 @@ public final class ChamberManager {
         enterChamber(currentChamberIndex + 1);
     }
 
-    public static boolean isLastChamber() {
-        return currentChamberIndex == NUMBER_OF_CHAMBERS - 1;
-    }
+    public static boolean isLastChamber() {return currentChamberIndex == NUMBER_OF_CHAMBERS - 1;}
 
     /**
      * @return la stanza corrente

@@ -16,21 +16,16 @@ public abstract class Trap extends Environment {
     }
 
     @Override
-    public CommonEntityType getSpecificType() {
-        return type;
-    }
+    public CommonEntityType getSpecificType() {return type;}
 
     @Override
-    public CommonEntityType getGenericType() {
-        return super.getSpecificType();
-    }
+    public CommonEntityType getGenericType() {return super.getSpecificType();}
 
     @Override
-    public String toString() {
-        return type.toString();
-    }
+    public String toString() {return type.toString();}
 
     public enum Type implements CommonEntityType {
-        SLUDGE, VOID, SPIKED_FLOOR, TRAPDOOR, TOTEM, ICY_FLOOR
+        SLUDGE, VOID, SPIKED_FLOOR, TRAPDOOR, TOTEM,
+        ICY_FLOOR
     }
 }
