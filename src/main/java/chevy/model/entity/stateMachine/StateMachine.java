@@ -10,7 +10,7 @@ public class StateMachine {
     private Vertex currentVertex;
     private Vertex previousVertex;
     private Vertex nextVertex;
-    private boolean usedWithCanChange = false;
+    private boolean usedWithCanChange;
     private String stateMachineName; // solo per capire di chi è la stampa
 
     public StateMachine() { }
@@ -34,7 +34,7 @@ public class StateMachine {
         }
 
         if (!usedWithCanChange) {
-            nextVertex = currentVertex.findLinkedState(state);
+            nextVertex = currentVertex.findLinkedVertex(state);
         }
 
         if (nextVertex != null) {
@@ -72,7 +72,7 @@ public class StateMachine {
             return false;
         }
 
-        nextVertex = currentVertex.findLinkedState(state);
+        nextVertex = currentVertex.findLinkedVertex(state);
         if (nextVertex == null) {
             return false;
         }
@@ -107,7 +107,7 @@ public class StateMachine {
         return currentVertex;
     }
 
-    public synchronized Vertex getPreviousState() { return previousVertex; }
+    public synchronized Vertex getPreviousVertex() { return previousVertex; }
 
     public void setInitialState(Vertex startVertex) {
         this.currentVertex = startVertex;

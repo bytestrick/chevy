@@ -20,7 +20,7 @@ public abstract class AnimatedEntityView extends EntityView {
     protected Interpolation moveInterpolationY;
     protected Vector2<Double> currentViewPosition;
     protected Vertex currentVertex;
-    protected boolean firstTimeInState = false;
+    protected boolean firstTimeInState;
 
     protected void createAnimation(CommonState state, int type, int frames, float secDurationFrame,
                                    String folderPath, String extension) {

@@ -25,8 +25,8 @@ public class Trapdoor extends Trap {
         stateMachine.setStateMachineName("Trapdoor");
         stateMachine.setInitialState(idle);
 
-        idle.linkState(open);
-        open.linkState(damage);
+        idle.linkVertex(open);
+        open.linkVertex(damage);
     }
 
     public void activated() {

@@ -10,7 +10,7 @@ public final class SlimeShot extends Projectile {
     public final Vertex loop = new Vertex(SlimeShot.State.LOOP, 1f, true);
     public final Vertex end = new Vertex(SlimeShot.State.END, 0.5f);
 
-    public SlimeShot(Vector2<Integer> initPosition, Direction direction, float advanceTimer) {
+    public SlimeShot(Vector2<Integer> initPosition, Direction direction) {
         super(initPosition, Projectile.Type.SLIME_SHOT, direction);
 
         this.maxDamage = 3;
@@ -23,9 +23,9 @@ public final class SlimeShot extends Projectile {
         this.stateMachine.setStateMachineName("Slime shot");
         this.stateMachine.setInitialState(start);
 
-        start.linkState(loop);
-        start.linkState(end);
-        loop.linkState(end);
+        start.linkVertex(loop);
+        start.linkVertex(end);
+        loop.linkVertex(end);
     }
 
     @Override

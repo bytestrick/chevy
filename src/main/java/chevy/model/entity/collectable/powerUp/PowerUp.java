@@ -15,7 +15,7 @@ public abstract class PowerUp extends Collectable {
     private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
     protected String name = "No name";
     protected String description = "No description";
-    protected int occurringPercentage = 0;
+    protected int occurringPercentage;
     protected int inStock = -1; // quantità infinita
 
     public PowerUp(Vector2<Integer> initVelocity, Type type) {
@@ -50,13 +50,13 @@ public abstract class PowerUp extends Collectable {
 //        this.stateMachine.setStateMachineName("PowerUp");
         this.stateMachine.setInitialState(idle);
 
-        idle.linkState(selected);
-        idle.linkState(collected);
-        selected.linkState(collected);
-        selected.linkState(deselected);
-        deselected.linkState(idle);
-        deselected.linkState(selected);
-        deselected.linkState(collected);
+        idle.linkVertex(selected);
+        idle.linkVertex(collected);
+        selected.linkVertex(collected);
+        selected.linkVertex(deselected);
+        deselected.linkVertex(idle);
+        deselected.linkVertex(selected);
+        deselected.linkVertex(collected);
     }
 
     public String getName() {

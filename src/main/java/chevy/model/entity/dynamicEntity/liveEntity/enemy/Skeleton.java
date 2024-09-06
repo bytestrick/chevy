@@ -29,21 +29,17 @@ public final class Skeleton extends Enemy {
         stateMachine.setStateMachineName("Skeleton");
         stateMachine.setInitialState(idle);
 
-        idle.linkState(move);
-        idle.linkState(attack);
-        idle.linkState(hit);
-        idle.linkState(invincibility);
-        invincibility.linkState(idle);
-        move.linkState(idle);
-        move.linkState(hit);
-        attack.linkState(idle);
-        attack.linkState(hit);
-        hit.linkState(idle);
-        hit.linkState(dead);
-    }
-
-    public boolean isInvincible() {
-        return invincible;
+        idle.linkVertex(move);
+        idle.linkVertex(attack);
+        idle.linkVertex(hit);
+        idle.linkVertex(invincibility);
+        invincibility.linkVertex(idle);
+        move.linkVertex(idle);
+        move.linkVertex(hit);
+        attack.linkVertex(idle);
+        attack.linkVertex(hit);
+        hit.linkVertex(idle);
+        hit.linkVertex(dead);
     }
 
     @Override

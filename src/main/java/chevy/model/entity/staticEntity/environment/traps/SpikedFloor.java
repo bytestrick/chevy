@@ -24,9 +24,9 @@ public class SpikedFloor extends Trap {
         stateMachine.setStateMachineName("Spiked floor");
         stateMachine.setInitialState(disabled);
 
-        disabled.linkState(activated);
-        activated.linkState(damage);
-        damage.linkState(disabled);
+        disabled.linkVertex(activated);
+        activated.linkVertex(damage);
+        damage.linkVertex(disabled);
     }
 
     public void activated() {

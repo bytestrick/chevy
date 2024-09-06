@@ -24,8 +24,8 @@ public class Totem extends Trap {
         stateMachine.setStateMachineName("Totem");
         stateMachine.setInitialState(reload);
 
-        reload.linkState(shot);
-        shot.linkState(reload);
+        reload.linkVertex(shot);
+        shot.linkVertex(reload);
     }
 
     public Direction getDirectionShot() {

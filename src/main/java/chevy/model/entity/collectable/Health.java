@@ -7,7 +7,6 @@ import chevy.utils.Vector2;
 public final class Health extends Collectable {
     private final Vertex idle = new Vertex(State.IDLE, 1.6f);
     private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
-    private int recoverHealth = 2;
 
     public Health(Vector2<Integer> initPosition) {
         super(initPosition, Type.HEALTH);
@@ -19,11 +18,7 @@ public final class Health extends Collectable {
         this.stateMachine.setStateMachineName("Health");
         this.stateMachine.setInitialState(idle);
 
-        idle.linkState(collected);
-    }
-
-    public void changeRecoverHealth(int newRecoverHealth) {
-        this.recoverHealth = newRecoverHealth;
+        idle.linkVertex(collected);
     }
 
     public int getRecoverHealth() {
@@ -31,7 +26,7 @@ public final class Health extends Collectable {
             return 0;
         }
 
-        return recoverHealth;
+        return 2;
     }
 
     public synchronized Vertex getState(CommonState commonState) {
@@ -42,7 +37,5 @@ public final class Health extends Collectable {
         };
     }
 
-    public enum State implements CommonState {
-        IDLE, COLLECTED
-    }
+    public enum State implements CommonState { IDLE, COLLECTED }
 }
