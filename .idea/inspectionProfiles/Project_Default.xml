@@ -7,6 +7,9 @@
     <inspection_tool class="CastDueToProgressionResolutionChangeMigration" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ClassReferencesSubclass" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="CovariantEquals" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="ExtractMethodRecommender" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="minLength" value="583" />
+    </inspection_tool>
     <inspection_tool class="FieldNamingConvention" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="GroovyAssignmentToForLoopParameter" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="GroovyVariableCanBeFinal" enabled="true" level="WARNING" enabled_by_default="true" />

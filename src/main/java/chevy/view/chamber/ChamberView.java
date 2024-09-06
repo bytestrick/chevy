@@ -8,6 +8,7 @@ import chevy.service.RenderManager;
 import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
+import chevy.view.GamePanel;
 import chevy.view.Window;
 import chevy.view.entities.EntityView;
 
@@ -15,6 +16,7 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
@@ -127,6 +129,21 @@ public final class ChamberView extends JPanel implements Render {
     }
 
     public void setDrawOrder(List<Layer> drawOrder) {this.drawOrder = drawOrder;}
+
+    /**
+     * TODO: write me
+     *
+     * @param playerPositionCell
+     * @return
+     */
+    public Point getPlayerViewPosition(Point playerPositionCell, GamePanel gamePanel) {
+        final int titleBarHeight = gamePanel.getWindow().getHeight() - gamePanel.getHeight();
+        final int halfTileSide = tileSide / 2;
+        Point p = new Point();
+        p.x = halfTileSide + windowOffset.width + tileSide * playerPositionCell.x;
+        p.y = halfTileSide + windowOffset.height + tileSide * playerPositionCell.y + titleBarHeight;
+        return p;
+    }
 
     @Override
     public void render(double delta) {repaint();}
