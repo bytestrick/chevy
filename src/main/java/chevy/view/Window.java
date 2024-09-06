@@ -172,11 +172,17 @@ public final class Window extends JFrame {
                 case PLAYING -> {
                     getRootPane().setBackground(bg);
                     setTitle("Chevy");
+                    gamePanel.addComponents(false);
                     yield gamePanel;
                 }
                 case OPTIONS -> {
                     setTitle("Chevy - Opzioni");
                     yield options.getRoot();
+                }
+                case TUTORIAL -> {
+                    setTitle("Chevy - Tutorial");
+                    gamePanel.addComponents(true);
+                    yield gamePanel;
                 }
             };
             options.setupReturnAction(this.scene);
@@ -195,5 +201,5 @@ public final class Window extends JFrame {
 
     public boolean isQuitDialogActive() {return quitDialogActive;}
 
-    public enum Scene {MENU, PLAYING, OPTIONS}
+    public enum Scene {MENU, PLAYING, OPTIONS, TUTORIAL}
 }

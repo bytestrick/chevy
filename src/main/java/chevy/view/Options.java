@@ -118,6 +118,8 @@ public final class Options {
         if (scene == Window.Scene.PLAYING) {
             getStats(Data.get("stats"), null, -2);
             message += "gioco";
+        } else if (scene == Window.Scene.TUTORIAL) {
+            message += "tutorial";
         } else {
             message += "menù";
         }

@@ -1,8 +1,10 @@
 package chevy.control;
 
+import chevy.model.chamber.ChamberManager;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Log;
+import chevy.view.Tutorial;
 import chevy.view.Window;
 
 import java.awt.event.ComponentEvent;
@@ -68,6 +70,7 @@ public final class WindowController implements WindowListener, KeyListener, Comp
         switch (window.getScene()) {
             case Window.Scene.PLAYING -> playerController.keyPressed(keyEvent);
             case Window.Scene.MENU -> window.getMenu().handleKeyPress(keyEvent);
+            case TUTORIAL -> window.getGamePanel().getTutorial().keyPressed(keyEvent);
         }
     }
 
