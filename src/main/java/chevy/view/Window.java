@@ -180,6 +180,9 @@ public final class Window extends JFrame {
                     yield options.getRoot();
                 }
                 case TUTORIAL -> {
+                    if (this.scene != Scene.MENU) {
+                        Sound.startMusic(false);
+                    }
                     setTitle("Chevy - Tutorial");
                     gamePanel.addComponents(true);
                     yield gamePanel;
