@@ -22,10 +22,6 @@ public final class Sound {
     private static final Clip[] effects = new Clip[Effect.values().length];
     private static final Clip[] songs = new Clip[Song.values().length];
     private static final Clip[] loops = new Clip[]{Load.clip("loop0"), Load.clip("loop1")};
-    /** Valore corrente per il volume degli effetti sonori, in percentuale */
-    public static float effectGainPercentage = .8f;
-    /** Valore corrente per il volume della musica, in percentuale */
-    public static float musicGainPercentage = .7f;
     private static Clip currentLoop;
     private static Clip currentSong;
     private static LineListener currentSongLineListener;
@@ -40,8 +36,8 @@ public final class Sound {
         for (int i = 0; i < s.length; ++i) {
             songs[i] = Load.clip(s[i].toString().toLowerCase());
         }
-        setMusicVolume(musicGainPercentage);
-        setEffectsVolume(effectGainPercentage);
+        setMusicVolume(Data.get("options.musicVolume"));
+        setEffectsVolume(Data.get("options.effectsVolume"));
     }
 
     /**
@@ -50,33 +46,25 @@ public final class Sound {
      * @param clip       a cui applicare il gain
      * @param percentage valore decimale compreso tra 0 e 1, rappresenta il volume
      */
-    private static void applyGain(Clip clip, final float percentage) {
+    private static void applyGain(Clip clip, final double percentage) {
         if (clip != null) {
-            FloatControl gain = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            final float beg = Math.abs(gain.getMinimum()), end = Math.abs(gain.getMaximum());
-            gain.setValue((beg + end) * percentage - beg);
+            final FloatControl gain = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            // https://stackoverflow.com/a/40698149
+            gain.setValue(20f * (float) Math.log10(percentage));
         }
     }
 
     /**
      * Riproduce un effetto
-     * Se l'effetto è già in riproduzione viene solamente fatto ripartire.
      *
      * @param effect da riprodurre
      */
-    public static void play(Effect effect) {
-        Clip clip = effects[effect.ordinal()];
-        if (clip != null) {
-            if (clip.isActive() || clip.isRunning()) {
-                clip.stop();
-                clip.flush();
-                clip.drain();
-            }
-            if (clip.getMicrosecondPosition() > 0) {
-                clip.setMicrosecondPosition(0);
-            }
-            clip.start();
+    public static void play(final Effect effect) {
+        final int i = effect.ordinal();
+        if (effects[i].getFramePosition() > 0) {
+            effects[i].setFramePosition(0);
         }
+        effects[i].start();
     }
 
     /**
@@ -84,13 +72,13 @@ public final class Sound {
      *
      * @param percentage valore decimale compreso tra 0 e 1, rappresenta il volume
      */
-    public static void setMusicVolume(final float percentage) {
+    public static void setMusicVolume(final double percentage) {
         if (percentage >= 0 && percentage <= 1) {
-            musicGainPercentage = percentage;
-            Arrays.stream(loops).forEach(loop -> applyGain(loop, musicGainPercentage));
-            Arrays.stream(songs).forEach(song -> applyGain(song, musicGainPercentage));
+            Data.set("options.musicVolume", percentage);
+            Arrays.stream(loops).forEach(loop -> applyGain(loop, percentage));
+            Arrays.stream(songs).forEach(song -> applyGain(song, percentage));
         } else {
-            Log.warn(Sound.class + ": il volume non può essere impostato al " + (percentage * 100) + "%");
+            Log.warn("Il volume non può essere impostato al " + (percentage * 100) + "%");
         }
     }
 
@@ -99,24 +87,25 @@ public final class Sound {
      *
      * @param percentage valore decimale compreso tra 0 e 1, rappresenta il volume
      */
-    public static void setEffectsVolume(final float percentage) {
+    public static void setEffectsVolume(final double percentage) {
         if (percentage >= 0 && percentage <= 1) {
-            effectGainPercentage = percentage;
-            Arrays.stream(effects).forEach(effect -> applyGain(effect, effectGainPercentage));
+            Data.set("options.effectsVolume", percentage);
+            Arrays.stream(effects).forEach(effect -> applyGain(effect, percentage));
         } else {
-            Log.warn(Sound.class + ": il volume non può essere impostato al " + (percentage * 100) + "%");
+            Log.warn("Il volume non può essere impostato al " + (percentage * 100) + "%");
         }
     }
 
     /**
      * Avvia la musica di gioco
      *
-     * @param newSong se {@code true} fa in modo che parta una nuova canzone diversa dalla
-     *                precedente, altrimenti fa partire la canzone precedente dal punto in cui è
-     *                stata interrotta
+     * @param option se {@link Music#NEW_SONG} fa in modo che parta una nuova canzone diversa dalla
+     *               precedente, altrimenti fa partire la canzone precedente dal punto in cui è
+     *               stata interrotta
      */
-    public static void startMusic(boolean newSong) {
-        if (Stream.of(songs).allMatch(Objects::nonNull) && (currentSong == null || newSong)) {
+    public static void startMusic(Music option) {
+        if (Stream.of(songs).allMatch(Objects::nonNull)
+                && (currentSong == null || option == Music.NEW_SONG)) {
             List<Clip> choices =
                     Stream.of(songs).filter(clip -> !clip.equals(currentSong)).toList();
             currentSong = choices.get(Utils.random.nextInt(choices.size()));
@@ -138,7 +127,7 @@ public final class Sound {
                 && Window.isQuitDialogNotActive() && GamePanel.isPauseDialogNotActive()) {
             Log.info("La canzone è finita");
             currentSong.removeLineListener(currentSongLineListener);
-            startMusic(true);
+            startMusic(Music.NEW_SONG);
         }
     }
 
@@ -156,10 +145,10 @@ public final class Sound {
     /**
      * Avvia la musica del menù
      *
-     * @param newSong se cambiare canzone o meno
+     * @param option se cambiare canzone o meno
      */
-    public static void startLoop(boolean newSong) {
-        if (currentLoop == null || newSong) {
+    public static void startLoop(Music option) {
+        if (currentLoop == null || option == Music.NEW_SONG) {
             currentLoop = loops[Utils.random.nextInt(loops.length)];
         }
         if (currentLoop != null) {
@@ -174,6 +163,8 @@ public final class Sound {
             Log.info("Musica del menù stoppata");
         }
     }
+
+    public enum Music {NEW_SONG, SAME_SONG}
 
     public enum Effect {
         HUMAN_DEATH, ARROW_SWOOSH, WIN, CLAW_HIT, PUNCH, BLADE_SLASH, SPIKE, ARCHER_FOOTSTEPS,

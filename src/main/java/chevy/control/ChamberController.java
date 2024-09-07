@@ -83,7 +83,7 @@ public final class ChamberController {
                 chamber.getEnvironments());
 
         // collega al chamberView la stanza (con le entità ordinate in base al layer) da disegnare
-        gamePanel.getChamberView().setDrawOrder(chamber.getDrawOrderChamber());
+        GamePanel.getChamberView().setDrawOrder(chamber.getDrawOrderChamber());
     }
 
     public static void setGamePanel(GamePanel gamePanel) {ChamberController.gamePanel = gamePanel;}

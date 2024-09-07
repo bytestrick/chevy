@@ -11,13 +11,10 @@ public class Trapdoor extends Trap {
 
     public Trapdoor(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.TRAPDOOR);
-
-        this.maxDamage = 1;
-        this.minDamage = 1;
-
-        this.mustBeUpdate = true;
-        this.safeToCross = true;
-
+        maxDamage = 1;
+        minDamage = 1;
+        shouldUpdate = true;
+        safeToCross = true;
         initStateMachine();
     }
 

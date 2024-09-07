@@ -110,16 +110,13 @@ stateDiagram-v2
     MOVE --> SLUDGE
     MOVE --> IDLE
     MOVE --> ATTACK
-    MOVE --> MOVE
     ATTACK --> IDLE
     ATTACK --> MOVE
     ATTACK --> HIT
-    ATTACK --> ATTACK
     GLIDE --> IDLE
     GLIDE --> FALL
     GLIDE --> HIT
     GLIDE --> SLUDGE
-    GLIDE --> GLIDE
     SLUDGE --> IDLE
     FALL --> IDLE
     FALL --> DEAD

@@ -19,18 +19,16 @@ public abstract class Entity {
     protected boolean safeToCross;
     protected boolean crossable;
     protected int drawLayer;
-    protected boolean mustBeUpdate;
+    protected boolean shouldUpdate;
     private boolean toDraw;
 
     public Entity(Vector2<Integer> initPosition, Type type) {
-        this.position = initPosition;
+        position = initPosition;
         this.type = type;
-
-        this.crossable = false;
-        this.safeToCross = true;
-
-        this.drawLayer = 0;
-        this.toDraw = false;
+        crossable = false;
+        safeToCross = true;
+        drawLayer = 0;
+        toDraw = false;
     }
 
     public boolean toNotDraw() { return !toDraw; }
@@ -66,7 +64,7 @@ public abstract class Entity {
         return false;
     }
 
-    public int getDrawLayer() { return Math.abs(this.drawLayer); }
+    public int getDrawLayer() { return Math.abs(drawLayer); }
 
     public Vertex getState(CommonState commonEnumStates) {
         Log.warn("La funzione getState() deve essere ridefinita opportunamente nelle classi figlie");
@@ -87,9 +85,9 @@ public abstract class Entity {
         return currentVertex.getState();
     }
 
-    public boolean canRemoveToUpdate() { return !mustBeUpdate; }
+    public boolean canRemoveToUpdate() { return !shouldUpdate; }
 
-    public void removeFromUpdate() { mustBeUpdate = false; }
+    public void removeFromUpdate() { shouldUpdate = false; }
 
     @Override
     public String toString() { return "ENTITY"; }
@@ -107,11 +105,7 @@ public abstract class Entity {
     }
 
     @Override
-    public int hashCode() {
-        return uuid.hashCode();
-    }
+    public int hashCode() { return uuid.hashCode(); }
 
-    public enum Type implements CommonEntityType {
-        DYNAMIC, ENVIRONMENT, COLLECTABLE
-    }
+    public enum Type implements CommonEntityType { DYNAMIC, ENVIRONMENT, COLLECTABLE }
 }

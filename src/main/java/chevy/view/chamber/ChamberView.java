@@ -3,6 +3,7 @@ package chevy.view.chamber;
 import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
+import chevy.service.Data;
 import chevy.service.Render;
 import chevy.service.RenderManager;
 import chevy.utils.Load;
@@ -26,8 +27,8 @@ import java.util.List;
  */
 public final class ChamberView extends JPanel implements Render {
     /** Offset per centrare il contenuto in {@link Window} */
-    public static final Dimension windowOffset = new Dimension();
-    public static final boolean DRAW_COLLISIONS = true;
+    private static final Dimension windowOffset = new Dimension();
+    public static boolean drawCollision = Data.get("options.drawHitBoxes");
     /** La cella ha dimensione 16x16 pixel */
     private static final int TILE_SIZE = 16;
     private static final BufferedImage NULL_IMAGE = Load.image("/sprites/null.png");
@@ -35,9 +36,9 @@ public final class ChamberView extends JPanel implements Render {
     /** Il valore viene impostato non appena la finestra di gioco si apre */
     public static int topBarHeight;
     /** Numero minimo di tile da visualizzare in larghezza e altezza in ogni momento */
-    public static Dimension tiles = new Dimension();
+    private static Dimension tiles = new Dimension();
     /** Lunghezza ottimale del lato di una cella, scalata rispetto all'altezza della finestra */
-    public static int tileSide;
+    private static int tileSide;
     private List<Layer> drawOrder;
 
     public ChamberView() {
@@ -78,7 +79,7 @@ public final class ChamberView extends JPanel implements Render {
             while (it.hasNext()) {
                 Entity entity = it.next();
                 if (entity != null) {
-                    if (DRAW_COLLISIONS && entity instanceof DynamicEntity) {
+                    if (drawCollision && entity instanceof DynamicEntity) {
                         // disegna lo sfondo della collisione
                         g.setColor(collisionBG);
                         int x = entity.getCol() * tileSide + windowOffset.width;
@@ -131,12 +132,10 @@ public final class ChamberView extends JPanel implements Render {
     public void setDrawOrder(List<Layer> drawOrder) {this.drawOrder = drawOrder;}
 
     /**
-     * TODO: write me
-     *
-     * @param playerPositionCell
-     * @return
+     * @param playerPositionCell la posizione del player come celle della Chamber
+     * @return le coordinate del player in pixel dall'angolo alto-sinistro della finestra
      */
-    public Point getPlayerViewPosition(Point playerPositionCell, GamePanel gamePanel) {
+    public static Point getPlayerViewPosition(Point playerPositionCell, GamePanel gamePanel) {
         final int titleBarHeight = gamePanel.getWindow().getHeight() - gamePanel.getHeight();
         final int halfTileSide = tileSide / 2;
         Point p = new Point();

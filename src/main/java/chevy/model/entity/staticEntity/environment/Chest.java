@@ -23,9 +23,7 @@ public final class Chest extends Environment {
 
     public Chest(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.CHEST);
-
-        this.mustBeUpdate = true;
-
+        shouldUpdate = true;
         initStateMachine();
     }
 
@@ -57,7 +55,7 @@ public final class Chest extends Environment {
         return DROPPABLE_COLLECTABLE[index];
     }
 
-    public int getSpawnQuantity() {
+    public static int getSpawnQuantity() {
         final int minDrop = 3, maxDrop = 6;
         return Utils.random.nextInt(minDrop, maxDrop + 1);
     }

@@ -19,11 +19,16 @@
     "playerType": "KNIGHT",
     "level": 0
   },
+  "options": {
+    "musicVolume": 0.3,
+    "effectsVolume": 0.5,
+    "drawHitBoxes": false
+  },
   "stats": {
     "time": {
       "played": {
         "count": 0,
-        "string": "Tempo trascorso in gioco",
+        "string": "Tempo giocato",
         "icon": "sandClock"
       }
     },
@@ -203,7 +208,5 @@
         }
       }
     }
-  },
-  "options": {
   }
 }
