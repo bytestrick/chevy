@@ -136,7 +136,11 @@ public final class GamePanel extends JPanel {
                     // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
                     GameLoop.start();
                     Sound.startMusic(false);
-                    window.setTitle("Chevy");
+
+                    if (window.getScene() == Window.Scene.TUTORIAL)
+                        window.setTitle("Chevy - Tutorial");
+                    else
+                        window.setTitle("Chevy");
                 }
             }
             pauseDialogActive = false;

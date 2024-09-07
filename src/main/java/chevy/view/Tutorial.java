@@ -6,19 +6,19 @@ import chevy.view.component.NoCaret;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 public final class Tutorial extends JPanel {
-    private static final int TITLE_SIZE = 48;
-    private static final int TEXT_SIZE = 32;
-    private static final Color TEXT_COLOR = new Color(202, 202, 202, 255);
+    private static final String FONT_NAME = "VT323";
+    private static final float FONT_SIZE = 32f;
+    private static final int TITLE_SIZE = 64;
+    private static final int TEXT_SIZE = 38;
+    private static final Color TITLE_COLOR = UIManager.getColor("Chevy.color.purpleBright");
+    private static final Color TEXT_COLOR = new Color(188, 188, 188, 255);
 
 
     private String[] title = new String[] {
@@ -39,40 +39,27 @@ public final class Tutorial extends JPanel {
     };
 
     private String[] texts = new String[] {
-            "\nUtilizza i tasti \"W\", \"A\", \"S\", \"D\" oppure le frecce direzionali per muoverti nel gioco.",
-
-            "\nPremi i tasti \"J\", \"I\", \"K\", \"L\" per attaccare i nemici.",
-
-            "\nDurante la tua avventura, incontrerai diversi oggetti utili. Inizia raccogliendo le monete; accumulandone abbastanza, potrai sbloccare nuovi personaggi.",
-
-            "\nLe pozioni di cura sono fondamentali per ripristinare la tua vita durante le battaglie. A volte, puoi ottenerle dopo aver eliminato i nemici.",
-
-            "\nI potenziamenti sono oggetti speciali che ti conferiscono abilità straordinarie, rendendoti più potente nel corso del gioco.",
-
-            "\nLe chiavi servono per aprire forzieri, che possono contenere monete, pozioni, potenziamenti o ulteriori chiavi.",
-
-            "\nFai attenzione agli spuntoni, in quanto possono infliggere danni se li tocchi.",
-
-            "\nLe superfici ghiacciate sono scivolose; se le calpesti, continuerai a scivolare per tutta la durata del ghiaccio.",
-
-            "\nIl pavimento vischioso blocca temporaneamente il tuo movimento, quindi cerca di evitarlo.",
-
-            "\nLa botola si apre una volta che ci sei passato spora.",
-
-            "\nI totem lanciano frecce appuntite a intervalli regolari. Impara a schivarle per evitare danni.",
-
-            "\nLa scala è l'unica via d'uscita dalla stanza. Tuttavia, si aprirà solo dopo che avrai eliminato tutti i nemici.",
-
-            "\nIl gioco può essere messo in pausa premendo il tasto \"Esc\"",
-
-            "\nCongratulazioni! Hai completato il tutorial. Ora sei pronto ad affrontare il resto del gioco. Buona fortuna!"
+            "Utilizza i tasti \"W\", \"A\", \"S\", \"D\" oppure le frecce direzionali per muoverti nel gioco.",
+            "Premi i tasti \"J\", \"I\", \"K\", \"L\" per attaccare i nemici. Ricorda: l'attacco è la tua migliore difesa!",
+            "Durante la tua avventura, incontrerai diversi oggetti utili. Inizia raccogliendo le monete; accumulandone abbastanza, potrai sbloccare nuovi personaggi.",
+            "Le pozioni di cura sono fondamentali per ripristinare la tua vita durante le battaglie. A volte, puoi ottenerle dopo aver eliminato i nemici.",
+            "I potenziamenti sono oggetti speciali che ti conferiscono abilità straordinarie, rendendoti più potente nel corso del gioco. Usali saggiamente!",
+            "Le chiavi servono per aprire forzieri, che possono contenere monete, pozioni, potenziamenti o ulteriori chiavi.",
+            "Fai attenzione agli spuntoni, in quanto possono infliggere danni se li tocchi. Tieni gli occhi aperti!",
+            "Le superfici ghiacciate sono scivolose; se le calpesti, continuerai a scivolare per tutta la durata del ghiaccio.",
+            "Il pavimento vischioso blocca il tuo movimento e una volta che ti sei liberato scompare, quindi cerca di evitarlo.",
+            "La botola si apre una volta che ci sei passato sopra. Attento a non caderci dentro.",
+            "I totem lanciano frecce appuntite a intervalli regolari. Impara a schivarle per evitare danni. Sii veloce!",
+            "La scala è l'unica via d'uscita dalla stanza. Tuttavia, si aprirà solo dopo che avrai eliminato tutti i nemici. Preparati alla battaglia!",
+            "Il gioco può essere messo in pausa premendo il tasto \"Esc\". Prenditi una pausa se hai bisogno di riflettere!",
+            "Hai completato il tutorial. Ora sei pronto ad affrontare il resto del gioco.\nBuona fortuna!"
     };
 
     private static final String COMMO_GIF_PATH = "sprites/tutorial/";
 
     private final JTextPane textPane = new JTextPane();
     private final StyledDocument doc = textPane.getStyledDocument();
-    private final Style titleStyle = doc.addStyle("TitleStile", null);
+    private final Style titleStyle = doc.addStyle("TitleStyle", null);
     private final Style textStyle = doc.addStyle("TextStyle", null);
     private final JLabel progress = new JLabel();
     private final JLabel gif = new JLabel();
@@ -97,23 +84,22 @@ public final class Tutorial extends JPanel {
         add(textPane);
         add(progress);
         add(gif);
-
-        menu.setVisible(false);
         add(menu);
-
         setOpaque(false);
         textPane.setOpaque(false);
         textPane.setEditable(false);
         textPane.setCaret(new NoCaret());
         textPane.setBorder(new EmptyBorder(new Insets(offset, offset, offset, offset)));
         initializeStyles();
-
         progress.setBorder(new EmptyBorder(new Insets(offset, offset, offset, offset)));
+        progress.setFont(Load.font(FONT_NAME).deriveFont(FONT_SIZE));
         gif.setBorder(new EmptyBorder(new Insets(offset, offset, offset, offset)));
-
         buttonLeft.setIcon(Load.icon("left-chevron", 64, 64));
         buttonRight.setIcon(Load.icon("right-chevron", 64, 64));
+        menu.setFont(Load.font(FONT_NAME).deriveFont(FONT_SIZE));
+        menu.setIcon(Load.icon("Home", 32, 32));
         menu.setText("Torna al menù");
+        menu.setVisible(false);
     }
 
     private void setConstraints(int offset) {
@@ -128,10 +114,10 @@ public final class Tutorial extends JPanel {
         springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, gif, 0, SpringLayout.VERTICAL_CENTER, this);
 
         springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, buttonLeft, 0, SpringLayout.VERTICAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.WEST, buttonLeft, offset, SpringLayout.WEST, this);
+        springLayout.putConstraint(SpringLayout.WEST, buttonLeft, offset * 2, SpringLayout.WEST, this);
 
         springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, buttonRight, 0, SpringLayout.VERTICAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.EAST, buttonRight, -offset, SpringLayout.EAST, this);
+        springLayout.putConstraint(SpringLayout.EAST, buttonRight, -offset * 2, SpringLayout.EAST, this);
 
 
         springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, progress, 0, SpringLayout.HORIZONTAL_CENTER, this);
@@ -173,8 +159,10 @@ public final class Tutorial extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Sound.play(Sound.Effect.BUTTON);
+                Sound.stopMusic();
                 Menu.incrementLevel();
                 window.setScene(Window.Scene.MENU);
+                Sound.startLoop(false);
                 window.requestFocus(); // altrimenti il focus rimane sul pulsante e non si può più premere 'esc'
             }
         });
@@ -190,15 +178,20 @@ public final class Tutorial extends JPanel {
     }
 
     private void initializeStyles() {
-        textPane.setFont(Load.font("superstar_2/superstarorig_memesbruh03"));
+        Font font = Load.font(FONT_NAME);
 
         StyleConstants.setAlignment(titleStyle, StyleConstants.ALIGN_LEFT);
-        StyleConstants.setForeground(titleStyle, TEXT_COLOR);
+        StyleConstants.setForeground(titleStyle, TITLE_COLOR);
+        StyleConstants.setFontFamily(titleStyle, font.getFamily());
+        StyleConstants.setBold(titleStyle, true);
         StyleConstants.setFontSize(titleStyle, TITLE_SIZE);
 
         StyleConstants.setAlignment(textStyle, StyleConstants.ALIGN_LEFT);
+        StyleConstants.setFontFamily(textStyle, font.getFamily());
         StyleConstants.setForeground(textStyle, TEXT_COLOR);
         StyleConstants.setFontSize(textStyle, TEXT_SIZE);
+
+        textPane.setFont(font);
     }
 
     public void write(int step) {
@@ -225,22 +218,16 @@ public final class Tutorial extends JPanel {
         setGif(step);
         advanceProgress(step);
 
-        if (step == texts.length - 1) {
-            menu.setVisible(true);
-            gif.setVisible(false);
-            buttonRight.setVisible(false);
-            buttonLeft.setVisible(true);
-        }
-        else if (step == 0) {
-            buttonRight.setVisible(true);
-            buttonLeft.setVisible(false);
-        }
-        else {
-            menu.setVisible(false);
-            gif.setVisible(true);
-            buttonRight.setVisible(true);
-            buttonLeft.setVisible(true);
-        }
+        boolean isLastStep = step == texts.length - 1;
+        boolean isFirstStep = step == 0;
+
+        // Gestione visibilità del menu e della gif
+        menu.setVisible(isLastStep);
+        gif.setVisible(!isLastStep);
+
+        // Gestione visibilità dei pulsanti
+        buttonRight.setVisible(!isLastStep);
+        buttonLeft.setVisible(!isFirstStep);
     }
 
     public void keyPressed(KeyEvent keyEvent) {

@@ -6,6 +6,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Ninja;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.service.Data;
+import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Load;
 import chevy.utils.Log;
@@ -292,6 +293,7 @@ public final class Menu {
         if (level == 0) {
             window.getGamePanel().getTutorial().updateDraw(0);
             window.setScene(Window.Scene.TUTORIAL);
+            Sound.startMusic(true); // 🎵
         }
         else {
             ChamberManager.enterChamber(level);
