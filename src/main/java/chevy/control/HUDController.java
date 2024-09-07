@@ -1,7 +1,6 @@
 package chevy.control;
 
 import chevy.model.HUD;
-import chevy.model.chamber.ChamberManager;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.service.Data;
 import chevy.view.hud.AttackBar;
@@ -17,8 +16,8 @@ public final class HUDController {
         this.hudView = hudView;
         this.hud = hud;
 
-        addKey(Data.get("progress.keys"));
-        addCoin(Data.get("progress.coins"));
+        addKeys(Data.get("progress.keys"));
+        addCoins(Data.get("progress.coins"));
 
         hudView.getPlayerInfo().getPlayerFrame().setIconFrame();
         hudView.getPlayerInfo().getPowerUpEquippedView().clear();
@@ -63,35 +62,23 @@ public final class HUDController {
         hudView.getPlayerInfo().getAttackBar().setText(text);
     }
 
-    // ----
-
-    public void addCoin(int value) {
+    public void addCoins(int value) {
         hud.addCoin(value);
-        hudView.getCoinBar().setCoin(hud.getCoin());
-        if (ChamberManager.getCurrentChamber().getEnemyCounter() == 0)
-            Data.set("progress.coins", hud.getCoin());
+        hudView.getCoinBar().setCoin(hud.getCoins());
     }
 
-    public void addKey(int value) {
+    public void addKeys(int value) {
         hud.addKey(value);
-        hudView.getKeyBar().setKey(hud.getKey());
-        if (ChamberManager.getCurrentChamber().getEnemyCounter() == 0)
-            Data.set("progress.keys", hud.getKey());
+        hudView.getKeyBar().setKey(hud.getKeys());
     }
 
-    public int getKey() {
-        return hud.getKey();
-    }
+    public int getKeys() {return hud.getKeys();}
 
-    // ----
+    public int getCoins() {return hud.getCoins();}
 
-    public void hidePowerUpText() {
-        hudView.getPowerUpText().mHide();
-    }
+    public void hidePowerUpText() {hudView.getPowerUpText().mHide();}
 
-    public void PowerUpText(PowerUp powerUp) {
-        hudView.getPowerUpText().show(powerUp);
-    }
+    public void PowerUpText(PowerUp powerUp) {hudView.getPowerUpText().show(powerUp);}
 
     public void addPowerUpIcon(PowerUp powerUp) {
         hudView.getPlayerInfo().getPowerUpEquippedView().add(powerUp);

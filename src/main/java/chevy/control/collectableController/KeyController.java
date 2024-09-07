@@ -21,7 +21,7 @@ public final class KeyController {
             key.collect();
             Data.increment("stats.collectable.total.count");
             Data.increment("stats.collectable.commons.keys.count");
-            hudController.addKey(1);
+            hudController.addKeys(1);
             chamber.findAndRemoveEntity(key);
         }
     }

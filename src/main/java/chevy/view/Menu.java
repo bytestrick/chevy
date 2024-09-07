@@ -6,7 +6,6 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Ninja;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.service.Data;
-import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Load;
 import chevy.utils.Log;
@@ -16,7 +15,6 @@ import javax.swing.DefaultListSelectionModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -39,15 +37,18 @@ import java.awt.Image;
 import java.awt.LinearGradientPaint;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.stream.Stream;
 
 public final class Menu {
-    public static final Icon ex = Load.icon("x", 48, 48);
+    private static final Icon ex = Load.icon("x", 48, 48);
     // @formatter:off
     private static final String[][] quotes = new String[][]{
             {"“Ho giurato di proteggere il regno, difendere i deboli e… sì, anche\n" +
@@ -68,12 +69,14 @@ public final class Menu {
             , 189, 189), new Color(255, 80, 80), new Color(255, 255, 102)};
     private static final Color progressBarDimmedForeground = new Color(144, 144, 144);
     private static final int archerCost = 500, ninjaCost = 1000;
-    private static final Icon coin = Load.icon("Coin", 32, 32);
-    private static final Icon[] statsIcons = new Icon[]{Load.icon("heart", 32, 32),
-            Load.icon("shield", 36, 36), Load.icon("sword", 32, 32), Load.icon("boot", 28, 28)};
+    private static final Icon coin = Load.icon("Coin");
+    private static final Icon[] statsIcons = new Icon[]{Load.icon("heart"),
+            Load.icon("shield", 36, 36), Load.icon("sword"), Load.icon(
+            "boot", 28, 28)};
     private static final Icon[] statsIconsGreyScale = new Icon[]{Load.icon(
-            "heart_greyscale", 32, 32), Load.icon("shield_greyscale", 36, 36), Load.icon(
-            "sword_greyscale", 32, 32), Load.icon("boot_greyscale", 28, 28)};
+            "heart_greyscale"), Load.icon("shield_greyscale", 36, 36),
+            Load.icon(
+                    "sword_greyscale"), Load.icon("boot_greyscale", 28, 28)};
     private static final String[] statsTooltipPrefixes = new String[]{"Salute: ", "Scudo: ",
             "Danno: ", "Velocità: "};
     public static Player.Type playerType = Player.Type.valueOf(Data.get("menu.playerType"));
@@ -83,7 +86,7 @@ public final class Menu {
     private static boolean alternateAnimation = true;
     private static boolean animationRunning;
     private static Thread animationWorker;
-    final int[][] playerStats = new int[][]{new Knight(null).getStats(),
+    private final int[][] playerStats = new int[][]{new Knight(null).getStats(),
             new Archer(null).getStats(), new Ninja(null).getStats()};
     private final Image[][] sprites = new Image[3][4];
     private final Object updateAnimation = new Object();
@@ -118,10 +121,27 @@ public final class Menu {
             speedLabel};
     private JButton unlock;
     private JLabel cost;
+    private final ActionListener actionListener = this::actionPerformed;
 
-    public Menu(final Window window) {
+    Menu(final Window window) {
         this.window = window;
-        attachListeners();
+
+        List.of(play, quit, options, playerCycleNext, playerCyclePrev, unlock)
+                .forEach(c -> c.addActionListener(actionListener));
+        levelSelector.addActionListener(actionListener);
+        final MouseListener tooltipMouseAdapter = new TooltipMouseAdapter();
+        Stream.of(playerCycleNext, playerCyclePrev,
+                characterAnimation, coins, keys, options, healthBar, shieldBar, damageBar,
+                speedBar, levelSelector, healthLabel, shieldLabel, damageLabel, speedLabel, play,
+                characterName).forEach(c -> c.addMouseListener(tooltipMouseAdapter));
+        levelSelector.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                Sound.play(Sound.Effect.BUTTON);
+            }
+        });
+
         initializeComponents();
         loadCharactersSprites();
         setPlayerType(playerType);
@@ -134,10 +154,40 @@ public final class Menu {
      * Aggiorna il livello corrente nel menù quando si passa a un nuovo livello nel gioco
      */
     public static void incrementLevel() {
-        if (level < ChamberManager.NUMBER_OF_CHAMBERS - 1) {
+        if (!ChamberManager.isLastChamber()) {
             ++level;
             Data.set("progress.lastUnlockedLevel", level);
-            LevelSelectorRenderer.setEnabledInterval(0, level);
+            LevelSelectorRenderer.setEnabledInterval(level);
+        }
+    }
+
+    /**
+     * @return il nome del personaggio tradotto in italiano
+     */
+    private static String getUIString(Player.Type playerType) {
+        return switch (playerType) {
+            case KNIGHT -> "CAVALIERE";
+            case ARCHER -> "ARCIERE";
+            case NINJA -> "NINJA";
+        };
+    }
+
+    private void actionPerformed(ActionEvent event) {
+        switch (event.getActionCommand()) {
+            case "play" -> playAction();
+            case "quit" -> {
+                Sound.play(Sound.Effect.BUTTON);
+                window.quitAction();
+            }
+            case "options" -> {
+                Sound.play(Sound.Effect.BUTTON);
+                window.setScene(Window.Scene.OPTIONS);
+                stopCharacterAnimation();
+            }
+            case "prev" -> playerCyclePrevAction();
+            case "next" -> playerCycleNextAction();
+            case "levelChanged" -> changeLevelAction();
+            case "unlock" -> unlockPlayerAction();
         }
     }
 
@@ -145,7 +195,7 @@ public final class Menu {
      * Aggiorna i componenti dopo il cambio scena
      * Impostare l'elemento attivo per JComboBox richiede che il componente sia visibile
      */
-    public void updateComponents() {
+    void updateComponents() {
         coins.setText(Data.get("progress.coins").toString());
         keys.setText(Data.get("progress.keys").toString());
         levelSelector.setSelectedIndex(level);
@@ -158,78 +208,30 @@ public final class Menu {
         root.setBackground(new Color(33, 6, 47));
         levelSelector.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         levelSelector.setRenderer(new LevelSelectorRenderer());
-        LevelSelectorRenderer.setEnabledInterval(0, Data.get("progress.lastUnlockedLevel"));
+        LevelSelectorRenderer.setEnabledInterval(Data.get("progress.lastUnlockedLevel"));
         levelSelector.addItem("Tutorial");
         for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS; ++i) {
             levelSelector.addItem("Livello " + i);
         }
         final Font menuFont = UIManager.getFont("defaultFont").deriveFont(35f);
         Stream.of(quit, play, keys, cost, coins, unlock).forEach(c -> c.setFont(menuFont));
-        playerCycleNext.setIcon(Load.icon("right-chevron", 32, 32));
-        playerCyclePrev.setIcon(Load.icon("left-chevron", 32, 32));
-        play.setIcon(Load.icon("Play", 32, 32));
-        quit.setIcon(Load.icon("Exit", 32, 32));
-        options.setIcon(Load.icon("Gear", 32, 32));
-        coins.setIcon(Load.icon("Coin2", 32, 32));
-        keys.setIcon(Load.icon("Key", 32, 32));
+        playerCycleNext.setIcon(Load.icon("right-chevron"));
+        playerCyclePrev.setIcon(Load.icon("left-chevron"));
+        play.setIcon(Load.icon("Play"));
+        quit.setIcon(Load.icon("Exit"));
+        options.setIcon(Load.icon("Gear"));
+        coins.setIcon(Load.icon("Coin2"));
+        keys.setIcon(Load.icon("Key"));
         cost.setIcon(coin);
         characterName.setFont(UIManager.getFont("defaultFont").deriveFont(Font.BOLD, 50f));
         unlock.setIcon(Load.icon("Unlocked", 30, 30));
-    }
 
-    /**
-     * Procedura del costruttore: inizializza i listener dei componenti
-     * dell'interfaccia
-     */
-    private void attachListeners() {
-        options.addActionListener(e -> {
-            Sound.play(Sound.Effect.BUTTON);
-            window.setScene(Window.Scene.OPTIONS);
-            stopCharacterAnimation();
-        });
-        play.addActionListener(actionEvent -> {
-            Sound.play(Sound.Effect.PLAY_BUTTON);
-            playAction();
-        });
-        quit.addActionListener(e -> {
-            Sound.play(Sound.Effect.BUTTON);
-            window.quitAction();
-        });
-        playerCycleNext.addActionListener(e -> {
-            Sound.play(Sound.Effect.BUTTON);
-            playerCycleNextAction();
-        });
-        playerCyclePrev.addActionListener(e -> {
-            Sound.play(Sound.Effect.BUTTON);
-            playerCyclePrevAction();
-        });
-        levelSelector.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent mouseEvent) {}
-
-            @Override
-            public void mousePressed(MouseEvent mouseEvent) {Sound.play(Sound.Effect.BUTTON);}
-
-            @Override
-            public void mouseReleased(MouseEvent mouseEvent) {}
-
-            @Override
-            public void mouseEntered(MouseEvent mouseEvent) {}
-
-            @Override
-            public void mouseExited(MouseEvent mouseEvent) {}
-        });
-        levelSelector.addActionListener(actionEvent -> changeLevelAction());
-        unlock.addActionListener(e -> {
-            Sound.play(Sound.Effect.BUTTON);
-            unlockPlayerAction();
-        });
-
-        Stream<JComponent> components = Stream.of(playerCycleNext, playerCyclePrev,
-                characterAnimation, coins, keys, options, healthBar, shieldBar, damageBar,
-                speedBar, levelSelector, healthLabel, shieldLabel, damageLabel, speedLabel, play,
-                characterName);
-        components.forEach(component -> component.addMouseListener(new TooltipMouseAdapter()));
+        // https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/AbstractButton.html#setMnemonic(int)
+        // Uno di questi tasti + ALT causa l'interazione col componente
+        play.setMnemonic(KeyEvent.VK_ENTER);
+        quit.setMnemonic(KeyEvent.VK_ESCAPE);
+        playerCyclePrev.setMnemonic(KeyEvent.VK_LEFT);
+        playerCycleNext.setMnemonic(KeyEvent.VK_RIGHT);
     }
 
     private void changeLevelAction() {
@@ -249,6 +251,7 @@ public final class Menu {
     }
 
     private void unlockPlayerAction() {
+        Sound.play(Sound.Effect.BUTTON);
         int actualCost = playerType == Player.Type.ARCHER ? archerCost : ninjaCost;
         if (JOptionPane.showOptionDialog(window,
                 "Sbloccare " + getUIString(playerType) + " per " + actualCost + " monete?", null,
@@ -271,45 +274,22 @@ public final class Menu {
     }
 
     /**
-     * Risponde agli eventi passati da Window
-     */
-    public void handleKeyPress(KeyEvent event) {
-        switch (event.getKeyCode()) {
-            case KeyEvent.VK_ESCAPE -> window.quitAction();
-            case KeyEvent.VK_ENTER -> playAction();
-            case KeyEvent.VK_RIGHT -> playerCycleNextAction();
-            case KeyEvent.VK_LEFT -> playerCyclePrevAction();
-        }
-    }
-
-    /**
      * L'azione di passare alla scena PLAYING e avviare il gioco. È innescata dal JButton play e
      * dal tasto 'invio'
      * sulla tastiera.
      */
     private void playAction() {
+        Sound.play(Sound.Effect.PLAY_BUTTON);
         stopCharacterAnimation();
         Sound.stopLoop();
         if (level == 0) {
             window.getGamePanel().getTutorial().updateDraw(0);
             window.setScene(Window.Scene.TUTORIAL);
-            Sound.startMusic(true); // 🎵
-        }
-        else {
+            Sound.startMusic(Sound.Music.SAME_SONG); // 🎵
+        } else {
             ChamberManager.enterChamber(level);
             window.setScene(Window.Scene.PLAYING);
         }
-    }
-
-    /**
-     * @return il nome del personaggio tradotto in italiano
-     */
-    private String getUIString(Player.Type playerType) {
-        return switch (playerType) {
-            case KNIGHT -> "CAVALIERE";
-            case ARCHER -> "ARCIERE";
-            case NINJA -> "NINJA";
-        };
     }
 
     /**
@@ -318,6 +298,7 @@ public final class Menu {
      * sulla tastiera.
      */
     private void playerCycleNextAction() {
+        Sound.play(Sound.Effect.BUTTON);
         final Player.Type[] v = Player.Type.values();
         setPlayerType(v[(playerType.ordinal() + 1) % v.length]);
     }
@@ -328,6 +309,7 @@ public final class Menu {
      * sulla tastiera.
      */
     private void playerCyclePrevAction() {
+        Sound.play(Sound.Effect.BUTTON);
         final Player.Type[] v = Player.Type.values();
         setPlayerType(playerType.ordinal() == 0 ? v[v.length - 1] : v[(playerType.ordinal() - 1)]);
     }
@@ -408,7 +390,7 @@ public final class Menu {
      * Crea un thread the anima il personaggio nel menu
      * Da usare quando si entra nella scena MENU.
      */
-    public void startCharacterAnimation() {
+    void startCharacterAnimation() {
         if (animationWorker == null) {
             animationWorker = Thread.ofPlatform().start(() -> {
                 Log.info("Thread per l'animazione del personaggio creato");
@@ -446,7 +428,7 @@ public final class Menu {
      * Fa attendere il thread che si occupa dell'animazione del personaggio
      * Da usare quando si lascia la scena MENU.
      */
-    public void stopCharacterAnimation() {
+    private void stopCharacterAnimation() {
         if (!animationPaused) {
             synchronized (updateAnimation) {
                 animationPaused = true;
@@ -497,7 +479,7 @@ public final class Menu {
         };
     }
 
-    public JPanel getRoot() {return root;}
+    JPanel getRoot() {return root;}
 
     /**
      * Rende possibile avere elementi non selezionabili in {@link JComboBox} (
@@ -514,13 +496,12 @@ public final class Menu {
         /**
          * Imposta l'intervallo di opzioni selezionabile in {@link JComboBox}
          *
-         * @param first inizio dell'intervallo
-         * @param last  fine dell'intervallo
+         * @param last fine dell'intervallo
          */
-        public static void setEnabledInterval(int first, int last) {
-            enabledFirst = first;
+        static void setEnabledInterval(int last) {
+            enabledFirst = 0;
             level = enabledLast = last;
-            model.setSelectionInterval(first, last);
+            model.setSelectionInterval(0, last);
         }
 
         /**
@@ -529,7 +510,9 @@ public final class Menu {
          * {@code false}
          * altrimenti
          */
-        private static boolean isInsideInterval(final int x) {return x >= enabledFirst && x <= enabledLast;}
+        private static boolean isInsideInterval(final int x) {
+            return x >= enabledFirst && x <= enabledLast;
+        }
 
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index,
@@ -540,18 +523,18 @@ public final class Menu {
                 if (isSelected) {
                     c.setBackground(UIManager.getColor("ComboBox.background"));
                 } else {
-                    c.setBackground(super.getBackground());
+                    c.setBackground(getBackground());
                 }
                 c.setForeground(UIManager.getColor("PopupMenu.foreground").darker());
             } else {
-                c.setBackground(super.getBackground());
-                c.setForeground(super.getForeground());
+                c.setBackground(getBackground());
+                c.setForeground(getForeground());
             }
             return c;
         }
     }
 
-    private static class TooltipMouseAdapter extends MouseAdapter {
+    static class TooltipMouseAdapter extends MouseAdapter {
         /**
          * L'attesa iniziale affinché il tooltip si attivi è più breve.
          * Il tooltip persiste per un'ora se il cursore vi giace sopra per tanto.

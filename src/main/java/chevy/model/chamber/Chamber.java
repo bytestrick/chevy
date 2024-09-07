@@ -58,9 +58,10 @@ public final class Chamber {
     /** Righe e colonne della griglia di gioco */
     private Dimension size;
     /** Indica se il mondo è stato inizializzato */
-    private boolean initialized = false;
-    private Player player; // Il giocatore attuale
-    private int enemyCounter = 0;
+    private boolean initialized;
+    /** Il giocatore attuale */
+    private Player player;
+    private int enemyCounter;
 
     /**
      * @param size numero di colonne e righe della griglia di gioco
@@ -106,20 +107,6 @@ public final class Chamber {
             return row >= 0 && row < size.height && col >= 0 && col < size.width;
         }
         return false;
-    }
-
-    /**
-     * Verifica se la posizione in cui si deve spostare l'entità è valida all'interno della griglia.
-     *
-     * @param entity    entità da considerare
-     * @param direction direzione in cui l'entità si deve muovere
-     * @return true se è valida, false altrimenti
-     */
-    public boolean validatePosition(Entity entity, Direction direction) {
-        Vector2<Integer> vector2 = new Vector2<>(entity.getRow() + direction.row(),
-                entity.getCol() + direction.col());
-
-        return validatePosition(vector2);
     }
 
     /**
@@ -180,7 +167,7 @@ public final class Chamber {
      */
     public boolean isSafeToCross(Vector2<Integer> vector2) {
         Entity onTop = getEntityOnTop(vector2);
-        return canCross(vector2) && onTop.isSafeToCross();
+        return canCross(vector2) && onTop != null && onTop.isSafeToCross();
     }
 
     /**
@@ -231,7 +218,7 @@ public final class Chamber {
      */
     private synchronized boolean canSpawn(Vector2<Integer> vector2) {
         Entity onTop = getEntityOnTop(vector2);
-        return validatePosition(vector2) && onTop.isCrossable() && !(onTop instanceof Void);
+        return validatePosition(vector2) && onTop != null && onTop.isCrossable() && !(onTop instanceof Void);
     }
 
     /**
@@ -587,7 +574,7 @@ public final class Chamber {
 
     public synchronized void addEntityOnTop(Entity entity) {
         chamber.get(entity.getRow()).get(entity.getCol()).addLast(entity);
-        if (!entity.toDraw()) {
+        if (entity.toNotDraw()) {
             entity.setToDraw(true);
             addEntityToDraw(entity, entity.getDrawLayer());
         }

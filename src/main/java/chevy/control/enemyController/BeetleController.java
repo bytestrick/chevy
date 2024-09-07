@@ -47,14 +47,13 @@ public final class BeetleController {
      * @param beetle il Beetle che subisce l'interazione
      */
     public void playerInInteraction(Player player, Beetle beetle) {
-        switch (player.getCurrentState()) {
-            // Se il giocatore è in stato di attacco, il Beetle viene danneggiato in base al danno del giocatore.
-            case Player.State.ATTACK -> {
-                beetle.setDirection(Direction.positionToDirection(player, beetle));
-                hitBeetle(beetle, -1 * player.getDamage());
-                Sound.play(Sound.Effect.ROBOTIC_INSECT);
-            }
-            default -> Log.warn("Il BeetleController non gestisce questa azione: " + player.getCurrentState());
+        // Se il giocatore è in stato di attacco, il Beetle viene danneggiato in base al danno del giocatore.
+        if (player.getCurrentState().equals(Player.State.ATTACK)) {
+            beetle.setDirection(Direction.positionToDirection(player, beetle));
+            hitBeetle(beetle, -1 * player.getDamage());
+            Sound.play(Sound.Effect.ROBOTIC_INSECT);
+        } else {
+            Log.warn("Il BeetleController non gestisce questa azione: " + player.getCurrentState());
         }
     }
 
@@ -119,7 +118,7 @@ public final class BeetleController {
 
                     if (distance > 1 && entity instanceof Player && beetle.changeState(Beetle.State.ATTACK)) {
                         Projectile slimeShot = new SlimeShot(new Vector2<>(beetle.getRow(), beetle.getCol()),
-                                direction, 1f);
+                                direction);
                         chamber.addProjectile(slimeShot);
                         chamber.addEntityOnTop(slimeShot);
                         break;
@@ -154,11 +153,8 @@ public final class BeetleController {
      * @param beetle il Beetle che subisce l'interazione
      */
     public void trapInteraction(Trap trap, Beetle beetle) {
-        switch (trap.getSpecificType()) {
-            case Trap.Type.SPIKED_FLOOR -> {
-                hitBeetle(beetle, -1 * trap.getDamage());
-            }
-            default -> { }
+        if (trap.getSpecificType().equals(Trap.Type.SPIKED_FLOOR)) {
+            hitBeetle(beetle, -1 * trap.getDamage());
         }
     }
 

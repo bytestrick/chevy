@@ -4,13 +4,26 @@ import chevy.service.Sound;
 import chevy.utils.Load;
 import chevy.view.component.NoCaret;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.SpringLayout;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.*;
-import java.awt.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+
+import static chevy.view.Options.home;
 
 public final class Tutorial extends JPanel {
     private static final String FONT_NAME = "VT323";
@@ -20,7 +33,7 @@ public final class Tutorial extends JPanel {
     private static final Color TITLE_COLOR = UIManager.getColor("Chevy.color.purpleBright");
     private static final Color TEXT_COLOR = new Color(188, 188, 188, 255);
 
-
+    // @formatter:off
     private static final String[] title = new String[] {
             "Benvenuto in Chevy!\n",
             "Ora, passiamo agli attacchi!\n",
@@ -54,6 +67,7 @@ public final class Tutorial extends JPanel {
             "Il gioco può essere messo in pausa premendo il tasto “Esc”. Prenditi una pausa se hai bisogno di riflettere!",
             "Hai completato il tutorial. Ora sei pronto ad affrontare il resto del gioco.\n\nBuona fortuna!"
     };
+    // @formatter:on
 
     private static final String COMMO_GIF_PATH = "sprites/tutorial/";
 
@@ -67,9 +81,9 @@ public final class Tutorial extends JPanel {
     private final JButton buttonRight = new JButton();
     private final JButton menu = new JButton();
     private final Window window;
-    private int step = 0;
+    private int step;
 
-    public Tutorial(Window window) {
+    Tutorial(Window window) {
         this.window = window;
         int offset = 16;
 
@@ -97,7 +111,7 @@ public final class Tutorial extends JPanel {
         buttonLeft.setIcon(Load.icon("left-chevron", 64, 64));
         buttonRight.setIcon(Load.icon("right-chevron", 64, 64));
         menu.setFont(Load.font(FONT_NAME).deriveFont(FONT_SIZE));
-        menu.setIcon(Load.icon("Home", 32, 32));
+        menu.setIcon(home);
         menu.setText("Torna al menù");
         menu.setVisible(false);
     }
@@ -110,22 +124,29 @@ public final class Tutorial extends JPanel {
         springLayout.putConstraint(SpringLayout.EAST, textPane, 0, SpringLayout.EAST, this);
         springLayout.putConstraint(SpringLayout.WEST, textPane, 0, SpringLayout.WEST, this);
 
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, gif, 0, SpringLayout.HORIZONTAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, gif, 0, SpringLayout.VERTICAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, gif, 0,
+                SpringLayout.HORIZONTAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, gif, 0,
+                SpringLayout.VERTICAL_CENTER, this);
 
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, buttonLeft, 0, SpringLayout.VERTICAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.WEST, buttonLeft, offset * 2, SpringLayout.WEST, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, buttonLeft, 0,
+                SpringLayout.VERTICAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.WEST, buttonLeft, offset * 2, SpringLayout.WEST,
+                this);
 
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, buttonRight, 0, SpringLayout.VERTICAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.EAST, buttonRight, -offset * 2, SpringLayout.EAST, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, buttonRight, 0,
+                SpringLayout.VERTICAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.EAST, buttonRight, -offset * 2, SpringLayout.EAST
+                , this);
 
-
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, progress, 0, SpringLayout.HORIZONTAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, progress, 0,
+                SpringLayout.HORIZONTAL_CENTER, this);
         springLayout.putConstraint(SpringLayout.SOUTH, progress, 0, SpringLayout.SOUTH, this);
 
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, menu, 0, SpringLayout.HORIZONTAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, menu, 0, SpringLayout.VERTICAL_CENTER, this);
-
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, menu, 0,
+                SpringLayout.HORIZONTAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, menu, 0,
+                SpringLayout.VERTICAL_CENTER, this);
     }
 
     private void attachListeners() {
@@ -134,7 +155,8 @@ public final class Tutorial extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 Sound.play(Sound.Effect.BUTTON);
                 stepBack();
-                window.requestFocus(); // altrimenti il focus rimane sul pulsante e non si può più premere 'esc'
+                window.requestFocus(); // altrimenti il focus rimane sul pulsante e non si può
+                // più premere 'esc'
             }
         });
 
@@ -143,7 +165,8 @@ public final class Tutorial extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 Sound.play(Sound.Effect.BUTTON);
                 stepAhead();
-                window.requestFocus(); // altrimenti il focus rimane sul pulsante e non si può più premere 'esc'
+                window.requestFocus(); // altrimenti il focus rimane sul pulsante e non si può
+                // più premere 'esc'
             }
         });
 
@@ -154,8 +177,9 @@ public final class Tutorial extends JPanel {
                 Sound.stopMusic();
                 Menu.incrementLevel();
                 window.setScene(Window.Scene.MENU);
-                Sound.startLoop(false);
-                window.requestFocus(); // altrimenti il focus rimane sul pulsante e non si può più premere 'esc'
+                Sound.startLoop(Sound.Music.SAME_SONG);
+                window.requestFocus(); // altrimenti il focus rimane sul pulsante e non si può
+                // più premere 'esc'
             }
         });
     }
@@ -174,14 +198,12 @@ public final class Tutorial extends JPanel {
         }
     }
 
+    private void advanceProgress(int step) {progress.setText(step + 1 + "/" + texts.length);}
 
-    public void advanceProgress(int step) {
-        progress.setText(step + 1 + "/" + texts.length);
-    }
-
-    public void setGif(int step) {
-        if (step < texts.length - 1)
+    private void setGif(int step) {
+        if (step < texts.length - 1) {
             gif.setIcon(Load.gif(COMMO_GIF_PATH + step));
+        }
     }
 
     private void initializeStyles() {
@@ -201,24 +223,24 @@ public final class Tutorial extends JPanel {
         textPane.setFont(font);
     }
 
-    public void write(int step) {
+    private void write(int step) {
         if (step < texts.length) {
             try {
                 doc.remove(0, doc.getLength());
 
                 doc.insertString(doc.getLength(), title[step], titleStyle);
-                doc.setParagraphAttributes(doc.getLength(), title[step].length(), titleStyle, false);
+                doc.setParagraphAttributes(doc.getLength(), title[step].length(), titleStyle,
+                        false);
 
                 doc.insertString(doc.getLength(), texts[step], textStyle);
                 doc.setParagraphAttributes(doc.getLength(), texts[step].length(), textStyle, false);
-
             } catch (BadLocationException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    public void updateDraw(int step) {
+    void updateDraw(int step) {
         this.step = step;
 
         write(step);
@@ -238,9 +260,19 @@ public final class Tutorial extends JPanel {
     }
 
     public void keyPressed(KeyEvent keyEvent) {
-        final int key = keyEvent.getKeyCode();
-        switch (key) {
-            case KeyEvent.VK_ESCAPE -> window.getGamePanel().pauseDialog();
+        switch (keyEvent.getKeyCode()) {
+            case KeyEvent.VK_ESCAPE -> {
+                final int ans = JOptionPane.showOptionDialog(window, "Abbandonare il tutorial?", null,
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Load.icon("Home"
+                                , 48, 48), new String[]{"Si", "No"}, "No");
+                if (ans == 0) {
+                    Sound.play(Sound.Effect.BUTTON);
+                    Sound.stopMusic();
+                    window.setScene(Window.Scene.MENU);
+                } else if (ans == 1) {
+                    Sound.play(Sound.Effect.BUTTON);
+                }
+            }
             case KeyEvent.VK_RIGHT -> stepAhead();
             case KeyEvent.VK_LEFT -> stepBack();
         }

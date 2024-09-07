@@ -62,32 +62,28 @@ public abstract class LiveEntity extends DynamicEntity {
         }
     }
 
-    public synchronized int getCurrentHealth() { return currentHealth; }
+    public synchronized int getCurrentHealth() {return currentHealth;}
 
-    public int getCurrentShield() { return currentShield; }
+    public int getCurrentShield() {return currentShield;}
 
-    public synchronized void changeShield(int value) { this.shield = value; }
+    public synchronized void changeShield(int value) {this.shield = value;}
 
-    public synchronized void changeHealth(int value) { this.health = value; }
+    public synchronized void changeHealth(int value) {this.health = value;}
 
-    public synchronized int getHealth() { return health; }
+    public synchronized int getHealth() {return health;}
 
-    public synchronized int getShield() { return shield; }
+    public synchronized int getShield() {return shield;}
 
-    public synchronized boolean isDead() { return !alive; }
-
-    public synchronized boolean isFlying() { return flying; }
+    public synchronized boolean isDead() {return !alive;}
 
     @Override
-    public CommonEntityType getSpecificType() { return type; }
+    public CommonEntityType getSpecificType() {return type;}
 
     @Override
-    public CommonEntityType getGenericType() { return super.getSpecificType(); }
+    public CommonEntityType getGenericType() {return super.getSpecificType();}
 
     @Override
-    public String toString() { return type.toString(); }
+    public String toString() {return type.toString();}
 
-    public enum Type implements CommonEntityType {
-        PLAYER, ENEMY
-    }
+    public enum Type implements CommonEntityType {PLAYER, ENEMY}
 }

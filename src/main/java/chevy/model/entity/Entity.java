@@ -12,28 +12,26 @@ import java.util.UUID;
 public abstract class Entity {
     protected final Vector2<Integer> position;
     protected final StateMachine stateMachine = new StateMachine();
-    private final UUID ID = UUID.randomUUID();
+    private final UUID uuid = UUID.randomUUID();
     private final Type type;
     protected int maxDamage;
     protected int minDamage;
     protected boolean safeToCross;
     protected boolean crossable;
     protected int drawLayer;
-    protected boolean mustBeUpdate = false;
+    protected boolean shouldUpdate;
     private boolean toDraw;
 
     public Entity(Vector2<Integer> initPosition, Type type) {
-        this.position = initPosition;
+        position = initPosition;
         this.type = type;
-
-        this.crossable = false;
-        this.safeToCross = true;
-
-        this.drawLayer = 0;
-        this.toDraw = false;
+        crossable = false;
+        safeToCross = true;
+        drawLayer = 0;
+        toDraw = false;
     }
 
-    public boolean toDraw() { return toDraw; }
+    public boolean toNotDraw() { return !toDraw; }
 
     public void setToDraw(boolean toDraw) { this.toDraw = toDraw; }
 
@@ -66,7 +64,7 @@ public abstract class Entity {
         return false;
     }
 
-    public int getDrawLayer() { return Math.abs(this.drawLayer); }
+    public int getDrawLayer() { return Math.abs(drawLayer); }
 
     public Vertex getState(CommonState commonEnumStates) {
         Log.warn("La funzione getState() deve essere ridefinita opportunamente nelle classi figlie");
@@ -79,8 +77,6 @@ public abstract class Entity {
 
     public boolean checkAndChangeState(CommonState state) { return stateMachine.checkAndChangeState(state); }
 
-    public boolean changeToPreviousState() { return stateMachine.changeToPreviousState(); }
-
     public CommonState getCurrentState() {
         Vertex currentVertex = stateMachine.getCurrentState();
         if (currentVertex == null) {
@@ -89,17 +85,9 @@ public abstract class Entity {
         return currentVertex.getState();
     }
 
-    public CommonState getPreviousState() {
-        Vertex previousVertex = stateMachine.getPreviousState();
-        if (previousVertex == null) {
-            return null;
-        }
-        return previousVertex.getState();
-    }
+    public boolean canRemoveToUpdate() { return !shouldUpdate; }
 
-    public boolean canRemoveToUpdate() { return !mustBeUpdate; }
-
-    public void removeFromUpdate() { mustBeUpdate = false; }
+    public void removeFromUpdate() { shouldUpdate = false; }
 
     @Override
     public String toString() { return "ENTITY"; }
@@ -113,15 +101,11 @@ public abstract class Entity {
             return false;
         }
         Entity entity = (Entity) o;
-        return ID.equals(entity.ID);
+        return uuid.equals(entity.uuid);
     }
 
     @Override
-    public int hashCode() {
-        return ID.hashCode();
-    }
+    public int hashCode() { return uuid.hashCode(); }
 
-    public enum Type implements CommonEntityType {
-        DYNAMIC, ENVIRONMENT, COLLECTABLE
-    }
+    public enum Type implements CommonEntityType { DYNAMIC, ENVIRONMENT, COLLECTABLE }
 }

@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.nio.file.Files;
-import java.util.Objects;
 
 /**
  * Dati dell'app in formato
@@ -86,17 +85,16 @@ public final class Data {
             try (InputStream in = Data.class.getResourceAsStream("/defaultChevyData.json")) {
                 try (BufferedOutputStream out =
                              new BufferedOutputStream(new FileOutputStream(file))) {
-                    out.write(Objects.requireNonNull(in).readAllBytes());
+                    assert in != null;
+                    out.write(in.readAllBytes());
                 }
             }
             root = null;
             Log.info(file + " è stato creato");
-        } catch (NullPointerException | IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
-    //Files.copy(Objects.requireNonNull(from), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
     /**
      * Il file JSON è salvato nella cartella dei dati dell'utente. Per esempio, su un sistema

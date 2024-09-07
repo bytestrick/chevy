@@ -8,16 +8,15 @@ import chevy.utils.Vector2;
 public final class Coin extends Collectable {
     private final Vertex idle = new Vertex(State.IDLE, 0.8f);
     private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
-    private final int maxValue = 5;
-    private final int minValue = 2;
 
     public Coin(Vector2<Integer> initPosition) {
         super(initPosition, Type.COIN);
-
         initStateMachine();
     }
 
     public int getValue() {
+        int maxValue = 5;
+        int minValue = 2;
         return Utils.random.nextInt(minValue, maxValue);
     }
 
@@ -25,7 +24,7 @@ public final class Coin extends Collectable {
         stateMachine.setStateMachineName("Coin");
         stateMachine.setInitialState(idle);
 
-        idle.linkState(collected);
+        idle.linkVertex(collected);
     }
 
     public synchronized Vertex getState(CommonState commonState) {

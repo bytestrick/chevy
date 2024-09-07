@@ -6,6 +6,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -14,12 +15,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Objects;
 
 /**
  * Raccolta di metodi per caricare risorse
  */
 public final class Load {
+    private static final int ICON_SIZE = 32;
+
     /**
      * @param path il percorso, come "/sprites/img.png"
      * @return l'immagine caricata dalle risorse
@@ -27,8 +29,10 @@ public final class Load {
     public static BufferedImage image(final String path) {
         BufferedImage image = null;
         try {
-            image = ImageIO.read(Objects.requireNonNull(Load.class.getResource(path)));
-        } catch (IOException | NullPointerException e) {
+            final URL input = Load.class.getResource(path);
+            assert input != null : "risorsa non trovata";
+            image = ImageIO.read(input);
+        } catch (IOException e) {
             Log.error("Immagine '" + path + "' non trovata (" + e.getMessage() + ")");
             System.exit(1);
         }
@@ -39,19 +43,30 @@ public final class Load {
      * @param name   il nome dell'icona senza estensione
      * @param width  larghezza dell'icona desiderata
      * @param height altezza dell'icona desiderata
-     * @return l'icona caricata e scalata.
+     * @return l'icona caricata e scalata
      */
-    public static ImageIcon icon(String name, int width, int height) {
+    public static Icon icon(String name, int width, int height) {
         Image image = image("/icons/" + name + ".png");
         return new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
+    }
+
+    /**
+     * @param name il nome dell'icona senza estensione
+     * @return l'icona caricata con dimensione 32x32
+     */
+    public static Icon icon(String name) {
+        Image image = image("/icons/" + name + ".png");
+        return new ImageIcon(image.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_SMOOTH));
     }
 
     /**
      * @param name il path della gif senza estensione
      * @return la gif
      */
-    public static ImageIcon gif(String name) {
-        return new ImageIcon(Objects.requireNonNull(Load.class.getResource("/" + name + ".gif")));
+    public static Icon gif(String name) {
+        URL url =  Load.class.getResource("/" + name + ".gif");
+        assert url != null;
+        return new ImageIcon(url);
     }
 
     /**
@@ -61,11 +76,11 @@ public final class Load {
     public static Font font(final String name) {
         Font font = null;
         try {
-            InputStream is =
-                    Objects.requireNonNull(Load.class.getResourceAsStream("/fonts/" + name +
-                            ".ttf"));
-            font = Font.createFont(Font.TRUETYPE_FONT, is);
-        } catch (IOException | FontFormatException | NullPointerException e) {
+            try (InputStream is = Load.class.getResourceAsStream("/fonts/" + name + ".ttf")) {
+                assert is != null : "risorsa non trovata";
+                font = Font.createFont(Font.TRUETYPE_FONT, is);
+            }
+        } catch (IOException | FontFormatException e) {
             Log.warn("Font '" + name + "' non caricato: (" + e.getMessage() + ")");
         }
         return font;
@@ -83,14 +98,12 @@ public final class Load {
             throw new RuntimeException(e);
         }
         try {
-            URL path = Load.class.getResource("/sounds/" + prefix + ".wav");
-            if (path == null) {
-                throw new NullPointerException();
-            }
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(path);
+            URL url = Load.class.getResource("/sounds/" + prefix + ".wav");
+            assert url != null : "risorsa non trovata";
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
             clip.open(audioIn);
             return clip;
-        } catch (NullPointerException | IOException | UnsupportedAudioFileException |
+        } catch (IOException | UnsupportedAudioFileException |
                  SecurityException e) {
             Log.error(prefix + ": " + e.getMessage());
         } catch (LineUnavailableException e) {

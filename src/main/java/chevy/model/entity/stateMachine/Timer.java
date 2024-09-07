@@ -5,21 +5,17 @@ import chevy.service.UpdateManager;
 import chevy.utils.Log;
 
 /**
- * Un timer che tiene traccia del tempo trascorso.
+ * Tiene traccia del tempo trascorso
  */
 public class Timer implements Update {
     private final double duration;
-    private double time = 0d;
-    private boolean isRunning = false;
+    private double time;
+    private boolean isRunning;
     private boolean delete = true;
 
-    public Timer(double secDuration) {
-        this.duration = secDuration;
-    }
+    public Timer(double secDuration) {this.duration = secDuration;}
 
-    public boolean isRunning() {
-        return isRunning && !delete;
-    }
+    public boolean isRunning() {return isRunning && !delete;}
 
     /**
      * Fa iniziare l'interpolazione dal punto in cui si è fermata. Se la si usa
@@ -56,9 +52,7 @@ public class Timer implements Update {
      * può essere ripresa in seguito usando la funzione start(), oppure, farla iniziare da capo
      * usando la funzione restart().
      */
-    public void stop() {
-        isRunning = false;
-    }
+    public void stop() {isRunning = false;}
 
     /**
      * Elimina il timer, questo vuol dire che non verrà più aggiornata.
@@ -82,7 +76,5 @@ public class Timer implements Update {
     }
 
     @Override
-    public boolean updateFinished() {
-        return delete;
-    }
+    public boolean updateFinished() {return delete;}
 }
