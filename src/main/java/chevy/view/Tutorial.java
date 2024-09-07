@@ -2,7 +2,6 @@ package chevy.view;
 
 import chevy.service.Sound;
 import chevy.utils.Load;
-import chevy.view.component.ImageVisualizer;
 import chevy.view.component.NoCaret;
 
 import javax.swing.*;
@@ -69,12 +68,14 @@ public final class Tutorial extends JPanel {
             "\nCongratulazioni! Hai completato il tutorial. Ora sei pronto ad affrontare il resto del gioco. Buona fortuna!"
     };
 
+    private static final String COMMO_GIF_PATH = "sprites/tutorial/";
+
     private final JTextPane textPane = new JTextPane();
     private final StyledDocument doc = textPane.getStyledDocument();
     private final Style titleStyle = doc.addStyle("TitleStile", null);
     private final Style textStyle = doc.addStyle("TextStyle", null);
     private final JLabel progress = new JLabel();
-    private final ImageVisualizer image = new ImageVisualizer("/sprites/tutorial/0.png", 2);
+    private final JLabel gif = new JLabel();
     private final JButton buttonLeft = new JButton();
     private final JButton buttonRight = new JButton();
     private final JButton menu = new JButton();
@@ -95,7 +96,7 @@ public final class Tutorial extends JPanel {
         add(buttonRight);
         add(textPane);
         add(progress);
-        add(image);
+        add(gif);
 
         menu.setVisible(false);
         add(menu);
@@ -108,7 +109,7 @@ public final class Tutorial extends JPanel {
         initializeStyles();
 
         progress.setBorder(new EmptyBorder(new Insets(offset, offset, offset, offset)));
-        image.setBorder(new EmptyBorder(new Insets(offset, offset, offset, offset)));
+        gif.setBorder(new EmptyBorder(new Insets(offset, offset, offset, offset)));
 
         buttonLeft.setIcon(Load.icon("left-chevron", 64, 64));
         buttonRight.setIcon(Load.icon("right-chevron", 64, 64));
@@ -123,8 +124,8 @@ public final class Tutorial extends JPanel {
         springLayout.putConstraint(SpringLayout.EAST, textPane, 0, SpringLayout.EAST, this);
         springLayout.putConstraint(SpringLayout.WEST, textPane, 0, SpringLayout.WEST, this);
 
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, image, 0, SpringLayout.HORIZONTAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, image, 0, SpringLayout.VERTICAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, gif, 0, SpringLayout.HORIZONTAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, gif, 0, SpringLayout.VERTICAL_CENTER, this);
 
         springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, buttonLeft, 0, SpringLayout.VERTICAL_CENTER, this);
         springLayout.putConstraint(SpringLayout.WEST, buttonLeft, offset, SpringLayout.WEST, this);
@@ -183,8 +184,9 @@ public final class Tutorial extends JPanel {
         progress.setText(step + 1 + "/" + texts.length);
     }
 
-    public void drawImage(int step) {
-
+    public void setGif(int step) {
+        if (step < texts.length - 1)
+            gif.setIcon(Load.gif(COMMO_GIF_PATH + step));
     }
 
     private void initializeStyles() {
@@ -220,16 +222,24 @@ public final class Tutorial extends JPanel {
         this.step = step;
 
         write(step);
-        drawImage(step);
+        setGif(step);
         advanceProgress(step);
 
         if (step == texts.length - 1) {
             menu.setVisible(true);
-            image.setVisible(false);
+            gif.setVisible(false);
+            buttonRight.setVisible(false);
+            buttonLeft.setVisible(true);
+        }
+        else if (step == 0) {
+            buttonRight.setVisible(true);
+            buttonLeft.setVisible(false);
         }
         else {
             menu.setVisible(false);
-            image.setVisible(true);
+            gif.setVisible(true);
+            buttonRight.setVisible(true);
+            buttonLeft.setVisible(true);
         }
     }
 
