@@ -60,6 +60,16 @@ public final class Load {
     }
 
     /**
+     * @param name il path della gif senza estensione
+     * @return la gif
+     */
+    public static Icon gif(String name) {
+        URL url =  Load.class.getResource("/" + name + ".gif");
+        assert url != null;
+        return new ImageIcon(url);
+    }
+
+    /**
      * @param name il percorso della risorsa
      * @return il font caricato
      */

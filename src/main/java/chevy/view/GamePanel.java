@@ -9,10 +9,7 @@ import chevy.utils.Utils;
 import chevy.view.chamber.ChamberView;
 import chevy.view.hud.HUDView;
 
-import javax.swing.Icon;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SpringLayout;
+import javax.swing.*;
 
 public final class GamePanel extends JPanel {
     public static final Icon restart = Load.icon("Restart", 48, 48);
@@ -39,15 +36,33 @@ public final class GamePanel extends JPanel {
     private static boolean playerDeathDialogActive;
     private static boolean winDialogActive;
     private final HUDView hudView = new HUDView(1.3f);
+    private final Tutorial tutorial;
     private final Window window;
 
     GamePanel(Window window) {
         this.window = window;
         ChamberController.setGamePanel(this);
+        tutorial = new Tutorial(window);
+
         setLayout();
-        add(hudView);
-        add(chamberView);
         setBackground(Window.bg);
+    }
+
+    void addComponents(boolean tutorialBool) {
+        if (tutorialBool) {
+            remove(hudView);
+            remove(chamberView);
+            add(tutorial);
+        }
+        else {
+            remove(tutorial);
+            add(hudView);
+            add(chamberView);
+        }
+
+        revalidate();
+        repaint();
+        setLayout();
     }
 
     public static boolean isPauseDialogNotActive() {return !pauseDialogActive;}
@@ -67,6 +82,12 @@ public final class GamePanel extends JPanel {
         springLayout.putConstraint(SpringLayout.EAST, hudView, 0, SpringLayout.EAST, this);
         springLayout.putConstraint(SpringLayout.WEST, hudView, 0, SpringLayout.WEST, this);
         springLayout.putConstraint(SpringLayout.SOUTH, hudView, 0, SpringLayout.SOUTH, this);
+
+
+        springLayout.putConstraint(SpringLayout.NORTH, tutorial, 0, SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.EAST, tutorial, 0, SpringLayout.EAST, this);
+        springLayout.putConstraint(SpringLayout.WEST, tutorial, 0, SpringLayout.WEST, this);
+        springLayout.putConstraint(SpringLayout.SOUTH, tutorial, 0, SpringLayout.SOUTH, this);
     }
 
     /**
@@ -142,7 +163,12 @@ public final class GamePanel extends JPanel {
                     // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
                     GameLoop.start();
                     Sound.startMusic(Sound.Music.SAME_SONG);
-                    window.setTitle("Chevy");
+
+                    if (window.getScene() == Window.Scene.TUTORIAL) {
+                        window.setTitle("Chevy - Tutorial");
+                    } else {
+                        window.setTitle("Chevy");
+                    }
                 }
             }
             pauseDialogActive = false;
@@ -224,9 +250,13 @@ public final class GamePanel extends JPanel {
         winDialogActive = false;
     }
 
-    public void windowResized(float scale) {hudView.windowResized(scale);}
+    public void windowResized(float scale) {
+        hudView.windowResized(scale);
+    }
 
     public HUDView getHudView() {return hudView;}
 
     public Window getWindow() {return window;}
+
+    public Tutorial getTutorial() { return tutorial; }
 }

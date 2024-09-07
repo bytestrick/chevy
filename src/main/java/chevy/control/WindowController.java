@@ -25,16 +25,8 @@ public final class WindowController extends KeyAdapter implements WindowListener
         this.window = window;
         this.window.addWindowListener(this);
         this.window.addComponentListener(this);
-    }
-
-    public void listenForUserInput(boolean listenForUserInput) {
-        if (listenForUserInput) {
-            window.addKeyListener(this);
-            window.addMouseListener(this);
-        } else {
-            window.removeKeyListener(this);
-            window.removeMouseListener(this);
-        }
+        this.window.addKeyListener(this);
+        this.window.addMouseListener(this);
     }
 
     @Override
@@ -57,9 +49,6 @@ public final class WindowController extends KeyAdapter implements WindowListener
     }
 
     @Override
-    public void keyPressed(KeyEvent keyEvent) {playerController.keyPressed(keyEvent.getKeyCode());}
-
-    @Override
     public void componentResized(ComponentEvent e) {
         Window.updateSize(window.getSize());
         window.getGamePanel().windowResized(Window.scale);
@@ -67,7 +56,17 @@ public final class WindowController extends KeyAdapter implements WindowListener
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-        playerController.mousePressed(mouseEvent.getPoint());
+        if (playerController != null) {
+            playerController.mousePressed(mouseEvent.getPoint());
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent keyEvent) {
+        switch (window.getScene()) {
+            case PLAYING -> playerController.keyPressed(keyEvent);
+            case TUTORIAL -> window.getGamePanel().getTutorial().keyPressed(keyEvent);
+        }
     }
 
     public void setPlayerController(PlayerController playerController) {
