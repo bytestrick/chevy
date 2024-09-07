@@ -66,12 +66,12 @@ public final class Utils {
 
     /**
      * @param ms tempo in millisecondi
-     * @return stringa formattata con questo formato: {@code "%02d ore, %02d minuti, %02d secondi"}
+     * @return stringa formattata con questo formato: {@code "%d h, %d min, %d s"}
      */
     public static String msToString(final int ms) {
         int s = ms / 1000 % 60;
         int min = ms / (1000 * 60) % 60;
         int h = ms / (1000 * 60 * 60) % 24;
-        return String.format("%02d ore, %02d minuti, %02d secondi", h, min, s);
+        return String.format("%d h, %d min, %d s", h, min, s);
     }
 }

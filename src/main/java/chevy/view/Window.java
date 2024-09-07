@@ -26,11 +26,11 @@ import java.awt.Toolkit;
  * Finestra principale
  */
 public final class Window extends JFrame {
-    public final static Color bg = new Color(24, 20, 37);
+    final static Color bg = new Color(24, 20, 37);
     private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private static final Dimension aspectRatio = new Dimension(4, 3);
     private static final Icon icon = Load.icon("Power", 42, 42);
-    public static float scale = .8f; // TODO: questa non è la scala
+    public static float scale = .8f;
     public static Dimension size = new Dimension();
     private static boolean quitDialogActive;
 
@@ -55,10 +55,9 @@ public final class Window extends JFrame {
     private Menu menu = new Menu(this);
     private Scene scene;
 
-    public Window(boolean resizable) {
-        final Color bg = UIManager.getColor("Chevy.color.purpleDark");
-        getRootPane().setBackground(bg);
-        getContentPane().setBackground(bg);
+    public Window() {
+        // Colore dello sfondo della finestra durante il caricamento
+        setBackground(UIManager.getColor("Chevy.color.purpleDark"));
         windowController = new WindowController(this);
         setSize(size);
         setLocationRelativeTo(null);
@@ -68,13 +67,11 @@ public final class Window extends JFrame {
         requestFocus();
         SwingUtilities.invokeLater(() -> { // esecuzione asincrona
             ChamberView.topBarHeight = getInsets().top;
-            setResizable(resizable);
-            if (resizable) {
-                // visto che componentResized() non viene chiamata sempre all'avvio questo
-                // assicura il corretto scale dei componenti
-                updateSize(getSize());
-                gamePanel.windowResized(scale);
-            }
+            setResizable(true);
+            // visto che componentResized() non viene chiamata sempre all'avvio questo
+            // assicura il corretto scale dei componenti
+            updateSize(getSize());
+            gamePanel.windowResized(scale);
         });
         Log.info("Window: creazione terminata [w: " + size.width + ", h: " + size.height + "]");
     }
@@ -103,7 +100,7 @@ public final class Window extends JFrame {
             JDialog.setDefaultLookAndFeelDecorated(true);
         }
         UIManager.put("defaultFont", Load.font("VT323"));
-        new Window(true);
+        new Window();
     }
 
     public static boolean isQuitDialogNotActive() {return !quitDialogActive;}
@@ -141,7 +138,7 @@ public final class Window extends JFrame {
     /**
      * Utile per portare l'app allo stato predefinito
      */
-    public void refresh() {
+    void refresh() {
         menu = new Menu(this);
         gamePanel = new GamePanel(this);
         options = new Options(this);
@@ -155,13 +152,14 @@ public final class Window extends JFrame {
      *
      * @param scene a cui si vuole passare
      */
-    public void setScene(Scene scene) {
+    void setScene(Scene scene) {
         if (this.scene != scene) {
             Log.info("Cambio scena da " + this.scene + " a " + scene);
             final JPanel panel = switch (scene) {
                 case MENU -> {
+                    windowController.listenForUserInput(false);
                     if (this.scene != Scene.OPTIONS) {
-                        Sound.startLoop(true);
+                        Sound.startLoop(Sound.Music.NEW_SONG);
                     }
                     getRootPane().setBackground(menu.getRoot().getBackground());
                     menu.startCharacterAnimation();
@@ -170,11 +168,14 @@ public final class Window extends JFrame {
                     yield menu.getRoot();
                 }
                 case PLAYING -> {
+                    windowController.listenForUserInput(true);
                     getRootPane().setBackground(bg);
                     setTitle("Chevy");
                     yield gamePanel;
                 }
                 case OPTIONS -> {
+                    windowController.listenForUserInput(false);
+                    getRootPane().setBackground(UIManager.getColor("Chevy.color.purpleDark"));
                     setTitle("Chevy - Opzioni");
                     yield options.getRoot();
                 }
@@ -193,7 +194,7 @@ public final class Window extends JFrame {
 
     public WindowController getWindowController() {return windowController;}
 
-    public boolean isQuitDialogActive() {return quitDialogActive;}
+    static boolean isQuitDialogActive() {return quitDialogActive;}
 
     public enum Scene {MENU, PLAYING, OPTIONS}
 }

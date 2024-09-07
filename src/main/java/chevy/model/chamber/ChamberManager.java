@@ -20,7 +20,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Objects;
+import java.net.URL;
 
 /**
  * Gestisce l'insieme di {@link Chamber} nel gioco
@@ -41,7 +41,11 @@ public final class ChamberManager {
     private static BufferedImage loadLayer(int chamber, int layer) {
         final String path = "/chambers/chamber" + chamber + "/layer" + layer + ".png";
         try {
-            return ImageIO.read(Objects.requireNonNull(ChamberManager.class.getResource(path)));
+            final URL input = ChamberManager.class.getResource(path);
+            if (input == null) {
+                return null;
+            }
+            return ImageIO.read(input);
         } catch (NullPointerException ignored) {
             Log.info("La stanza " + chamber + " ha " + layer + " strati");
         } catch (IOException e) {
@@ -133,7 +137,7 @@ public final class ChamberManager {
             // Invalida la view del player corrente
             EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer());
             GameLoop.start();
-            Sound.startMusic(true); // 🎵
+            Sound.startMusic(Sound.Music.NEW_SONG); // 🎵
         }
     }
 

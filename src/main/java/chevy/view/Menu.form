@@ -42,6 +42,7 @@
                   </grid>
                 </constraints>
                 <properties>
+                  <actionCommand value="next"/>
                   <toolTipText value="Personaggio successivo" noi18n="true"/>
                 </properties>
               </component>
@@ -54,6 +55,7 @@
                   </grid>
                 </constraints>
                 <properties>
+                  <actionCommand value="prev"/>
                   <toolTipText value="Personaggio precedente" noi18n="true"/>
                 </properties>
               </component>
@@ -146,6 +148,7 @@
                   </grid>
                 </constraints>
                 <properties>
+                  <actionCommand value="play"/>
                   <selected value="false"/>
                   <text value="&amp;Gioca" noi18n="true"/>
                 </properties>
@@ -159,6 +162,7 @@
                   </grid>
                 </constraints>
                 <properties>
+                  <actionCommand value="quit"/>
                   <text value="&amp;Esci" noi18n="true"/>
                 </properties>
               </component>
@@ -171,6 +175,7 @@
                   </grid>
                 </constraints>
                 <properties>
+                  <actionCommand value="levelChanged" noi18n="true"/>
                   <maximumRowCount value="69"/>
                   <toolTipText value="Seleziona livello" noi18n="true"/>
                 </properties>
@@ -197,6 +202,7 @@
                   </grid>
                 </constraints>
                 <properties>
+                  <actionCommand value="options"/>
                   <toolTipText value="Opzioni" noi18n="true"/>
                 </properties>
               </component>
@@ -276,6 +282,7 @@
                       </grid>
                     </constraints>
                     <properties>
+                      <actionCommand value="unlock"/>
                       <text value="&amp;Sblocca" noi18n="true"/>
                     </properties>
                   </component>

@@ -8,7 +8,7 @@ public final  class ChestController {
     private final Chamber chamber;
     private final HUDController hudController;
 
-    public ChestController(Chamber chamber, HUDController hudController) {
+    ChestController(Chamber chamber, HUDController hudController) {
         this.chamber = chamber;
         this.hudController = hudController;
     }
@@ -17,7 +17,7 @@ public final  class ChestController {
         if (chamber.getDirectionToHitPlayer(chest) != null) {
             if (chest.checkAndChangeState(Chest.State.OPEN)) {
                 if (chest.isFirstOpen()) {
-                    chamber.spawnCollectableAroundChest(chest, chest.getSpawnQuantity());
+                    chamber.spawnCollectableAroundChest(chest, Chest.getSpawnQuantity());
                 }
             }
             if (hudController.getKeys() > 0 && chest.checkAndChangeState(Chest.State.UNLOCK)) {

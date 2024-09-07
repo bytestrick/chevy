@@ -9,7 +9,7 @@ import java.awt.Toolkit;
  */
 public final class GameLoop {
     /** FPS ottimali del gioco */
-    public static final int TARGET_FRAME_RATE = 60;
+    private static final int TARGET_FRAME_RATE = 60;
     private static final Thread.Builder.OfPlatform worker =
             Thread.ofPlatform().priority(Thread.MAX_PRIORITY);
     private static final Object mutex = new Object();
@@ -45,7 +45,7 @@ public final class GameLoop {
                 isPaused = true;
                 mutex.notify();
                 // narrowing conversion
-                Integer value = Long.valueOf(System.currentTimeMillis() - timeStarted).intValue();
+                final int value = Long.valueOf(System.currentTimeMillis() - timeStarted).intValue();
                 Data.increase("stats.time.played.count", value);
             }
         }

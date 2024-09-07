@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
 public final class GamePanel extends JPanel {
-    public static final Icon caution = Load.icon("caution", 48, 48);
     public static final Icon restart = Load.icon("Restart", 48, 48);
+    static final Icon caution = Load.icon("caution", 48, 48);
     private static final Icon playPause = Load.icon("PlayPause", 48, 48);
     private static final Icon skull = Load.icon("Skull", 48, 48);
     private static final Icon trophy = Load.icon("Trophy", 48, 48);
@@ -25,7 +25,7 @@ public final class GamePanel extends JPanel {
             "Complimenti, hai vinto un biglietto per l'aldilà! Prossima fermata: riprova!",
             "Sembra che il tuo personaggio abbia deciso di prendersi una pausa... dalla vita.",
             "Ecco un esempio perfetto di cosa NON fare. Riprovaci!",
-            "Il tuo personaggio ha appena scoperto il modo più veloce per tornare al menu principale!",
+            "Il tuo personaggio ha appena scoperto il modo più veloce per tornare al menu!",
             "Se ti consola, anche i bot rideranno di questa mossa!"};
     private static final String[] winMessages = new String[] {
             "Grandioso! Ogni mossa è stata perfetta, livello conquistato!",
@@ -41,7 +41,7 @@ public final class GamePanel extends JPanel {
     private final HUDView hudView = new HUDView(1.3f);
     private final Window window;
 
-    public GamePanel(Window window) {
+    GamePanel(Window window) {
         this.window = window;
         ChamberController.setGamePanel(this);
         setLayout();
@@ -51,6 +51,8 @@ public final class GamePanel extends JPanel {
     }
 
     public static boolean isPauseDialogNotActive() {return !pauseDialogActive;}
+
+    public static ChamberView getChamberView() {return chamberView;}
 
     private void setLayout() {
         SpringLayout springLayout = new SpringLayout();
@@ -71,7 +73,8 @@ public final class GamePanel extends JPanel {
      * Dialogo di pausa del gioco. È innescato dalla pressione di ESC.
      */
     public void pauseDialog() {
-        if (!(pauseDialogActive || playerDeathDialogActive || winDialogActive || window.isQuitDialogActive())) {
+        if (!(pauseDialogActive || playerDeathDialogActive || winDialogActive
+                || Window.isQuitDialogActive())) {
             pauseDialogActive = true;
             window.setTitle("Chevy - Pausa");
             GameLoop.stop();
@@ -96,6 +99,7 @@ public final class GamePanel extends JPanel {
                 }
                 case 2 -> {
                     Sound.play(Sound.Effect.BUTTON);
+                    Sound.play(Sound.Effect.STOP);
                     final String msg = "Ricominciando il livello perderai il progresso. " +
                             "Continuare?";
                     final int subAns = JOptionPane.showOptionDialog(window, msg, null,
@@ -113,6 +117,7 @@ public final class GamePanel extends JPanel {
                     }
                 }
                 case 3 -> {
+                    Sound.play(Sound.Effect.STOP);
                     Sound.play(Sound.Effect.BUTTON);
                     final String msg = "Se torni al menù perderai il progresso. Continuare?";
                     final int subAns = JOptionPane.showOptionDialog(window, msg, null,
@@ -136,7 +141,7 @@ public final class GamePanel extends JPanel {
                     }
                     // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
                     GameLoop.start();
-                    Sound.startMusic(false);
+                    Sound.startMusic(Sound.Music.SAME_SONG);
                     window.setTitle("Chevy");
                 }
             }
@@ -188,7 +193,7 @@ public final class GamePanel extends JPanel {
         String[] option = new String[]{"Esci", "Rigioca", "Torna al menù", "Prossimo livello"};
         int defaultOption = 3;
         if (ChamberManager.isLastChamber()) {
-            option = new String[]{"Esci", "Rigioca livello", "Torna al menù"};
+            option = new String[]{"Esci", "Rigioca", "Torna al menù"};
             defaultOption = 2;
         }
         switch (JOptionPane.showOptionDialog(window,
@@ -220,8 +225,6 @@ public final class GamePanel extends JPanel {
     }
 
     public void windowResized(float scale) {hudView.windowResized(scale);}
-
-    public ChamberView getChamberView() {return chamberView;}
 
     public HUDView getHudView() {return hudView;}
 

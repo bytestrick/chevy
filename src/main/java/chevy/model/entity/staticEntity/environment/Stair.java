@@ -19,11 +19,9 @@ public class Stair extends Environment {
 
     public Stair(Vector2<Integer> initVelocity, Direction directions) {
         super(initVelocity, Type.STAIR);
-
         this.directions = directions;
-        this.crossable = true;
-        this.mustBeUpdate = true;
-
+        crossable = true;
+        shouldUpdate = true;
         initStateMachine();
     }
 
