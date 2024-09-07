@@ -242,7 +242,7 @@ public final class Menu {
             levelSelector.hidePopup();
             levelSelector.setSelectedIndex(level);
             Sound.play(Sound.Effect.STOP);
-            JOptionPane.showMessageDialog(window, "Il livello " + (i + 1) + " è bloccato.", null,
+            JOptionPane.showMessageDialog(window, "Il livello " + i + " è bloccato.", null,
                     JOptionPane.WARNING_MESSAGE, ex);
             SwingUtilities.invokeLater(levelSelector::showPopup);
         }

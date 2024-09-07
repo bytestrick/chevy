@@ -185,6 +185,7 @@ public final class Window extends JFrame {
                     }
                     setTitle("Chevy - Tutorial");
                     gamePanel.addComponents(true);
+                    getRootPane().setBackground(bg);
                     yield gamePanel;
                 }
             };

@@ -21,7 +21,7 @@ public final class Tutorial extends JPanel {
     private static final Color TEXT_COLOR = new Color(188, 188, 188, 255);
 
 
-    private String[] title = new String[] {
+    private static final String[] title = new String[] {
             "Benvenuto in Chevy!\n",
             "Ora, passiamo agli attacchi!\n",
             "Oggetti da raccogliere\n",
@@ -38,9 +38,9 @@ public final class Tutorial extends JPanel {
             "Fine del tutorial\n"
     };
 
-    private String[] texts = new String[] {
-            "Utilizza i tasti \"W\", \"A\", \"S\", \"D\" oppure le frecce direzionali per muoverti nel gioco.",
-            "Premi i tasti \"J\", \"I\", \"K\", \"L\" per attaccare i nemici. Ricorda: l'attacco è la tua migliore difesa!",
+    private static final String[] texts = new String[] {
+            "Utilizza i tasti “W”, “A”, “S”, “D” oppure le frecce direzionali per muoverti nel gioco.",
+            "Premi i tasti “J”, “I”, “K”, “L” per attaccare i nemici. Ricorda: l'attacco è la tua migliore difesa!",
             "Durante la tua avventura, incontrerai diversi oggetti utili. Inizia raccogliendo le monete; accumulandone abbastanza, potrai sbloccare nuovi personaggi.",
             "Le pozioni di cura sono fondamentali per ripristinare la tua vita durante le battaglie. A volte, puoi ottenerle dopo aver eliminato i nemici.",
             "I potenziamenti sono oggetti speciali che ti conferiscono abilità straordinarie, rendendoti più potente nel corso del gioco. Usali saggiamente!",
@@ -51,8 +51,8 @@ public final class Tutorial extends JPanel {
             "La botola si apre una volta che ci sei passato sopra. Attento a non caderci dentro.",
             "I totem lanciano frecce appuntite a intervalli regolari. Impara a schivarle per evitare danni. Sii veloce!",
             "La scala è l'unica via d'uscita dalla stanza. Tuttavia, si aprirà solo dopo che avrai eliminato tutti i nemici. Preparati alla battaglia!",
-            "Il gioco può essere messo in pausa premendo il tasto \"Esc\". Prenditi una pausa se hai bisogno di riflettere!",
-            "Hai completato il tutorial. Ora sei pronto ad affrontare il resto del gioco.\nBuona fortuna!"
+            "Il gioco può essere messo in pausa premendo il tasto “Esc”. Prenditi una pausa se hai bisogno di riflettere!",
+            "Hai completato il tutorial. Ora sei pronto ad affrontare il resto del gioco.\n\nBuona fortuna!"
     };
 
     private static final String COMMO_GIF_PATH = "sprites/tutorial/";
@@ -133,11 +133,7 @@ public final class Tutorial extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Sound.play(Sound.Effect.BUTTON);
-                if (step > 0) {
-                    --step;
-                    updateDraw(step);
-                }
-
+                stepBack();
                 window.requestFocus(); // altrimenti il focus rimane sul pulsante e non si può più premere 'esc'
             }
         });
@@ -146,11 +142,7 @@ public final class Tutorial extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Sound.play(Sound.Effect.BUTTON);
-                if (step < texts.length - 1) {
-                    ++step;
-                    updateDraw(step);
-                }
-
+                stepAhead();
                 window.requestFocus(); // altrimenti il focus rimane sul pulsante e non si può più premere 'esc'
             }
         });
@@ -167,6 +159,21 @@ public final class Tutorial extends JPanel {
             }
         });
     }
+
+    private void stepAhead() {
+        if (step < texts.length - 1) {
+            ++step;
+            updateDraw(step);
+        }
+    }
+
+    private void stepBack() {
+        if (step > 0) {
+            --step;
+            updateDraw(step);
+        }
+    }
+
 
     public void advanceProgress(int step) {
         progress.setText(step + 1 + "/" + texts.length);
@@ -232,7 +239,10 @@ public final class Tutorial extends JPanel {
 
     public void keyPressed(KeyEvent keyEvent) {
         final int key = keyEvent.getKeyCode();
-        if (key == KeyEvent.VK_ESCAPE)
-            window.getGamePanel().pauseDialog();
+        switch (key) {
+            case KeyEvent.VK_ESCAPE -> window.getGamePanel().pauseDialog();
+            case KeyEvent.VK_RIGHT -> stepAhead();
+            case KeyEvent.VK_LEFT -> stepBack();
+        }
     }
 }
