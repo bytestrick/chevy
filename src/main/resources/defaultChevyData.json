@@ -122,82 +122,82 @@
         "specific": {
           "agility": {
             "count": 0,
-            "string": "Potenziamenti \"Agilità\" raccolti",
+            "string": "Potenziamenti “Agilità” raccolti",
             "icon": "agility"
           },
           "angelRing": {
             "count": 0,
-            "string": "Potenziamenti \"Anelli dell'Angelo\" raccolti",
+            "string": "Potenziamenti “Anelli dell'Angelo” raccolti",
             "icon": "angelRing"
           },
           "brokenArrows": {
             "count": 0,
-            "string": "Potenziamenti \"Spezza Frecce\" raccolti",
+            "string": "Potenziamenti “Spezza Frecce” raccolti",
             "icon": "brokenArrows"
           },
           "coinOfGreed": {
             "count": 0,
-            "string": "Potenziamenti \"Avido di Monete\" raccolti",
+            "string": "Potenziamenti “Avido di Monete” raccolti",
             "icon": "coinOfGreed"
           },
           "coldHeart": {
             "count": 0,
-            "string": "Potenziamenti \"Cuore di Ghiaccio\" raccolti",
+            "string": "Potenziamenti “Cuore di Ghiaccio” raccolti",
             "icon": "coldHeart"
           },
           "goldenArrows": {
             "count": 0,
-            "string": "Potenziamenti \"Frecce Dorate\" raccolti",
+            "string": "Potenziamenti “Frecce Dorate” raccolti",
             "icon": "goldenArrows"
           },
           "healingFlood": {
             "count": 0,
-            "string": "Potenziamenti \"Inondazione Curativa\" raccolti",
+            "string": "Potenziamenti “Inondazione Curativa” raccolti",
             "icon": "healingFlood"
           },
           "hedgehogSpines": {
             "count": 0,
-            "string": "Potenziamenti \"Aculei di Riccio\" raccolti",
+            "string": "Potenziamenti “Aculei di Riccio” raccolti",
             "icon": "hedgehogSpines"
           },
           "hobnailBoots": {
             "count": 0,
-            "string": "Potenziamenti \"Stivali Chiodati\" raccolti",
+            "string": "Potenziamenti “Stivali Chiodati” raccolti",
             "icon": "hobnailBoots"
           },
           "holyShield": {
             "count": 0,
-            "string": "Potenziamenti \"Scudo Sacro\" raccolti",
+            "string": "Potenziamenti “Scudo Sacro” raccolti",
             "icon": "holyShield"
           },
           "hotHeart": {
             "count": 0,
-            "string": "Potenziamenti \"Cuore di Fuoco\" raccolti",
+            "string": "Potenziamenti “Cuore di Fuoco” raccolti",
             "icon": "hotHeart"
           },
           "keySKeeper": {
             "count": 0,
-            "string": "Potenziamenti \"Guardiano delle chiavi\" raccolti",
+            "string": "Potenziamenti “Guardiano delle Chiavi” raccolti",
             "icon": "keySKeeper"
           },
           "longSword": {
             "count": 0,
-            "string": "Potenziamenti \"Spada Lunga\" raccolti",
+            "string": "Potenziamenti “Spada Lunga” raccolti",
             "icon": "longSword"
           },
           "slimePiece": {
             "count": 0,
-            "string": "Potenziamenti \"Pezzo di Slime\" raccolti",
+            "string": "Potenziamenti “Pezzo di Slime” raccolti",
             "icon": "slimePiece"
           },
           "stoneBoots": {
             "count": 0,
-            "string": "Potenziamenti \"Stivali di pietra\" raccolti",
+            "string": "Potenziamenti “Stivali di Pietra” raccolti",
             "icon": "stoneBoots"
           },
           "vampireFangs": {
             "count": 0,
-            "string": "Potenziamenti \"Zanne di Vampiro\" raccolte",
+            "string": "Potenziamenti “Zanne di Vampiro” raccolte",
             "icon": "vampireFangs"
           }
         }
