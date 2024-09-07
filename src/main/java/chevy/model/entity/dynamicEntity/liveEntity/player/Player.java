@@ -12,7 +12,7 @@ import java.util.Map;
 
 public abstract class Player extends LiveEntity {
     private final Type type;
-    protected float speed = 0f;
+    protected float speed;
     protected Map<PowerUp.Type, PowerUp> ownedPowerUp = new HashMap<>();
 
     public Player(Vector2<Integer> initPosition, Type type) {
@@ -25,30 +25,28 @@ public abstract class Player extends LiveEntity {
     public boolean acquirePowerUp(PowerUp.Type powerUpType, PowerUp powerUp) {
         if (!ownedPowerUp.containsKey(powerUpType)) {
             ownedPowerUp.put(powerUpType, powerUp);
-            Log.info(this + " acquire the power up " + powerUpType);
+            Log.info(this + " acquires the power up " + powerUpType);
             return true;
         }
         return false;
     }
 
-    public int[] getStats() { return new int[]{health * 10, shield * 10, maxDamage * 10, 100 - (int) (speed * 100)}; }
-
-    public PowerUp getOwnedPowerUp(PowerUp.Type powerUpType) { return ownedPowerUp.get(powerUpType); }
-
-    @Override
-    public Type getSpecificType() { return type; }
-
-    @Override
-    public CommonEntityType getGenericType() { return super.getSpecificType(); }
-
-    @Override
-    public String toString() { return type.toString(); }
-
-    public enum State implements CommonState {
-        IDLE, ATTACK, MOVE, DEAD, HIT, SLUDGE, FALL, GLIDE
+    public int[] getStats() {
+        return new int[]{health * 10, shield * 10, maxDamage * 10, 100 - (int) (speed * 100)};
     }
 
-    public enum Type implements CommonEntityType {
-        KNIGHT, ARCHER, NINJA
-    }
+    public PowerUp getOwnedPowerUp(PowerUp.Type powerUpType) {return ownedPowerUp.get(powerUpType);}
+
+    @Override
+    public Type getSpecificType() {return type;}
+
+    @Override
+    public CommonEntityType getGenericType() {return super.getSpecificType();}
+
+    @Override
+    public String toString() {return type.toString();}
+
+    public enum State implements CommonState {IDLE, ATTACK, MOVE, DEAD, HIT, SLUDGE, FALL, GLIDE}
+
+    public enum Type implements CommonEntityType {KNIGHT, ARCHER, NINJA}
 }

@@ -11,13 +11,10 @@ public abstract class DynamicEntity extends Entity {
     public DynamicEntity(Vector2<Integer> initPosition, Type type) {
         super(initPosition, Entity.Type.DYNAMIC);
         this.type = type;
-
-        this.mustBeUpdate = true;
+        shouldUpdate = true;
     }
 
-    public void changePosition(Vector2<Integer> velocity) {
-        this.position.change(velocity);
-    }
+    public void changePosition(Vector2<Integer> velocity) {position.change(velocity);}
 
     public Direction getDirection() {return direction;}
 
@@ -32,7 +29,5 @@ public abstract class DynamicEntity extends Entity {
     @Override
     public String toString() {return "DYNAMIC ENTITY";}
 
-    public enum Type implements CommonEntityType {
-        LIVE_ENTITY, PROJECTILE
-    }
+    public enum Type implements CommonEntityType {LIVE_ENTITY, PROJECTILE}
 }

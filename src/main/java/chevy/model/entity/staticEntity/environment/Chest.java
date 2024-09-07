@@ -18,16 +18,12 @@ public final class Chest extends Environment {
     private final Vertex open = new Vertex(State.OPEN, 0.8f);
     private final Vertex unlock = new Vertex(State.UNLOCK, 0.3f);
     private final Vertex close = new Vertex(State.CLOSE, 0.8f);
-    private final int maxDrop = 6;
-    private final int minDrop = 3;
-    private boolean onePowerUp = false;
+    private boolean onePowerUp;
     private boolean isFirstOpen = true;
 
     public Chest(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.CHEST);
-
-        this.mustBeUpdate = true;
-
+        shouldUpdate = true;
         initStateMachine();
     }
 
@@ -35,11 +31,11 @@ public final class Chest extends Environment {
         stateMachine.setStateMachineName("Chest");
         stateMachine.setInitialState(idleLocked);
 
-        idleLocked.linkState(unlock);
-        unlock.linkState(open);
-        open.linkState(close);
-        close.linkState(idleUnlocked);
-        idleUnlocked.linkState(open);
+        idleLocked.linkVertex(unlock);
+        unlock.linkVertex(open);
+        open.linkVertex(close);
+        close.linkVertex(idleUnlocked);
+        idleUnlocked.linkVertex(open);
     }
 
     public Collectable.Type getDrop() {
@@ -59,7 +55,8 @@ public final class Chest extends Environment {
         return DROPPABLE_COLLECTABLE[index];
     }
 
-    public int getSpawnQuantity() {
+    public static int getSpawnQuantity() {
+        final int minDrop = 3, maxDrop = 6;
         return Utils.random.nextInt(minDrop, maxDrop + 1);
     }
 

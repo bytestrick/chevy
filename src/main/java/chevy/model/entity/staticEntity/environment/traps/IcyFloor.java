@@ -10,17 +10,16 @@ public class IcyFloor extends Trap {
 
     public IcyFloor(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.ICY_FLOOR);
-        this.mustBeUpdate = true;
-
+        shouldUpdate = true;
         initStateMachine();
     }
 
     private void initStateMachine() {
-//        stateMachine.setStateMachineName("Icy floor");
+        stateMachine.setStateMachineName("Icy floor");
         stateMachine.setInitialState(icyFloor);
 
-        icyFloor.linkState(icyFloorSparkling);
-        icyFloorSparkling.linkState(icyFloor);
+        icyFloor.linkVertex(icyFloorSparkling);
+        icyFloorSparkling.linkVertex(icyFloor);
     }
 
     public synchronized Vertex getState(CommonState commonEnumStates) {

@@ -26,15 +26,15 @@ public final class Beetle extends Enemy {
         stateMachine.setStateMachineName("Beetle");
         stateMachine.setInitialState(idle);
 
-        idle.linkState(move);
-        idle.linkState(attack);
-        idle.linkState(hit);
-        move.linkState(idle);
-        move.linkState(hit);
-        attack.linkState(idle);
-        attack.linkState(hit);
-        hit.linkState(idle);
-        hit.linkState(dead);
+        idle.linkVertex(move);
+        idle.linkVertex(attack);
+        idle.linkVertex(hit);
+        move.linkVertex(idle);
+        move.linkVertex(hit);
+        attack.linkVertex(idle);
+        attack.linkVertex(hit);
+        hit.linkVertex(idle);
+        hit.linkVertex(dead);
     }
 
     @Override

@@ -27,7 +27,7 @@ public final class Arrow extends Projectile {
         stateMachine.setStateMachineName("Arrow");
         stateMachine.setInitialState(loop);
 
-        loop.linkState(end);
+        loop.linkVertex(end);
     }
 
     public Vertex getState(CommonState commonState) {

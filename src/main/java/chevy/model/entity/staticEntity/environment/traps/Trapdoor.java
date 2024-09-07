@@ -11,13 +11,10 @@ public class Trapdoor extends Trap {
 
     public Trapdoor(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.TRAPDOOR);
-
-        this.maxDamage = 1;
-        this.minDamage = 1;
-
-        this.mustBeUpdate = true;
-        this.safeToCross = true;
-
+        maxDamage = 1;
+        minDamage = 1;
+        shouldUpdate = true;
+        safeToCross = true;
         initStateMachine();
     }
 
@@ -25,13 +22,11 @@ public class Trapdoor extends Trap {
         stateMachine.setStateMachineName("Trapdoor");
         stateMachine.setInitialState(idle);
 
-        idle.linkState(open);
-        open.linkState(damage);
+        idle.linkVertex(open);
+        open.linkVertex(damage);
     }
 
-    public void activated() {
-        safeToCross = false;
-    }
+    public void activated() {safeToCross = false;}
 
     public synchronized Vertex getState(CommonState commonEnumStates) {
         EnumState trapdoorState = (EnumState) commonEnumStates;
@@ -42,7 +37,5 @@ public class Trapdoor extends Trap {
         };
     }
 
-    public enum EnumState implements CommonState {
-        IDLE, OPEN, DAMAGE
-    }
+    public enum EnumState implements CommonState {IDLE, OPEN, DAMAGE}
 }

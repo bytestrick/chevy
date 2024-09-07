@@ -11,8 +11,6 @@ public final class HUDView extends JPanel {
     private final PlayerInfo playerInfo;
     private final PowerUpText powerUpText;
     private final SpringLayout springLayout;
-    private final int borderMargin = 10;
-    private final int componentMargin = 5;
 
     public HUDView(float scale) {
         coinBar = new CoinBar(64, 12, scale);
@@ -34,21 +32,31 @@ public final class HUDView extends JPanel {
     }
 
     private void setConstraints(float scale) {
+        int borderMargin = 10;
         int borderMarginScaled = (int) (borderMargin * scale);
+        int componentMargin = 5;
         int componentMarginScaled = (int) (componentMargin * scale);
 
-        springLayout.putConstraint(SpringLayout.NORTH, coinBar, borderMarginScaled, SpringLayout.NORTH, this);
-        springLayout.putConstraint(SpringLayout.EAST, coinBar, -borderMarginScaled, SpringLayout.EAST, this);
+        springLayout.putConstraint(SpringLayout.NORTH, coinBar, borderMarginScaled,
+                SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.EAST, coinBar, -borderMarginScaled,
+                SpringLayout.EAST, this);
 
-        springLayout.putConstraint(SpringLayout.NORTH, keyBar, componentMarginScaled, SpringLayout.SOUTH, coinBar);
-        springLayout.putConstraint(SpringLayout.EAST, keyBar, -borderMarginScaled, SpringLayout.EAST, this);
+        springLayout.putConstraint(SpringLayout.NORTH, keyBar, componentMarginScaled,
+                SpringLayout.SOUTH, coinBar);
+        springLayout.putConstraint(SpringLayout.EAST, keyBar, -borderMarginScaled,
+                SpringLayout.EAST, this);
 
-        springLayout.putConstraint(SpringLayout.NORTH, playerInfo, borderMarginScaled, SpringLayout.NORTH, this);
-        springLayout.putConstraint(SpringLayout.WEST, playerInfo, borderMarginScaled, SpringLayout.WEST, this);
+        springLayout.putConstraint(SpringLayout.NORTH, playerInfo, borderMarginScaled,
+                SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.WEST, playerInfo, borderMarginScaled,
+                SpringLayout.WEST, this);
 
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, powerUpText, 0, SpringLayout.HORIZONTAL_CENTER,
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, powerUpText, 0,
+                SpringLayout.HORIZONTAL_CENTER,
                 this);
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, powerUpText, 0, SpringLayout.VERTICAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, powerUpText, 0,
+                SpringLayout.VERTICAL_CENTER, this);
     }
 
     public void windowResized(float scale) {
@@ -59,19 +67,11 @@ public final class HUDView extends JPanel {
         setConstraints(scale);
     }
 
-    public PowerUpText getPowerUpText() {
-        return powerUpText;
-    }
+    public PowerUpText getPowerUpText() {return powerUpText;}
 
-    public PlayerInfo getPlayerInfo() {
-        return playerInfo;
-    }
+    public PlayerInfo getPlayerInfo() {return playerInfo;}
 
-    public CoinBar getCoinBar() {
-        return coinBar;
-    }
+    public CoinBar getCoinBar() {return coinBar;}
 
-    public KeyBar getKeyBar() {
-        return keyBar;
-    }
+    public KeyBar getKeyBar() {return keyBar;}
 }

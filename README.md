@@ -17,60 +17,6 @@ Il menù principale usa una palette **monocromatica** basata sul viola (`HSB(280
 
 ![Palette image](src/main/resources/style/palette.png)
 
-### Cose
-
-- I nemici:
-  - [x] Wraith
-  - [x] Zombie
-  - [x] Slime
-  - [x] Big slime
-  - [x] Beetle
-  - [x] Skeleton
-- e le trappole:
-  - [x] Spiked floor
-  - [x] Icy floor
-  - [x] Sludge
-- [x] Aggiungere le animazioni al Player (ho messo alcuni archivi con delle immagini di player) (Attenzione la durata delle animazioni deve corrispondere alla durata dello stato a meno che non si imposti `loop = true` nell'`AnimatedSprite` per info guardare la classe `BeetleView`)
-- [ ] le impostazioni per gestire l'audio e i parametri per il resize
-- [x] la classe per gestire l'audio
-- [ ] la gestione dei livelli: passaggio da un livello all'altro (quando si prendono le scale)
-- [ ] salvataggio delle informazioni dei livelli e delle impostazioni (livello bloccato/completato)
-- [x] Problemi relativi all'attacco
-    - Il giocatore può solo sferrare attacchi quando è adiacente al nemico.
-    - Sferrare gli attacchi tramite i tasti usati per il movimento è inusuale.
-    - La direzione del giocatore non si aggiorna in base alla direzione
-      dell'attacco. Esempio: se il giocatore è rivolto verso l'alto è attacca
-      a sinistra, l'attacco sembra venire rivolto verso l'alto.
-    - Questi tre punti si possono risolvere introducendo dei tasti appositi per
-      l'attacco: `ijkl`. in modo tale che sia supportato anche l'attacco a
-      distanza e il cambio di direzione.
-
-Sono stati tutti implementati sia la parte relativa a model e sia la parte relativa alla view.
-
-La classe `GameSettings` contiene informazioni utili sulle impostazioni di gioco.
-
-La classe `WindowSettings` contiene informazioni utili sul far diventare la finestra e il gioco responsive.
-
-Le classi nel package `chamber` gestiscono il caricamento delle stanze nel gioco, mentre, `chamber/drawOrder` gestisce l'ordine con cui le entità devono essere ridisegnate
-
-Le classi dentro al package `pathFinding` gestiscono la logica per trovare il cammino di costo minimo (in modo euristico)
-
-Le classi dentro al package `stateMachine` implementano la macchina a stati finiti
-
-Le classi dentro il package `entity` sono tutte funzionanti (a patto di bug) tranne:
-- `entity/projectile/Arrow` (l'implementazione dovrebbe essere uguale a quella fatta per `entity/projectTile/SlimeShot` da cambiare solo le imaggini che compongono le animazioni per il relativa classe della view. I frame per l'Arrow sono in `chevy/res/asset/projectile/arrow`), tale proiettile viene usato dalla trappola Totem
-- `entity/StaticEntity/Environment/Trap/`
-  - `Totem`
-  - `TrapDoor`
-  - `Void` (dovrebbe funzionare ma non l'ho testata)
-- `entity/StaticEntity/Environment/`
-  - `Barrier`
-  - `Chest`
-- `entity/StaticEntity/PowerUp`
-  - nessun `powerUp` é stato implementato
-
-Possibili cose da evitare: non implementare i power up e le chests.
-
 ### Entità
 
 ```mermaid

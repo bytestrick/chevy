@@ -37,30 +37,30 @@ public final class Ninja extends Player {
     }
 
     private void initStateMachine() {
-        idle.linkState(move);
-        idle.linkState(attack);
-        idle.linkState(hit);
-        idle.linkState(fall);
-        hit.linkState(idle);
-        hit.linkState(dead);
-        hit.linkState(move);
-        move.linkState(glide);
-        move.linkState(hit);
-        move.linkState(fall);
-        move.linkState(sludge);
-        move.linkState(idle);
-        move.linkState(attack);
-        attack.linkState(idle);
-        attack.linkState(move);
-        attack.linkState(hit);
-        glide.linkState(idle);
-        glide.linkState(fall);
-        glide.linkState(hit);
-        glide.linkState(sludge);
-        sludge.linkState(idle);
-        fall.linkState(idle);
-        fall.linkState(hit);
-        fall.linkState(dead);
+        idle.linkVertex(move);
+        idle.linkVertex(attack);
+        idle.linkVertex(hit);
+        idle.linkVertex(fall);
+        hit.linkVertex(idle);
+        hit.linkVertex(dead);
+        hit.linkVertex(move);
+        move.linkVertex(glide);
+        move.linkVertex(hit);
+        move.linkVertex(fall);
+        move.linkVertex(sludge);
+        move.linkVertex(idle);
+        move.linkVertex(attack);
+        attack.linkVertex(idle);
+        attack.linkVertex(move);
+        attack.linkVertex(hit);
+        glide.linkVertex(idle);
+        glide.linkVertex(fall);
+        glide.linkVertex(hit);
+        glide.linkVertex(sludge);
+        sludge.linkVertex(idle);
+        fall.linkVertex(idle);
+        fall.linkVertex(hit);
+        fall.linkVertex(dead);
 
         stateMachine.setStateMachineName("Ninja");
         stateMachine.setInitialState(idle);
