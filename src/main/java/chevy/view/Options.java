@@ -39,7 +39,8 @@ import static chevy.view.GamePanel.caution;
 
 public final class Options {
     private static final Icon basket = Load.icon("Basket");
-    private static final Icon home = Load.icon("Home"), gamePad = Load.icon("GamePad");
+    static final Icon home = Load.icon("Home");
+    private static final Icon gamePad = Load.icon("GamePad");
     private static final Icon speaker = Load.icon("SpeakerOn"), speakerMute = Load.icon(
             "SpeakerMute"), notes = Load.icon("MusicNotes");
     private final Window window;
@@ -181,6 +182,8 @@ public final class Options {
             back.setIcon(gamePad);
             getStats(Data.get("stats"), null, -2);
             message += "gioco";
+        } else if (scene == Window.Scene.TUTORIAL) {
+            message += "tutorial";
         } else {
             back.setIcon(home);
             message += "menù";

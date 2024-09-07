@@ -46,6 +46,7 @@ public final class GameLoop {
                 mutex.notify();
                 // narrowing conversion
                 final int value = Long.valueOf(System.currentTimeMillis() - timeStarted).intValue();
+                assert value > 0 : "Tempo di gioco negativo: " + value;
                 Data.increase("stats.time.played.count", value);
             }
         }

@@ -79,11 +79,10 @@ public final class PlayerController implements Update {
 
     /**
      * Gestisce gli eventi di pressione dei tasti, convertendo il codice del tasto in una direzione.
-     *
-     * @param key il tasto premuto
      */
-    void keyPressed(final int key) {
+    void keyPressed(final KeyEvent keyEvent) {
         final CommonState currentPlayerState = player.getCurrentState();
+        final int key = keyEvent.getKeyCode();
         if (key == KeyEvent.VK_ESCAPE) {
             gamePanel.pauseDialog();
         } else if (currentPlayerState != Player.State.DEAD

@@ -157,7 +157,6 @@ public final class Window extends JFrame {
             Log.info("Cambio scena da " + this.scene + " a " + scene);
             final JPanel panel = switch (scene) {
                 case MENU -> {
-                    windowController.listenForUserInput(false);
                     if (this.scene != Scene.OPTIONS) {
                         Sound.startLoop(Sound.Music.NEW_SONG);
                     }
@@ -168,16 +167,24 @@ public final class Window extends JFrame {
                     yield menu.getRoot();
                 }
                 case PLAYING -> {
-                    windowController.listenForUserInput(true);
                     getRootPane().setBackground(bg);
                     setTitle("Chevy");
+                    gamePanel.addComponents(false);
                     yield gamePanel;
                 }
                 case OPTIONS -> {
-                    windowController.listenForUserInput(false);
                     getRootPane().setBackground(UIManager.getColor("Chevy.color.purpleDark"));
                     setTitle("Chevy - Opzioni");
                     yield options.getRoot();
+                }
+                case TUTORIAL -> {
+                    if (this.scene != Scene.MENU) {
+                        Sound.startMusic(Sound.Music.SAME_SONG);
+                    }
+                    setTitle("Chevy - Tutorial");
+                    gamePanel.addComponents(true);
+                    getRootPane().setBackground(bg);
+                    yield gamePanel;
                 }
             };
             options.setupReturnAction(this.scene);
@@ -196,5 +203,5 @@ public final class Window extends JFrame {
 
     static boolean isQuitDialogActive() {return quitDialogActive;}
 
-    public enum Scene {MENU, PLAYING, OPTIONS}
+    public enum Scene {MENU, PLAYING, OPTIONS, TUTORIAL}
 }

@@ -209,7 +209,8 @@ public final class Menu {
         levelSelector.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         levelSelector.setRenderer(new LevelSelectorRenderer());
         LevelSelectorRenderer.setEnabledInterval(Data.get("progress.lastUnlockedLevel"));
-        for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS + 1; ++i) {
+        levelSelector.addItem("Tutorial");
+        for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS; ++i) {
             levelSelector.addItem("Livello " + i);
         }
         final Font menuFont = UIManager.getFont("defaultFont").deriveFont(35f);
@@ -243,7 +244,7 @@ public final class Menu {
             levelSelector.hidePopup();
             levelSelector.setSelectedIndex(level);
             Sound.play(Sound.Effect.STOP);
-            JOptionPane.showMessageDialog(window, "Il livello " + (i + 1) + " è bloccato.", null,
+            JOptionPane.showMessageDialog(window, "Il livello " + i + " è bloccato.", null,
                     JOptionPane.WARNING_MESSAGE, ex);
             SwingUtilities.invokeLater(levelSelector::showPopup);
         }
@@ -279,10 +280,16 @@ public final class Menu {
      */
     private void playAction() {
         Sound.play(Sound.Effect.PLAY_BUTTON);
-        ChamberManager.enterChamber(level);
         stopCharacterAnimation();
         Sound.stopLoop();
-        window.setScene(Window.Scene.PLAYING);
+        if (level == 0) {
+            window.getGamePanel().getTutorial().updateDraw(0);
+            window.setScene(Window.Scene.TUTORIAL);
+            Sound.startMusic(Sound.Music.SAME_SONG); // 🎵
+        } else {
+            ChamberManager.enterChamber(level);
+            window.setScene(Window.Scene.PLAYING);
+        }
     }
 
     /**
