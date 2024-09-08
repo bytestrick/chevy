@@ -159,7 +159,7 @@ stateDiagram-v2
 - Le risorse audio sono tutte _royalty free_ e provengono da
   - [DungeonRush](https://github.com/rapiz1/DungeonRush/tree/master/res/audio)
   - [pixabay](https://pixabay.com/)
-- Font per l'interfaccia: [Handjet](https://fonts.google.com/specimen/Handjet)
+- Font per l'interfaccia: [VT323](https://fonts.google.com/specimen/VT323)
 - Le citazioni dei personaggi nella schermata iniziale e i messaggi del dialogo di morte sono generati da [ChatGPT](https://chatgpt.com/)
 - Varie risorse provengono da [itch.io](https://itch.io/gameView-assets), i file sono accompagnati dalle rispettive licenze.
 - Alcune icone provengono da [flaticon.com](https://www.flaticon.com)

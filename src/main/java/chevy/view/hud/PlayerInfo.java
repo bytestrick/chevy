@@ -1,8 +1,9 @@
 package chevy.view.hud;
 
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import java.awt.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.Dimension;
 
 public final class PlayerInfo extends JPanel {
     private final HealthBar healthBar;
@@ -11,8 +12,7 @@ public final class PlayerInfo extends JPanel {
     private final PlayerFrame playerFrame;
     private final PowerUpEquippedView powerUpEquippedView;
 
-
-    public PlayerInfo(float scale) {
+    PlayerInfo(float scale) {
         JPanel barContainer = new JPanel();
         JPanel frameAndBarContainer = new JPanel();
 
@@ -62,22 +62,13 @@ public final class PlayerInfo extends JPanel {
         powerUpEquippedView.windowResized(scale);
     }
 
-    public HealthBar getHealthBar() {
-        return healthBar;
-    }
+    public HealthBar getHealthBar() {return healthBar;}
 
-    public ShieldBar getShieldBar() {
-        return shieldBar;
-    }
+    public ShieldBar getShieldBar() {return shieldBar;}
 
-    public AttackBar getAttackBar() {
-        return attackBar;
-    }
+    public AttackBar getAttackBar() {return attackBar;}
 
-    public PowerUpEquippedView getPowerUpEquippedView() {
-        return powerUpEquippedView;
-    }
+    public PowerUpEquippedView getPowerUpEquippedView() {return powerUpEquippedView;}
 
-    public PlayerFrame getPlayerFrame() { return playerFrame; }
+    public PlayerFrame getPlayerFrame() {return playerFrame;}
 }
-

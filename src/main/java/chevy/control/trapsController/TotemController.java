@@ -5,19 +5,17 @@ import chevy.model.entity.dynamicEntity.projectile.Arrow;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
 import chevy.utils.Vector2;
 
-public final class TotemController {
+final class TotemController {
     private final Chamber chamber;
 
-    public TotemController(Chamber chamber) {
-        this.chamber = chamber;
-    }
+    TotemController(Chamber chamber) { this.chamber = chamber; }
 
-    public void update(Totem totem) {
-        if (totem.checkAndChangeState(Totem.EnumState.SHOT)) {
-            Arrow arrow = new Arrow(new Vector2<>(totem.getRow(), totem.getCol()), totem.getDirectionShot());
+    void update(Totem totem) {
+        if (totem.checkAndChangeState(Totem.State.SHOT)) {
+            Arrow arrow = new Arrow(new Vector2<>(totem.getRow(), totem.getCol()), totem.getShotDirection());
             chamber.addProjectile(arrow);
             chamber.addEntityOnTop(arrow);
         }
-        totem.checkAndChangeState(Totem.EnumState.RELOAD);
+        totem.checkAndChangeState(Totem.State.RELOAD);
     }
 }

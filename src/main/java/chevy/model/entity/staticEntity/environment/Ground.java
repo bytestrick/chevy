@@ -1,6 +1,6 @@
 package chevy.model.entity.staticEntity.environment;
 
-import chevy.model.entity.CommonEntityType;
+import chevy.model.entity.EntityType;
 import chevy.utils.Vector2;
 
 public final class Ground extends Environment {
@@ -9,20 +9,17 @@ public final class Ground extends Environment {
     public Ground(Vector2<Integer> initVelocity, GroundTypes type) {
         super(initVelocity, Type.GROUND);
         this.type = type;
-        this.crossable = true;
-
-        this.drawLayer = 0;
+        crossable = true;
+        drawLayer = 0;
     }
 
     @Override
-    public GroundTypes getSpecificType() {return type;}
+    public GroundTypes getType() {return type;}
 
     @Override
-    public CommonEntityType getGenericType() {
-        return super.getSpecificType();
-    }
+    public EntityType getGenericType() {return super.getType();}
 
-    public enum GroundTypes implements CommonEntityType {
+    public enum GroundTypes implements EntityType {
         TOP, INTERIOR_CORNER_TOP_LEFT, INTERIOR_CORNER_TOP_RIGHT, LEFT, CENTRAL, CENTRAL_PATTERNED,
         CENTRAL_PATTERNED_2, CENTRAL_BROKEN, CENTRAL_BROKEN_2, CENTRAL_BROKEN_3, RIGHT,
         EXTERNAL_CORNER_BOTTOM_LEFT,

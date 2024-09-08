@@ -45,14 +45,14 @@ public final class WraithController {
      * @param wraith il Wraith che subisce l'interazione
      */
     public void playerInInteraction(Player player, Wraith wraith) {
-        switch (player.getCurrentState()) {
+        switch (player.getState()) {
             // Se il giocatore è in stato di attacco, il Wraith viene danneggiato in base al danno del giocatore.
             case Player.State.ATTACK -> {
                 Sound.play(Sound.Effect.WRAITH_HIT);
                 wraith.setDirection(Direction.positionToDirection(player, wraith));
                 hitWraith(wraith, -1 * player.getDamage());
             }
-            default -> Log.warn("Il WraithController non gestisce questa azione: " + player.getCurrentState());
+            default -> Log.warn("Il WraithController non gestisce questa azione: " + player.getState());
         }
     }
 
@@ -135,7 +135,7 @@ public final class WraithController {
     }
 
     public void trapInteraction(Trap trap, Wraith wraith) {
-        switch (trap.getSpecificType()) {
+        switch (trap.getType()) {
             case Trap.Type.SPIKED_FLOOR -> hitWraith(wraith, -1 * trap.getDamage());
             default -> { }
         }

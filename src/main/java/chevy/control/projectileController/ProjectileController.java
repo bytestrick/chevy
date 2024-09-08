@@ -30,8 +30,8 @@ public final class ProjectileController {
      * @param enemyController  il controller dei nemici
      */
     public ProjectileController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
-        this.arrowController = new ArrowController(chamber, playerController, enemyController);
-        this.slimeShotController = new SlimeShotController(chamber, playerController, enemyController);
+        arrowController = new ArrowController(chamber, playerController, enemyController);
+        slimeShotController = new SlimeShotController(chamber, playerController, enemyController);
     }
 
     /**
@@ -56,7 +56,7 @@ public final class ProjectileController {
      * @param projectile proiettile coinvolto nell'interazione
      */
     private void playerInInteraction(Player player, Projectile projectile) {
-        switch (projectile.getSpecificType()) {
+        switch (projectile.getType()) {
             case Projectile.Type.ARROW -> arrowController.playerInInteraction((Arrow) projectile);
             case Projectile.Type.SLIME_SHOT -> slimeShotController.playerInInteraction((SlimeShot) projectile);
             default -> { }
@@ -70,7 +70,7 @@ public final class ProjectileController {
      * @param projectile proiettile da aggiornare
      */
     public synchronized void updateProjectile(Projectile projectile) {
-        switch (projectile.getSpecificType()) {
+        switch (projectile.getType()) {
             case Projectile.Type.ARROW -> arrowController.update((Arrow) projectile);
             case Projectile.Type.SLIME_SHOT -> slimeShotController.update((SlimeShot) projectile);
             default -> { }

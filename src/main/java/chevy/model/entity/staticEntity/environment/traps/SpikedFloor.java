@@ -1,13 +1,13 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
 public class SpikedFloor extends Trap {
-    private final Vertex activated = new Vertex(State.ACTIVATED, 0.2f);
+    private final Vertex activated = new Vertex(State.ACTIVATED, .2f);
     private final Vertex disabled = new Vertex(State.DISABLED, 3f);
-    private final Vertex damage = new Vertex(State.DAMAGE, 0.8f);
+    private final Vertex damage = new Vertex(State.DAMAGE, .8f);
 
     public SpikedFloor(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.SPIKED_FLOOR);
@@ -19,7 +19,7 @@ public class SpikedFloor extends Trap {
     }
 
     private void initStateMachine() {
-        stateMachine.setStateMachineName("Spiked floor");
+        stateMachine.setName("Spiked floor");
         stateMachine.setInitialState(disabled);
 
         disabled.linkVertex(activated);
@@ -27,24 +27,13 @@ public class SpikedFloor extends Trap {
         damage.linkVertex(disabled);
     }
 
-    public void activated() {
-        safeToCross = false;
-    }
-
-    public void disabled() {
-        safeToCross = true;
-    }
-
-    public synchronized Vertex getState(CommonState commonState) {
-        State spikedFloorState = (State) commonState;
-        return switch (spikedFloorState) {
+    public synchronized Vertex getState(EntityState state) {
+        return switch ((State) state) {
             case ACTIVATED -> activated;
             case DISABLED -> disabled;
             case DAMAGE -> damage;
         };
     }
 
-    public enum State implements CommonState {
-        ACTIVATED, DAMAGE, DISABLED
-    }
+    public enum State implements EntityState {ACTIVATED, DAMAGE, DISABLED}
 }

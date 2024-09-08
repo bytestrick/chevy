@@ -1,7 +1,8 @@
 package chevy.model.entity.staticEntity.environment;
 
-import chevy.model.entity.CommonEntityType;
 import chevy.model.entity.Entity;
+import chevy.model.entity.EntityType;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.utils.Vector2;
 
 public abstract class Environment extends Entity {
@@ -10,26 +11,19 @@ public abstract class Environment extends Entity {
     public Environment(Vector2<Integer> initVelocity, Type type) {
         super(initVelocity, Entity.Type.ENVIRONMENT);
         this.type = type;
-
-        this.drawLayer = 1;
+        drawLayer = 1;
     }
 
     @Override
-    public CommonEntityType getSpecificType() {
-        return type;
-    }
+    public EntityType getType() {return type;}
 
     @Override
-    public CommonEntityType getGenericType() {
-        return super.getSpecificType();
-    }
+    public EntityType getGenericType() {return super.getType();}
 
     @Override
-    public String toString() {
-        return type.toString();
-    }
+    public String toString() {return type.toString();}
 
-    public enum Type implements CommonEntityType {
-        GROUND, WALL, STAIR, BARRIER, TRAP, CHEST
-    }
+    public enum Type implements EntityType {GROUND, WALL, STAIR, BARRIER, TRAP, CHEST}
+
+    public enum State implements EntityState {OPEN}
 }

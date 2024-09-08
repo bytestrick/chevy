@@ -7,15 +7,9 @@ public final class ShieldBar extends ProgressBar {
     private static final String PROGRESS_BAR_PATH = "/sprites/component/progressBar/";
     private static final String SHIELD_BAR_PATH = PROGRESS_BAR_PATH + "shieldBar/";
 
-    public ShieldBar(int maxValue) {
-        this(maxValue, maxValue, 1f);
-    }
+    ShieldBar(int maxValue, float scale) {this(maxValue, maxValue, scale);}
 
-    public ShieldBar(int maxValue, float scale) {
-        this(maxValue, maxValue, scale);
-    }
-
-    public ShieldBar(int value, int maxValue, float scale) {
+    private ShieldBar(int value, int maxValue, float scale) {
         super(value, maxValue, scale);
 
         setTexture(MyPanelUI.BAR_L, SHIELD_BAR_PATH + "leftBar.png");

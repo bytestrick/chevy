@@ -10,9 +10,18 @@ public final class KeyController {
     private final Chamber chamber;
     private final HUDController hudController;
 
-    public KeyController(Chamber chamber, HUDController hudController) {
+    KeyController(Chamber chamber, HUDController hudController) {
         this.chamber = chamber;
         this.hudController = hudController;
+    }
+
+    public static void update(Key key) {
+        if (key.isCollected()) {
+            if (key.getState(Key.State.COLLECTED).isFinished()) {
+                key.setToDraw(false);
+                key.removeFromUpdate();
+            }
+        }
     }
 
     public void playerInInteraction(Key key) {
@@ -23,15 +32,6 @@ public final class KeyController {
             Data.increment("stats.collectable.commons.keys.count");
             hudController.addKeys(1);
             chamber.findAndRemoveEntity(key);
-        }
-    }
-
-    public void update(Key key) {
-        if (key.isCollected()) {
-            if (key.getState(Key.State.COLLECTED).isFinished()) {
-                key.setToDraw(false);
-                key.removeFromUpdate();
-            }
         }
     }
 }

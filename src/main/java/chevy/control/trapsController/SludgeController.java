@@ -14,7 +14,7 @@ public final class SludgeController {
     /**
      * @param chamber la camera di gioco in cui si trova la melma
      */
-    public SludgeController(Chamber chamber) {
+    SludgeController(Chamber chamber) {
         this.chamber = chamber;
     }
 
@@ -23,7 +23,7 @@ public final class SludgeController {
      *
      * @param player il giocatore che interagisce con la melma
      */
-    public void playerInInteraction(Player player, Sludge sludge) {
+    public static void playerInInteraction(Player player, Sludge sludge) {
         player.changeState(Player.State.SLUDGE);
         Sound.play(Sound.Effect.MUD);
     }

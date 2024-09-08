@@ -7,15 +7,9 @@ public final class AttackBar extends ProgressBarLabel {
     private static final String PROGRESS_BAR_PATH = "/sprites/component/progressBar/";
     private static final String ATTACK_BAR_PATH = PROGRESS_BAR_PATH + "attackBar/";
 
-    public AttackBar(int maxValue) {
-        this(maxValue, maxValue, 1f);
-    }
+    AttackBar(int maxValue, float scale) { this(maxValue, maxValue, scale); }
 
-    public AttackBar(int maxValue, float scale) {
-        this(maxValue, maxValue, scale);
-    }
-
-    public AttackBar(int value, int maxValue, float scale) {
+    private AttackBar(int value, int maxValue, float scale) {
         super(value, maxValue, scale);
 
         setTexture(MyPanelUI.BAR_L, ATTACK_BAR_PATH + "leftBar.png");

@@ -229,8 +229,8 @@ public final class EntityFromColor {
 
             // ---
             case CHEST -> new Chest(startPosition);
-            case STAIR_LEFT -> new Stair(startPosition, Direction.LEFT);
-            case STAIR_RIGHT -> new Stair(startPosition, Direction.RIGHT);
+            case STAIR_LEFT -> new Stair(startPosition);
+            case STAIR_RIGHT -> new Stair(startPosition);
 
             // ---
             case NULL -> null;

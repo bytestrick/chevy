@@ -12,11 +12,9 @@ public final class TrapdoorController {
     /**
      * Stanza di gioco in cui si trova la botola da gestire
      */
-    private final Chamber chamber;
     private final PlayerController playerController;
 
-    public TrapdoorController(Chamber chamber, PlayerController playerController) {
-        this.chamber = chamber;
+    TrapdoorController(PlayerController playerController) {
         this.playerController = playerController;
     }
 
@@ -35,11 +33,11 @@ public final class TrapdoorController {
      * @param trapdoor la botola con cui interagisce il giocatore
      */
     public void playerOutInteraction(Trapdoor trapdoor) {
-        trapdoor.changeState(Trapdoor.EnumState.OPEN);
+        trapdoor.changeState(Trapdoor.State.OPEN);
     }
 
     public void update(Trapdoor trapdoor) {
-        if (trapdoor.checkAndChangeState(Trapdoor.EnumState.DAMAGE)) {
+        if (trapdoor.checkAndChangeState(Trapdoor.State.DAMAGE)) {
             trapdoor.activated();
         }
     }

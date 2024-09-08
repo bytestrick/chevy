@@ -1,31 +1,29 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import chevy.model.entity.CommonEntityType;
+import chevy.model.entity.EntityType;
+import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.utils.Vector2;
 
 public abstract class Trap extends Environment {
     private final Type type;
-    protected boolean canHitFlingEntity;
 
     public Trap(Vector2<Integer> initVelocity, Type type) {
         super(initVelocity, Environment.Type.TRAP);
         this.type = type;
-        this.crossable = true;
-        this.canHitFlingEntity = false;
+        crossable = true;
     }
 
     @Override
-    public CommonEntityType getSpecificType() {return type;}
+    public EntityType getType() {return type;}
 
     @Override
-    public CommonEntityType getGenericType() {return super.getSpecificType();}
+    public EntityType getGenericType() {return super.getType();}
 
     @Override
     public String toString() {return type.toString();}
 
-    public enum Type implements CommonEntityType {
-        SLUDGE, VOID, SPIKED_FLOOR, TRAPDOOR, TOTEM,
-        ICY_FLOOR
-    }
+    public Direction getShotDirection() {return null;}
+
+    public enum Type implements EntityType {SLUDGE, VOID, SPIKED_FLOOR, TRAPDOOR, TOTEM, ICY_FLOOR}
 }

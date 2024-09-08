@@ -359,8 +359,8 @@ public final class Chamber {
     // ---- power up
 
     public synchronized void spawnCollectable(Enemy enemy) {
-        if (enemy.canDrop()) {
-            Collectable.Type collectableType = enemy.getDrop();
+        if (Enemy.canDrop()) {
+            Collectable.Type collectableType = Enemy.getDrop();
             if (collectableType == null) {
                 return;
             }
@@ -387,7 +387,7 @@ public final class Chamber {
     public synchronized void spawnSlime(Enemy enemy) {
         SlimePiece slimePiece = (SlimePiece) player.getOwnedPowerUp(PowerUp.Type.SLIME_PIECE);
         if (slimePiece != null && slimePiece.canUse()) {
-            spawnSlimeAroundEntity(enemy, slimePiece.getNSlime());
+            spawnSlimeAroundEntity(enemy, SlimePiece.getNumberOfSlimes());
         }
     }
 

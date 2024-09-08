@@ -1,6 +1,6 @@
 package chevy.model.entity.collectable;
 
-import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
@@ -14,28 +14,23 @@ public final class Coin extends Collectable {
         initStateMachine();
     }
 
-    public int getValue() {
+    public static int getValue() {
         int maxValue = 5;
         int minValue = 2;
         return Utils.random.nextInt(minValue, maxValue);
     }
 
     private void initStateMachine() {
-        stateMachine.setStateMachineName("Coin");
+        stateMachine.setName("Coin");
         stateMachine.setInitialState(idle);
 
         idle.linkVertex(collected);
     }
 
-    public synchronized Vertex getState(CommonState commonState) {
-        Coin.State coinState = (State) commonState;
-        return switch (coinState) {
+    public synchronized Vertex getState(EntityState state) {
+        return switch ((State) state) {
             case IDLE -> idle;
             case COLLECTED -> collected;
         };
-    }
-
-    public enum State implements CommonState {
-        IDLE, COLLECTED
     }
 }

@@ -1,8 +1,8 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.model.entity.CommonEntityType;
+import chevy.model.entity.EntityType;
 import chevy.model.entity.collectable.Collectable;
-import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
@@ -16,7 +16,7 @@ public abstract class PowerUp extends Collectable {
     protected String name = "No name";
     protected String description = "No description";
     protected int occurringPercentage;
-    protected int inStock = -1; // quantità infinita
+    int inStock = -1; // quantità infinita
 
     public PowerUp(Vector2<Integer> initVelocity, Type type) {
         super(initVelocity, Collectable.Type.POWER_UP);
@@ -47,8 +47,8 @@ public abstract class PowerUp extends Collectable {
     }
 
     private void initStaticMachine() {
-//        this.stateMachine.setStateMachineName("PowerUp");
-        this.stateMachine.setInitialState(idle);
+        stateMachine.setName("PowerUp");
+        stateMachine.setInitialState(idle);
 
         idle.linkVertex(selected);
         idle.linkVertex(collected);
@@ -59,16 +59,12 @@ public abstract class PowerUp extends Collectable {
         deselected.linkVertex(collected);
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() {return name;}
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() {return description;}
 
-    public Vertex getState(CommonState commState) {
-        State powerUpState = (State) commState;
+    public Vertex getState(EntityState state) {
+        State powerUpState = (State) state;
         return switch (powerUpState) {
             case IDLE -> idle;
             case SELECTED -> selected;
@@ -77,12 +73,8 @@ public abstract class PowerUp extends Collectable {
         };
     }
 
-    private boolean isOutOfStock() {
-        return inStock != 0;
-    }
-
     public boolean canUse() {
-        boolean use = isOutOfStock() && Utils.isOccurring(occurringPercentage);
+        boolean use = inStock != 0 && Utils.isOccurring(occurringPercentage);
         if (use && inStock > 0) {
             inStock -= 1;
         }
@@ -90,21 +82,19 @@ public abstract class PowerUp extends Collectable {
     }
 
     @Override
-    public CommonEntityType getSpecificType() {
-        return type;
-    }
+    public EntityType getType() {return type;}
 
     @Override
-    public CommonEntityType getGenericType() {
-        return super.getSpecificType();
-    }
+    public EntityType getGenericType() {return super.getType();}
 
     @Override
-    public String toString() { return type.toString(); }
+    public String toString() {return type.toString();}
 
-    public enum Type implements CommonEntityType {
-        HOLY_SHIELD, VAMPIRE_FANGS, ANGEL_RING, LONG_SWORD, HOBNAIL_BOOTS, COIN_OF_GREED, HOT_HEART, COLD_HEART,
-        STONE_BOOTS, BROKEN_ARROWS, AGILITY, HEDGEHOG_SPINES, SLIME_PIECE, GOLD_ARROW, HEALING_FLOOD, KEY_S_KEEPER;
+    public enum Type implements EntityType {
+        HOLY_SHIELD, VAMPIRE_FANGS, ANGEL_RING, LONG_SWORD, HOBNAIL_BOOTS, COIN_OF_GREED,
+        HOT_HEART, COLD_HEART,
+        STONE_BOOTS, BROKEN_ARROWS, AGILITY, HEDGEHOG_SPINES, SLIME_PIECE, GOLD_ARROW,
+        HEALING_FLOOD, KEY_S_KEEPER;
 
         public static Type getRandom() {
             Type[] types = values();
@@ -112,7 +102,5 @@ public abstract class PowerUp extends Collectable {
         }
     }
 
-    public enum State implements CommonState {
-        IDLE, SELECTED, DESELECTED, COLLECTED
-    }
+    public enum State implements EntityState {IDLE, SELECTED, DESELECTED, COLLECTED}
 }

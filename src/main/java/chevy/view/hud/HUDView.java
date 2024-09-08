@@ -63,7 +63,7 @@ public final class HUDView extends JPanel {
         coinBar.windowResized(scale);
         keyBar.windowResized(scale);
         playerInfo.windowResized(scale);
-        powerUpText.windowResized(scale);
+        powerUpText.windowResized();
         setConstraints(scale);
     }
 

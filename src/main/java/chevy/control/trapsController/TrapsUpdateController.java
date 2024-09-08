@@ -6,6 +6,7 @@ import chevy.service.Update;
 import chevy.service.UpdateManager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,17 +15,17 @@ import java.util.List;
  */
 public final class TrapsUpdateController implements Update {
     private final TrapsController trapsController;
-    private final List<Trap> traps = new ArrayList<>();
-    private final List<Trap> trapsToAdd;
+    private final Collection<Trap> traps = new ArrayList<>();
+    private final List<? extends Trap> trapsToAdd;
     private boolean updateFinished = false;
 
     /**
      * @param trapsController il controller delle trappole per gestire gli aggiornamenti delle trappole
      * @param traps           la lista delle trappole da aggiornare
      */
-    public TrapsUpdateController(TrapsController trapsController, List<Trap> traps) {
+    public TrapsUpdateController(TrapsController trapsController, List<? extends Trap> traps) {
         this.trapsController = trapsController;
-        this.trapsToAdd = traps;
+        trapsToAdd = traps;
 
         UpdateManager.addToUpdate(this);
     }
@@ -66,7 +67,5 @@ public final class TrapsUpdateController implements Update {
      * @return true se non ci sono più trappole da aggiornare, altrimenti false
      */
     @Override
-    public boolean updateFinished() {
-        return traps.isEmpty() || updateFinished;
-    }
+    public boolean updateFinished() { return traps.isEmpty() || updateFinished; }
 }

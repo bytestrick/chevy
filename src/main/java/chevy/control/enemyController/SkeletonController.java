@@ -33,7 +33,7 @@ public final class SkeletonController {
      * @param chamber          riferimento della stanza di gioco
      * @param playerController riferimento al controller del giocatore
      */
-    public SkeletonController(Chamber chamber, PlayerController playerController) {
+    SkeletonController(Chamber chamber, PlayerController playerController) {
         this.chamber = chamber;
         this.playerController = playerController;
     }
@@ -44,14 +44,14 @@ public final class SkeletonController {
      * @param player   il giocatore che interagisce con lo Skeleton
      * @param skeleton lo Skeleton che subisce l'interazione
      */
-    public void playerInInteraction(Player player, Skeleton skeleton) {
+    public static void playerInInteraction(Player player, Skeleton skeleton) {
         // Se il giocatore è in stato di attacco, lo Skeleton viene danneggiato in base al danno del giocatore.
-        if (player.getCurrentState().equals(Player.State.ATTACK)) {
+        if (player.getState().equals(Player.State.ATTACK)) {
             Sound.play(Sound.Effect.SKELETON_HIT);
             hitSkeleton(skeleton, -1 * player.getDamage());
             skeleton.setDirection(Direction.positionToDirection(player, skeleton));
         } else {
-            Log.warn("Lo SkeletonController non gestisce questa azione: " + player.getCurrentState());
+            Log.warn("Lo SkeletonController non gestisce questa azione: " + player.getState());
         }
     }
 
@@ -118,7 +118,7 @@ public final class SkeletonController {
      * @param projectile il proiettile che colpisce lo Skeleton
      * @param skeleton   lo Skeleton che subisce l'interazione
      */
-    public void projectileInteraction(Projectile projectile, Skeleton skeleton) {
+    public static void projectileInteraction(Projectile projectile, Skeleton skeleton) {
         skeleton.setDirection(Direction.positionToDirection(projectile, skeleton));
         hitSkeleton(skeleton, -1 * projectile.getDamage());
     }
@@ -129,14 +129,14 @@ public final class SkeletonController {
      * @param skeleton lo Skeleton che subisce il danno
      * @param damage   il danno da applicare
      */
-    private void hitSkeleton(Skeleton skeleton, int damage) {
+    private static void hitSkeleton(Skeleton skeleton, int damage) {
         if (skeleton.changeState(Skeleton.State.HIT)) {
             skeleton.decreaseHealthShield(damage);
         }
     }
 
-    public void trapInteraction(Trap trap, Skeleton skeleton) {
-        if (trap.getSpecificType().equals(Trap.Type.SPIKED_FLOOR)) {
+    static void trapInteraction(Trap trap, Skeleton skeleton) {
+        if (trap.getType().equals(Trap.Type.SPIKED_FLOOR)) {
             hitSkeleton(skeleton, -1 * trap.getDamage());
         }
     }

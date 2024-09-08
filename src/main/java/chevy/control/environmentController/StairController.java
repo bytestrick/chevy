@@ -13,7 +13,7 @@ public final class StairController {
     private static HUDController hudController;
 
     public static void playerInInteraction(Stair stair) {
-        if (stair.getCurrentState() == Stair.State.IDLE_ENTRY) {
+        if (stair.getState() == Stair.State.IDLE_ENTRY) {
             // Livello completato
             Data.set("progress.coins", hudController.getCoins());
             Data.set("progress.keys", hudController.getKeys());
@@ -28,13 +28,13 @@ public final class StairController {
             stair.checkAndChangeState(Stair.State.OPEN);
         }
 
-        if (stair.getCurrentState() == Stair.State.OPEN && stair.getState(Stair.State.OPEN).isFinished()) {
+        if (stair.getState() == Stair.State.OPEN && stair.getState(Stair.State.OPEN).isFinished()) {
             stair.changeState(Stair.State.IDLE_ENTRY);
             stair.removeFromUpdate();
         }
     }
 
-    public static void setGamePanel(GamePanel gamePanel) {StairController.gamePanel = gamePanel;}
+    static void setGamePanel(GamePanel gamePanel) {StairController.gamePanel = gamePanel;}
 
     public static void setHUDController(HUDController hudController) {
         StairController.hudController = hudController;

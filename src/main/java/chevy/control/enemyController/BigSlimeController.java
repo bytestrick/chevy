@@ -33,7 +33,7 @@ public final class BigSlimeController {
      * @param chamber          la stanza di gioco
      * @param playerController il controller del giocatore
      */
-    public BigSlimeController(Chamber chamber, PlayerController playerController) {
+    BigSlimeController(Chamber chamber, PlayerController playerController) {
         this.chamber = chamber;
         this.playerController = playerController;
     }
@@ -44,14 +44,13 @@ public final class BigSlimeController {
      * @param player   il giocatore che interagisce con il BigSlime
      * @param bigSlime il BigSlime che subisce l'interazione
      */
-    public void playerInInteraction(Player player, BigSlime bigSlime) {
-        switch (player.getCurrentState()) {
-            // Se il giocatore è in stato di attacco, il BigSlime viene danneggiato in base al danno del giocatore.
-            case Player.State.ATTACK -> {
-                bigSlime.setDirection(Direction.positionToDirection(player, bigSlime));
-                hitBigSlime(bigSlime, -1 * player.getDamage());
-            }
-            default -> Log.warn("Il BigSlimeController non gestisce questa azione");
+    public static void playerInInteraction(Player player, BigSlime bigSlime) {
+        // Se il giocatore è in stato di attacco, il BigSlime viene danneggiato in base al danno del giocatore.
+        if (player.getState() == Player.State.ATTACK) {
+            bigSlime.setDirection(Direction.positionToDirection(player, bigSlime));
+            hitBigSlime(bigSlime, -1 * player.getDamage());
+        } else {
+            Log.warn("Il BigSlimeController non gestisce questa azione");
         }
     }
 
@@ -119,7 +118,7 @@ public final class BigSlimeController {
      * @param projectile il proiettile che colpisce il BigSlime
      * @param bigSlime   il BigSlime che subisce l'interazione
      */
-    public void projectileInteraction(Projectile projectile, BigSlime bigSlime) {
+    static void projectileInteraction(Projectile projectile, BigSlime bigSlime) {
         bigSlime.setDirection(Direction.positionToDirection(projectile, bigSlime));
         hitBigSlime(bigSlime, -1 * projectile.getDamage());
     }
@@ -130,19 +129,16 @@ public final class BigSlimeController {
      * @param bigSlime il BigSlime che subisce il danno
      * @param damage   la quantità di danno da applicare
      */
-    private void hitBigSlime(BigSlime bigSlime, int damage) {
+    private static void hitBigSlime(BigSlime bigSlime, int damage) {
         if (bigSlime.changeState(BigSlime.State.HIT)) {
             bigSlime.decreaseHealthShield(damage);
             Sound.play(Sound.Effect.SLIME_HIT);
         }
     }
 
-    public void trapInteraction(Trap trap, BigSlime bigSlime) {
-        switch (trap.getSpecificType()) {
-            case Trap.Type.SPIKED_FLOOR -> {
-                hitBigSlime(bigSlime, -1 * trap.getDamage());
-            }
-            default -> { }
+    static void trapInteraction(Trap trap, BigSlime bigSlime) {
+        if (trap.getType().equals(Trap.Type.SPIKED_FLOOR)) {
+            hitBigSlime(bigSlime, -1 * trap.getDamage());
         }
     }
 }

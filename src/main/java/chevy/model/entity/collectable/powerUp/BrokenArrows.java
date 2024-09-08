@@ -6,8 +6,8 @@ public final class BrokenArrows extends PowerUp {
     public BrokenArrows(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.BROKEN_ARROWS);
 
-        this.occurringPercentage = 100;
-        this.name = "Spezza Frecce\n";
-        this.description = "Le frecce non ti infliggeranno danno";
+        occurringPercentage = 100;
+        name = "Spezza Frecce\n";
+        description = "Le frecce non ti infliggeranno danno";
     }
 }

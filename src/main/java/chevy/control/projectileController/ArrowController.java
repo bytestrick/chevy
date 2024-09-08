@@ -32,7 +32,7 @@ public final class ArrowController {
      * @param playerController il controller del giocatore
      * @param enemyController  il controller dei nemici
      */
-    public ArrowController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
+    ArrowController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
         this.chamber = chamber;
         this.playerController = playerController;
         this.enemyController = enemyController;

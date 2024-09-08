@@ -55,11 +55,10 @@ public final class ChamberController {
         playerController.setHUDController(hudController);
 
         CollectableController collectableController = new CollectableController(chamber,
-                playerController,
                 hudController);
         playerController.setCollectableController(collectableController);
         if (collectableUpdateController != null) {
-            collectableUpdateController.updateTerminate();
+            collectableUpdateController.stopUpdate();
         }
         collectableUpdateController = new CollectableUpdateController(collectableController,
                 chamber.getCollectables());

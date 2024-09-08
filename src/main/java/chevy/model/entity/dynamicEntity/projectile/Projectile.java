@@ -1,46 +1,41 @@
 package chevy.model.entity.dynamicEntity.projectile;
 
-import chevy.model.entity.CommonEntityType;
+import chevy.model.entity.EntityType;
 import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
-import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.utils.Vector2;
 
 public abstract class Projectile extends DynamicEntity {
     private final Type type;
     private final Direction direction;
-    private boolean collision = false;
+    private boolean collision;
 
     public Projectile(Vector2<Integer> initPosition, Type type, Direction direction) {
         super(initPosition, DynamicEntity.Type.PROJECTILE);
-
         this.type = type;
         this.direction = direction;
-        this.crossable = true;
-        this.safeToCross = false;
-        this.drawLayer = 4;
+        crossable = true;
+        safeToCross = false;
+        drawLayer = 4;
     }
 
-    public boolean isCollision() { return collision; }
+    public boolean isCollision() {return collision;}
 
-    public void setCollision(boolean collision) { this.collision = collision; }
+    public void setCollision(boolean collision) {this.collision = collision;}
 
-    public Direction getDirection() { return direction; }
-
-    @Override
-    public CommonEntityType getSpecificType() { return type; }
+    public Direction getDirection() {return direction;}
 
     @Override
-    public CommonEntityType getGenericType() { return super.getSpecificType(); }
+    public EntityType getType() {return type;}
 
     @Override
-    public String toString() { return "PROJECTILE"; }
+    public EntityType getGenericType() {return super.getType();}
 
-    public enum Type implements CommonEntityType {
-        ARROW, FIRE_BALL, SLIME_SHOT
-    }
+    @Override
+    public String toString() {return "PROJECTILE";}
 
-    public enum State implements CommonState {
-        START, LOOP, END
-    }
+    public enum Type implements EntityType {ARROW, SLIME_SHOT}
+
+    public enum State implements EntityState {START, LOOP, END}
 }

@@ -1,6 +1,6 @@
 package chevy.model.entity.staticEntity.environment;
 
-import chevy.model.entity.CommonEntityType;
+import chevy.model.entity.EntityType;
 import chevy.utils.Vector2;
 
 public final class Wall extends Environment {
@@ -12,16 +12,15 @@ public final class Wall extends Environment {
     }
 
     @Override
-    public WallTypes getSpecificType() {return type;}
+    public WallTypes getType() {return type;}
 
     @Override
-    public CommonEntityType getGenericType() {return super.getSpecificType();}
+    public EntityType getGenericType() {return super.getType();}
 
-    public enum WallTypes implements CommonEntityType {
+    public enum WallTypes implements EntityType {
         TOP, CORNER_INTERIOR_TOP_LEFT, CORNER_INTERIOR_TOP_RIGHT, CORNER_INTERIOR_BOTTOM_LEFT,
         CORNER_INTERIOR_BOTTOM_RIGHT, TOP_TORCH, TOP_HOLE, TOP_HOLE_2, TOP_BROKEN, BOTTOM, LEFT,
-        RIGHT,
-        EXTERNAL_CORNER_BOTTOM_LEFT, EXTERNAL_CORNER_BOTTOM_RIGHT, EXTERNAL_CORNER_TOP_LEFT,
+        RIGHT, EXTERNAL_CORNER_BOTTOM_LEFT, EXTERNAL_CORNER_BOTTOM_RIGHT, EXTERNAL_CORNER_TOP_LEFT,
         EXTERNAL_CORNER_TOP_RIGHT
     }
 }

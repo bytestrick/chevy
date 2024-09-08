@@ -10,12 +10,12 @@ import chevy.utils.Log;
 public class Timer implements Update {
     private final double duration;
     private double time;
-    private boolean isRunning;
+    private boolean running;
     private boolean delete = true;
 
-    public Timer(double secDuration) {this.duration = secDuration;}
+    Timer(double secDuration) {duration = secDuration;}
 
-    public boolean isRunning() {return isRunning && !delete;}
+    public boolean isRunning() {return running && !delete;}
 
     /**
      * Fa iniziare l'interpolazione dal punto in cui si è fermata. Se la si usa
@@ -27,7 +27,7 @@ public class Timer implements Update {
             return;
         }
 
-        isRunning = true;
+        running = true;
 
         if (delete) {
             delete = false;
@@ -36,7 +36,7 @@ public class Timer implements Update {
     }
 
     /**
-     * Fa iniziare sempre e comunque il timer dall'inizio.
+     * Fa iniziare sempre e comunque il timer dall'inizio
      */
     public void restart() {
         time = 0d;
@@ -44,32 +44,32 @@ public class Timer implements Update {
             start();
             return;
         }
-        isRunning = true;
+        running = true;
     }
 
     /**
      * Interrompe l'aggiornamento del timer, ma non in modo permanente. L'interpolazione
-     * può essere ripresa in seguito usando la funzione start(), oppure, farla iniziare da capo
-     * usando la funzione restart().
+     * può essere ripresa in seguito usando la {@link #start()}, oppure, farla iniziare da capo
+     * usando {@link #restart()}.
      */
-    public void stop() {isRunning = false;}
+    public void stop() {running = false;}
 
     /**
      * Elimina il timer, questo vuol dire che non verrà più aggiornata.
      */
-    public void delete() {
+    private void delete() {
         stop();
         delete = true;
     }
 
     @Override
     public void update(double delta) {
-        if (isRunning) {
+        if (running) {
             time += delta;
 
             if (time >= duration) {
                 time = duration;
-                isRunning = false;
+                running = false;
                 delete();
             }
         }

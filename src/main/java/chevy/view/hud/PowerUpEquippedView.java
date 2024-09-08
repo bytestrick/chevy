@@ -28,7 +28,7 @@ public final class PowerUpEquippedView extends JComponent {
     public void add(PowerUp powerUp) {
         String path = POWER_UP_RESOURCES;
 
-        switch ((PowerUp.Type) powerUp.getSpecificType()) {
+        switch ((PowerUp.Type) powerUp.getType()) {
             case AGILITY -> path += "agility";
             case ANGEL_RING -> path += "angelRing";
             case COLD_HEART -> path += "coldHeart";

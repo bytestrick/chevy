@@ -6,6 +6,7 @@ import chevy.service.Update;
 import chevy.service.UpdateManager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
 public final class EnemyUpdateController implements Update {
     private static boolean STOP_UPDATE = false;
     private final EnemyController enemyController;
-    private final List<Enemy> enemies = new ArrayList<>();
+    private final Collection<Enemy> enemies = new ArrayList<>();
     private final List<Enemy> enemiesToAdd;
     private boolean updateFinished = false;
 
@@ -73,9 +74,7 @@ public final class EnemyUpdateController implements Update {
         }
     }
 
-    public void updateTerminate() {
-        updateFinished = true;
-    }
+    public void updateTerminate() { updateFinished = true; }
 
     /**
      * Verifica se l'aggiornamento è terminato, ovvero se non ci sono più nemici da aggiornare.
@@ -83,7 +82,5 @@ public final class EnemyUpdateController implements Update {
      * @return true se la lista dei nemici è vuota, false altrimenti.
      */
     @Override
-    public boolean updateFinished() {
-        return enemies.isEmpty() || updateFinished;
-    }
+    public boolean updateFinished() { return enemies.isEmpty() || updateFinished; }
 }
