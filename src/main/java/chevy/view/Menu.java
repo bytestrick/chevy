@@ -78,7 +78,6 @@ public final class Menu {
     private static final String[] statsTooltipPrefixes = new String[]{"Salute: ", "Scudo: ",
             "Danno: ", "Velocità: "};
     public static Player.Type playerType = Player.Type.valueOf(Data.get("menu.playerType"));
-    //private static int level = Data.get("menu.level");
     private static boolean currentPlayerLocked;
     private static boolean animationPaused;
     private static boolean alternateAnimation = true;
@@ -134,7 +133,6 @@ public final class Menu {
         levelSelector.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
                 Sound.play(Sound.Effect.BUTTON);
             }
         });
@@ -189,6 +187,15 @@ public final class Menu {
         }
     }
 
+    public void keyPressed(KeyEvent keyEvent) {
+        switch (keyEvent.getKeyCode()) {
+            case KeyEvent.VK_ENTER -> playAction();
+            case KeyEvent.VK_ESCAPE -> window.quitAction();
+            case KeyEvent.VK_RIGHT -> playerCycleNextAction();
+            case KeyEvent.VK_LEFT -> playerCyclePrevAction();
+        }
+    }
+
     /**
      * Aggiorna i componenti dopo il cambio scena
      * Impostare l'elemento attivo per JComboBox richiede che il componente sia visibile
@@ -226,13 +233,6 @@ public final class Menu {
         cost.setIcon(coin);
         characterName.setFont(UIManager.getFont("defaultFont").deriveFont(Font.BOLD, 50f));
         unlock.setIcon(Load.icon("Unlocked", 30, 30));
-
-        // https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/AbstractButton.html#setMnemonic(int)
-        // Uno di questi tasti + ALT causa l'interazione col componente
-        play.setMnemonic(KeyEvent.VK_ENTER);
-        quit.setMnemonic(KeyEvent.VK_ESCAPE);
-        playerCyclePrev.setMnemonic(KeyEvent.VK_LEFT);
-        playerCycleNext.setMnemonic(KeyEvent.VK_RIGHT);
     }
 
     private void changeLevelAction() {

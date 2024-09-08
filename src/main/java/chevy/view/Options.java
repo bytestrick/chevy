@@ -96,16 +96,12 @@ public final class Options {
         });
     }
 
+
     private void actionPerformed(ActionEvent event) {
         switch (event.getActionCommand()) {
             case "back" -> {
                 Sound.play(Sound.Effect.BUTTON);
-                if (sceneToReturnTo == Window.Scene.PLAYING) {
-                    window.setScene(sceneToReturnTo);
-                    window.getGamePanel().pauseDialog();
-                } else {
-                    window.setScene(sceneToReturnTo);
-                }
+                backAction();
             }
             case "restoreApp" -> restoreAppAction();
             case "logLevelChanged" -> {
@@ -113,6 +109,21 @@ public final class Options {
                 Log.logLevel = Log.Level.values()[logLevel.getSelectedIndex()];
                 Data.set("options.logLevel", Log.logLevel);
             }
+        }
+    }
+
+    private void backAction() {
+        if (sceneToReturnTo == Window.Scene.PLAYING) {
+            window.setScene(sceneToReturnTo);
+            window.getGamePanel().pauseDialog();
+        } else {
+            window.setScene(sceneToReturnTo);
+        }
+    }
+
+    public void keyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            backAction();
         }
     }
 
@@ -156,7 +167,6 @@ public final class Options {
      * <code>Options.form</code> o il foglio di stile <code>FlatDarkLaf.properties</code>
      */
     private void initializeComponents() {
-        back.setMnemonic(KeyEvent.VK_ESCAPE);
         showHitBoxes.setIcon(new SizedCheckBoxIcon(50));
 
         scrollPane.getViewport().setOpaque(false);
