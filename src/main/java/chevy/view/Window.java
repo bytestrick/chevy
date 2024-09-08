@@ -105,6 +105,8 @@ public final class Window extends JFrame {
 
     public static boolean isQuitDialogNotActive() {return !quitDialogActive;}
 
+    static boolean isQuitDialogActive() {return quitDialogActive;}
+
     /**
      * Unico punto di uscita (corretto) dall'app.
      * Il {@link WindowController} collega l'evento di chiusura del {@code JFrame} a questo
@@ -199,9 +201,9 @@ public final class Window extends JFrame {
 
     public Menu getMenu() {return menu;}
 
-    public WindowController getWindowController() {return windowController;}
+    public Options getOptions() {return options;}
 
-    static boolean isQuitDialogActive() {return quitDialogActive;}
+    public WindowController getWindowController() {return windowController;}
 
     public enum Scene {MENU, PLAYING, OPTIONS, TUTORIAL}
 }
