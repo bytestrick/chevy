@@ -3,17 +3,16 @@ package chevy.model.entity.collectable.powerUp;
 import chevy.utils.Vector2;
 
 public final class HolyShield extends PowerUp {
-    private final float reduceDamage = 0.5f; // valore tra 0 e 1
+    private static final float DAMAGE_REDUCTION_MULTIPLIER = 0.5f; // valore tra 0 e 1
 
     public HolyShield(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.HOLY_SHIELD);
 
-        this.occurringPercentage = 100;
-        this.name = "Scudo Sacro\n";
-        this.description = "Riduce i danni in arrivo del " + (int) (reduceDamage * 100) + "%";
+        occurringPercentage = 100;
+        name = "Scudo Sacro\n";
+        description = "Riduce i danni in arrivo del "
+                + Math.round(DAMAGE_REDUCTION_MULTIPLIER * 100) + "%";
     }
 
-    public float getReduceDamage() {
-        return reduceDamage;
-    }
+    public static float getDamageReductionMultiplier() {return DAMAGE_REDUCTION_MULTIPLIER;}
 }

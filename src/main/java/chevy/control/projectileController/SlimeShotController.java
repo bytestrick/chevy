@@ -22,7 +22,7 @@ public final class SlimeShotController {
      * @param playerController il controller del giocatore
      * @param enemyController  il controller dei nemici
      */
-    public SlimeShotController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
+    SlimeShotController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
         this.chamber = chamber;
         this.playerController = playerController;
         this.enemyController = enemyController;

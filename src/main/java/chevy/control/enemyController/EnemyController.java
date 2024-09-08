@@ -33,12 +33,12 @@ public final class EnemyController {
      * @param playerController il controller del giocatore
      */
     public EnemyController(Chamber chamber, PlayerController playerController) {
-        this.wraithController = new WraithController(chamber, playerController);
-        this.zombieController = new ZombieController(chamber, playerController);
-        this.slimeController = new SlimeController(chamber, playerController);
-        this.bigSlimeController = new BigSlimeController(chamber, playerController);
-        this.skeletonController = new SkeletonController(chamber, playerController);
-        this.beetleController = new BeetleController(chamber, playerController);
+        wraithController = new WraithController(chamber, playerController);
+        zombieController = new ZombieController(chamber, playerController);
+        slimeController = new SlimeController(chamber, playerController);
+        bigSlimeController = new BigSlimeController(chamber, playerController);
+        skeletonController = new SkeletonController(chamber, playerController);
+        beetleController = new BeetleController(chamber, playerController);
     }
 
     /**
@@ -65,7 +65,7 @@ public final class EnemyController {
      * @param enemy il nemico colpito dal proiettile
      */
     private void trapInteraction(Trap trap, Enemy enemy) {
-        switch (enemy.getSpecificType()) {
+        switch (enemy.getType()) {
             case Enemy.Type.WRAITH -> wraithController.trapInteraction(trap, (Wraith) enemy);
             case Enemy.Type.SLIME -> slimeController.trapInteraction(trap, (Slime) enemy);
             case Enemy.Type.BIG_SLIME -> bigSlimeController.trapInteraction(trap, (BigSlime) enemy);
@@ -83,7 +83,7 @@ public final class EnemyController {
      * @param enemy      il nemico colpito dal proiettile
      */
     private void projectileInteraction(Projectile projectile, Enemy enemy) {
-        switch (enemy.getSpecificType()) {
+        switch (enemy.getType()) {
             case Enemy.Type.WRAITH -> wraithController.projectileInteraction(projectile, (Wraith) enemy);
             case Enemy.Type.SLIME -> slimeController.projectileInteraction(projectile, (Slime) enemy);
             case Enemy.Type.BIG_SLIME -> bigSlimeController.projectileInteraction(projectile, (BigSlime) enemy);
@@ -101,7 +101,7 @@ public final class EnemyController {
      * @param enemy  il nemico che subisce l'interazione
      */
     private void playerInInteraction(Player player, Enemy enemy) {
-        switch (enemy.getSpecificType()) {
+        switch (enemy.getType()) {
             case Enemy.Type.WRAITH -> wraithController.playerInInteraction(player, (Wraith) enemy);
             case Enemy.Type.SLIME -> slimeController.playerInInteraction(player, (Slime) enemy);
             case Enemy.Type.BIG_SLIME -> bigSlimeController.playerInInteraction(player, (BigSlime) enemy);
@@ -118,7 +118,7 @@ public final class EnemyController {
      * @param enemy il nemico da aggiornare
      */
     private void updateEnemy(Enemy enemy) {
-        switch (enemy.getSpecificType()) {
+        switch (enemy.getType()) {
             case Enemy.Type.WRAITH -> wraithController.update((Wraith) enemy);
             case Enemy.Type.SLIME -> slimeController.update((Slime) enemy);
             case Enemy.Type.ZOMBIE -> zombieController.update((Zombie) enemy);

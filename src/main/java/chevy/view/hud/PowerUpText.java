@@ -17,7 +17,6 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Toolkit;
 
 public final class PowerUpText extends JPanel {
@@ -27,16 +26,14 @@ public final class PowerUpText extends JPanel {
     private static final Color COLOR_BG = new Color(0, 0, 0, 180);
     private static final Color COLOR_TITLE = new Color(255, 163, 0, 255);
     private static final Color COLOR_DESCRIPTION = new Color(255, 235, 151, 255);
-
-    private String name = "Title\n";
-    private String description = "Description";
-    private Font font;
     private final JTextPane textPane = new JTextPane();
     private final StyledDocument doc = textPane.getStyledDocument();
     private final Style titleStyle = doc.addStyle("TitleStyle", null);
     private final Style descriptionStyle = doc.addStyle("DescriptionStyle", null);
+    private String name = "Title\n";
+    private String description = "Description";
 
-    public PowerUpText() {
+    PowerUpText() {
         initializeLayout();
         initializeStyles();
         setFont(FONT_PATH);
@@ -57,8 +54,10 @@ public final class PowerUpText extends JPanel {
         setMaximumSize(screenSize);
         setPreferredSize(screenSize);
 
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, textPane, 0, SpringLayout.HORIZONTAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, textPane, 0, SpringLayout.VERTICAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, textPane, 0,
+                SpringLayout.HORIZONTAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, textPane, 0,
+                SpringLayout.VERTICAL_CENTER, this);
 
         add(textPane);
     }
@@ -71,10 +70,7 @@ public final class PowerUpText extends JPanel {
         StyleConstants.setForeground(descriptionStyle, COLOR_DESCRIPTION);
     }
 
-    public void setFont(String path) {
-        this.font = Load.font(path);
-        textPane.setFont(font);
-    }
+    public void setFont(String path) {textPane.setFont(Load.font(path));}
 
     private void updateStyles() {
         int newTitleFontSize = Math.max(1, (int) (TITLE_FONT_SIZE * Window.scale));
@@ -94,7 +90,8 @@ public final class PowerUpText extends JPanel {
             doc.setParagraphAttributes(0, name.length(), titleStyle, false);
 
             doc.insertString(doc.getLength(), description, descriptionStyle);
-            doc.setParagraphAttributes(doc.getLength() - description.length(), description.length(), descriptionStyle
+            doc.setParagraphAttributes(doc.getLength() - description.length(),
+                    description.length(), descriptionStyle
                     , false);
         } catch (BadLocationException e) {
             Log.warn("Tentativo di scrittura in una posizione invalida: " + e.getMessage());
@@ -124,7 +121,5 @@ public final class PowerUpText extends JPanel {
         });
     }
 
-    public void windowResized(float scale) {
-        write();
-    }
+    public void windowResized() {write();}
 }

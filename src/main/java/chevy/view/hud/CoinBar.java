@@ -9,7 +9,7 @@ import java.awt.Dimension;
 public final class CoinBar extends CounterBar {
     private static final String COIN_BAR_PATH = "/sprites/component/label/";
 
-    public CoinBar(int width, int height, float scale) {
+    CoinBar(int width, int height, float scale) {
         super(new Dimension(width, height), scale);
         setTexture(MyPanelUI.BAR_L, COIN_BAR_PATH + "coin/leftBar.png");
         setTexture(MyPanelUI.BAR_R, COIN_BAR_PATH + "rightBar.png");
@@ -21,7 +21,5 @@ public final class CoinBar extends CounterBar {
         setFontSize((int) (8 * scale));
     }
 
-    public void setCoin(int value) {
-        setText(String.valueOf(value));
-    }
+    public void setCoin(int value) {setText(String.valueOf(value));}
 }

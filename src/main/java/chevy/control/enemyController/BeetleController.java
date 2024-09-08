@@ -35,7 +35,7 @@ public final class BeetleController {
      * @param chamber          la stanza di gioco
      * @param playerController il controller del giocatore
      */
-    public BeetleController(Chamber chamber, PlayerController playerController) {
+    BeetleController(Chamber chamber, PlayerController playerController) {
         this.chamber = chamber;
         this.playerController = playerController;
     }
@@ -46,14 +46,14 @@ public final class BeetleController {
      * @param player il giocatore che interagisce con il Beetle
      * @param beetle il Beetle che subisce l'interazione
      */
-    public void playerInInteraction(Player player, Beetle beetle) {
+    public static void playerInInteraction(Player player, Beetle beetle) {
         // Se il giocatore è in stato di attacco, il Beetle viene danneggiato in base al danno del giocatore.
-        if (player.getCurrentState().equals(Player.State.ATTACK)) {
+        if (player.getState().equals(Player.State.ATTACK)) {
             beetle.setDirection(Direction.positionToDirection(player, beetle));
             hitBeetle(beetle, -1 * player.getDamage());
             Sound.play(Sound.Effect.ROBOTIC_INSECT);
         } else {
-            Log.warn("Il BeetleController non gestisce questa azione: " + player.getCurrentState());
+            Log.warn("Il BeetleController non gestisce questa azione: " + player.getState());
         }
     }
 
@@ -63,7 +63,7 @@ public final class BeetleController {
      * @param projectile il proiettile che colpisce il Beetle
      * @param beetle     il Beetle che subisce l'interazione
      */
-    public void projectileInteraction(Projectile projectile, Beetle beetle) {
+    static void projectileInteraction(Projectile projectile, Beetle beetle) {
         beetle.setDirection(Direction.positionToDirection(projectile, beetle));
         hitBeetle(beetle, -1 * projectile.getDamage());
         Sound.play(Sound.Effect.ROBOTIC_INSECT);
@@ -152,8 +152,8 @@ public final class BeetleController {
      * @param trap   la trappola che interagisce con il beetle
      * @param beetle il Beetle che subisce l'interazione
      */
-    public void trapInteraction(Trap trap, Beetle beetle) {
-        if (trap.getSpecificType().equals(Trap.Type.SPIKED_FLOOR)) {
+    static void trapInteraction(Trap trap, Beetle beetle) {
+        if (trap.getType().equals(Trap.Type.SPIKED_FLOOR)) {
             hitBeetle(beetle, -1 * trap.getDamage());
         }
     }
@@ -164,7 +164,7 @@ public final class BeetleController {
      * @param beetle il Beetle che subisce il danno
      * @param damage la quantità di danno da applicare
      */
-    private void hitBeetle(Beetle beetle, int damage) {
+    private static void hitBeetle(Beetle beetle, int damage) {
         if (beetle.changeState(Beetle.State.HIT)) {
             beetle.decreaseHealthShield(damage);
         }

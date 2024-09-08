@@ -6,8 +6,8 @@ public final class Agility extends PowerUp {
     public Agility(Vector2<Integer> initVelocity) {
         super(initVelocity, Type.AGILITY);
 
-        this.occurringPercentage = 20;
-        this.name = "Agilità\n";
-        this.description = "Possibilità del " + occurringPercentage + "% di schivare un attacco";
+        occurringPercentage = 20;
+        name = "Agilità\n";
+        description = "Possibilità del " + occurringPercentage + "% di schivare un attacco";
     }
 }

@@ -30,6 +30,4 @@ public final  class ChestController {
         chest.checkAndChangeState(Chest.State.IDLE_LOCKED);
         chest.checkAndChangeState(Chest.State.IDLE_UNLOCKED);
     }
-
-    //private void spawnCollectable() { }
 }

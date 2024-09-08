@@ -93,7 +93,7 @@ public final class ChamberView extends JPanel implements Render {
                     }
 
                     if (entityView != null) {
-                        BufferedImage image = entityView.getCurrentFrame();
+                        BufferedImage image = entityView.getFrame();
                         if (image == null) {
                             image = NULL_IMAGE;
                         }
@@ -108,7 +108,7 @@ public final class ChamberView extends JPanel implements Render {
                             offsetY = 0;
                         }
 
-                        Vector2<Double> position = entityView.getCurrentViewPosition();
+                        Vector2<Double> position = entityView.getViewPosition();
                         float scale = entityView.getScale();
                         int x = (int) ((position.first + offsetX) * tileSide * scale + windowOffset.width);
                         int y = (int) ((position.second + offsetY) * tileSide * scale + windowOffset.height);
@@ -120,8 +120,8 @@ public final class ChamberView extends JPanel implements Render {
 
                         if (entity.toNotDraw()) {
                             it.remove();
-                            Log.info("Entity rimossa dal ridisegno: " + entity.getSpecificType());
-                            entityView.wasRemoved();
+                            Log.info("Entity rimossa dal ridisegno: " + entity.getType());
+                            entityView.remove();
                         }
                     }
                 }

@@ -5,16 +5,23 @@ import chevy.service.RenderManager;
 import chevy.utils.Log;
 
 /**
- * Gestisce l'interpolazione dei valori nel gioco.
+ * Interpolazione di valori
  */
 public final class Interpolation implements Render {
-    private double time = 0d; // Tempo trascorso dall'inizio dell'interpolazione.
-    private boolean isRunning = false; // Se l'interpolazione è attualmente in esecuzione.
-    private Type type; // Tipo di interpolazione da utilizzare.
-    private double start; // Valore iniziale dell'interpolazione.
-    private double end; // Valore finale dell'interpolazione.
-    private float duration; // Durata totale dell'interpolazione.
-    private boolean delete = true; // Se l'interpolazione deve essere eliminata.
+    /** Tempo trascorso dall'inizio dell'interpolazione */
+    private double time;
+    /** Se l'interpolazione è attualmente in esecuzione */
+    private boolean isRunning;
+    /** Tipo di interpolazione da utilizzare */
+    private final Type type;
+    /** Valore iniziale dell'interpolazione */
+    private double start;
+    /** Valore finale dell'interpolazione */
+    private double end;
+    /** Durata totale dell'interpolazione */
+    private float duration;
+    /** Se l'interpolazione deve essere eliminata */
+    private boolean delete = true;
 
     public Interpolation(double start, double end, float duration, Type type) {
         this.start = start;
@@ -42,7 +49,7 @@ public final class Interpolation implements Render {
         }
     }
 
-    public static double interpolate(Type type, double b, double t, double a) {
+    private static double interpolate(Type type, double b, double t, double a) {
         return switch (type) {
             case EASE_IN_SINE -> {
                 final double x = 1 - Math.cos((t * Math.PI) / 2);
@@ -259,12 +266,6 @@ public final class Interpolation implements Render {
      * @param duration imposta la durata dell'interpolazione
      */
     public void changeDuration(float duration) { this.duration = duration; }
-
-    /**
-     *
-     * @param type imposta il tipo di interpolazione
-     */
-    public void changeInterpolationType(Type type) { this.type = type; }
 
     /**
      * @return true se l'interpolazione è in esecuzione, false altrimenti

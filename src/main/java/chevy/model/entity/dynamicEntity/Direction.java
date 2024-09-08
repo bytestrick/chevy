@@ -4,17 +4,18 @@ import chevy.model.entity.Entity;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
 
+/**
+ * Punti cardinali
+ */
 public enum Direction {
-    DOWN(new Vector2<>(1, 0)),
-    LEFT(new Vector2<>(0, -1)),
+    UP(new Vector2<>(-1, 0)),
     RIGHT(new Vector2<>(0, 1)),
-    UP(new Vector2<>(-1, 0));
+    DOWN(new Vector2<>(1, 0)),
+    LEFT(new Vector2<>(0, -1));
 
     private final Vector2<Integer> direction;
 
-    Direction(Vector2<Integer> direction) {
-        this.direction = direction;
-    }
+    Direction(Vector2<Integer> direction) {this.direction = direction;}
 
     public static Direction getRandom() {
         Direction[] directions = values();
@@ -26,16 +27,15 @@ public enum Direction {
     }
 
     public static Direction positionToDirection(Vector2<Integer> a, Vector2<Integer> b) {
-        int i = b.first - a.first;
-        int j = b.second - a.second;
+        final int x = b.first - a.first, y = b.second - a.second;
 
-        if (i == 1 && j == 0) {
-            return DOWN;
-        } else if (i == -1 && j == 0) {
+        if (x == -1 && y == 0) {
             return UP;
-        } else if (i == 0 && j == 1) {
+        } else if (x == 0 && y == 1) {
             return RIGHT;
-        } else if (i == 0 && j == -1) {
+        } else if (x == 1 && y == 0) {
+            return DOWN;
+        } else if (x == 0 && y == -1) {
             return LEFT;
         }
         return null;
@@ -44,8 +44,8 @@ public enum Direction {
     public Direction getOpposite() {
         return switch (this) {
             case UP -> DOWN;
-            case DOWN -> UP;
             case LEFT -> RIGHT;
+            case DOWN -> UP;
             case RIGHT -> LEFT;
         };
     }

@@ -9,7 +9,7 @@ import java.awt.Dimension;
 public final class KeyBar extends CounterBar {
     private static final String KEY_BAR_PATH = "/sprites/component/label/";
 
-    public KeyBar(int width, int height, float scale) {
+    KeyBar(int width, int height, float scale) {
         super(new Dimension(width, height), scale);
         setTexture(MyPanelUI.BAR_L, KEY_BAR_PATH + "key/leftBar.png");
         setTexture(MyPanelUI.BAR_R, KEY_BAR_PATH + "rightBar.png");
@@ -22,7 +22,5 @@ public final class KeyBar extends CounterBar {
         setFontSize((int) (8 * scale));
     }
 
-    public void setKey(int value) {
-        setText(String.valueOf(value));
-    }
+    public void setKey(int value) {setText(String.valueOf(value));}
 }

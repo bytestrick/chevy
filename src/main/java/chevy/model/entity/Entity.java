@@ -1,8 +1,9 @@
 package chevy.model.entity;
 
-import chevy.model.entity.stateMachine.CommonState;
-import chevy.model.entity.stateMachine.Vertex;
+import chevy.model.entity.dynamicEntity.Direction;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.StateMachine;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Log;
 import chevy.utils.Utils;
 import chevy.utils.Vector2;
@@ -20,6 +21,7 @@ public abstract class Entity {
     protected boolean crossable;
     protected int drawLayer;
     protected boolean shouldUpdate;
+    protected Direction direction = Direction.getRandom();
     private boolean toDraw;
 
     public Entity(Vector2<Integer> initPosition, Type type) {
@@ -31,31 +33,39 @@ public abstract class Entity {
         toDraw = false;
     }
 
-    public boolean toNotDraw() { return !toDraw; }
+    public Direction getDirection() {return direction;}
 
-    public void setToDraw(boolean toDraw) { this.toDraw = toDraw; }
+    public void setDirection(Direction direction) {this.direction = direction;}
 
-    public synchronized int getDamage() { return Utils.random.nextInt(minDamage, maxDamage + 1); }
+    public void activated() {safeToCross = false;}
 
-    public void changeMinDamage(int minDamage) { this.minDamage = minDamage; }
+    public void disabled() {safeToCross = true;}
 
-    public void changeMaxDamage(int maxDamage) { this.maxDamage = maxDamage; }
+    public boolean toNotDraw() {return !toDraw;}
 
-    public int getMaxDamage() { return maxDamage; }
+    public void setToDraw(boolean toDraw) {this.toDraw = toDraw;}
 
-    public int getMinDamage() { return minDamage; }
+    public synchronized int getDamage() {return Utils.random.nextInt(minDamage, maxDamage + 1);}
 
-    public CommonEntityType getSpecificType() { return type; }
+    public void changeMinDamage(int minDamage) {this.minDamage = minDamage;}
 
-    public CommonEntityType getGenericType() { return null; }
+    public void changeMaxDamage(int maxDamage) {this.maxDamage = maxDamage;}
 
-    public final int getRow() { return position.first; }
+    public int getMaxDamage() {return maxDamage;}
 
-    public final int getCol() { return position.second; }
+    public int getMinDamage() {return minDamage;}
 
-    public final Vector2<Integer> getPosition() { return position;}
+    public EntityType getType() {return type;}
 
-    public boolean isCrossable() { return crossable; }
+    public EntityType getGenericType() {return null;}
+
+    public final int getRow() {return position.first;}
+
+    public final int getCol() {return position.second;}
+
+    public final Vector2<Integer> getPosition() {return position;}
+
+    public boolean isCrossable() {return crossable;}
 
     public boolean isSafeToCross() {
         if (crossable) {
@@ -64,20 +74,21 @@ public abstract class Entity {
         return false;
     }
 
-    public int getDrawLayer() { return Math.abs(drawLayer); }
+    public int getDrawLayer() {return Math.abs(drawLayer);}
 
-    public Vertex getState(CommonState commonEnumStates) {
-        Log.warn("La funzione getState() deve essere ridefinita opportunamente nelle classi figlie");
+    public Vertex getState(EntityState state) {
+        Log.warn("La funzione getState() deve essere ridefinita opportunamente nelle classi " +
+                "figlie");
         return null;
     }
 
-    public boolean changeState(CommonState state) { return stateMachine.changeState(state); }
+    public boolean changeState(EntityState state) {return stateMachine.changeState(state);}
 
-    public boolean canChange(CommonState state) { return stateMachine.canChange(state); }
+    public boolean canChange(EntityState state) {return stateMachine.canChange(state);}
 
-    public boolean checkAndChangeState(CommonState state) { return stateMachine.checkAndChangeState(state); }
+    public boolean checkAndChangeState(EntityState state) {return stateMachine.checkAndChangeState(state);}
 
-    public CommonState getCurrentState() {
+    public EntityState getState() {
         Vertex currentVertex = stateMachine.getCurrentState();
         if (currentVertex == null) {
             return null;
@@ -85,12 +96,12 @@ public abstract class Entity {
         return currentVertex.getState();
     }
 
-    public boolean canRemoveToUpdate() { return !shouldUpdate; }
+    public boolean canRemoveToUpdate() {return !shouldUpdate;}
 
-    public void removeFromUpdate() { shouldUpdate = false; }
+    public void removeFromUpdate() {shouldUpdate = false;}
 
     @Override
-    public String toString() { return "ENTITY"; }
+    public String toString() {return "ENTITY";}
 
     @Override
     public boolean equals(Object o) {
@@ -105,7 +116,7 @@ public abstract class Entity {
     }
 
     @Override
-    public int hashCode() { return uuid.hashCode(); }
+    public int hashCode() {return uuid.hashCode();}
 
-    public enum Type implements CommonEntityType { DYNAMIC, ENVIRONMENT, COLLECTABLE }
+    public enum Type implements EntityType {DYNAMIC, ENVIRONMENT, COLLECTABLE}
 }

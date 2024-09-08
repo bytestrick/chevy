@@ -32,12 +32,12 @@ public final class TrapsController {
      * @param playerController il controller del giocatore per gestire le interazioni con il giocatore
      */
     public TrapsController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
-        this.sludgeController = new SludgeController(chamber);
-        this.icyFloorController = new IcyFloorController(playerController);
-        this.voidController = new VoidController(playerController);
-        this.trapdoorController = new TrapdoorController(chamber, playerController);
-        this.spikedFloorController = new SpikedFloorController(chamber, playerController, enemyController);
-        this.totemController = new TotemController(chamber);
+        sludgeController = new SludgeController(chamber);
+        icyFloorController = new IcyFloorController();
+        voidController = new VoidController(playerController);
+        trapdoorController = new TrapdoorController(playerController);
+        spikedFloorController = new SpikedFloorController(chamber, playerController, enemyController);
+        totemController = new TotemController(chamber);
     }
 
     /**
@@ -63,7 +63,7 @@ public final class TrapsController {
      * @param trap   la trappola con cui interagisce il giocatore
      */
     private void playerOutInteraction(Player player, Trap trap) {
-        switch (trap.getSpecificType()) {
+        switch (trap.getType()) {
             case Trap.Type.TRAPDOOR -> trapdoorController.playerOutInteraction((Trapdoor) trap);
             case Trap.Type.ICY_FLOOR -> icyFloorController.playerOutInteraction(player, (IcyFloor) trap);
             default -> { }
@@ -77,8 +77,8 @@ public final class TrapsController {
      * @param trap   trappola con cui interagisce il giocatore
      */
     private void playerInInteraction(Player player, Trap trap) {
-        switch (trap.getSpecificType()) {
-            case Trap.Type.SLUDGE -> sludgeController.playerInInteraction(player, (Sludge) trap);
+        switch (trap.getType()) {
+            case Trap.Type.SLUDGE -> SludgeController.playerInInteraction(player, (Sludge) trap);
             case Trap.Type.ICY_FLOOR -> icyFloorController.playerInInteraction(player, (IcyFloor) trap);
             case Trap.Type.VOID -> voidController.playerInInteraction(player, (Void) trap);
             case Trap.Type.TRAPDOOR -> trapdoorController.playerInInteraction((Trapdoor) trap);
@@ -94,7 +94,7 @@ public final class TrapsController {
      * @param trap   la trappola con cui interagisce il giocatore
      */
     private void playerInteraction(Player player, Trap trap) {
-        switch (trap.getSpecificType()) {
+        switch (trap.getType()) {
             case Trap.Type.SLUDGE -> sludgeController.playerInteraction(player, (Sludge) trap);
             default -> { }
         }
@@ -106,10 +106,10 @@ public final class TrapsController {
      * @param trap la trappola da aggiornare
      */
     private void updateTraps(Trap trap) {
-        switch (trap.getSpecificType()) {
+        switch (trap.getType()) {
             case Trap.Type.SPIKED_FLOOR -> spikedFloorController.update((SpikedFloor) trap);
             case Trap.Type.TOTEM -> totemController.update((Totem) trap);
-            case Trap.Type.ICY_FLOOR -> icyFloorController.update((IcyFloor) trap);
+            case Trap.Type.ICY_FLOOR -> IcyFloorController.update((IcyFloor) trap);
             case Trap.Type.TRAPDOOR -> trapdoorController.update((Trapdoor) trap);
             default -> { }
         }

@@ -46,12 +46,12 @@ public final class SlimeController {
      */
     public void playerInInteraction(Player player, Slime slime) {
         // Se il giocatore è in stato di attacco, lo Slime viene danneggiato in base al danno del giocatore.
-        if (player.getCurrentState().equals(Player.State.ATTACK)) {
+        if (player.getState().equals(Player.State.ATTACK)) {
             Sound.play(Sound.Effect.SLIME_HIT);
             slime.setDirection(Direction.positionToDirection(player, slime));
             hitSlime(slime, -1 * player.getDamage());
         } else {
-            Log.warn("Lo slimeController non gestisce questa azione: " + player.getCurrentState());
+            Log.warn("Lo slimeController non gestisce questa azione: " + player.getState());
         }
     }
 
@@ -133,7 +133,7 @@ public final class SlimeController {
     }
 
     public void trapInteraction(Trap trap, Slime slime) {
-        if (trap.getSpecificType().equals(Trap.Type.SPIKED_FLOOR)) {
+        if (trap.getType().equals(Trap.Type.SPIKED_FLOOR)) {
             hitSlime(slime, -1 * trap.getDamage());
         }
     }

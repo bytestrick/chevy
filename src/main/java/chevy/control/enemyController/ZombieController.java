@@ -45,14 +45,14 @@ public final class ZombieController {
      * @param zombie lo Zombie che subisce l'interazione
      */
     public void playerInInteraction(Player player, Zombie zombie) {
-        switch (player.getCurrentState()) {
+        switch (player.getState()) {
             // Se il giocatore è in stato di attacco, lo Zombie viene danneggiato in base al danno del giocatore.
             case Player.State.ATTACK -> {
                 Sound.play(Sound.Effect.ZOMBIE_HIT);
                 zombie.setDirection(Direction.positionToDirection(player, zombie));
                 hitZombie(zombie, -1 * player.getDamage());
             }
-            default -> Log.warn("Lo ZombieController non gestisce questa azione: " + player.getCurrentState());
+            default -> Log.warn("Lo ZombieController non gestisce questa azione: " + player.getState());
         }
     }
 
@@ -68,8 +68,8 @@ public final class ZombieController {
                 zombie.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(zombie);
-                Data.increment("data.kills.total.count");
-                Data.increment("data.kills.enemies.zombie.count");
+                Data.increment("stats.kills.total.count");
+                Data.increment("stats.kills.enemies.zombie.count");
                 return;
             }
         } else if (zombie.getCurrentHealth() <= 0 && zombie.checkAndChangeState(Zombie.State.DEAD)) {
@@ -134,7 +134,7 @@ public final class ZombieController {
     }
 
     public void trapInteraction(Trap trap, Zombie zombie) {
-        switch (trap.getSpecificType()) {
+        switch (trap.getType()) {
             case Trap.Type.SPIKED_FLOOR -> {
                 hitZombie(zombie, -1 * trap.getDamage());
             }

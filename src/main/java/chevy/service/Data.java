@@ -47,11 +47,20 @@ public final class Data {
         root = JsonPath.parse(root).set("$." + path, value).jsonString();
     }
 
+    /**
+     * Incrementa un valore
+     * @param path percorso al quale si trova il valore da incrementare
+     * @param value quantità da aggiungere
+     */
     public synchronized static void increase(String path, Integer value) {
         Integer oldValue = get(path);
         set(path, oldValue + value);
     }
 
+    /**
+     * Incrementa un valore di 1
+     * @param path percorso al quale si trova il valore da incrementare
+     */
     public synchronized static void increment(String path) {increase(path, 1);}
 
     /**

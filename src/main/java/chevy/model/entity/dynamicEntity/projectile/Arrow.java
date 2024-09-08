@@ -1,7 +1,7 @@
 package chevy.model.entity.dynamicEntity.projectile;
 
 import chevy.model.entity.dynamicEntity.Direction;
-import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
@@ -12,33 +12,27 @@ public final class Arrow extends Projectile {
 
     public Arrow(Vector2<Integer> initPosition, Direction direction) {
         super(initPosition, Type.ARROW, direction);
-
-        this.maxDamage = 1 + addDamage;
-        this.minDamage = 1 + addDamage;
-
+        maxDamage = 1 + addDamage;
+        minDamage = 1 + addDamage;
         initStateMachine();
     }
 
-    public static void changeAddDamage(int value) {
-        addDamage = value;
-    }
+    public static void changeAddDamage(int value) {addDamage = value;}
 
-    private void initStateMachine() {
-        stateMachine.setStateMachineName("Arrow");
+    @Override
+    protected void initStateMachine() {
+        stateMachine.setName("Arrow");
         stateMachine.setInitialState(loop);
 
         loop.linkVertex(end);
     }
 
-    public Vertex getState(CommonState commonState) {
-        State arrowState = (State) commonState;
-        return switch (arrowState) {
+    @Override
+    public Vertex getState(EntityState state) {
+        return switch ((State) state) {
             case LOOP -> loop;
             case END -> end;
+            case START -> null;
         };
-    }
-
-    public enum State implements CommonState {
-        LOOP, END
     }
 }

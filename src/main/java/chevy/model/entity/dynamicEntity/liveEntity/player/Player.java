@@ -1,25 +1,54 @@
 package chevy.model.entity.dynamicEntity.liveEntity.player;
 
-import chevy.model.entity.CommonEntityType;
+import chevy.model.entity.EntityType;
 import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
-import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.EntityState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public abstract class Player extends LiveEntity {
-    private final Type type;
-    protected float speed;
-    protected Map<PowerUp.Type, PowerUp> ownedPowerUp = new HashMap<>();
+    protected final Vertex idle;
+    protected final Vertex move;
+    protected final Vertex attack;
+    protected final Vertex hit;
+    protected final Vertex dead;
+    protected final Vertex sludge;
+    protected final Type type;
+    private final Vertex glide;
+    private final Vertex fall;
+    private final float speed;
+    private final Map<PowerUp.Type, PowerUp> ownedPowerUp = new EnumMap<>(PowerUp.Type.class);
 
-    public Player(Vector2<Integer> initPosition, Type type) {
+    public Player(Vector2<Integer> initPosition, Type type, float speed, int health, int shield,
+                  int maxDamage, int minDamage, float attackDuration, float hitDuration,
+                  float deadDuration) {
         super(initPosition, LiveEntity.Type.PLAYER);
         this.type = type;
 
-        this.drawLayer = 2;
+        this.speed = speed;
+        this.health = health;
+        currentHealth = health;
+        this.shield = shield;
+        currentShield = shield;
+        this.maxDamage = maxDamage;
+        this.minDamage = minDamage;
+
+        idle = new Vertex(State.IDLE);
+        move = new Vertex(State.MOVE, speed, true);
+        attack = new Vertex(State.ATTACK, attackDuration, true);
+        hit = new Vertex(State.HIT, hitDuration);
+        dead = new Vertex(State.DEAD, deadDuration);
+        sludge = new Vertex(State.SLUDGE, speed);
+        glide = new Vertex(State.GLIDE, speed, true);
+        fall = new Vertex(State.FALL);
+
+        drawLayer = 2;
+        initStateMachine();
     }
 
     public boolean acquirePowerUp(PowerUp.Type powerUpType, PowerUp powerUp) {
@@ -38,15 +67,59 @@ public abstract class Player extends LiveEntity {
     public PowerUp getOwnedPowerUp(PowerUp.Type powerUpType) {return ownedPowerUp.get(powerUpType);}
 
     @Override
-    public Type getSpecificType() {return type;}
+    public Type getType() {return type;}
 
     @Override
-    public CommonEntityType getGenericType() {return super.getSpecificType();}
+    public EntityType getGenericType() {return super.getType();}
 
     @Override
     public String toString() {return type.toString();}
 
-    public enum State implements CommonState {IDLE, ATTACK, MOVE, DEAD, HIT, SLUDGE, FALL, GLIDE}
+    @Override
+    protected void initStateMachine() {
+        idle.linkVertex(move);
+        idle.linkVertex(attack);
+        idle.linkVertex(hit);
+        idle.linkVertex(fall);
+        hit.linkVertex(idle);
+        hit.linkVertex(dead);
+        hit.linkVertex(move);
+        hit.linkVertex(fall);
+        move.linkVertex(glide);
+        move.linkVertex(hit);
+        move.linkVertex(fall);
+        move.linkVertex(sludge);
+        move.linkVertex(idle);
+        move.linkVertex(attack);
+        attack.linkVertex(idle);
+        attack.linkVertex(move);
+        attack.linkVertex(hit);
+        glide.linkVertex(idle);
+        glide.linkVertex(fall);
+        glide.linkVertex(hit);
+        glide.linkVertex(sludge);
+        sludge.linkVertex(idle);
+        fall.linkVertex(idle);
+        fall.linkVertex(dead);
 
-    public enum Type implements CommonEntityType {KNIGHT, ARCHER, NINJA}
+        stateMachine.setInitialState(idle);
+    }
+
+    @Override
+    public synchronized Vertex getState(EntityState state) {
+        return switch ((State) state) {
+            case IDLE -> idle;
+            case ATTACK -> attack;
+            case MOVE -> move;
+            case DEAD -> dead;
+            case HIT -> hit;
+            case SLUDGE -> sludge;
+            case FALL -> fall;
+            case GLIDE -> glide;
+        };
+    }
+
+    public enum State implements EntityState {IDLE, ATTACK, MOVE, DEAD, HIT, SLUDGE, FALL, GLIDE}
+
+    public enum Type implements EntityType {KNIGHT, ARCHER, NINJA}
 }

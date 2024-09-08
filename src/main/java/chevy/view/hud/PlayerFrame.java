@@ -13,7 +13,7 @@ public final class PlayerFrame extends JPanel {
     private final float scale;
     private final Dimension dimension;
 
-    public PlayerFrame(Dimension dimension, float scale) {
+    PlayerFrame(Dimension dimension, float scale) {
         setOpaque(false);
         this.scale = scale;
         this.dimension = new Dimension((int) (dimension.getWidth()), (int) (dimension.getHeight()));
@@ -36,9 +36,9 @@ public final class PlayerFrame extends JPanel {
     private void setDimension(float scale) {
         Dimension scaledDimension = new Dimension((int) (dimension.getWidth() * scale),
                 (int) (dimension.getHeight() * scale));
-        this.setMaximumSize(scaledDimension);
-        this.setPreferredSize(scaledDimension);
-        this.setMinimumSize(scaledDimension);
+        setMaximumSize(scaledDimension);
+        setPreferredSize(scaledDimension);
+        setMinimumSize(scaledDimension);
         revalidate();
         repaint();
     }

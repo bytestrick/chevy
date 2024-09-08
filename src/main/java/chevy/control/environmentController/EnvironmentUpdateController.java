@@ -6,22 +6,23 @@ import chevy.service.Update;
 import chevy.service.UpdateManager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 public final class EnvironmentUpdateController implements Update {
     private final EnvironmentController environmentController;
-    private final List<Environment> environments = new ArrayList<>();
-    private final List<Environment> environmentsToAdd;
+    private final Collection<Environment> environments = new ArrayList<>();
+    private final List<? extends Environment> environmentsToAdd;
     private boolean updateFinished = false;
 
     /**
      * @param environmentController il controller delle ceste per gestire gli aggiornamenti delle ceste
      * @param environments          la lista delle ceste da aggiornare
      */
-    public EnvironmentUpdateController(EnvironmentController environmentController, List<Environment> environments) {
+    public EnvironmentUpdateController(EnvironmentController environmentController, List<? extends Environment> environments) {
         this.environmentController = environmentController;
-        this.environmentsToAdd = environments;
+        environmentsToAdd = environments;
 
         UpdateManager.addToUpdate(this);
     }
@@ -69,7 +70,5 @@ public final class EnvironmentUpdateController implements Update {
      * @return true se non ci sono più trappole da aggiornare, altrimenti false
      */
     @Override
-    public boolean updateFinished() {
-        return environments.isEmpty() || updateFinished;
-    }
+    public boolean updateFinished() { return environments.isEmpty() || updateFinished; }
 }

@@ -14,7 +14,7 @@ public final class VoidController {
      */
     private final PlayerController playerController;
 
-    public VoidController(PlayerController playerController) {
+    VoidController(PlayerController playerController) {
         this.playerController = playerController;
     }
 
