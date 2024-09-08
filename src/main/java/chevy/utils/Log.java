@@ -44,12 +44,10 @@ public final class Log {
     }
 
     /**
-     * Livello di verbosità del logging.
+     * Granularità della diagnostica
      * <p>
      * {@link #INFO} è il più verboso, {@link #ERROR} il più terso. {@link #OFF} lo disabilita
      * completamente.
      */
-    public enum Level {
-        OFF, ERROR, WARN, INFO
-    }
+    public enum Level {OFF, INFO, WARN, ERROR}
 }
