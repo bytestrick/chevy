@@ -71,16 +71,14 @@ public final class Menu {
     private static final int archerCost = 500, ninjaCost = 1000;
     private static final Icon coin = Load.icon("Coin");
     private static final Icon[] statsIcons = new Icon[]{Load.icon("heart"),
-            Load.icon("shield", 36, 36), Load.icon("sword"), Load.icon(
-            "boot", 28, 28)};
+            Load.icon("shield", 36, 36), Load.icon("sword"), Load.icon("boot", 28, 28)};
     private static final Icon[] statsIconsGreyScale = new Icon[]{Load.icon(
             "heart_greyscale"), Load.icon("shield_greyscale", 36, 36),
-            Load.icon(
-                    "sword_greyscale"), Load.icon("boot_greyscale", 28, 28)};
+            Load.icon("sword_greyscale"), Load.icon("boot_greyscale", 28, 28)};
     private static final String[] statsTooltipPrefixes = new String[]{"Salute: ", "Scudo: ",
             "Danno: ", "Velocità: "};
     public static Player.Type playerType = Player.Type.valueOf(Data.get("menu.playerType"));
-    private static int level = Data.get("menu.level");
+    //private static int level = Data.get("menu.level");
     private static boolean currentPlayerLocked;
     private static boolean animationPaused;
     private static boolean alternateAnimation = true;
@@ -128,7 +126,6 @@ public final class Menu {
 
         List.of(play, quit, options, playerCycleNext, playerCyclePrev, unlock)
                 .forEach(c -> c.addActionListener(actionListener));
-        levelSelector.addActionListener(actionListener);
         final MouseListener tooltipMouseAdapter = new TooltipMouseAdapter();
         Stream.of(playerCycleNext, playerCyclePrev,
                 characterAnimation, coins, keys, options, healthBar, shieldBar, damageBar,
@@ -155,9 +152,10 @@ public final class Menu {
      */
     public static void incrementLevel() {
         if (!ChamberManager.isLastChamber()) {
-            ++level;
+            Data.increment("progress.lastUnlockedLevel");
+            final int level = Data.get("progress.lastUnlockedLevel");
             Data.set("progress.lastUnlockedLevel", level);
-            LevelSelectorRenderer.setEnabledInterval(level);
+            LevelSelectorRenderer.setLastEnabledItemIndex(level);
         }
     }
 
@@ -198,7 +196,10 @@ public final class Menu {
     void updateComponents() {
         coins.setText(Data.get("progress.coins").toString());
         keys.setText(Data.get("progress.keys").toString());
-        levelSelector.setSelectedIndex(level);
+        levelSelector.setSelectedIndex(Data.get("menu.level"));
+        if (levelSelector.getActionListeners().length == 0) {
+            levelSelector.addActionListener(actionListener);
+        }
     }
 
     /**
@@ -208,7 +209,7 @@ public final class Menu {
         root.setBackground(new Color(33, 6, 47));
         levelSelector.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         levelSelector.setRenderer(new LevelSelectorRenderer());
-        LevelSelectorRenderer.setEnabledInterval(Data.get("progress.lastUnlockedLevel"));
+        LevelSelectorRenderer.setLastEnabledItemIndex(Data.get("progress.lastUnlockedLevel"));
         levelSelector.addItem("Tutorial");
         for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS; ++i) {
             levelSelector.addItem("Livello " + i);
@@ -235,16 +236,15 @@ public final class Menu {
     }
 
     private void changeLevelAction() {
-        final int i = levelSelector.getSelectedIndex();
-        if (LevelSelectorRenderer.isInsideInterval(i)) {
-            level = i;
+        final int level = levelSelector.getSelectedIndex();
+        if (LevelSelectorRenderer.isInsideInterval(level)) {
             Data.set("menu.level", level);
             Log.info("Cambiato livello: " + level);
         } else {
             levelSelector.hidePopup();
             levelSelector.setSelectedIndex(level);
             Sound.play(Sound.Effect.STOP);
-            JOptionPane.showMessageDialog(window, "Il livello " + i + " è bloccato.", null,
+            JOptionPane.showMessageDialog(window, "Il livello " + level + " è bloccato.", null,
                     JOptionPane.WARNING_MESSAGE, ex);
             SwingUtilities.invokeLater(levelSelector::showPopup);
         }
@@ -274,7 +274,7 @@ public final class Menu {
     }
 
     /**
-     * L'azione di passare alla scena PLAYING e avviare il gioco. È innescata dal JButton play e
+     * L'azione di passare a {@link Window.Scene#PLAYING} e avviare il gioco. È innescata dal JButton play e
      * dal tasto 'invio'
      * sulla tastiera.
      */
@@ -282,6 +282,7 @@ public final class Menu {
         Sound.play(Sound.Effect.PLAY_BUTTON);
         stopCharacterAnimation();
         Sound.stopLoop();
+        final int level = Data.get("menu.level");
         if (level == 0) {
             window.getGamePanel().getTutorial().updateDraw(0);
             window.setScene(Window.Scene.TUTORIAL);
@@ -323,7 +324,6 @@ public final class Menu {
         indicators[playerType.ordinal()].setSelected(false);
         playerType = type;
         Data.set("menu.playerType", playerType.toString());
-        Data.set("menu.level", level);
         final int p = playerType.ordinal();
         characterName.setText(getUIString(playerType));
         indicators[p].setSelected(true);
@@ -482,15 +482,15 @@ public final class Menu {
     JPanel getRoot() {return root;}
 
     /**
-     * Rende possibile avere elementi non selezionabili in {@link JComboBox} (
-     * <a href="https://stackoverflow.com/a/23724201">StackOverflow</a>).
+     * Rende possibile avere elementi non selezionabili in {@link JComboBox}
+     * <p>
+     * <a href="https://stackoverflow.com/a/23724201">Fonte</a>
      * <p>
      * Funziona in combinazione con l'{@link java.awt.event.ActionListener} di
      * {@link #levelSelector}
      */
     private static class LevelSelectorRenderer extends BasicComboBoxRenderer {
         private static final ListSelectionModel model = new DefaultListSelectionModel();
-        private static int enabledFirst;
         private static int enabledLast;
 
         /**
@@ -498,9 +498,8 @@ public final class Menu {
          *
          * @param last fine dell'intervallo
          */
-        static void setEnabledInterval(int last) {
-            enabledFirst = 0;
-            level = enabledLast = last;
+        static void setLastEnabledItemIndex(final int last) {
+            enabledLast = last;
             model.setSelectionInterval(0, last);
         }
 
@@ -511,7 +510,7 @@ public final class Menu {
          * altrimenti
          */
         private static boolean isInsideInterval(final int x) {
-            return x >= enabledFirst && x <= enabledLast;
+            return x >= 0 && x <= enabledLast;
         }
 
         @Override

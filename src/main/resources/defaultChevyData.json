@@ -22,7 +22,8 @@
   "options": {
     "musicVolume": 0.3,
     "effectsVolume": 0.5,
-    "drawHitBoxes": false
+    "drawHitBoxes": false,
+    "logLevel": "INFO"
   },
   "stats": {
     "time": {

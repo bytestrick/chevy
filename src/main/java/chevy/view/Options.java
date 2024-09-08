@@ -3,6 +3,7 @@ package chevy.view;
 import chevy.service.Data;
 import chevy.service.Sound;
 import chevy.utils.Load;
+import chevy.utils.Log;
 import chevy.utils.Utils;
 import chevy.view.chamber.ChamberView;
 import com.formdev.flatlaf.icons.FlatCheckBoxIcon;
@@ -12,6 +13,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -24,6 +26,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -31,6 +34,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +43,8 @@ import java.util.Map;
 import static chevy.view.GamePanel.caution;
 
 public final class Options {
-    private static final Icon basket = Load.icon("Basket");
     static final Icon home = Load.icon("Home");
+    private static final Icon basket = Load.icon("Basket");
     private static final Icon gamePad = Load.icon("GamePad");
     private static final Icon speaker = Load.icon("SpeakerOn"), speakerMute = Load.icon(
             "SpeakerMute"), notes = Load.icon("MusicNotes");
@@ -64,6 +69,7 @@ public final class Options {
     private JScrollPane scrollPane;
     private JLabel audioLabel, advancedLabel, statsLabel;
     private JCheckBox showHitBoxes;
+    private JComboBox<String> logLevel;
     private Window.Scene sceneToReturnTo;
     private final ActionListener actionListener = this::actionPerformed;
 
@@ -72,13 +78,22 @@ public final class Options {
         initializeComponents();
         List.of(back, restoreApp, showHitBoxes).forEach(c -> c.addActionListener(actionListener));
         List.of(musicVolume, effectsVolume).forEach(c -> c.addChangeListener(changeListener));
-        showHitBoxes.addItemListener(itemEvent -> ChamberView.drawCollision =
-                switch (itemEvent.getStateChange()) {
-                    case ItemEvent.SELECTED -> true;
-                    case ItemEvent.DESELECTED -> false;
-                    default -> throw new IllegalStateException("Unexpected value: "
-                            + itemEvent.getStateChange());
-                });
+        showHitBoxes.addItemListener(itemEvent -> {
+            Sound.play(Sound.Effect.BUTTON);
+            ChamberView.drawCollision = switch (itemEvent.getStateChange()) {
+                case ItemEvent.SELECTED -> true;
+                case ItemEvent.DESELECTED -> false;
+                default -> throw new IllegalStateException("Unexpected value: "
+                        + itemEvent.getStateChange());
+            };
+        });
+        logLevel.addActionListener(actionListener);
+        logLevel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Sound.play(Sound.Effect.BUTTON);
+            }
+        });
     }
 
     private void actionPerformed(ActionEvent event) {
@@ -93,6 +108,11 @@ public final class Options {
                 }
             }
             case "restoreApp" -> restoreAppAction();
+            case "logLevelChanged" -> {
+                Sound.play(Sound.Effect.BUTTON);
+                Log.logLevel = Log.Level.values()[logLevel.getSelectedIndex()];
+                Data.set("options.logLevel", Log.logLevel);
+            }
         }
     }
 
@@ -150,6 +170,17 @@ public final class Options {
         final int musicVolumeValue = (int) ((double) Data.get("options.musicVolume") * 100);
         musicVolume.setValue(musicVolumeValue);
         volumeChanged(new ChangeEvent(musicVolume));
+
+        for (Log.Level level : Log.Level.values()) {
+            logLevel.addItem(switch (level) {
+                case OFF -> "Disabilitata";
+                case INFO -> "Tutto";
+                case WARN -> "Avvisi";
+                case ERROR -> "Errori";
+            });
+        }
+        logLevel.setSelectedIndex(Log.Level.valueOf(Data.get("options.logLevel")).ordinal());
+        logLevel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         // https://www.formdev.com/flatlaf/client-properties/
         List.of(audioLabel, advancedLabel, statsLabel).forEach(label -> label.putClientProperty(
