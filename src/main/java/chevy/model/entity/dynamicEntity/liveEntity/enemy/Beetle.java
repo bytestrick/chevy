@@ -1,9 +1,9 @@
 package chevy.model.entity.dynamicEntity.liveEntity.enemy;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class Beetle extends Enemy {
-    public Beetle(Vector2<Integer> initPosition) {
+    public Beetle(Point initPosition) {
         super(initPosition, Type.BEETLE, 1.5f, .15f);
         health = 10;
         currentHealth = health;

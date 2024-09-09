@@ -2,13 +2,14 @@ package chevy.model.entity.collectable;
 
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class Health extends Collectable {
     private final Vertex idle = new Vertex(State.IDLE, 1.6f);
     private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
 
-    public Health(Vector2<Integer> initPosition) {
+    public Health(Point initPosition) {
         super(initPosition, Type.HEALTH);
         initStateMachine();
     }

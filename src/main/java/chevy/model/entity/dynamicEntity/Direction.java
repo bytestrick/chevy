@@ -2,20 +2,24 @@ package chevy.model.entity.dynamicEntity;
 
 import chevy.model.entity.Entity;
 import chevy.utils.Utils;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 /**
  * Punti cardinali
  */
 public enum Direction {
-    UP(new Vector2<>(-1, 0)),
-    RIGHT(new Vector2<>(0, 1)),
-    DOWN(new Vector2<>(1, 0)),
-    LEFT(new Vector2<>(0, -1));
+    UP(0, -1),
+    RIGHT(1, 0),
+    DOWN(0, 1),
+    LEFT(-1, 0);
 
-    private final Vector2<Integer> direction;
+    public final int x, y;
 
-    Direction(Vector2<Integer> direction) {this.direction = direction;}
+    Direction(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
     public static Direction getRandom() {
         Direction[] directions = values();
@@ -26,8 +30,8 @@ public enum Direction {
         return positionToDirection(a.getPosition(), b.getPosition());
     }
 
-    public static Direction positionToDirection(Vector2<Integer> a, Vector2<Integer> b) {
-        final int x = b.first - a.first, y = b.second - a.second;
+    public static Direction positionToDirection(Point a, Point b) {
+        final int x = b.x - a.x, y = b.y - a.y;
 
         if (x == -1 && y == 0) {
             return UP;
@@ -41,6 +45,17 @@ public enum Direction {
         return null;
     }
 
+    /**
+     * Avanza una posizione di una cella nella direzione corrente
+     *
+     * @param position posizione corrente
+     * @return la posizione successiva
+     */
+    public Point advance(Point position) {
+        position.translate(x, y);
+        return position;
+    }
+
     public Direction getOpposite() {
         return switch (this) {
             case UP -> DOWN;
@@ -49,8 +64,4 @@ public enum Direction {
             case RIGHT -> LEFT;
         };
     }
-
-    public Integer col() {return direction.second;}
-
-    public Integer row() {return direction.first;}
 }

@@ -1,15 +1,16 @@
 package chevy.model.entity.collectable;
 
-import chevy.model.entity.EntityType;
 import chevy.model.entity.Entity;
+import chevy.model.entity.EntityType;
 import chevy.model.entity.stateMachine.EntityState;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public abstract class Collectable extends Entity {
     private final Type type;
     private boolean collected;
 
-    public Collectable(Vector2<Integer> initPosition, Type type) {
+    public Collectable(Point initPosition, Type type) {
         super(initPosition, Entity.Type.COLLECTABLE);
         this.type = type;
 

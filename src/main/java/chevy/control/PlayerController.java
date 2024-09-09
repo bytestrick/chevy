@@ -31,7 +31,6 @@ import chevy.service.Sound;
 import chevy.service.Updatable;
 import chevy.service.UpdateManager;
 import chevy.utils.Log;
-import chevy.utils.Vector2;
 import chevy.view.GamePanel;
 import chevy.view.chamber.ChamberView;
 
@@ -46,6 +45,10 @@ import static chevy.model.entity.staticEntity.environment.Environment.Type.TRAP;
  */
 public final class PlayerController implements Updatable {
     private static final double invSqrtTwo = 1 / Math.sqrt(2);
+    private static final Point playerViewOffset = new Point(
+            ChamberView.tileSide / 2 + ChamberView.windowOffset.width,
+            ChamberView.tileSide / 2 + ChamberView.windowOffset.height
+    );
     private final Chamber chamber;
     private final Player player;
     private final GamePanel gamePanel;
@@ -110,8 +113,12 @@ public final class PlayerController implements Updatable {
      * @param click posizione del click del mouse nella finestra
      */
     void mousePressed(final Point click) {
-        final Point playerPos = ChamberView.getPlayerViewPosition(
-                new Point(player.getCol(), player.getRow()), gamePanel);
+        final Point playerPos = player.getPosition();
+        playerPos.setLocation(
+                ChamberView.tileSide * playerPos.x + playerViewOffset.x,
+                ChamberView.tileSide * playerPos.y + playerViewOffset.y
+                        + gamePanel.getWindow().getHeight() - gamePanel.getHeight()
+        );
 
         final double adj = playerPos.x - click.x, opp = playerPos.y - click.y;
         final double hyp = Math.sqrt(adj * adj + opp * opp);
@@ -223,8 +230,7 @@ public final class PlayerController implements Updatable {
                     }
                 }
                 case ARCHER -> { // Spara freccia
-                    final Arrow arrow = new Arrow(new Vector2<>(player.getRow(), player.getCol())
-                            , player.getDirection());
+                    final Arrow arrow = new Arrow(player.getPosition(), player.getDirection());
 
                     arrow.setDamage(player.getMinDamage(), player.getMaxDamage());
                     Sound.play(Sound.Effect.ARROW_SWOOSH);

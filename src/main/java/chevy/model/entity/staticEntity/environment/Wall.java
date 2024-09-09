@@ -1,12 +1,13 @@
 package chevy.model.entity.staticEntity.environment;
 
 import chevy.model.entity.EntityType;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class Wall extends Environment {
     private final WallTypes type;
 
-    public Wall(Vector2<Integer> initVelocity, WallTypes type) {
+    public Wall(Point initVelocity, WallTypes type) {
         super(initVelocity, Type.WALL);
         this.type = type;
     }

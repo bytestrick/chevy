@@ -17,7 +17,7 @@ import java.util.List;
 public final class TrapsUpdateController implements Updatable {
     private final TrapsController trapsController;
     private final Collection<Trap> traps = new ArrayList<>();
-    private final List<? extends Trap> trapsToAdd;
+    private final List<Trap> trapsToAdd;
     private boolean updateFinished;
 
     /**
@@ -25,7 +25,7 @@ public final class TrapsUpdateController implements Updatable {
      *                        trappole
      * @param traps           la lista delle trappole da aggiornare
      */
-    public TrapsUpdateController(TrapsController trapsController, List<? extends Trap> traps) {
+    public TrapsUpdateController(TrapsController trapsController, List<Trap> traps) {
         this.trapsController = trapsController;
         trapsToAdd = traps;
         UpdateManager.register(this);

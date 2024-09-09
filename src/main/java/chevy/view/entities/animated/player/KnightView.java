@@ -4,8 +4,9 @@ import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player.State;
 import chevy.model.entity.stateMachine.EntityState;
-import chevy.utils.Vector2;
 import chevy.view.entities.animated.LiveEntityView;
+
+import java.awt.Point;
 
 public final class KnightView extends LiveEntityView {
     private static final String RES = "/sprites/player/knight/";
@@ -14,7 +15,7 @@ public final class KnightView extends LiveEntityView {
 
     @Override
     protected void initializeAnimation() {
-        final Vector2<Integer> offset = new Vector2<>(-8, -8);
+        final Point offset = new Point(-8, -8);
         final float idleDuration = 1f;
         final float moveDuration = entity.getState(State.MOVE).getDuration();
         final float attackDuration = entity.getState(State.ATTACK).getDuration();

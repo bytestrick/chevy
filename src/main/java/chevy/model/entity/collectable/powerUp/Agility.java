@@ -1,9 +1,9 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class Agility extends PowerUp {
-    public Agility(Vector2<Integer> initVelocity) {
+    public Agility(Point initVelocity) {
         super(initVelocity, Type.AGILITY);
 
         occurringPercentage = 20;

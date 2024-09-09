@@ -3,12 +3,13 @@ package chevy.model.entity.staticEntity.environment.traps;
 import chevy.model.entity.EntityType;
 import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.staticEntity.environment.Environment;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public abstract class Trap extends Environment {
     private final Type type;
 
-    Trap(Vector2<Integer> initVelocity, Type type) {
+    Trap(Point initVelocity, Type type) {
         super(initVelocity, Environment.Type.TRAP);
         this.type = type;
         crossable = true;

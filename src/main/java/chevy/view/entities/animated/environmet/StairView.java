@@ -2,7 +2,8 @@ package chevy.view.entities.animated.environmet;
 
 import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.staticEntity.environment.Stair;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class StairView extends EnvironmentView {
     private static final String RES = "/sprites/stair/";
@@ -11,11 +12,11 @@ public final class StairView extends EnvironmentView {
 
     @Override
     protected void initializeAnimation() {
-        Vector2<Integer> offset = new Vector2<>(0, -5);
+        Point offset = new Point(0, -5);
         String folder = "right/";
 
         if (environment.getDirection() == Direction.LEFT) {
-            offset = new Vector2<>(-16, -5);
+            offset = new Point(-16, -5);
             folder = "left/";
         }
 

@@ -26,22 +26,23 @@ public final class ProjectileUpdateController implements Updatable {
     /**
      * Lista temporanea dei proiettili da aggiungere alla lista principale
      */
-    private final List<? extends Projectile> projectilesToAdd;
+    private final List<Projectile> projectilesToAdd;
 
     /**
      * @param projectileController controller dei proiettili per gestire gli aggiornamenti dei
      *                             proiettili
      * @param projectiles          lista di proiettili da aggiungere all'aggiornamento
      */
-    public ProjectileUpdateController(ProjectileController projectileController, List<?
-            extends Projectile> projectiles) {
+    public ProjectileUpdateController(ProjectileController projectileController,
+                                      List<Projectile> projectiles) {
         this.projectileController = projectileController;
-        this.projectiles = new LinkedList<>(); // Utilizziamo LinkedList per una rimozione
-        // efficiente
+
+        // Utilizziamo LinkedList per una rimozione efficiente
+        this.projectiles = new LinkedList<>();
         projectilesToAdd = projectiles;
 
-        UpdateManager.register(this); // Aggiungiamo questo controller agli aggiornamenti
-        // gestiti da UpdateManager
+        // Aggiungiamo questo controller agli aggiornamenti gestiti da UpdateManager
+        UpdateManager.register(this);
     }
 
     public static void runUpdate() {stopUpdate = false;}

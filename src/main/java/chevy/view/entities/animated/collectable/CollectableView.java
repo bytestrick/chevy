@@ -2,11 +2,11 @@ package chevy.view.entities.animated.collectable;
 
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.stateMachine.EntityState;
-import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolation;
 import chevy.view.entities.animated.AnimatedEntityView;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 abstract class CollectableView extends AnimatedEntityView {
@@ -15,11 +15,10 @@ abstract class CollectableView extends AnimatedEntityView {
     CollectableView(Collectable collectable) {
         this.collectable = collectable;
 
-        viewPosition = new Vector2<>((double) collectable.getCol(),
-                (double) collectable.getRow());
+        viewPosition = new Point2D.Double(collectable.getCol(), collectable.getRow());
         float offsetY = -0.5f;
         float duration = 2f;
-        vertical = new Interpolation(viewPosition.second, viewPosition.second + offsetY, duration, Interpolation.Type.EASE_OUT_EXPO);
+        vertical = new Interpolation(viewPosition.y, viewPosition.y + offsetY, duration, Interpolation.Type.EASE_OUT_EXPO);
 
         initializeAnimation();
     }
@@ -31,11 +30,11 @@ abstract class CollectableView extends AnimatedEntityView {
     }
 
     @Override
-    public Vector2<Double> getViewPosition() {
+    public Point2D.Double getViewPosition() {
         if (collectable.getState().equals(Collectable.State.COLLECTED)) {
             vertical.start();
         }
-        viewPosition.second = vertical.getValue();
+        viewPosition.y = vertical.getValue();
         return viewPosition;
     }
 

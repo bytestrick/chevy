@@ -3,11 +3,11 @@ package chevy.view.entities.animated.projectile;
 import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.stateMachine.EntityState;
-import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolation;
 import chevy.view.entities.animated.AnimatedEntityView;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 abstract class ProjectileView extends AnimatedEntityView {
@@ -15,36 +15,36 @@ abstract class ProjectileView extends AnimatedEntityView {
 
     ProjectileView(Projectile projectile) {
         this.projectile = projectile;
-        viewPosition = new Vector2<>((double) projectile.getCol(), (double) projectile.getRow());
+        viewPosition = new Point2D.Double(projectile.getCol(), projectile.getRow());
         vertex = projectile.getState(projectile.getState());
 
         assert vertex != null;
         final float duration = vertex.getDuration();
-        horizontal = new Interpolation(viewPosition.first, viewPosition.first, duration, Interpolation.Type.LINEAR);
-        vertical = new Interpolation(viewPosition.second, viewPosition.second, duration, Interpolation.Type.LINEAR);
+        horizontal = new Interpolation(viewPosition.x, viewPosition.x, duration, Interpolation.Type.LINEAR);
+        vertical = new Interpolation(viewPosition.y, viewPosition.y, duration, Interpolation.Type.LINEAR);
         initializeAnimation();
     }
 
     @Override
-    public Vector2<Double> getViewPosition() {
+    public Point2D.Double getViewPosition() {
         if (vertex.isFinished()) {
             vertex = projectile.getState(projectile.getState());
             firstTimeInState = true;
         } else if (firstTimeInState && vertex.getState() != Projectile.State.END) {
             float duration = vertex.getDuration();
-            horizontal.changeStart(viewPosition.first);
+            horizontal.changeStart(viewPosition.x);
             horizontal.changeEnd(projectile.getCol());
             horizontal.changeDuration(duration);
             horizontal.restart();
-            vertical.changeStart(viewPosition.second);
+            vertical.changeStart(viewPosition.y);
             vertical.changeEnd(projectile.getRow());
             vertical.changeDuration(duration);
             vertical.restart();
             firstTimeInState = false;
         }
 
-        viewPosition.first = horizontal.getValue();
-        viewPosition.second = vertical.getValue();
+        viewPosition.x = horizontal.getValue();
+        viewPosition.y = vertical.getValue();
         return viewPosition;
     }
 

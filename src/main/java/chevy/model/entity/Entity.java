@@ -6,12 +6,12 @@ import chevy.model.entity.stateMachine.StateMachine;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Log;
 import chevy.utils.Utils;
-import chevy.utils.Vector2;
 
+import java.awt.Point;
 import java.util.UUID;
 
 public abstract class Entity {
-    protected final Vector2<Integer> position;
+    protected final Point position;
     protected final StateMachine stateMachine = new StateMachine();
     private final UUID uuid = UUID.randomUUID();
     private final Type type;
@@ -24,7 +24,7 @@ public abstract class Entity {
     private Direction direction = Direction.getRandom();
     private boolean shouldDraw;
 
-    public Entity(Vector2<Integer> initialPosition, Type type) {
+    public Entity(Point initialPosition, Type type) {
         position = initialPosition;
         this.type = type;
     }
@@ -55,8 +55,6 @@ public abstract class Entity {
 
     public void setDirection(Direction direction) {this.direction = direction;}
 
-    public void setSafeToCross(boolean safeToCross) {this.safeToCross = safeToCross;}
-
     public boolean shouldNotDraw() {return !shouldDraw;}
 
     public void setShouldDraw(boolean shouldDraw) {this.shouldDraw = shouldDraw;}
@@ -76,11 +74,11 @@ public abstract class Entity {
 
     public EntityType getGenericType() {return null;}
 
-    public final int getRow() {return position.first;}
+    public final int getRow() {return position.y;}
 
-    public final int getCol() {return position.second;}
+    public final int getCol() {return position.x;}
 
-    public final Vector2<Integer> getPosition() {return position;}
+    public final Point getPosition() {return new Point(position);}
 
     public boolean isCrossable() {return crossable;}
 
@@ -94,6 +92,8 @@ public abstract class Entity {
         }
         return false;
     }
+
+    public void setSafeToCross(boolean safeToCross) {this.safeToCross = safeToCross;}
 
     @Override
     public int hashCode() {return uuid.hashCode();}

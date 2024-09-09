@@ -1,11 +1,11 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class ColdHeart extends PowerUp {
     private static final int SHIELD_BOOST = 3;
 
-    public ColdHeart(Vector2<Integer> initVelocity) {
+    public ColdHeart(Point initVelocity) {
         super(initVelocity, Type.COLD_HEART);
 
         inStock = 1;

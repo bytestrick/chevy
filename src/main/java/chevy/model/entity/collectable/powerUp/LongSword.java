@@ -1,11 +1,11 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class LongSword extends PowerUp {
     private static final int DAMAGE_BOOST = 2;
 
-    public LongSword(Vector2<Integer> initVelocity) {
+    public LongSword(Point initVelocity) {
         super(initVelocity, Type.LONG_SWORD);
 
         inStock = 1;

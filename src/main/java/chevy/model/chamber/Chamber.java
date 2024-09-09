@@ -21,10 +21,10 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.utils.Log;
 import chevy.utils.Utils;
-import chevy.utils.Vector2;
 import chevy.view.chamber.ChamberView;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -83,26 +83,16 @@ public final class Chamber {
     /**
      * Verifica se una posizione è valida all'interno della griglia.
      *
-     * @param vector2 posizione da validare
-     * @return true se valida, false altrimenti
-     */
-    boolean validatePosition(Vector2<Integer> vector2) {
-        if (initialized) {
-            return vector2.first >= 0 && vector2.first < size.height && vector2.second >= 0 && vector2.second < size.width;
-        }
-        return false;
-    }
-
-    /**
-     * Verifica se una posizione è valida all'interno della griglia.
-     *
-     * @param row riga da validare
-     * @param col colonna da validare
+     * @param position la posizione da validare
      * @return true se è valida, false altrimenti
      */
-    private boolean validatePosition(int row, int col) {
+    boolean validatePosition(Point position) {
+        return validatePosition(position.y, position.x);
+    }
+
+    private boolean validatePosition(int i, int j) {
         if (initialized) {
-            return row >= 0 && row < size.height && col >= 0 && col < size.width;
+            return i >= 0 && i < size.height && j >= 0 && j < size.width;
         }
         return false;
     }
@@ -116,21 +106,18 @@ public final class Chamber {
      * @return true se si può passare, false altrimenti.
      */
     public synchronized boolean canCross(DynamicEntity dynamicEntity, Direction direction) {
-        Vector2<Integer> vector2 = new Vector2<>(dynamicEntity.getRow() + direction.row(),
-                dynamicEntity.getCol() + direction.col());
-
-        return canCross(vector2);
+        return canCross(direction.advance(dynamicEntity.getPosition()));
     }
 
     /**
      * Verifica se una determinata cella in una determinata posizione può essere attraversata.
      *
-     * @param vector2 posizione in cui è presente la cella da controllare
+     * @param position posizione in cui è presente la cella da controllare
      * @return true se si può passare, false altrimenti
      */
-    private synchronized boolean canCross(Vector2<Integer> vector2) {
-        if (validatePosition(vector2)) {
-            List<Entity> entityList = chamber.get(vector2.first).get(vector2.second);
+    private synchronized boolean canCross(Point position) {
+        if (validatePosition(position)) {
+            List<Entity> entityList = chamber.get(position.y).get(position.x);
             for (Entity entity : entityList) {
                 if (!entity.isCrossable()) {
                     return false;
@@ -150,9 +137,7 @@ public final class Chamber {
      * @return true se lo spostamento non danneggerà l'entità dinamica, false altrimenti
      */
     private boolean isSafeToCross(DynamicEntity dynamicEntity, Direction direction) {
-        Vector2<Integer> vector2 = new Vector2<>(dynamicEntity.getRow() + direction.row(),
-                dynamicEntity.getCol() + direction.col());
-        return isSafeToCross(vector2);
+        return isSafeToCross(direction.advance(dynamicEntity.getPosition()));
     }
 
     /**
@@ -160,12 +145,12 @@ public final class Chamber {
      * (usata principalmente per far si che i nemici non si spostano su celle in cui potrebbero
      * prendere danno).
      *
-     * @param vector2 posizione della cella da controllare
+     * @param position posizione della cella da controllare
      * @return true se lo spostamento non danneggerà l'entità dinamica, false altrimenti
      */
-    boolean isSafeToCross(Vector2<Integer> vector2) {
-        Entity onTop = getEntityOnTop(vector2);
-        return canCross(vector2) && onTop != null && onTop.isSafeToCross();
+    boolean isSafeToCross(Point position) {
+        Entity onTop = getEntityOnTop(position);
+        return canCross(position) && onTop != null && onTop.isSafeToCross();
     }
 
     /**
@@ -192,17 +177,15 @@ public final class Chamber {
      * @return entità in cima alla griglia
      */
     public synchronized Entity getEntityNearOnTop(DynamicEntity dynamicEntity,
-                                                  Direction direction,
-                                                  int distanceCell) {
+                                                  Direction direction, int distanceCell) {
         if (direction == null || dynamicEntity == null) {
             return null;
         }
 
-        Vector2<Integer> vector2 =
-                new Vector2<>(dynamicEntity.getRow() + direction.row() * distanceCell,
-                        dynamicEntity.getCol() + direction.col() * distanceCell);
-        if (validatePosition(vector2)) {
-            return getEntityOnTop(vector2);
+        Point position = dynamicEntity.getPosition();
+        position.translate(direction.x * distanceCell, direction.y * distanceCell);
+        if (validatePosition(position)) {
+            return getEntityOnTop(position);
         }
 
         return null;
@@ -211,12 +194,12 @@ public final class Chamber {
     /**
      * Controlla se un'entità può essere creata in una determinata cella.
      *
-     * @param vector2 posizione della cella da verificare
+     * @param position posizione della cella da verificare
      * @return true se può essere creata, false altrimenti
      */
-    private synchronized boolean canSpawn(Vector2<Integer> vector2) {
-        Entity onTop = getEntityOnTop(vector2);
-        return validatePosition(vector2) && onTop != null && onTop.isCrossable() && !(onTop instanceof Void);
+    private synchronized boolean canSpawn(Point position) {
+        final Entity onTop = getEntityOnTop(position);
+        return validatePosition(position) && onTop != null && onTop.isCrossable() && !(onTop instanceof Void);
     }
 
     /**
@@ -240,10 +223,10 @@ public final class Chamber {
     public synchronized Direction getDirectionToHitPlayer(Entity entity, int distanceCell) {
         for (int i = 1; i <= distanceCell; ++i) {
             for (Direction direction : Direction.values()) {
-                Vector2<Integer> checkPosition =
-                        new Vector2<>(entity.getRow() + direction.row() * i,
-                                entity.getCol() + direction.col() * i);
-                if (validatePosition(checkPosition) && getEntityOnTop(checkPosition) instanceof Player) {
+                Point position = direction.advance(entity.getPosition());
+                position.x *= i;
+                position.y *= i;
+                if (validatePosition(position) && getEntityOnTop(position) instanceof Player) {
                     if (entity instanceof DynamicEntity dynamicEntity) {
                         dynamicEntity.setDirection(direction);
                     }
@@ -263,9 +246,7 @@ public final class Chamber {
      */
     public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity,
                                                Direction direction) {
-        Vector2<Integer> nextPosition = new Vector2<>(dynamicEntity.getRow() + direction.row(),
-                dynamicEntity.getCol() + direction.col());
-
+        Point nextPosition = direction.advance(dynamicEntity.getPosition());
         if (canCross(nextPosition)) {
             dynamicEntity.setDirection(direction);
 
@@ -283,10 +264,9 @@ public final class Chamber {
      * @param nextPosition  posizione in cui è presente la cella
      */
     private synchronized void moveDynamicEntity(DynamicEntity dynamicEntity,
-                                                Vector2<Integer> nextPosition) {
-        Direction direction =
-                Direction.positionToDirection(new Vector2<>(dynamicEntity.getRow(),
-                        dynamicEntity.getCol()), nextPosition);
+                                                Point nextPosition) {
+        Direction direction = Direction.positionToDirection(dynamicEntity.getPosition(),
+                nextPosition);
 
         if (canCross(nextPosition) && direction != null) {
             moveDynamicEntity(dynamicEntity, direction);
@@ -341,10 +321,10 @@ public final class Chamber {
                 int randomJ = Utils.wrap(f + j, -1, 1);
 
                 if (randomI != 0 || randomJ != 0) {
-                    Vector2<Integer> spawnPosition = new Vector2<>(entity.getRow() + randomI,
-                            entity.getCol() + randomJ);
-                    if (canSpawn(spawnPosition)) {
-                        Slime slime = new Slime(spawnPosition);
+                    Point position = entity.getPosition();
+                    position.translate(randomJ, randomI);
+                    if (canSpawn(position)) {
+                        Slime slime = new Slime(position);
                         addEnemy(slime);
                         addEntityOnTop(slime);
                         --nSlime;
@@ -362,17 +342,17 @@ public final class Chamber {
             }
             switch (collectableType) {
                 case COIN -> {
-                    Coin coin = new Coin(new Vector2<>(enemy.getRow(), enemy.getCol()));
+                    Coin coin = new Coin(enemy.getPosition());
                     addEntityOnTop(coin);
                     addCollectable(coin);
                 }
                 case HEALTH -> {
-                    Health health = new Health(new Vector2<>(enemy.getRow(), enemy.getCol()));
+                    Health health = new Health(enemy.getPosition());
                     addEntityOnTop(health);
                     addCollectable(health);
                 }
                 case KEY -> {
-                    Key key = new Key(new Vector2<>(enemy.getRow(), enemy.getCol()));
+                    Key key = new Key(enemy.getPosition());
                     addEntityOnTop(key);
                     addCollectable(key);
                 }
@@ -396,31 +376,31 @@ public final class Chamber {
                 int randomJ = Utils.wrap(f + j, -1, 1);
 
                 if (randomI != 0 || randomJ != 0) {
-                    Vector2<Integer> spawnPosition = new Vector2<>(chest.getRow() + randomI,
-                            chest.getCol() + randomJ);
-                    if (canSpawn(spawnPosition)) {
+                    Point position = chest.getPosition();
+                    position.translate(randomJ, randomI);
+                    if (canSpawn(position)) {
                         Collectable.Type collectableType = chest.getDrop();
                         if (collectableType == null) {
                             return;
                         }
                         switch (collectableType) {
                             case COIN -> {
-                                Coin coin = new Coin(spawnPosition);
+                                Coin coin = new Coin(position);
                                 addEntityOnTop(coin);
                                 addCollectable(coin);
                             }
                             case HEALTH -> {
-                                Health health = new Health(spawnPosition);
+                                Health health = new Health(position);
                                 addEntityOnTop(health);
                                 addCollectable(health);
                             }
                             case KEY -> {
-                                Key key = new Key(spawnPosition);
+                                Key key = new Key(position);
                                 addEntityOnTop(key);
                                 addCollectable(key);
                             }
                             case POWER_UP -> {
-                                PowerUp powerUp = PowerUp.getPowerUp(spawnPosition);
+                                PowerUp powerUp = PowerUp.getPowerUp(position);
                                 addEntityOnTop(powerUp);
                                 addCollectable(powerUp);
                             }
@@ -546,7 +526,7 @@ public final class Chamber {
      */
     public synchronized boolean chase(Enemy enemy) {
         AStar aStar = new AStar(this);
-        List<Vector2<Integer>> path = aStar.find(enemy, player);
+        List<Point> path = aStar.find(enemy.getPosition(), player.getPosition());
         if (path != null) {
             if (isSafeToCross(path.get(1))) {
                 moveDynamicEntity(enemy, path.get(1));
@@ -576,17 +556,14 @@ public final class Chamber {
 
     private synchronized Entity getEntityOnTop(int row, int col) {return chamber.get(row).get(col).getLast();}
 
-    private synchronized Entity getEntityOnTop(Vector2<Integer> vector2) {
+    public synchronized Entity getEntityOnTop(Point position) {
         try {
-            return chamber.get(vector2.first).get(vector2.second).getLast();
+            return chamber.get(position.y).get(position.x).getLast();
         } catch (NoSuchElementException e) {
-            Log.warn("Tentativo di accedere alla cella (" + vector2.first.toString() + ", " + vector2.second.toString() + ") fallito perché è vuota");
+            Log.warn("Tentativo di accedere alla cella (" + position.y + ", " + position.x + ") " +
+                    "fallito perché è vuota");
         }
         return null;
-    }
-
-    public synchronized Entity getEntityOnTop(Entity entity) {
-        return getEntityOnTop(new Vector2<>(entity.getRow(), entity.getCol()));
     }
 
     public synchronized Entity getEntityBelowTheTop(Entity entity) {
@@ -594,14 +571,6 @@ public final class Chamber {
         int index = entities.size() - 2;
         return index >= 0 ? entities.get(index) : null;
     }
-
-    boolean isInitialized() {return initialized;}
-
-    public Dimension getSize() {return size;}
-
-    public Player getPlayer() {return player;}
-
-    public void setPlayer(Player player) {this.player = player;}
 
     void addEnemy(Enemy enemy) {
         enemies.add(enemy);
@@ -613,6 +582,14 @@ public final class Chamber {
             ++enemyCounter;
         }
     }
+
+    boolean isInitialized() {return initialized;}
+
+    public Dimension getSize() {return size;}
+
+    public Player getPlayer() {return player;}
+
+    public void setPlayer(Player player) {this.player = player;}
 
     public int getEnemyCounter() {return enemyCounter;}
 

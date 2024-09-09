@@ -43,23 +43,6 @@ public final class TrapsController {
     }
 
     /**
-     * Gestisce le interazioni con le trappole a seconda del tipo di interazione.
-     *
-     * @param interaction il tipo di interazione
-     * @param subject     l'entità che avvia l'interazione
-     * @param object      l'entità che riceve l'interazione
-     */
-    public synchronized void handleInteraction(Interaction interaction, Entity subject,
-                                               Trap object) {
-        switch (interaction) {
-            case PLAYER_IN -> playerInInteraction((Player) subject, object);
-            case PLAYER_OUT -> playerOutInteraction((Player) subject, object);
-            case PLAYER -> playerInteraction((Player) subject, object);
-            case UPDATE -> updateTraps((Trap) subject);
-        }
-    }
-
-    /**
      * Delega l'interazione del giocatore che esce dalla trappola ai controller specifici.
      *
      * @param player giocatore che esce dalla trappola
@@ -68,9 +51,25 @@ public final class TrapsController {
     private static void playerOutInteraction(Player player, Trap trap) {
         switch (trap.getType()) {
             case Trap.Type.TRAPDOOR -> TrapdoorController.playerOutInteraction((Trapdoor) trap);
-            case Trap.Type.ICY_FLOOR ->
-                    IcyFloorController.playerOutInteraction(player);
+            case Trap.Type.ICY_FLOOR -> IcyFloorController.playerOutInteraction(player);
             default -> {}
+        }
+    }
+
+    /**
+     * Gestisce le interazioni con le trappole a seconda del tipo di interazione.
+     *
+     * @param interaction il tipo di interazione
+     * @param subject     l'entità che avvia l'interazione
+     * @param trap        l'entità che riceve l'interazione
+     */
+    public synchronized void handleInteraction(Interaction interaction, Entity subject,
+                                               Trap trap) {
+        switch (interaction) {
+            case PLAYER_IN -> playerInInteraction((Player) subject, trap);
+            case PLAYER_OUT -> playerOutInteraction((Player) subject, trap);
+            case PLAYER -> playerInteraction((Player) subject, trap);
+            case UPDATE -> updateTraps((Trap) subject);
         }
     }
 
@@ -83,8 +82,7 @@ public final class TrapsController {
     private void playerInInteraction(Player player, Trap trap) {
         switch (trap.getType()) {
             case Trap.Type.SLUDGE -> SludgeController.playerInInteraction(player);
-            case Trap.Type.ICY_FLOOR ->
-                    IcyFloorController.playerInInteraction(player);
+            case Trap.Type.ICY_FLOOR -> IcyFloorController.playerInInteraction(player);
             case Trap.Type.VOID -> voidController.playerInInteraction(player, (Void) trap);
             case Trap.Type.TRAPDOOR -> trapdoorController.playerInInteraction((Trapdoor) trap);
             case Trap.Type.SPIKED_FLOOR ->

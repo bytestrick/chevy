@@ -2,9 +2,9 @@ package chevy.view.entities.environmet;
 
 import chevy.model.entity.staticEntity.environment.Wall;
 import chevy.utils.Load;
-import chevy.utils.Vector2;
 import chevy.view.entities.EntityView;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public final class WallView extends EntityView {
@@ -12,7 +12,7 @@ public final class WallView extends EntityView {
     private static BufferedImage top, bottom, left, right, topLeftCorner, topRightCorner,
             bottomLeftCorner, bottomRightCorner;
     private final Wall wall;
-    private final Vector2<Double> position = new Vector2<>(0d, 0d);
+    private final Point2D.Double position = new Point2D.Double(0, 0);
 
     public WallView(Wall wall) {this.wall = wall;}
 
@@ -72,9 +72,8 @@ public final class WallView extends EntityView {
     }
 
     @Override
-    public Vector2<Double> getViewPosition() {
-        position.changeFirst((double) wall.getCol());
-        position.changeSecond((double) wall.getRow());
+    public Point2D.Double getViewPosition() {
+        position.setLocation(wall.getPosition());
         return position;
     }
 }

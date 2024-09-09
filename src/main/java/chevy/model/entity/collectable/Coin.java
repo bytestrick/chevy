@@ -3,13 +3,14 @@ package chevy.model.entity.collectable;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class Coin extends Collectable {
     private final Vertex idle = new Vertex(State.IDLE, 0.8f);
     private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
 
-    public Coin(Vector2<Integer> initPosition) {
+    public Coin(Point initPosition) {
         super(initPosition, Type.COIN);
         initStateMachine();
     }

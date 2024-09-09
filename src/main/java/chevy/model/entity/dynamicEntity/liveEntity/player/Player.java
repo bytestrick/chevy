@@ -6,25 +6,20 @@ import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Log;
-import chevy.utils.Vector2;
 
+import java.awt.Point;
 import java.util.EnumMap;
 import java.util.Map;
 
 public abstract class Player extends LiveEntity {
-    private final Vertex idle;
-    private final Vertex move;
-    private final Vertex attack;
     final Vertex hit;
-    private final Vertex dead;
-    private final Vertex sludge;
-    private final Type type;
-    private final Vertex glide;
     final Vertex fall;
+    private final Vertex idle, move, attack, dead, sludge, glide;
+    private final Type type;
     private final float speed;
     private final Map<PowerUp.Type, PowerUp> ownedPowerUp = new EnumMap<>(PowerUp.Type.class);
 
-    Player(Vector2<Integer> initPosition, Type type, float speed, int health, int shield,
+    Player(Point initPosition, Type type, float speed, int health, int shield,
            int maxDamage, int minDamage, float attackDuration,
            float deadDuration) {
         super(initPosition, LiveEntity.Type.PLAYER);

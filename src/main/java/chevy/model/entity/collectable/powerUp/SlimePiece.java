@@ -1,12 +1,12 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class SlimePiece extends PowerUp {
     private static final int NUMBER_OF_SLIMES = 1;
     private static final int DAMAGE_BOOST = 4;
 
-    public SlimePiece(Vector2<Integer> initVelocity) {
+    public SlimePiece(Point initVelocity) {
         super(initVelocity, Type.SLIME_PIECE);
 
         occurringPercentage = 100;

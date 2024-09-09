@@ -13,15 +13,14 @@ import java.util.List;
 public final class EnvironmentUpdateController implements Updatable {
     private final EnvironmentController environmentController;
     private final Collection<Environment> environments = new ArrayList<>();
-    private final List<? extends Environment> environmentsToAdd;
+    private final List<Environment> environmentsToAdd;
     private boolean updateFinished;
 
     /**
      * @param environmentController il controller delle casse
      * @param environments          la lista delle casse da aggiornare
      */
-    public EnvironmentUpdateController(EnvironmentController environmentController, List<?
-            extends Environment> environments) {
+    public EnvironmentUpdateController(EnvironmentController environmentController, List<Environment> environments) {
         this.environmentController = environmentController;
         environmentsToAdd = environments;
 

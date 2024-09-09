@@ -1,11 +1,11 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class GoldArrow extends PowerUp {
     private static final int DAMAGE_BOOST = 2;
 
-    public GoldArrow(Vector2<Integer> initVelocity) {
+    public GoldArrow(Point initVelocity) {
         super(initVelocity, Type.GOLD_ARROW);
 
         inStock = 1;
