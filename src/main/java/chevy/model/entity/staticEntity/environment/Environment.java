@@ -3,12 +3,13 @@ package chevy.model.entity.staticEntity.environment;
 import chevy.model.entity.Entity;
 import chevy.model.entity.EntityType;
 import chevy.model.entity.stateMachine.EntityState;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public abstract class Environment extends Entity {
     private final Type type;
 
-    public Environment(Vector2<Integer> initVelocity, Type type) {
+    public Environment(Point initVelocity, Type type) {
         super(initVelocity, Entity.Type.ENVIRONMENT);
         this.type = type;
         drawLayer = 1;

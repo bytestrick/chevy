@@ -1,11 +1,11 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class HedgehogSpines extends PowerUp {
     private static final float DAMAGE_MULTIPLIER = .2f;
 
-    public HedgehogSpines(Vector2<Integer> initVelocity) {
+    public HedgehogSpines(Point initVelocity) {
         super(initVelocity, Type.HEDGEHOG_SPINES);
 
         occurringPercentage = 50;

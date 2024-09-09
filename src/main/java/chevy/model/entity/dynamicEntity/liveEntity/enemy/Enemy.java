@@ -6,7 +6,8 @@ import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public abstract class Enemy extends LiveEntity {
     /**
@@ -21,25 +22,22 @@ public abstract class Enemy extends LiveEntity {
      */
     private static final int[] DROPPABLE_COLLECTABLE_PROB = {40, 10, 15};
     private static final int DROP_PROBABILITY = 100;
-    private final Vertex move;
-    private final Vertex attack;
-    private final Vertex hit;
-    private final Vertex dead;
+    private final Vertex move, attack, hit, dead;
     private final Type type;
     Vertex idle;
     Vertex invincibility;
     private boolean canAttack;
 
-    Enemy(Vector2<Integer> initPosition, Type type, float idleDuration,
+    Enemy(Point initPosition, Type type, float idleDuration,
           float hitDuration) {
         super(initPosition, LiveEntity.Type.ENEMY);
         this.type = type;
 
-        idle = new Vertex(Skeleton.State.IDLE, idleDuration);
-        move = new Vertex(Skeleton.State.MOVE, (float) 0.5);
-        attack = new Vertex(Skeleton.State.ATTACK, (float) 0.5);
-        hit = new Vertex(Skeleton.State.HIT, hitDuration);
-        dead = new Vertex(Skeleton.State.DEAD, (float) 0.3);
+        idle = new Vertex(State.IDLE, idleDuration);
+        move = new Vertex(State.MOVE, .5f);
+        attack = new Vertex(State.ATTACK, .5f);
+        hit = new Vertex(State.HIT, hitDuration);
+        dead = new Vertex(State.DEAD, .3f);
 
         drawLayer = 2;
         initStateMachine();
@@ -77,7 +75,7 @@ public abstract class Enemy extends LiveEntity {
     @Override
     public String toString() {return type.toString();}
 
-    void initStateMachine() {
+    private void initStateMachine() {
         stateMachine.setInitialState(idle);
 
         idle.linkVertex(move);

@@ -2,14 +2,15 @@ package chevy.model.entity.staticEntity.environment.traps;
 
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public class Trapdoor extends Trap {
     private final Vertex idle = new Vertex(State.IDLE);
     private final Vertex open = new Vertex(State.OPEN, .4f);
     private final Vertex damage = new Vertex(State.DAMAGE);
 
-    public Trapdoor(Vector2<Integer> initVelocity) {
+    public Trapdoor(Point initVelocity) {
         super(initVelocity, Type.TRAPDOOR);
         maxDamage = 1;
         minDamage = 1;

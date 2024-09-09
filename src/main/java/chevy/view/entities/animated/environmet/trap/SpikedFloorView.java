@@ -2,7 +2,8 @@ package chevy.view.entities.animated.environmet.trap;
 
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor.State;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class SpikedFloorView extends TrapView {
     private static final String RES = "/sprites/traps/spikedFloor/";
@@ -11,7 +12,7 @@ public final class SpikedFloorView extends TrapView {
 
     @Override
     protected void initializeAnimation() {
-        final Vector2<Integer> offset = new Vector2<>(0, -7);
+        final Point offset = new Point(0, -7);
 
         final float disabledDuration = trap.getState(State.DISABLED).getDuration();
         animate(State.DISABLED, null, 1, disabledDuration, offset, RES + "setSafeToCross");

@@ -5,7 +5,8 @@ import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public abstract class PowerUp extends Collectable {
     private final Type type;
@@ -18,14 +19,14 @@ public abstract class PowerUp extends Collectable {
     int occurringPercentage;
     int inStock = -1; // quantità infinita
 
-    PowerUp(Vector2<Integer> initVelocity, Type type) {
+    PowerUp(Point initVelocity, Type type) {
         super(initVelocity, Collectable.Type.POWER_UP);
         this.type = type;
 
         initStaticMachine();
     }
 
-    public static PowerUp getPowerUp(Vector2<Integer> position) {
+    public static PowerUp getPowerUp(Point position) {
         return switch (Type.getRandom()) {
             case AGILITY -> new Agility(position);
             case ANGEL_RING -> new AngelRing(position);

@@ -1,11 +1,11 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class CoinOfGreed extends PowerUp {
     private static final float INCREASED_DROP_PROBABILITY = .3f;
 
-    public CoinOfGreed(Vector2<Integer> initVelocity) {
+    public CoinOfGreed(Point initVelocity) {
         super(initVelocity, Type.COIN_OF_GREED);
 
         inStock = 1;

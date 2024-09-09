@@ -1,10 +1,11 @@
 package chevy.model.entity.dynamicEntity.liveEntity.enemy;
 
 import chevy.model.entity.stateMachine.Vertex;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class Zombie extends Enemy {
-    public Zombie(Vector2<Integer> initPosition) {
+    public Zombie(Point initPosition) {
         super(initPosition, Type.ZOMBIE, 1f, .15f);
         idle = new Vertex(State.IDLE, 1f, true);
 

@@ -2,13 +2,14 @@ package chevy.model.entity.staticEntity.environment.traps;
 
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public class IcyFloor extends Trap {
     private final Vertex icyFloor = new Vertex(State.ICY_FLOOR, 2f);
     private final Vertex icyFloorSparkling = new Vertex(State.ICY_FLOOR_SPARKLING, 0.8f);
 
-    public IcyFloor(Vector2<Integer> initVelocity) {
+    public IcyFloor(Point initVelocity) {
         super(initVelocity, Type.ICY_FLOOR);
         shouldUpdate = true;
         initStateMachine();

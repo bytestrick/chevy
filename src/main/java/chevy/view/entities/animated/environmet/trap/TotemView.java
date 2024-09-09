@@ -4,8 +4,8 @@ import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
 import chevy.model.entity.staticEntity.environment.traps.Totem.State;
-import chevy.utils.Vector2;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 public final class TotemView extends TrapView {
@@ -15,7 +15,7 @@ public final class TotemView extends TrapView {
 
     @Override
     protected void initializeAnimation() {
-        final Vector2<Integer> offset = new Vector2<>(0, -6);
+        final Point offset = new Point(0, -6);
         final float shotDuration = trap.getState(State.SHOT).getDuration();
         final float reloadDuration = trap.getState(State.RELOAD).getDuration();
         for (Direction direction : Direction.values()) {
@@ -39,7 +39,7 @@ public final class TotemView extends TrapView {
     }
 
     @Override
-    public Vector2<Integer> getOffset() {
+    public Point getOffset() {
         final EntityState state = trap.getState();
         return getAnimatedSprite(state, getAnimationDirection(state)).getOffset();
     }

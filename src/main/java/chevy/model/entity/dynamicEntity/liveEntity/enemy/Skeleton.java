@@ -2,12 +2,13 @@ package chevy.model.entity.dynamicEntity.liveEntity.enemy;
 
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Log;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class Skeleton extends Enemy {
     private boolean invincible = true;
 
-    public Skeleton(Vector2<Integer> initPosition) {
+    public Skeleton(Point initPosition) {
         super(initPosition, Type.SKELETON, 1.8f, 0.15f);
         invincibility = new Vertex(State.INVINCIBILITY);
 

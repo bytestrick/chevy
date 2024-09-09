@@ -3,14 +3,15 @@ package chevy.model.entity.staticEntity.environment.traps;
 import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public class Totem extends Trap {
     private final Direction shotDirection;
     private final Vertex shot = new Vertex(State.SHOT, 3f);
     private final Vertex reload = new Vertex(State.RELOAD, 5f);
 
-    public Totem(Vector2<Integer> initVelocity, Direction shotDirection) {
+    public Totem(Point initVelocity, Direction shotDirection) {
         super(initVelocity, Type.TOTEM);
         this.shotDirection = shotDirection;
         crossable = false;

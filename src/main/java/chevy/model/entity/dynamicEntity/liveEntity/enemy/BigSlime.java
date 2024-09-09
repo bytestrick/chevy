@@ -1,9 +1,9 @@
 package chevy.model.entity.dynamicEntity.liveEntity.enemy;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class BigSlime extends Enemy {
-    public BigSlime(Vector2<Integer> initPosition) {
+    public BigSlime(Point initPosition) {
         super(initPosition, Type.BIG_SLIME, .7f, .2f);
 
         health = 10;

@@ -4,14 +4,15 @@ import chevy.model.entity.EntityType;
 import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
 import chevy.model.entity.stateMachine.EntityState;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public abstract class Projectile extends DynamicEntity {
     private final Type type;
     private final Direction direction;
     private boolean collision;
 
-    Projectile(Vector2<Integer> initPosition, Type type, Direction direction) {
+    Projectile(Point initPosition, Type type, Direction direction) {
         super(initPosition, DynamicEntity.Type.PROJECTILE);
         this.type = type;
         this.direction = direction;

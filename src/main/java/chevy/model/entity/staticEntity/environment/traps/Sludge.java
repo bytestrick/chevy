@@ -2,13 +2,14 @@ package chevy.model.entity.staticEntity.environment.traps;
 
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public class Sludge extends Trap {
     private final Vertex active = new Vertex(State.SLUDGE_BUBBLES, 0.8f);
     private int nMoveToUnlock;
 
-    public Sludge(Vector2<Integer> initVelocity) {
+    public Sludge(Point initVelocity) {
         super(initVelocity, Type.SLUDGE);
         nMoveToUnlock = 1;
         initStateMachine();

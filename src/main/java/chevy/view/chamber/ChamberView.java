@@ -4,12 +4,10 @@ import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
 import chevy.service.Data;
-import chevy.service.Renderable;
 import chevy.service.RenderManager;
+import chevy.service.Renderable;
 import chevy.utils.Load;
 import chevy.utils.Log;
-import chevy.utils.Vector2;
-import chevy.view.GamePanel;
 import chevy.view.Window;
 import chevy.view.entities.EntityView;
 
@@ -18,6 +16,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
@@ -27,18 +26,18 @@ import java.util.List;
  */
 public final class ChamberView extends JPanel implements Renderable {
     /** Offset per centrare il contenuto in {@link Window} */
-    private static final Dimension windowOffset = new Dimension();
-    public static boolean drawCollision = Data.get("options.drawHitBoxes");
+    public static final Dimension windowOffset = new Dimension();
     /** La cella ha dimensione 16x16 pixel */
     private static final int TILE_SIZE = 16;
     private static final BufferedImage NULL_IMAGE = Load.image("/sprites/null.png");
     private static final Color collisionBG = new Color(31, 205, 242, 80);
+    public static boolean drawCollision = Data.get("options.drawHitBoxes");
     /** Il valore viene impostato non appena la finestra di gioco si apre */
     public static int topBarHeight;
+    /** Lunghezza ottimale del lato di una cella, scalata rispetto all'altezza della finestra */
+    public static int tileSide;
     /** Numero minimo di tile da visualizzare in larghezza e altezza in ogni momento */
     private static Dimension tiles = new Dimension();
-    /** Lunghezza ottimale del lato di una cella, scalata rispetto all'altezza della finestra */
-    private static int tileSide;
     private List<Layer> drawOrder;
 
     public ChamberView() {
@@ -98,20 +97,14 @@ public final class ChamberView extends JPanel implements Renderable {
                             image = NULL_IMAGE;
                         }
 
-                        Vector2<Integer> offset = entityView.getOffset();
-                        float offsetX = (float) offset.first / TILE_SIZE;
-                        if (offset.first == 0) {
-                            offsetX = 0;
-                        }
-                        float offsetY = (float) offset.second / TILE_SIZE;
-                        if (offset.second == 0) {
-                            offsetY = 0;
-                        }
+                        Point o = entityView.getOffset();
+                        Point2D.Double offset = new Point2D.Double(1d * o.x / TILE_SIZE,
+                                1d * o.y / TILE_SIZE);
 
-                        Vector2<Double> position = entityView.getViewPosition();
+                        Point2D.Double position = entityView.getViewPosition();
                         float scale = entityView.getScale();
-                        int x = (int) ((position.first + offsetX) * tileSide * scale + windowOffset.width);
-                        int y = (int) ((position.second + offsetY) * tileSide * scale + windowOffset.height);
+                        int x = (int) ((position.x + offset.x) * tileSide * scale + windowOffset.width);
+                        int y = (int) ((position.y + offset.y) * tileSide * scale + windowOffset.height);
 
                         int with = (int) (tileSide * scale * image.getWidth() / TILE_SIZE);
                         int height = (int) (tileSide * scale * image.getHeight() / TILE_SIZE);
@@ -130,19 +123,6 @@ public final class ChamberView extends JPanel implements Renderable {
     }
 
     public void setDrawOrder(List<Layer> drawOrder) {this.drawOrder = drawOrder;}
-
-    /**
-     * @param playerPositionCell la posizione del player come celle della Chamber
-     * @return le coordinate del player in pixel dall'angolo alto-sinistro della finestra
-     */
-    public static Point getPlayerViewPosition(Point playerPositionCell, GamePanel gamePanel) {
-        final int titleBarHeight = gamePanel.getWindow().getHeight() - gamePanel.getHeight();
-        final int halfTileSide = tileSide / 2;
-        Point p = new Point();
-        p.x = halfTileSide + windowOffset.width + tileSide * playerPositionCell.x;
-        p.y = halfTileSide + windowOffset.height + tileSide * playerPositionCell.y + titleBarHeight;
-        return p;
-    }
 
     @Override
     public synchronized void render(double delta) {repaint();}

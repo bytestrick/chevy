@@ -25,7 +25,7 @@ public class Vertex {
     public Vertex(EntityState state) {
         this.state = state;
         selfEdge = false;
-        duration = 0.f;
+        duration = 0;
         timer = null;
     }
 
@@ -68,9 +68,7 @@ public class Vertex {
      *
      * @param vertex lo stato da collegare a questo stato
      */
-    public void linkVertex(Vertex vertex) {
-        linkedVertices.put(vertex.getState(), vertex);
-    }
+    public void linkVertex(Vertex vertex) {linkedVertices.put(vertex.getState(), vertex);}
 
     /**
      * Trova uno stato collegato allo stato corrente

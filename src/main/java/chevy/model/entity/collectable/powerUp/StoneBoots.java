@@ -1,9 +1,9 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class StoneBoots extends PowerUp {
-    public StoneBoots(Vector2<Integer> initVelocity) {
+    public StoneBoots(Point initVelocity) {
         super(initVelocity, Type.STONE_BOOTS);
 
         occurringPercentage = 100;

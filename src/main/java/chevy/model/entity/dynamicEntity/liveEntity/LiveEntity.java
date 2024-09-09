@@ -3,7 +3,8 @@ package chevy.model.entity.dynamicEntity.liveEntity;
 import chevy.model.entity.EntityType;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
 import chevy.utils.Log;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public abstract class LiveEntity extends DynamicEntity {
     private final Type type;
@@ -13,7 +14,7 @@ public abstract class LiveEntity extends DynamicEntity {
     protected int currentShield;
     private boolean alive;
 
-    public LiveEntity(Vector2<Integer> initPosition, Type type) {
+    public LiveEntity(Point initPosition, Type type) {
         super(initPosition, DynamicEntity.Type.LIVE_ENTITY);
         this.type = type;
         alive = true;

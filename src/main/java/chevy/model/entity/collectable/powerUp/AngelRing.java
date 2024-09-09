@@ -1,9 +1,9 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class AngelRing extends PowerUp {
-    public AngelRing(Vector2<Integer> initVelocity) {
+    public AngelRing(Point initVelocity) {
         super(initVelocity, Type.ANGEL_RING);
 
         inStock = 1;

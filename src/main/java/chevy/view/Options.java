@@ -86,6 +86,7 @@ public final class Options {
                 default -> throw new IllegalStateException("Unexpected value: "
                         + itemEvent.getStateChange());
             };
+            Data.set("options.drawHitBoxes", ChamberView.drawCollision);
         });
         logLevel.addActionListener(actionListener);
         logLevel.addMouseListener(new MouseAdapter() {
@@ -191,6 +192,8 @@ public final class Options {
         }
         logLevel.setSelectedIndex(Log.Level.valueOf(Data.get("options.logLevel")).ordinal());
         logLevel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        showHitBoxes.setSelected(Data.get("options.drawHitBoxes"));
 
         // https://www.formdev.com/flatlaf/client-properties/
         List.of(audioLabel, advancedLabel, statsLabel).forEach(label -> label.putClientProperty(

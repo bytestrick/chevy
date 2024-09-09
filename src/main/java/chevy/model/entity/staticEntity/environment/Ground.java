@@ -1,12 +1,13 @@
 package chevy.model.entity.staticEntity.environment;
 
 import chevy.model.entity.EntityType;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class Ground extends Environment {
     private final GroundTypes type;
 
-    public Ground(Vector2<Integer> initVelocity, GroundTypes type) {
+    public Ground(Point initVelocity, GroundTypes type) {
         super(initVelocity, Type.GROUND);
         this.type = type;
         crossable = true;

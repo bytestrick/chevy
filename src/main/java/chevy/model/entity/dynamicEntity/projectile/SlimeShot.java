@@ -3,14 +3,15 @@ package chevy.model.entity.dynamicEntity.projectile;
 import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class SlimeShot extends Projectile {
     private final Vertex start = new Vertex(SlimeShot.State.START, .5f);
     private final Vertex loop = new Vertex(SlimeShot.State.LOOP, 1f, true);
     private final Vertex end = new Vertex(SlimeShot.State.END, .5f);
 
-    public SlimeShot(Vector2<Integer> initPosition, Direction direction) {
+    public SlimeShot(Point initPosition, Direction direction) {
         super(initPosition, Projectile.Type.SLIME_SHOT, direction);
         maxDamage = 3;
         minDamage = 2;

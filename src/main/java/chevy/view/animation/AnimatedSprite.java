@@ -2,11 +2,11 @@ package chevy.view.animation;
 
 import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.EntityState;
-import chevy.service.Renderable;
 import chevy.service.RenderManager;
+import chevy.service.Renderable;
 import chevy.utils.Pair;
-import chevy.utils.Vector2;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 /**
@@ -26,7 +26,7 @@ public final class AnimatedSprite implements Renderable {
     /** Scala dell'animazione */
     private final float scale;
     /** Offset dell'animazione */
-    private final Vector2<Integer> offset;
+    private final Point offset;
     /** Indice del frame corrente nell'animazione */
     private int currentIndexFrame;
     /** Se l'animazione è attualmente in esecuzione */
@@ -45,7 +45,7 @@ public final class AnimatedSprite implements Renderable {
      * @param scale         scala che la sequenza deve avere durante la rappresentazione
      */
     public AnimatedSprite(Pair<EntityState, Direction> type, int nFrames, float frameDuration,
-                          boolean loop, Vector2<Integer> offset, float scale) {
+                          boolean loop, Point offset, float scale) {
         this.type = type;
         nFrame = nFrames;
         this.frameDuration = frameDuration;
@@ -78,12 +78,12 @@ public final class AnimatedSprite implements Renderable {
     /**
      * @return l'offset dell'animazione
      */
-    public Vector2<Integer> getOffset() {return offset;}
+    public Point getOffset() {return new Point(offset);}
 
     /**
      * @return la scala dell'animazione
      */
-    public float getScale() { return scale; }
+    public float getScale() {return scale;}
 
     /**
      * Avvia l'animazione.
@@ -101,7 +101,7 @@ public final class AnimatedSprite implements Renderable {
      */
     public void restart() {
         currentIndexFrame = 0;
-        time = 0d;
+        time = 0;
         if (delete) {
             start();
             return;

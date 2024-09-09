@@ -40,8 +40,9 @@ import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.model.entity.staticEntity.environment.traps.Void;
-import chevy.utils.Vector2;
 import chevy.view.Menu;
+
+import java.awt.Point;
 
 /**
  * Mappa i valori di Rosso dei pixel dell'immagine di un livello a entità del gioco
@@ -133,7 +134,7 @@ final class EntityFromColor {
     private static final int STAIR_LEFT = 52;
 
     static Entity get(int r, int row, int col) {
-        Vector2<Integer> startPosition = new Vector2<>(row, col);
+        final Point startPosition = new Point(col, row);
         return switch (r) {
             //@formatter:off
             // Wall

@@ -2,14 +2,15 @@ package chevy.model.entity.staticEntity.environment.traps;
 
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public class SpikedFloor extends Trap {
     private final Vertex activated = new Vertex(State.ACTIVATED, .2f);
     private final Vertex disabled = new Vertex(State.DISABLED, 3f);
     private final Vertex damage = new Vertex(State.DAMAGE, .8f);
 
-    public SpikedFloor(Vector2<Integer> initVelocity) {
+    public SpikedFloor(Point initVelocity) {
         super(initVelocity, Type.SPIKED_FLOOR);
         safeToCross = true;
         shouldUpdate = true;

@@ -53,7 +53,7 @@ final class SpikedFloorController {
 
         if (spikedFloor.checkAndChangeState(SpikedFloor.State.DAMAGE)) {
             Sound.play(Sound.Effect.SPIKE);
-            Entity entity = chamber.getEntityOnTop(spikedFloor);
+            Entity entity = chamber.getEntityOnTop(spikedFloor.getPosition());
             if (entity instanceof Player player && canHitPlayer(player)) {
                 playerController.handleInteraction(Interaction.TRAP, spikedFloor);
             }

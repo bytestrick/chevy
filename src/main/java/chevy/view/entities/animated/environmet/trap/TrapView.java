@@ -1,10 +1,11 @@
 package chevy.view.entities.animated.environmet.trap;
 
 import chevy.model.entity.staticEntity.environment.traps.Trap;
-import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.entities.animated.AnimatedEntityView;
 
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 abstract class TrapView extends AnimatedEntityView {
@@ -12,7 +13,7 @@ abstract class TrapView extends AnimatedEntityView {
 
     TrapView(Trap trap) {
         this.trap = trap;
-        viewPosition = new Vector2<>((double) trap.getCol(), (double) trap.getRow());
+        viewPosition = new Point2D.Double(trap.getCol(), trap.getRow());
         initializeAnimation();
     }
 
@@ -32,7 +33,7 @@ abstract class TrapView extends AnimatedEntityView {
     }
 
     @Override
-    public Vector2<Integer> getOffset() {
+    public Point getOffset() {
         return getAnimatedSprite(trap.getState(), null).getOffset();
     }
 }

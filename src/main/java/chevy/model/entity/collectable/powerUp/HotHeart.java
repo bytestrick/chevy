@@ -1,11 +1,11 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class HotHeart extends PowerUp {
     private static final int HEALTH_BOOST = 3;
 
-    public HotHeart(Vector2<Integer> initVelocity) {
+    public HotHeart(Point initVelocity) {
         super(initVelocity, Type.HOT_HEART);
 
         inStock = 1;

@@ -4,7 +4,8 @@ import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class Chest extends Environment {
     /** Oggetti collezionabili che i nemici possono rilasciare */
@@ -21,7 +22,7 @@ public final class Chest extends Environment {
     private boolean onePowerUp;
     private boolean isFirstOpen = true;
 
-    public Chest(Vector2<Integer> initVelocity) {
+    public Chest(Point initVelocity) {
         super(initVelocity, Type.CHEST);
         shouldUpdate = true;
         initStateMachine();

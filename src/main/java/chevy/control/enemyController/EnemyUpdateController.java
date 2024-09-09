@@ -20,14 +20,14 @@ public final class EnemyUpdateController implements Updatable {
     private static boolean updateFinished;
     private final EnemyController enemyController;
     private final Collection<Enemy> enemies = new ArrayList<>();
-    private final List<? extends Enemy> enemiesToAdd;
+    private final List<Enemy> enemiesToAdd;
 
     /**
      * @param enemyController il controller dei nemici responsabile della gestione delle
      *                        interazioni.
      * @param enemies         la lista dei nemici da aggiungere.
      */
-    public EnemyUpdateController(EnemyController enemyController, List<? extends Enemy> enemies) {
+    public EnemyUpdateController(EnemyController enemyController, List<Enemy> enemies) {
         this.enemyController = enemyController;
         enemiesToAdd = enemies;
 

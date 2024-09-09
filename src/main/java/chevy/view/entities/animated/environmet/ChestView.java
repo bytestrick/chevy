@@ -2,7 +2,8 @@ package chevy.view.entities.animated.environmet;
 
 import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Chest.State;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class ChestView extends EnvironmentView {
     private static final String RES = "/sprites/chest/";
@@ -11,8 +12,7 @@ public final class ChestView extends EnvironmentView {
 
     @Override
     protected void initializeAnimation() {
-        final Vector2<Integer> offset = new Vector2<>(0, -4);
-
+        final Point offset = new Point(0, -4);
         float idleDuration = 0f;
         animate(State.IDLE_LOCKED, null, 1, idleDuration, offset, RES + "idle/locked");
         animate(State.IDLE_UNLOCKED, null, 1, idleDuration, offset, RES + "idle" + "/unlocked");

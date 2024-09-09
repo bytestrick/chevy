@@ -2,7 +2,8 @@ package chevy.model.entity.staticEntity.environment;
 
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 /**
  * Punto in cui il player si deve recare per poter passare alla stanza successiva.
@@ -14,7 +15,7 @@ public class Stair extends Environment {
     private final Vertex open = new Vertex(State.OPEN, .3f);
     private final Vertex idleEntry = new Vertex(State.IDLE_ENTRY, .5f);
 
-    public Stair(Vector2<Integer> initialVelocity) {
+    public Stair(Point initialVelocity) {
         super(initialVelocity, Type.STAIR);
         crossable = true;
         shouldUpdate = true;

@@ -13,7 +13,6 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.service.Data;
 import chevy.service.Sound;
 import chevy.utils.Log;
-import chevy.utils.Vector2;
 
 /**
  * Gestisce il comportamento e le interazioni di un nemico di tipo {@link Beetle} all'interno del
@@ -135,8 +134,7 @@ final class BeetleController {
                 for (int distance = 1; distance <= 3; ++distance) {
                     Entity entity = chamber.getEntityNearOnTop(beetle, direction, distance);
                     // muoviti in modo casuale, non sparare, se tra te è il player c'è un
-                    // ostacolo che non può essere
-                    // attraversato
+                    // ostacolo che non può essere attraversato
                     if (!(entity instanceof Player) && !entity.isCrossable()) {
                         if (beetle.checkAndChangeState(Beetle.State.MOVE)) {
                             chamber.moveRandomPlus(beetle);
@@ -145,9 +143,7 @@ final class BeetleController {
                     }
 
                     if (distance > 1 && entity instanceof Player && beetle.changeState(Beetle.State.ATTACK)) {
-                        Projectile slimeShot = new SlimeShot(new Vector2<>(beetle.getRow(),
-                                beetle.getCol()),
-                                direction);
+                        Projectile slimeShot = new SlimeShot(beetle.getPosition(), direction);
                         chamber.addProjectile(slimeShot);
                         chamber.addEntityOnTop(slimeShot);
                         break;

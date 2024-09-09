@@ -6,11 +6,11 @@ import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.utils.Pair;
-import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolation;
 import chevy.view.entities.EntityView;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,17 +24,17 @@ public abstract class AnimatedEntityView extends EntityView {
 
     protected void animate(EntityState state, Direction direction, int frames, float duration,
                            String path) {
-        animate(state, direction, frames, false, 1, duration, new Vector2<>(0, 0), 1f, path);
+        animate(state, direction, frames, false, 1, duration, new Point(0, 0), 1f, path);
     }
 
     protected void animate(EntityState state, Direction direction, int frames, float duration,
-                           Vector2<Integer> offset, String path) {
+                           Point offset, String path) {
         animate(state, direction, frames, false, 1, duration, offset, 1f, path);
     }
 
     protected void animate(EntityState state, Direction direction, int frames,
                            int times, float duration, String path) {
-        animate(state, direction, frames, true, times, duration, new Vector2<>(0, 0), 1f, path);
+        animate(state, direction, frames, true, times, duration, new Point(0, 0), 1f, path);
     }
 
     /**
@@ -51,7 +51,7 @@ public abstract class AnimatedEntityView extends EntityView {
      */
     protected void animate(EntityState state, Direction direction, int frames,
                            boolean loop, int times, float duration,
-                           Vector2<Integer> offset, float scale, String path) {
+                           Point offset, float scale, String path) {
         AnimatedSprite animation = new AnimatedSprite(new Pair<>(state, direction), frames,
                 duration / (times * frames), loop, offset, scale);
         int nFrame = animation.getNFrame();
@@ -59,12 +59,12 @@ public abstract class AnimatedEntityView extends EntityView {
             animation.addFrame(i, Load.image(path + "/" + i + ".png"));
         }
 
-        final Pair<EntityState, Direction> animationTypes = animation.getType();
+        final Pair<EntityState, Direction> animationType = animation.getType();
 
-        if (animations.containsKey(animationTypes)) {
-            Log.warn("L'animazione " + animationTypes + " è già presente");
+        if (animations.containsKey(animationType)) {
+            Log.warn("L'animazione " + animationType + " è già presente");
         } else {
-            animations.put(animationTypes, animation);
+            animations.put(animationType, animation);
         }
     }
 

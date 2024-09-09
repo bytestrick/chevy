@@ -2,10 +2,11 @@ package chevy.view.entities.animated.environmet;
 
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.staticEntity.environment.Environment;
-import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.entities.animated.AnimatedEntityView;
 
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 abstract class EnvironmentView extends AnimatedEntityView {
@@ -14,15 +15,15 @@ abstract class EnvironmentView extends AnimatedEntityView {
 
     EnvironmentView(Environment environment) {
         this.environment = environment;
-        viewPosition = new Vector2<>((double) environment.getCol(), (double) environment.getRow());
+        viewPosition = new Point2D.Double(environment.getCol(), environment.getRow());
         initializeAnimation();
     }
 
     @Override
-    public Vector2<Integer> getOffset() {
-        AnimatedSprite currentAnimatedSprite = getAnimatedSprite(environment.getState(), null);
-        if (currentAnimatedSprite != null) {
-            return currentAnimatedSprite.getOffset();
+    public Point getOffset() {
+        AnimatedSprite animatedSprite = getAnimatedSprite(environment.getState(), null);
+        if (animatedSprite != null) {
+            return animatedSprite.getOffset();
         }
         return super.getOffset();
     }

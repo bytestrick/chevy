@@ -14,8 +14,6 @@ final class ChestController {
     }
 
     void update(Chest chest) {
-        // TODO: fare in modo che si possibile aprire le chest anche dopo che tutti i mob siano
-        //  stati uccisi
         if (chamber.getDirectionToHitPlayer(chest) != null) {
             if (chest.checkAndChangeState(Chest.State.OPEN)) {
                 if (chest.isFirstOpen()) {
