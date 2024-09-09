@@ -55,8 +55,7 @@ abstract class ProjectileView extends AnimatedEntityView {
         return currentAnimatedSprite.getScale();
     }
 
-    @Override
-    protected Direction getAnimationDirection(EntityState state) {
+    private Direction getAnimationDirection(EntityState state) {
         return switch (state) {
             case Projectile.State.START, Projectile.State.LOOP, Projectile.State.END -> projectile.getDirection();
             default -> null;
@@ -70,8 +69,8 @@ abstract class ProjectileView extends AnimatedEntityView {
         final AnimatedSprite currentAnimatedSprite = getAnimatedSprite(state, direction);
         if (currentAnimatedSprite != null) {
             if (state == Projectile.State.END && vertex.isFinished()) {
-                projectile.setToDraw(false);
-            } else if (!currentAnimatedSprite.isRunning()) {
+                projectile.setShouldDraw(false);
+            } else if (currentAnimatedSprite.isRunning()) {
                 currentAnimatedSprite.restart();
             }
             return currentAnimatedSprite.getFrame();

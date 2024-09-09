@@ -2,7 +2,7 @@ package chevy.control.trapsController;
 
 import chevy.control.Interaction;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
-import chevy.service.Update;
+import chevy.service.Updatable;
 import chevy.service.UpdateManager;
 
 import java.util.ArrayList;
@@ -10,24 +10,25 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Gestisce gli aggiornamenti delle trappole del gioco. Implementa l'interfaccia Update per integrarsi con il ciclo di
+ * Gestisce gli aggiornamenti delle trappole del gioco. Implementa l'interfaccia Updatable per
+ * integrarsi con il ciclo di
  * aggiornamento del gioco. Gestisce l'aggiunta, l'aggiornamento delle trappole.
  */
-public final class TrapsUpdateController implements Update {
+public final class TrapsUpdateController implements Updatable {
     private final TrapsController trapsController;
     private final Collection<Trap> traps = new ArrayList<>();
     private final List<? extends Trap> trapsToAdd;
-    private boolean updateFinished = false;
+    private boolean updateFinished;
 
     /**
-     * @param trapsController il controller delle trappole per gestire gli aggiornamenti delle trappole
+     * @param trapsController il controller delle trappole per gestire gli aggiornamenti delle
+     *                        trappole
      * @param traps           la lista delle trappole da aggiornare
      */
     public TrapsUpdateController(TrapsController trapsController, List<? extends Trap> traps) {
         this.trapsController = trapsController;
         trapsToAdd = traps;
-
-        UpdateManager.addToUpdate(this);
+        UpdateManager.register(this);
     }
 
     /**
@@ -36,7 +37,7 @@ public final class TrapsUpdateController implements Update {
      */
     private void addTraps() {
         for (Trap trap : trapsToAdd) {
-            if (!trap.canRemoveToUpdate()) {
+            if (!trap.shouldNotUpdate()) {
                 traps.add(trap);
             }
         }
@@ -45,27 +46,22 @@ public final class TrapsUpdateController implements Update {
 
     /**
      * Esegue l'aggiornamento delle trappole.
-     *
-     * @param delta tempo trascorso dall'ultimo aggiornamento
      */
     @Override
     public void update(double delta) {
         addTraps();
-
         for (Trap trap : traps) {
             trapsController.handleInteraction(Interaction.UPDATE, trap, null);
         }
     }
 
-    public void updateTerminate() {
-        updateFinished = true;
-    }
+    public void stopUpdate() {updateFinished = true;}
 
     /**
      * Verifica se gli aggiornamenti delle trappole sono terminati.
      *
-     * @return true se non ci sono più trappole da aggiornare, altrimenti false
+     * @return {@code true} se non ci sono più trappole da aggiornare, altrimenti {@code false}
      */
     @Override
-    public boolean updateFinished() { return traps.isEmpty() || updateFinished; }
+    public boolean updateFinished() {return traps.isEmpty() || updateFinished;}
 }

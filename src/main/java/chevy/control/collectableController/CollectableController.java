@@ -25,7 +25,7 @@ public final class CollectableController {
     }
 
     /**
-     * Gestisce il tipo di interazione ricevuta.
+     * Gestisce il tipo di interazione ricevuta
      *
      * @param interaction il tipo di interazione da gestire.
      * @param subject     l'entità che avvia l'interazione.
@@ -40,7 +40,7 @@ public final class CollectableController {
     }
 
     /**
-     * Gestisce l'interazione di un giocatore con un oggetto collezionabile.
+     * Gestisce l'interazione di un giocatore con un oggetto collezionabile
      *
      * @param collectable l'oggetto da collezionare.
      */

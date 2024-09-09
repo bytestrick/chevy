@@ -2,7 +2,7 @@ package chevy.control.collectableController;
 
 import chevy.control.Interaction;
 import chevy.model.entity.collectable.Collectable;
-import chevy.service.Update;
+import chevy.service.Updatable;
 import chevy.service.UpdateManager;
 
 import java.util.ArrayList;
@@ -11,13 +11,10 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * La classe CollectableUpdateController è responsabile della gestione degli aggiornamenti
- * degli oggetti collezionabili nel gioco. Implementa l'interfaccia Update per integrarsi con il
- * ciclo di
- * aggiornamento del gioco. Gestisce l'aggiornamento e la rimozione degli aggetti collezionabili
- * dall'aggiornamento.
+ * Gestisce glie aggiornamenti degli oggetti collezionabili nel gioco.
+ * Gestisce l'aggiornamento e la rimozione degli aggetti collezionabili dall'aggiornamento.
  */
-public final class CollectableUpdateController implements Update {
+public final class CollectableUpdateController implements Updatable {
     private final CollectableController collectableController;
     private final Collection<Collectable> collectables = new ArrayList<>();
     private final List<Collectable> collectablesToAdd;
@@ -35,12 +32,12 @@ public final class CollectableUpdateController implements Update {
         collectablesToAdd = collectables;
 
         // Aggiunge questo controller al gestore degli aggiornamenti.
-        UpdateManager.addToUpdate(this);
+        UpdateManager.register(this);
     }
 
     /**
      * Aggiunge i nuovi oggetti collezionabili alla lista degli aggiornamenti e svuota la lista
-     * temporanea.
+     * temporanea
      */
     private void addCollectables() {
         collectables.addAll(collectablesToAdd);
@@ -48,9 +45,7 @@ public final class CollectableUpdateController implements Update {
     }
 
     /**
-     * Aggiorna lo stato di tutti gli oggetti collezionabili a ogni ciclo di gioco.
-     *
-     * @param delta il tempo trascorso dall'ultimo aggiornamento.
+     * Aggiorna lo stato di tutti gli oggetti collezionabili a ogni ciclo di gioco
      */
     @Override
     public void update(double delta) {
@@ -62,7 +57,7 @@ public final class CollectableUpdateController implements Update {
         while (it.hasNext()) {
             Collectable collectable = it.next();
             collectableController.handleInteraction(Interaction.UPDATE, collectable, null);
-            if (collectable.canRemoveToUpdate()) {
+            if (collectable.shouldNotUpdate()) {
                 it.remove();
             }
         }

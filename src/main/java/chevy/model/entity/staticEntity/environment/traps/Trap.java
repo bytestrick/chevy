@@ -8,7 +8,7 @@ import chevy.utils.Vector2;
 public abstract class Trap extends Environment {
     private final Type type;
 
-    public Trap(Vector2<Integer> initVelocity, Type type) {
+    Trap(Vector2<Integer> initVelocity, Type type) {
         super(initVelocity, Environment.Type.TRAP);
         this.type = type;
         crossable = true;

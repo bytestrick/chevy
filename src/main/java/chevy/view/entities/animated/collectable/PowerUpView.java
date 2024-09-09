@@ -48,7 +48,7 @@ public final class PowerUpView extends CollectableView {
         AnimatedSprite currentAnimatedSprite = getAnimatedSprite(currentEnumState, null);
 
         if (currentAnimatedSprite != null) {
-            if (!currentAnimatedSprite.isRunning()) {
+            if (currentAnimatedSprite.isRunning()) {
                 if (previousAnimationState != SELECTED) {
                     currentAnimatedSprite.restart();
                 } else if (currentEnumState != SELECTED) {

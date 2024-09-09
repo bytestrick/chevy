@@ -15,7 +15,7 @@ import chevy.service.Sound;
 /**
  * Controller per gestire le interazioni del giocatore e delle entità con il pavimento spinato nel gioco.
  */
-public final class SpikedFloorController {
+final class SpikedFloorController {
     private final Chamber chamber;
     private final PlayerController playerController;
     private final EnemyController enemyController;
@@ -23,13 +23,13 @@ public final class SpikedFloorController {
     /**
      * @param chamber la camera di gioco si trova il pavimento spinato
      */
-    public SpikedFloorController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
+    SpikedFloorController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
         this.chamber = chamber;
         this.playerController = playerController;
         this.enemyController = enemyController;
     }
 
-    public void playerInInteraction(Player player, SpikedFloor spikedFloor) {
+    void playerInInteraction(Player player, SpikedFloor spikedFloor) {
         if (!spikedFloor.isSafeToCross()) {
             if (canHitPlayer(player)) {
                 playerController.handleInteraction(Interaction.TRAP, spikedFloor);
@@ -42,13 +42,13 @@ public final class SpikedFloorController {
      *
      * @param spikedFloor il pavimento spinato da aggiornare
      */
-    public void update(SpikedFloor spikedFloor) {
+    void update(SpikedFloor spikedFloor) {
         if (spikedFloor.checkAndChangeState(SpikedFloor.State.ACTIVATED)) {
-            spikedFloor.activated();
+            spikedFloor.setSafeToCross(false);
         }
 
         if (spikedFloor.checkAndChangeState(SpikedFloor.State.DISABLED)) {
-            spikedFloor.disabled();
+            spikedFloor.setSafeToCross(true);
         }
 
         if (spikedFloor.checkAndChangeState(SpikedFloor.State.DAMAGE)) {
@@ -63,7 +63,7 @@ public final class SpikedFloorController {
         }
     }
 
-    private boolean canHitPlayer(Player player) {
+    private static boolean canHitPlayer(Player player) {
         StoneBoots stoneBoots = (StoneBoots) player.getOwnedPowerUp(PowerUp.Type.STONE_BOOTS);
         return stoneBoots == null || !stoneBoots.canUse();
     }

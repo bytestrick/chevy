@@ -43,7 +43,7 @@ import java.util.Map;
 import static chevy.view.GamePanel.caution;
 
 public final class Options {
-    static final Icon home = Load.icon("Home");
+    private static final Icon HOME = Load.icon("Home");
     private static final Icon basket = Load.icon("Basket");
     private static final Icon gamePad = Load.icon("GamePad");
     private static final Icon speaker = Load.icon("SpeakerOn"), speakerMute = Load.icon(
@@ -167,7 +167,7 @@ public final class Options {
      * <code>Options.form</code> o il foglio di stile <code>FlatDarkLaf.properties</code>
      */
     private void initializeComponents() {
-        showHitBoxes.setIcon(new SizedCheckBoxIcon(50));
+        showHitBoxes.setIcon(new SizedCheckBoxIcon());
 
         scrollPane.getViewport().setOpaque(false);
 
@@ -226,7 +226,7 @@ public final class Options {
         } else if (scene == Window.Scene.TUTORIAL) {
             message += "tutorial";
         } else {
-            back.setIcon(home);
+            back.setIcon(HOME);
             message += "menù";
         }
         back.setText(message);
@@ -312,12 +312,11 @@ public final class Options {
         private final float scaleFactor;
 
         /**
-         * @param sideLength lunghezza del lato della {@link javax.swing.JCheckBox}, assumendo
-         *                   che sia quadrata
+         *
          */
-        SizedCheckBoxIcon(int sideLength) {
+        SizedCheckBoxIcon() {
             assert super.getIconHeight() == super.getIconWidth() : "assunzione errata";
-            scaleFactor = 1f * sideLength / super.getIconHeight();
+            scaleFactor = 1f * 50 / super.getIconHeight();
         }
 
         @Override

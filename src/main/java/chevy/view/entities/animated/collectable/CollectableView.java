@@ -1,7 +1,6 @@
 package chevy.view.entities.animated.collectable;
 
 import chevy.model.entity.collectable.Collectable;
-import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.utils.Vector2;
 import chevy.view.animation.AnimatedSprite;
@@ -46,14 +45,11 @@ abstract class CollectableView extends AnimatedEntityView {
         AnimatedSprite currentAnimatedSprite = getAnimatedSprite(currentState, null);
 
         if (currentAnimatedSprite != null) {
-            if (!currentAnimatedSprite.isRunning()) {
+            if (currentAnimatedSprite.isRunning()) {
                 currentAnimatedSprite.restart();
             }
             return currentAnimatedSprite.getFrame();
         }
         return null;
     }
-
-    @Override
-    protected Direction getAnimationDirection(EntityState state) {return null;}
 }

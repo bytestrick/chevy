@@ -6,13 +6,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * La classe Layer rappresenta la priorità con cui un entità deve essere ridisegnata. Ad esempio,
- * un entità con layer 5 verrà disegnata sopra un entità con layer 3 (o un qualsiasi numero inferiore al 5), se
- * il layer è lo stesso avrà la priorità inserita dopo nella lista.
+ * Priorità con cui un entità deve essere ridisegnata.
+ * Un entità con {@code layer = 5} verrà disegnata sopra un entità con {@code layer = 3} (o un
+ * qualsiasi numero inferiore al 5), se il layer è lo stesso avrà la priorità l'entità inserita
+ * dopo nella
+ * lista.
  */
 public final class Layer implements Comparable<Layer> {
     /**
-     * Livello di priorità.
+     * priorità
      */
     private final int nLayer;
     /**
@@ -29,10 +31,10 @@ public final class Layer implements Comparable<Layer> {
      *
      * @param n il numero del livello
      */
-    public Layer(int n) {
-        this.nLayer = n;
-        this.layer = new LinkedList<>();
-        this.entitiesToAdd = new LinkedList<>();
+    Layer(int n) {
+        nLayer = n;
+        layer = new LinkedList<>();
+        entitiesToAdd = new LinkedList<>();
     }
 
     /**
@@ -52,12 +54,8 @@ public final class Layer implements Comparable<Layer> {
      *
      * @param entity l'entità da aggiungere
      */
-    public synchronized void add(Entity entity) {
-        entitiesToAdd.addLast(entity);
-    }
+    public synchronized void add(Entity entity) {entitiesToAdd.addLast(entity);}
 
     @Override
-    public int compareTo(Layer other) {
-        return Integer.compare(this.nLayer, other.nLayer);
-    }
+    public int compareTo(Layer other) {return Integer.compare(nLayer, other.nLayer);}
 }

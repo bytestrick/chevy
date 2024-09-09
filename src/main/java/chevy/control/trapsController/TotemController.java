@@ -8,11 +8,12 @@ import chevy.utils.Vector2;
 final class TotemController {
     private final Chamber chamber;
 
-    TotemController(Chamber chamber) { this.chamber = chamber; }
+    TotemController(Chamber chamber) {this.chamber = chamber;}
 
     void update(Totem totem) {
         if (totem.checkAndChangeState(Totem.State.SHOT)) {
-            Arrow arrow = new Arrow(new Vector2<>(totem.getRow(), totem.getCol()), totem.getShotDirection());
+            Arrow arrow = new Arrow(new Vector2<>(totem.getRow(), totem.getCol()),
+                    totem.getShotDirection());
             chamber.addProjectile(arrow);
             chamber.addEntityOnTop(arrow);
         }

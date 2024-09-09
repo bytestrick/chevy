@@ -36,7 +36,7 @@ public final class PowerUpText extends JPanel {
     PowerUpText() {
         initializeLayout();
         initializeStyles();
-        setFont(FONT_PATH);
+        setFont();
         setVisible(true);
     }
 
@@ -70,7 +70,7 @@ public final class PowerUpText extends JPanel {
         StyleConstants.setForeground(descriptionStyle, COLOR_DESCRIPTION);
     }
 
-    public void setFont(String path) {textPane.setFont(Load.font(path));}
+    private void setFont() {textPane.setFont(Load.font(PowerUpText.FONT_PATH));}
 
     private void updateStyles() {
         int newTitleFontSize = Math.max(1, (int) (TITLE_FONT_SIZE * Window.scale));

@@ -11,14 +11,12 @@ public abstract class LiveEntity extends DynamicEntity {
     protected int currentHealth;
     protected int shield;
     protected int currentShield;
-    protected boolean flying;
     private boolean alive;
 
     public LiveEntity(Vector2<Integer> initPosition, Type type) {
         super(initPosition, DynamicEntity.Type.LIVE_ENTITY);
         this.type = type;
         alive = true;
-        flying = false;
     }
 
     public synchronized void decreaseHealthShield(int value) {

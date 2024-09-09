@@ -12,17 +12,11 @@ import chevy.view.GamePanel;
 public final class EnvironmentController {
     private final ChestController chestController;
 
-    public EnvironmentController(Chamber chamber, HUDController hudController, GamePanel gamePanel) {
+    public EnvironmentController(Chamber chamber, HUDController hudController,
+                                 GamePanel gamePanel) {
         chestController = new ChestController(chamber, hudController);
         StairController.setGamePanel(gamePanel);
         StairController.setHUDController(hudController);
-    }
-
-    public synchronized void handleInteraction(Interaction interaction, Entity subject, Entity object) {
-        switch (interaction) {
-            case PLAYER_IN -> playerInInteraction((Environment) object);
-            case UPDATE -> updateTraps((Environment) subject);
-        }
     }
 
     private static void playerInInteraction(Environment environment) {
@@ -31,11 +25,19 @@ public final class EnvironmentController {
         }
     }
 
+    public synchronized void handleInteraction(Interaction interaction, Entity subject,
+                                               Entity object) {
+        switch (interaction) {
+            case PLAYER_IN -> playerInInteraction((Environment) object);
+            case UPDATE -> updateTraps((Environment) subject);
+        }
+    }
+
     private void updateTraps(Environment environment) {
         switch (environment.getType()) {
             case Environment.Type.CHEST -> chestController.update((Chest) environment);
             case Environment.Type.STAIR -> StairController.update((Stair) environment);
-            default -> { }
+            default -> {}
         }
     }
 }

@@ -4,8 +4,8 @@ import chevy.utils.Vector2;
 
 public final class Knight extends Player {
     public Knight(Vector2<Integer> initPosition) {
-        super(initPosition, Type.KNIGHT, .2f, 10, 5, 7, 4, .5f, .2f, 6f);
+        super(initPosition, Type.KNIGHT, .2f, 10, 5, 7, 4, .5f, .6f);
         stateMachine.setName("Knight");
-        initStateMachine();
+        hit.linkVertex(fall);
     }
 }

@@ -9,28 +9,27 @@ import chevy.service.Sound;
 /**
  * Gestisce le interazioni del giocatore con il pavimento ghiacciato nel gioco.
  */
-public final class IcyFloorController {
+final class IcyFloorController {
     /**
      * Gestisce l'interazione del giocatore con il pavimento ghiacciato.
      *
      * @param player   il giocatore che interagisce con il pavimento ghiacciato
-     * @param icyFloor il pavimento ghiacciato calpestato dal giocatore
      */
-    public static void playerInInteraction(Player player, IcyFloor icyFloor) {
+    static void playerInInteraction(Player player) {
         if (canChangeInGlide(player)) {
             Sound.play(Sound.Effect.SLIDE);
             player.changeState(Player.State.GLIDE);
         }
     }
 
-    static void playerOutInteraction(Player player, IcyFloor icyFloor) {
+    static void playerOutInteraction(Player player) {
         if (canChangeInGlide(player)) {
             Sound.play(Sound.Effect.SLIDE);
             player.changeState(Player.State.GLIDE);
         }
     }
 
-    public static void update(IcyFloor icyFloor) {
+    static void update(IcyFloor icyFloor) {
         icyFloor.checkAndChangeState(IcyFloor.State.ICY_FLOOR);
         icyFloor.checkAndChangeState(IcyFloor.State.ICY_FLOOR_SPARKLING);
     }

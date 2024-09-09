@@ -33,9 +33,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 /**
- * L'area di gioco.
- * Gestisce l'inizializzazione della griglia di gioco, il posizionamento e il movimento delle
- * entità.
+ * L'area di gioco
  */
 public final class Chamber {
     /** Nemici nella stanza */
@@ -66,7 +64,7 @@ public final class Chamber {
     /**
      * @param size numero di colonne e righe della griglia di gioco
      */
-    public void initWorld(Dimension size) {
+    void initializeWorld(Dimension size) {
         this.size = size;
         ChamberView.updateSize(size);
 
@@ -88,7 +86,7 @@ public final class Chamber {
      * @param vector2 posizione da validare
      * @return true se valida, false altrimenti
      */
-    public boolean validatePosition(Vector2<Integer> vector2) {
+    boolean validatePosition(Vector2<Integer> vector2) {
         if (initialized) {
             return vector2.first >= 0 && vector2.first < size.height && vector2.second >= 0 && vector2.second < size.width;
         }
@@ -102,7 +100,7 @@ public final class Chamber {
      * @param col colonna da validare
      * @return true se è valida, false altrimenti
      */
-    public boolean validatePosition(int row, int col) {
+    private boolean validatePosition(int row, int col) {
         if (initialized) {
             return row >= 0 && row < size.height && col >= 0 && col < size.width;
         }
@@ -130,7 +128,7 @@ public final class Chamber {
      * @param vector2 posizione in cui è presente la cella da controllare
      * @return true se si può passare, false altrimenti
      */
-    public synchronized boolean canCross(Vector2<Integer> vector2) {
+    private synchronized boolean canCross(Vector2<Integer> vector2) {
         if (validatePosition(vector2)) {
             List<Entity> entityList = chamber.get(vector2.first).get(vector2.second);
             for (Entity entity : entityList) {
@@ -151,7 +149,7 @@ public final class Chamber {
      * @param direction     direzione in cui si deve spostare
      * @return true se lo spostamento non danneggerà l'entità dinamica, false altrimenti
      */
-    public boolean isSafeToCross(DynamicEntity dynamicEntity, Direction direction) {
+    private boolean isSafeToCross(DynamicEntity dynamicEntity, Direction direction) {
         Vector2<Integer> vector2 = new Vector2<>(dynamicEntity.getRow() + direction.row(),
                 dynamicEntity.getCol() + direction.col());
         return isSafeToCross(vector2);
@@ -165,7 +163,7 @@ public final class Chamber {
      * @param vector2 posizione della cella da controllare
      * @return true se lo spostamento non danneggerà l'entità dinamica, false altrimenti
      */
-    public boolean isSafeToCross(Vector2<Integer> vector2) {
+    boolean isSafeToCross(Vector2<Integer> vector2) {
         Entity onTop = getEntityOnTop(vector2);
         return canCross(vector2) && onTop != null && onTop.isSafeToCross();
     }
@@ -284,8 +282,8 @@ public final class Chamber {
      * @param dynamicEntity entità dinamica da spostare
      * @param nextPosition  posizione in cui è presente la cella
      */
-    public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity,
-                                               Vector2<Integer> nextPosition) {
+    private synchronized void moveDynamicEntity(DynamicEntity dynamicEntity,
+                                                Vector2<Integer> nextPosition) {
         Direction direction =
                 Direction.positionToDirection(new Vector2<>(dynamicEntity.getRow(),
                         dynamicEntity.getCol()), nextPosition);
@@ -319,7 +317,7 @@ public final class Chamber {
         while (it.hasPrevious()) {
             Entity entity2 = it.previous();
             if (entity.equals(entity2)) {
-                entity.setToDraw(setToDraw);
+                entity.setShouldDraw(setToDraw);
                 it.remove();
 
                 return true;
@@ -355,8 +353,6 @@ public final class Chamber {
             }
         }
     }
-
-    // ---- power up
 
     public synchronized void spawnCollectable(Enemy enemy) {
         if (Enemy.canDrop()) {
@@ -436,8 +432,6 @@ public final class Chamber {
         }
     }
 
-    // ----
-
     /**
      * Cerca il giocatore in un intervallo quadrato attorno a un'entità.
      *
@@ -445,7 +439,7 @@ public final class Chamber {
      * @param edge   lato del quadrato
      * @return ritorna il giocatore se presente nell'area, null altrimenti
      */
-    public synchronized Player findPlayerInSquareRange(Entity entity, int edge) {
+    private synchronized Player findPlayerInSquareRange(Entity entity, int edge) {
         int startRow = entity.getRow() - edge;
         int startCol = entity.getCol() - edge;
         int endRow = entity.getRow() + edge;
@@ -563,7 +557,7 @@ public final class Chamber {
     }
 
     public synchronized void removeEntityOnTop(Entity entity) {
-        entity.setToDraw(false);
+        entity.setShouldDraw(false);
         List<Entity> stack = chamber.get(entity.getRow()).get(entity.getCol());
         try {
             stack.removeLast();
@@ -574,15 +568,15 @@ public final class Chamber {
 
     public synchronized void addEntityOnTop(Entity entity) {
         chamber.get(entity.getRow()).get(entity.getCol()).addLast(entity);
-        if (entity.toNotDraw()) {
-            entity.setToDraw(true);
+        if (entity.shouldNotDraw()) {
+            entity.setShouldDraw(true);
             addEntityToDraw(entity, entity.getDrawLayer());
         }
     }
 
-    public synchronized Entity getEntityOnTop(int row, int col) {return chamber.get(row).get(col).getLast();}
+    private synchronized Entity getEntityOnTop(int row, int col) {return chamber.get(row).get(col).getLast();}
 
-    public synchronized Entity getEntityOnTop(Vector2<Integer> vector2) {
+    private synchronized Entity getEntityOnTop(Vector2<Integer> vector2) {
         try {
             return chamber.get(vector2.first).get(vector2.second).getLast();
         } catch (NoSuchElementException e) {
@@ -601,18 +595,16 @@ public final class Chamber {
         return index >= 0 ? entities.get(index) : null;
     }
 
-    public synchronized List<List<List<Entity>>> getChamber() {return Collections.unmodifiableList(chamber);}
-
-    public boolean isInitialized() {return initialized;}
+    boolean isInitialized() {return initialized;}
 
     public Dimension getSize() {return size;}
 
-    public Player getPlayer() {return this.player;}
+    public Player getPlayer() {return player;}
 
     public void setPlayer(Player player) {this.player = player;}
 
-    public void addEnemy(Enemy enemy) {
-        this.enemies.add(enemy);
+    void addEnemy(Enemy enemy) {
+        enemies.add(enemy);
         ++enemyCounter;
     }
 
@@ -622,13 +614,11 @@ public final class Chamber {
         }
     }
 
-    public int getEnemyCounter() {
-        return enemyCounter;
-    }
+    public int getEnemyCounter() {return enemyCounter;}
 
-    public List<Enemy> getEnemies() {return this.enemies;}
+    public List<Enemy> getEnemies() {return enemies;}
 
-    public void addTraps(Trap trap) {traps.add(trap);}
+    void addTraps(Trap trap) {traps.add(trap);}
 
     public List<Trap> getTraps() {return traps;}
 
@@ -636,11 +626,11 @@ public final class Chamber {
 
     public synchronized List<Projectile> getProjectiles() {return projectiles;}
 
-    public synchronized void addCollectable(Collectable collectable) {collectables.add(collectable);}
+    synchronized void addCollectable(Collectable collectable) {collectables.add(collectable);}
 
     public synchronized List<Collectable> getCollectables() {return collectables;}
 
-    public void addEnvironment(Environment environment) {environments.add(environment);}
+    void addEnvironment(Environment environment) {environments.add(environment);}
 
     public List<Environment> getEnvironments() {return environments;}
 

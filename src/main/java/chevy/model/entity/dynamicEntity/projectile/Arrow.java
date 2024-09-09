@@ -19,8 +19,7 @@ public final class Arrow extends Projectile {
 
     public static void changeAddDamage(int value) {addDamage = value;}
 
-    @Override
-    protected void initStateMachine() {
+    private void initStateMachine() {
         stateMachine.setName("Arrow");
         stateMachine.setInitialState(loop);
 

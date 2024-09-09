@@ -15,8 +15,6 @@ public abstract class DynamicEntity extends Entity {
 
     public void changePosition(Vector2<Integer> velocity) {position.change(velocity);}
 
-    protected abstract void initStateMachine();
-
     @Override
     public EntityType getType() {return type;}
 

@@ -3,8 +3,8 @@ package chevy.utils;
 import java.util.Objects;
 
 public final class Pair<T, U> {
-    public T first;
-    public U second;
+    private final T first;
+    private final U second;
 
     public Pair(T first, U second) {
         this.first = first;

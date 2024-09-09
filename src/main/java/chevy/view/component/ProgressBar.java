@@ -12,28 +12,21 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
 public class ProgressBar extends JPanel {
-    private BufferedImage stepTexture;
-    private int maxValue;
-    private int value;
     private final float scale;
     private final JPanel containerImage = new JPanel();
     private final MyPanelUI ui;
     private final SpringLayout springLayout = new SpringLayout();
-
-    public ProgressBar(int maxValue) {
-        this(maxValue, maxValue, 1f);
-    }
-
-    public ProgressBar(int maxValue, float scale) {
-        this(maxValue, maxValue, scale);
-    }
+    private BufferedImage stepTexture;
+    private int maxValue;
+    private int value;
 
     public ProgressBar(int value, int maxValue, float scale) {
+        this.value = value;
         this.scale = scale;
 
         setOpaque(false);
         containerImage.setOpaque(false);
-        ui = new MyPanelUI(null);
+        ui = new MyPanelUI();
         setUI(ui);
 
         setLayout(springLayout);
@@ -56,17 +49,18 @@ public class ProgressBar extends JPanel {
     }
 
     private void setConstraints() {
-        springLayout.putConstraint(SpringLayout.NORTH, containerImage, ui.getHeight(MyPanelUI.BAR_T),
-                SpringLayout.NORTH, this);
-        springLayout.putConstraint(SpringLayout.SOUTH, containerImage, ui.getHeight(MyPanelUI.BAR_B),
-                SpringLayout.SOUTH, this);
-        springLayout.putConstraint(SpringLayout.WEST, containerImage, ui.getWidth(MyPanelUI.BAR_L), SpringLayout.WEST
-                , this);
+        springLayout.putConstraint(SpringLayout.NORTH, containerImage,
+                ui.getHeight(MyPanelUI.BAR_T), SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.SOUTH, containerImage,
+                ui.getHeight(MyPanelUI.BAR_B), SpringLayout.SOUTH, this);
+        springLayout.putConstraint(SpringLayout.WEST, containerImage,
+                ui.getWidth(MyPanelUI.BAR_L), SpringLayout.WEST, this);
     }
 
     private void setDimension(float scale) {
-        int width = 0;
-        int height = ui.getHeight(MyPanelUI.BAR_T) + ui.getHeight(MyPanelUI.BAR_B) + ui.getHeight(MyPanelUI.CENTER);
+        int width;
+        int height =
+                ui.getHeight(MyPanelUI.BAR_T) + ui.getHeight(MyPanelUI.BAR_B) + ui.getHeight(MyPanelUI.CENTER);
 
         if (stepTexture == null) {
             width = ui.getWidth(MyPanelUI.BAR_L) + ui.getWidth(MyPanelUI.BAR_R);
@@ -89,9 +83,7 @@ public class ProgressBar extends JPanel {
         setDimension(scale * Window.scale);
     }
 
-    public void setStepTexture(String path) {
-        stepTexture = Load.image(path);
-    }
+    protected void setStepTexture(String path) {stepTexture = Load.image(path);}
 
     private void addStep() {
         if (stepTexture == null) {
@@ -113,9 +105,7 @@ public class ProgressBar extends JPanel {
         setDimension(scale * Window.scale);
     }
 
-    public int getValue() {
-        return value;
-    }
+    public int getValue() {return value;}
 
     public void setValue(int value) {
         int increment = value - this.value;
@@ -137,22 +127,18 @@ public class ProgressBar extends JPanel {
         });
     }
 
-    public int getMaxValue() {
-        return maxValue;
-    }
+    public int getMaxValue() {return maxValue;}
 
-    public void setMaxValue(int maxValue) {
-        setMaxValue(maxValue, maxValue);
-    }
+    void setMaxValue(int maxValue) {setMaxValue(maxValue, maxValue);}
 
     public void windowResized(float scale) {
         scale *= this.scale;
         ui.setScale(scale);
-        for (int i = 0; i < containerImage.getComponentCount(); ++i) {
+        final int componentCount = containerImage.getComponentCount();
+        for (int i = 0; i < componentCount; ++i) {
             ImageVisualizer im = (ImageVisualizer) containerImage.getComponent(i);
             im.windowResized(scale);
         }
         setDimension(scale);
     }
 }
-

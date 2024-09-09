@@ -8,11 +8,11 @@ import chevy.service.Sound;
 import chevy.view.GamePanel;
 import chevy.view.Menu;
 
-public final class StairController {
+final class StairController {
     private static GamePanel gamePanel;
     private static HUDController hudController;
 
-    public static void playerInInteraction(Stair stair) {
+    static void playerInInteraction(Stair stair) {
         if (stair.getState() == Stair.State.IDLE_ENTRY) {
             // Livello completato
             Data.set("progress.coins", hudController.getCoins());
@@ -23,7 +23,7 @@ public final class StairController {
         }
     }
 
-    public static void update(Stair stair) {
+    static void update(Stair stair) {
         if (ChamberManager.getCurrentChamber().getEnemyCounter() == 0) {
             stair.checkAndChangeState(Stair.State.OPEN);
         }

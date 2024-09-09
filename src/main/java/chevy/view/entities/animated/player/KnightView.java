@@ -44,7 +44,7 @@ public final class KnightView extends LiveEntityView {
         Direction direction = entity.getDirection();
         return switch (state) {
             case State.ATTACK, State.IDLE, State.MOVE, State.HIT -> direction;
-            case State.GLIDE, State.SLUDGE, State.DEAD, State.FALL ->
+            case State.SLUDGE, State.GLIDE, State.DEAD, State.FALL ->
                     direction == Direction.LEFT ? direction : Direction.RIGHT;
             default -> null;
         };

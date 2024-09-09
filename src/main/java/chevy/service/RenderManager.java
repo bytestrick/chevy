@@ -8,20 +8,26 @@ import java.util.LinkedList;
  * Aggiorna i componenti di {@link chevy.view}
  */
 public final class RenderManager {
-    private static final Collection<Render> renderList = new LinkedList<>();
-    private static final Collection<Render> toAdd = new LinkedList<>();
+    private static final Collection<Renderable> renderables = new LinkedList<>();
+    private static final Collection<Renderable> queued = new LinkedList<>();
 
-    public synchronized static void addToRender(Render r) {toAdd.add(r);}
+    public static void register(Renderable r) {
+        synchronized (queued) {
+            queued.add(r);
+        }
+    }
 
-    static synchronized void render(double delta) {
-        renderList.addAll(toAdd);
-        toAdd.clear();
+    static void render(double delta) {
+        synchronized (queued) {
+            renderables.addAll(queued);
+            queued.clear();
+        }
 
-        Iterator<Render> it = renderList.iterator();
+        Iterator<Renderable> it = renderables.iterator();
         while (it.hasNext()) {
-            Render currentRenderElement = it.next();
-            currentRenderElement.render(delta);
-            if (currentRenderElement.renderFinished()) {
+            Renderable renderable = it.next();
+            renderable.render(delta);
+            if (renderable.renderFinished()) {
                 it.remove();
             }
         }

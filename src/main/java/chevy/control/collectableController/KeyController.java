@@ -6,7 +6,7 @@ import chevy.model.entity.collectable.Key;
 import chevy.service.Data;
 import chevy.service.Sound;
 
-public final class KeyController {
+final class KeyController {
     private final Chamber chamber;
     private final HUDController hudController;
 
@@ -15,16 +15,16 @@ public final class KeyController {
         this.hudController = hudController;
     }
 
-    public static void update(Key key) {
+    static void update(Key key) {
         if (key.isCollected()) {
             if (key.getState(Key.State.COLLECTED).isFinished()) {
-                key.setToDraw(false);
+                key.setShouldDraw(false);
                 key.removeFromUpdate();
             }
         }
     }
 
-    public void playerInInteraction(Key key) {
+    void playerInInteraction(Key key) {
         if (key.changeState(Key.State.COLLECTED)) {
             Sound.play(Sound.Effect.KEY_EQUIPPED);
             key.collect();

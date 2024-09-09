@@ -4,7 +4,7 @@ import chevy.utils.Vector2;
 
 public final class Beetle extends Enemy {
     public Beetle(Vector2<Integer> initPosition) {
-        super(initPosition, Type.BEETLE, 1.5f, .5f, .5f, .15f, .3f);
+        super(initPosition, Type.BEETLE, 1.5f, .15f);
         health = 10;
         currentHealth = health;
         maxDamage = 5;
@@ -12,6 +12,5 @@ public final class Beetle extends Enemy {
         drawLayer = 3;
 
         stateMachine.setName("Beetle");
-        initStateMachine();
     }
 }

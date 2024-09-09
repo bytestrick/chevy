@@ -34,9 +34,6 @@ public final class SlimeView extends LiveEntityView {
 
     @Override
     protected Direction getAnimationDirection(EntityState state) {
-        if (state == State.ATTACK) {
-            return entity.getDirection();
-        }
-        return null;
+        return state == State.ATTACK ? entity.getDirection() : null;
     }
 }

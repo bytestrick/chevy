@@ -5,7 +5,7 @@ import chevy.utils.Vector2;
 
 public final class Slime extends Enemy {
     public Slime(Vector2<Integer> initPosition) {
-        super(initPosition, Type.SLIME, 1f, .5f, .5f, .15f, .3f);
+        super(initPosition, Type.SLIME, 1f, .15f);
         idle = new Vertex(State.IDLE, 1f, true);
 
         health = 3;
@@ -14,6 +14,5 @@ public final class Slime extends Enemy {
         minDamage = 1;
 
         stateMachine.setName("Slime");
-        initStateMachine();
     }
 }

@@ -9,9 +9,9 @@ public final class Vector2<T extends Number> {
         this.second = second;
     }
 
-    public void change(Vector2<T> vector2) {
-        this.first = vector2.first;
-        this.second = vector2.second;
+    public void change(Vector2<? extends T> vector2) {
+        first = vector2.first;
+        second = vector2.second;
     }
 
     public void changeFirst(T first) {this.first = first;}

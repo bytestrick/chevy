@@ -25,8 +25,7 @@ public final class TotemView extends TrapView {
         }
     }
 
-    @Override
-    protected Direction getAnimationDirection(EntityState currentState) {
+    private Direction getAnimationDirection(EntityState currentState) {
         return switch (currentState) {
             case State.SHOT, State.RELOAD -> trap.getShotDirection();
             default -> null;

@@ -2,7 +2,7 @@ package chevy.view.animation;
 
 import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.EntityState;
-import chevy.service.Render;
+import chevy.service.Renderable;
 import chevy.service.RenderManager;
 import chevy.utils.Pair;
 import chevy.utils.Vector2;
@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 /**
  * Gestisce le animazioni sprite nel gioco.
  */
-public final class AnimatedSprite implements Render {
+public final class AnimatedSprite implements Renderable {
     /** Tipi di animazione in base alla direzione */
     private final Pair<EntityState, Direction> type;
     /** // Array di frame per l'animazione */
@@ -88,11 +88,11 @@ public final class AnimatedSprite implements Render {
     /**
      * Avvia l'animazione.
      */
-    public void start() {
+    private void start() {
         running = true;
         if (delete) {
             delete = false;
-            RenderManager.addToRender(this);
+            RenderManager.register(this);
         }
     }
 
@@ -112,7 +112,7 @@ public final class AnimatedSprite implements Render {
     /**
      * Ferma l'animazione.
      */
-    public void stop() {running = false;}
+    private void stop() {running = false;}
 
     /**
      * @return il numero totale di frame nell'animazione
@@ -122,7 +122,7 @@ public final class AnimatedSprite implements Render {
     /**
      * @return true se l'animazione è in esecuzione, false altrimenti
      */
-    public boolean isRunning() {return running;}
+    public boolean isRunning() {return !running;}
 
     /**
      * @return il tipo di animazione per lo sprite

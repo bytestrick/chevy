@@ -11,87 +11,53 @@ import java.awt.Point;
  */
 public final class NoCaret implements Caret {
     @Override
-    public void install(JTextComponent c) {
-
-    }
+    public void install(JTextComponent c) {}
 
     @Override
-    public void deinstall(JTextComponent c) {
-
-    }
+    public void deinstall(JTextComponent c) {}
 
     @Override
-    public void paint(Graphics g) {
-
-    }
+    public void paint(Graphics g) {}
 
     @Override
-    public void addChangeListener(ChangeListener l) {
-
-    }
+    public void addChangeListener(ChangeListener l) {}
 
     @Override
-    public void removeChangeListener(ChangeListener l) {
-
-    }
+    public void removeChangeListener(ChangeListener l) {}
 
     @Override
-    public boolean isVisible() {
-        return false;
-    }
+    public boolean isVisible() {return false;}
 
     @Override
-    public void setVisible(boolean v) {
-
-    }
+    public void setVisible(boolean v) {}
 
     @Override
-    public boolean isSelectionVisible() {
-        return false;
-    }
+    public boolean isSelectionVisible() {return false;}
 
     @Override
-    public void setSelectionVisible(boolean v) {
-
-    }
+    public void setSelectionVisible(boolean v) {}
 
     @Override
-    public Point getMagicCaretPosition() {
-        return null;
-    }
+    public Point getMagicCaretPosition() {return null;}
 
     @Override
-    public void setMagicCaretPosition(Point p) {
-
-    }
+    public void setMagicCaretPosition(Point p) {}
 
     @Override
-    public int getBlinkRate() {
-        return 0;
-    }
+    public int getBlinkRate() {return 0;}
 
     @Override
-    public void setBlinkRate(int rate) {
-
-    }
+    public void setBlinkRate(int rate) {}
 
     @Override
-    public int getDot() {
-        return 0;
-    }
+    public int getDot() {return 0;}
 
     @Override
-    public void setDot(int dot) {
-
-    }
+    public void setDot(int dot) {}
 
     @Override
-    public int getMark() {
-        return 0;
-    }
+    public int getMark() {return 0;}
 
     @Override
-    public void moveDot(int dot) {
-
-    }
+    public void moveDot(int dot) {}
 }
