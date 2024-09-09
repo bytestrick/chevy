@@ -13,12 +13,12 @@ public abstract class PowerUp extends Collectable {
     private final Vertex selected = new Vertex(State.SELECTED, 0.2f);
     private final Vertex deselected = new Vertex(State.DESELECTED, 0.2f);
     private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
-    protected String name = "No name";
-    protected String description = "No description";
-    protected int occurringPercentage;
+    String name = "No name";
+    String description = "No description";
+    int occurringPercentage;
     int inStock = -1; // quantità infinita
 
-    public PowerUp(Vector2<Integer> initVelocity, Type type) {
+    PowerUp(Vector2<Integer> initVelocity, Type type) {
         super(initVelocity, Collectable.Type.POWER_UP);
         this.type = type;
 
@@ -96,7 +96,7 @@ public abstract class PowerUp extends Collectable {
         STONE_BOOTS, BROKEN_ARROWS, AGILITY, HEDGEHOG_SPINES, SLIME_PIECE, GOLD_ARROW,
         HEALING_FLOOD, KEY_S_KEEPER;
 
-        public static Type getRandom() {
+        static Type getRandom() {
             Type[] types = values();
             return types[Utils.random.nextInt(types.length)];
         }

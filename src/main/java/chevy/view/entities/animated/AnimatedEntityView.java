@@ -98,13 +98,4 @@ public abstract class AnimatedEntityView extends EntityView {
      * Predispone le animazioni per gli specifici stati di ciascuna entità
      */
     protected abstract void initializeAnimation();
-
-    /**
-     * Mappa stato e direzione del model dell'entità alle animazioni effettivamente create da
-     * {@link #initializeAnimation()}
-     *
-     * @param state stato corrente dell'entità
-     * @return la Direzione dell'animazione corrispondente
-     */
-    protected abstract Direction getAnimationDirection(EntityState state);
 }

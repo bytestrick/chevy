@@ -6,7 +6,7 @@ import chevy.model.entity.collectable.Coin;
 import chevy.service.Data;
 import chevy.service.Sound;
 
-public final class CoinController {
+final class CoinController {
     private final Chamber chamber;
     private final HUDController hudController;
 
@@ -15,7 +15,7 @@ public final class CoinController {
         this.hudController = hudController;
     }
 
-    public void playerInInteraction(Coin coin) {
+    void playerInInteraction(Coin coin) {
         if (coin.changeState(Coin.State.COLLECTED)) {
             int value = Coin.getValue();
             coin.collect();
@@ -27,10 +27,10 @@ public final class CoinController {
         }
     }
 
-    public static void update(Coin coin) {
+    static void update(Coin coin) {
         if (coin.isCollected()) {
             if (coin.getState(Coin.State.COLLECTED).isFinished()) {
-                coin.setToDraw(false);
+                coin.setShouldDraw(false);
                 coin.removeFromUpdate();
             }
         }

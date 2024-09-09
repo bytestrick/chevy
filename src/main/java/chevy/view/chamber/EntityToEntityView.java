@@ -63,13 +63,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Mappa le entità alle loro rappresentazioni visive.
+ * Mappa model e view delle entità
  */
 public final class EntityToEntityView {
     public static final Map<Entity, EntityView> entityView = new HashMap<>();
 
     /**
-     * Ottieni la rappresentazione specifica di un entità.
+     * Ottieni la rappresentazione specifica di un entità
      */
     static EntityView getSpecific(Entity entity) {
         return switch (entity.getType()) {

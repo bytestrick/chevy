@@ -57,7 +57,7 @@ public abstract class LiveEntityView extends AnimatedEntityView {
         AnimatedSprite animatedSprite = getAnimatedSprite(currentState, direction);
 
         if (animatedSprite != null) {
-            if (!animatedSprite.isRunning()) {
+            if (animatedSprite.isRunning()) {
                 animatedSprite.restart();
             }
             return animatedSprite.getFrame();
@@ -70,11 +70,10 @@ public abstract class LiveEntityView extends AnimatedEntityView {
         final EntityState state = entity.getState();
         final Direction direction = getAnimationDirection(state);
         final AnimatedSprite animatedSprite = getAnimatedSprite(state, direction);
-        assert animatedSprite != null : entity + ": " + state + entity.getDirection();
+        assert animatedSprite != null : entity + ": " + state + ", " + entity.getDirection() + " (" + direction + ")";
         return animatedSprite.getOffset();
     }
 
-    @Override
     protected Direction getAnimationDirection(EntityState state) {
         final Direction direction = entity.getDirection();
         return switch (state) {

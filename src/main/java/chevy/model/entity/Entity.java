@@ -17,39 +17,56 @@ public abstract class Entity {
     private final Type type;
     protected int maxDamage;
     protected int minDamage;
-    protected boolean safeToCross;
+    protected boolean safeToCross = true;
     protected boolean crossable;
     protected int drawLayer;
     protected boolean shouldUpdate;
-    protected Direction direction = Direction.getRandom();
-    private boolean toDraw;
+    private Direction direction = Direction.getRandom();
+    private boolean shouldDraw;
 
-    public Entity(Vector2<Integer> initPosition, Type type) {
-        position = initPosition;
+    public Entity(Vector2<Integer> initialPosition, Type type) {
+        position = initialPosition;
         this.type = type;
-        crossable = false;
-        safeToCross = true;
-        drawLayer = 0;
-        toDraw = false;
     }
+
+    public EntityState getState() {
+        Vertex currentVertex = stateMachine.getCurrentState();
+        if (currentVertex == null) {
+            return null;
+        }
+        return currentVertex.getState();
+    }
+
+    public int getDrawLayer() {return Math.abs(drawLayer);}
+
+    public Vertex getState(EntityState state) {
+        Log.warn("La funzione getState() deve essere ridefinita opportunamente nelle classi " +
+                "figlie");
+        return null;
+    }
+
+    public boolean changeState(EntityState state) {return stateMachine.changeState(state);}
+
+    public boolean canChange(EntityState state) {return stateMachine.canChange(state);}
+
+    public boolean checkAndChangeState(EntityState state) {return stateMachine.checkAndChangeState(state);}
 
     public Direction getDirection() {return direction;}
 
     public void setDirection(Direction direction) {this.direction = direction;}
 
-    public void activated() {safeToCross = false;}
+    public void setSafeToCross(boolean safeToCross) {this.safeToCross = safeToCross;}
 
-    public void disabled() {safeToCross = true;}
+    public boolean shouldNotDraw() {return !shouldDraw;}
 
-    public boolean toNotDraw() {return !toDraw;}
-
-    public void setToDraw(boolean toDraw) {this.toDraw = toDraw;}
+    public void setShouldDraw(boolean shouldDraw) {this.shouldDraw = shouldDraw;}
 
     public synchronized int getDamage() {return Utils.random.nextInt(minDamage, maxDamage + 1);}
 
-    public void changeMinDamage(int minDamage) {this.minDamage = minDamage;}
-
-    public void changeMaxDamage(int maxDamage) {this.maxDamage = maxDamage;}
+    public void setDamage(int minDamage, int maxDamage) {
+        this.minDamage = minDamage;
+        this.maxDamage = maxDamage;
+    }
 
     public int getMaxDamage() {return maxDamage;}
 
@@ -67,6 +84,10 @@ public abstract class Entity {
 
     public boolean isCrossable() {return crossable;}
 
+    public boolean shouldNotUpdate() {return !shouldUpdate;}
+
+    public void removeFromUpdate() {shouldUpdate = false;}
+
     public boolean isSafeToCross() {
         if (crossable) {
             return safeToCross;
@@ -74,31 +95,8 @@ public abstract class Entity {
         return false;
     }
 
-    public int getDrawLayer() {return Math.abs(drawLayer);}
-
-    public Vertex getState(EntityState state) {
-        Log.warn("La funzione getState() deve essere ridefinita opportunamente nelle classi " +
-                "figlie");
-        return null;
-    }
-
-    public boolean changeState(EntityState state) {return stateMachine.changeState(state);}
-
-    public boolean canChange(EntityState state) {return stateMachine.canChange(state);}
-
-    public boolean checkAndChangeState(EntityState state) {return stateMachine.checkAndChangeState(state);}
-
-    public EntityState getState() {
-        Vertex currentVertex = stateMachine.getCurrentState();
-        if (currentVertex == null) {
-            return null;
-        }
-        return currentVertex.getState();
-    }
-
-    public boolean canRemoveToUpdate() {return !shouldUpdate;}
-
-    public void removeFromUpdate() {shouldUpdate = false;}
+    @Override
+    public int hashCode() {return uuid.hashCode();}
 
     @Override
     public String toString() {return "ENTITY";}
@@ -114,9 +112,6 @@ public abstract class Entity {
         Entity entity = (Entity) o;
         return uuid.equals(entity.uuid);
     }
-
-    @Override
-    public int hashCode() {return uuid.hashCode();}
 
     public enum Type implements EntityType {DYNAMIC, ENVIRONMENT, COLLECTABLE}
 }

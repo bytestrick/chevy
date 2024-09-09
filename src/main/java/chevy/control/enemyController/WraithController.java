@@ -14,11 +14,11 @@ import chevy.service.Sound;
 import chevy.utils.Log;
 
 /**
- * Gestisce il comportamento e le interazioni del Wraith all'interno del gioco. Gestisce come il Wraith risponde agli
- * attacchi del giocatore,
+ * Gestisce il comportamento e le interazioni del {@link Wraith} all'interno del gioco.
+ * Gestisce come il Wraith risponde agli attacchi del giocatore,
  * ai colpi dei proiettili e coordina il suo stato e i suoi movimenti.
  */
-public final class WraithController {
+final class WraithController {
     /**
      * Riferimento alla stanza di gioco in cui si trova il Wraith. Utilizzato per verificare le posizioni,
      * aggiungere/rimuovere entità.
@@ -33,35 +33,34 @@ public final class WraithController {
      * @param chamber          riferimento della stanza di gioco
      * @param playerController riferimento al controllo del giocatore
      */
-    public WraithController(Chamber chamber, PlayerController playerController) {
+    WraithController(Chamber chamber, PlayerController playerController) {
         this.chamber = chamber;
         this.playerController = playerController;
     }
 
     /**
-     * Gestisce le interazioni del Wraith con il giocatore.
+     * Gestisce le interazioni del {@link Wraith} con il giocatore
      *
      * @param player il giocatore che interagisce con il Wraith
      * @param wraith il Wraith che subisce l'interazione
      */
-    public void playerInInteraction(Player player, Wraith wraith) {
-        switch (player.getState()) {
-            // Se il giocatore è in stato di attacco, il Wraith viene danneggiato in base al danno del giocatore.
-            case Player.State.ATTACK -> {
-                Sound.play(Sound.Effect.WRAITH_HIT);
-                wraith.setDirection(Direction.positionToDirection(player, wraith));
-                hitWraith(wraith, -1 * player.getDamage());
-            }
-            default -> Log.warn("Il WraithController non gestisce questa azione: " + player.getState());
+    static void playerInInteraction(Player player, Wraith wraith) {
+        // Se il giocatore è in stato di attacco, il Wraith viene danneggiato in base al danno del giocatore.
+        if (player.getState().equals(Player.State.ATTACK)) {
+            Sound.play(Sound.Effect.WRAITH_HIT);
+            wraith.setDirection(Direction.positionToDirection(player, wraith));
+            hitWraith(wraith, -1 * player.getDamage());
+        } else {
+            Log.warn("Il WraithController non gestisce questa azione: " + player.getState());
         }
     }
 
     /**
-     * Aggiorna lo stato del Wraith a ogni ciclo di gioco.
+     * Aggiorna lo stato del {@link Wraith} a ogni ciclo di gioco
      *
      * @param wraith il Wraith da aggiornare
      */
-    public void update(Wraith wraith) {
+    void update(Wraith wraith) {
         if (wraith.isDead()) {
             if (wraith.getState(Wraith.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(wraith);
@@ -112,32 +111,31 @@ public final class WraithController {
     }
 
     /**
-     * Gestisce le interazioni del Wraith con i proiettili.
+     * Gestisce le interazioni {@link Wraith} con i proiettili
      *
      * @param projectile il proiettile che colpisce il Wraith
      * @param wraith     il Wraith che subisce l'interazione
      */
-    public void projectileInteraction(Projectile projectile, Wraith wraith) {
+    static void projectileInteraction(Projectile projectile, Wraith wraith) {
         wraith.setDirection(Direction.positionToDirection(projectile, wraith));
         hitWraith(wraith, -1 * projectile.getDamage());
     }
 
     /**
-     * Applica danno al Wraith e aggiorna il suo stato.
+     * Applica danno al {@link Wraith} e aggiorna il suo stato
      *
      * @param wraith il Wraith che subisce il danno
      * @param damage il danno da applicare
      */
-    private void hitWraith(Wraith wraith, int damage) {
+    private static void hitWraith(Wraith wraith, int damage) {
         if (wraith.changeState(Wraith.State.HIT)) {
             wraith.decreaseHealthShield(damage);
         }
     }
 
-    public void trapInteraction(Trap trap, Wraith wraith) {
-        switch (trap.getType()) {
-            case Trap.Type.SPIKED_FLOOR -> hitWraith(wraith, -1 * trap.getDamage());
-            default -> { }
+    static void trapInteraction(Trap trap, Wraith wraith) {
+        if (trap.getType().equals(Trap.Type.SPIKED_FLOOR)) {
+            hitWraith(wraith, -1 * trap.getDamage());
         }
     }
 }

@@ -14,12 +14,6 @@ public class Sludge extends Trap {
         initStateMachine();
     }
 
-    public Sludge(Vector2<Integer> initVelocity, int nMoveToUnlock) {
-        super(initVelocity, Type.SLUDGE);
-        crossable = true;
-        this.nMoveToUnlock = nMoveToUnlock;
-    }
-
     private void initStateMachine() {
         stateMachine.setName("Sludge");
         stateMachine.setInitialState(active);

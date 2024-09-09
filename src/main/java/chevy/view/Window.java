@@ -17,8 +17,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -26,27 +26,28 @@ import java.awt.Toolkit;
  * Finestra principale
  */
 public final class Window extends JFrame {
-    final static Color bg = new Color(24, 20, 37);
-    private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private static final Dimension aspectRatio = new Dimension(4, 3);
-    private static final Icon icon = Load.icon("Power", 42, 42);
+    private static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
+    private static final Dimension ASPECT_RATIO = new Dimension(4, 3);
+    private static final Icon POWER = Load.icon("Power", 42, 42);
     public static float scale = .8f;
     public static Dimension size = new Dimension();
     private static boolean quitDialogActive;
 
     static {
-        final int maxSideLength = Math.round(Math.min(screenSize.width, screenSize.height) * scale);
-        if (screenSize.width < screenSize.height) {
-            size.height = Math.round(1.f * maxSideLength * aspectRatio.height / aspectRatio.width);
+        final int maxSideLength =
+                Math.round(Math.min(SCREEN_SIZE.width, SCREEN_SIZE.height) * scale);
+        if (SCREEN_SIZE.width < SCREEN_SIZE.height) {
+            size.height =
+                    Math.round(1.f * maxSideLength * ASPECT_RATIO.height / ASPECT_RATIO.width);
         } else {
             size.height = maxSideLength;
         }
-        if (screenSize.width > screenSize.height) {
-            size.width = Math.round(1.f * maxSideLength * aspectRatio.width / aspectRatio.height);
+        if (SCREEN_SIZE.width > SCREEN_SIZE.height) {
+            size.width = Math.round(1.f * maxSideLength * ASPECT_RATIO.width / ASPECT_RATIO.height);
         } else {
             size.width = maxSideLength;
         }
-        scale = Math.min(size.width / screenSize.width, size.height / screenSize.height);
+        scale = Math.min(size.width / SCREEN_SIZE.width, size.height / SCREEN_SIZE.height);
     }
 
     private final WindowController windowController;
@@ -55,7 +56,7 @@ public final class Window extends JFrame {
     private Menu menu = new Menu(this);
     private Scene scene;
 
-    public Window() {
+    private Window() {
         // Colore dello sfondo della finestra durante il caricamento
         setBackground(UIManager.getColor("Chevy.color.purpleDark"));
         windowController = new WindowController(this);
@@ -79,8 +80,8 @@ public final class Window extends JFrame {
     public static void updateSize(Dimension size) {
         Window.size = size;
         ChamberView.updateSize();
-        float scaleX = 1.f * size.width / screenSize.width * aspectRatio.width;
-        float scaleY = 1.f * size.height / screenSize.height * aspectRatio.height;
+        float scaleX = 1.f * size.width / SCREEN_SIZE.width * ASPECT_RATIO.width;
+        float scaleY = 1.f * size.height / SCREEN_SIZE.height * ASPECT_RATIO.height;
         scale = Math.min(scaleX, scaleY);
     }
 
@@ -100,6 +101,12 @@ public final class Window extends JFrame {
             JDialog.setDefaultLookAndFeelDecorated(true);
         }
         UIManager.put("defaultFont", Load.font("VT323"));
+
+        // L'attesa iniziale affinché il tooltip si attivi è più breve
+        ToolTipManager.sharedInstance().setInitialDelay(50);
+        // Il tooltip persiste per un'ora se il cursore vi giace sopra per tanto
+        ToolTipManager.sharedInstance().setDismissDelay(3_600_000);
+
         new Window();
     }
 
@@ -120,7 +127,7 @@ public final class Window extends JFrame {
         }
         Sound.play(Sound.Effect.STOP);
         final int ans = JOptionPane.showOptionDialog(this, "Uscire da Chevy?", null,
-                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, icon, new String[]{"Si",
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, POWER, new String[]{"Si",
                         "No"}, "No");
         if (ans == 0) {
             Sound.play(Sound.Effect.BUTTON);
@@ -169,7 +176,7 @@ public final class Window extends JFrame {
                     yield menu.getRoot();
                 }
                 case PLAYING -> {
-                    getRootPane().setBackground(bg);
+                    getRootPane().setBackground(gamePanel.getBackground());
                     setTitle("Chevy");
                     gamePanel.addComponents(false);
                     yield gamePanel;
@@ -185,7 +192,7 @@ public final class Window extends JFrame {
                     }
                     setTitle("Chevy - Tutorial");
                     gamePanel.addComponents(true);
-                    getRootPane().setBackground(bg);
+                    getRootPane().setBackground(gamePanel.getBackground());
                     yield gamePanel;
                 }
             };

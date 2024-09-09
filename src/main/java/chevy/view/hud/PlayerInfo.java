@@ -21,9 +21,9 @@ public final class PlayerInfo extends JPanel {
         frameAndBarContainer.setOpaque(false);
 
         // Creazione, sistemazione e aggiunta dei componenti nel barContainer
-        healthBar = new HealthBar(0, scale);
-        shieldBar = new ShieldBar(0, scale);
-        attackBar = new AttackBar(0, scale);
+        healthBar = new HealthBar(scale);
+        shieldBar = new ShieldBar(scale);
+        attackBar = new AttackBar(scale);
         playerFrame = new PlayerFrame(new Dimension(42, 42), scale);
 
         barContainer.setLayout(new BoxLayout(barContainer, BoxLayout.Y_AXIS));

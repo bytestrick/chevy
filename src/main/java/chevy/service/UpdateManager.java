@@ -8,21 +8,35 @@ import java.util.LinkedList;
  * Aggiorna tutti gli oggetti di {@link chevy.model}
  */
 public final class UpdateManager {
-    private static final Collection<Update> updateList = new LinkedList<>();
-    private static final Collection<Update> toAdd = new LinkedList<>();
+    private static final Collection<Updatable> updatables = new LinkedList<>();
+    private static final Collection<Updatable> queued = new LinkedList<>();
 
-    public synchronized static void addToUpdate(Update u) {toAdd.add(u);}
+    /**
+     * Registra un oggetto per l'aggiornamento
+     */
+    public static void register(Updatable updatable) {
+        synchronized (queued) {
+            queued.add(updatable);
+        }
+    }
 
-    public synchronized static void update(double delta) {
-        updateList.addAll(toAdd);
-        toAdd.clear();
+    /**
+     * Aggiorna tutti gli oggetti registrati
+     *
+     * @param delta tempo trascorso dall'ultimo aggiornamento
+     */
+    static void update(double delta) {
+        synchronized (queued) {
+            updatables.addAll(queued);
+            queued.clear();
+        }
 
-        Iterator<Update> iterator = updateList.iterator();
-        while (iterator.hasNext()) {
-            Update current = iterator.next();
-            current.update(delta);
-            if (current.updateFinished()) {
-                iterator.remove();
+        Iterator<Updatable> it = updatables.iterator();
+        while (it.hasNext()) {
+            Updatable updatable = it.next();
+            updatable.update(delta);
+            if (updatable.updateFinished()) {
+                it.remove();
             }
         }
     }

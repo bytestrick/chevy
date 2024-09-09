@@ -17,7 +17,7 @@ public final class PlayerFrame extends JPanel {
         setOpaque(false);
         this.scale = scale;
         this.dimension = new Dimension((int) (dimension.getWidth()), (int) (dimension.getHeight()));
-        ui = new MyPanelUI(null);
+        ui = new MyPanelUI();
 
         ui.setTexture(MyPanelUI.CENTER, PANEL_PATH + "centerPanel.png");
         ui.setTexture(MyPanelUI.CORNER_TL, PANEL_PATH + "topLeftCorner.png");

@@ -6,8 +6,8 @@ import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Vector2;
 
 public final class SlimeShot extends Projectile {
-    public final Vertex start = new Vertex(SlimeShot.State.START, .5f);
-    public final Vertex loop = new Vertex(SlimeShot.State.LOOP, 1f, true);
+    private final Vertex start = new Vertex(SlimeShot.State.START, .5f);
+    private final Vertex loop = new Vertex(SlimeShot.State.LOOP, 1f, true);
     private final Vertex end = new Vertex(SlimeShot.State.END, .5f);
 
     public SlimeShot(Vector2<Integer> initPosition, Direction direction) {
@@ -17,8 +17,7 @@ public final class SlimeShot extends Projectile {
         initStateMachine();
     }
 
-    @Override
-    protected void initStateMachine() {
+    private void initStateMachine() {
         stateMachine.setName("Slime shot");
         stateMachine.setInitialState(start);
 

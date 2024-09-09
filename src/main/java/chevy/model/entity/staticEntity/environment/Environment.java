@@ -23,7 +23,7 @@ public abstract class Environment extends Entity {
     @Override
     public String toString() {return type.toString();}
 
-    public enum Type implements EntityType {GROUND, WALL, STAIR, BARRIER, TRAP, CHEST}
+    public enum Type implements EntityType {GROUND, WALL, STAIR, TRAP, CHEST}
 
     public enum State implements EntityState {OPEN}
 }

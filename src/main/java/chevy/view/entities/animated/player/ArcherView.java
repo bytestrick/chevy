@@ -40,10 +40,10 @@ public final class ArcherView extends LiveEntityView {
 
     @Override
     protected Direction getAnimationDirection(EntityState state) {
-        final Direction direction = entity.getDirection();
+        Direction direction = entity.getDirection();
         return switch (state) {
             case State.ATTACK, State.IDLE, State.MOVE, State.HIT -> direction;
-            case State.GLIDE, State.SLUDGE, State.DEAD, State.FALL ->
+            case State.SLUDGE, State.GLIDE, State.FALL, State.DEAD ->
                     direction == Direction.LEFT ? direction : Direction.RIGHT;
             default -> null;
         };

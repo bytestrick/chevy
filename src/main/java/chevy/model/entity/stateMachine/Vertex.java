@@ -43,19 +43,6 @@ public class Vertex {
     }
 
     /**
-     * Crea uno stato con un auto-arco ma senza durata
-     *
-     * @param state    l'enumerazione associata a questo stato
-     * @param selfEdge indica se questo stato ha un auto-arco
-     */
-    public Vertex(EntityState state, boolean selfEdge) {
-        this.state = state;
-        this.selfEdge = selfEdge;
-        duration = 0.f;
-        timer = null;
-    }
-
-    /**
      * Crea uno stato con un auto-arco e una durata specificata
      *
      * @param state    l'enumerazione associata a questo stato

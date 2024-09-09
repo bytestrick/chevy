@@ -23,7 +23,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.Color;
@@ -42,7 +41,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.stream.Stream;
@@ -125,11 +123,6 @@ public final class Menu {
 
         List.of(play, quit, options, playerCycleNext, playerCyclePrev, unlock)
                 .forEach(c -> c.addActionListener(actionListener));
-        final MouseListener tooltipMouseAdapter = new TooltipMouseAdapter();
-        Stream.of(playerCycleNext, playerCyclePrev,
-                characterAnimation, coins, keys, options, healthBar, shieldBar, damageBar,
-                speedBar, levelSelector, healthLabel, shieldLabel, damageLabel, speedLabel, play,
-                characterName).forEach(c -> c.addMouseListener(tooltipMouseAdapter));
         levelSelector.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -185,6 +178,7 @@ public final class Menu {
             case "levelChanged" -> changeLevelAction();
             case "unlock" -> unlockPlayerAction();
         }
+        window.requestFocus();
     }
 
     public void keyPressed(KeyEvent keyEvent) {
@@ -197,8 +191,8 @@ public final class Menu {
     }
 
     /**
-     * Aggiorna i componenti dopo il cambio scena
-     * Impostare l'elemento attivo per JComboBox richiede che il componente sia visibile
+     * Aggiorna i componenti dopo il cambio scena.
+     * Impostare l'elemento attivo per {@link JComboBox} richiede che il componente sia visibile.
      */
     void updateComponents() {
         coins.setText(Data.get("progress.coins").toString());
@@ -223,6 +217,7 @@ public final class Menu {
         }
         final Font menuFont = UIManager.getFont("defaultFont").deriveFont(35f);
         Stream.of(quit, play, keys, cost, coins, unlock).forEach(c -> c.setFont(menuFont));
+        // TODO: cambiare le icone chevron con delle icone più belle
         playerCycleNext.setIcon(Load.icon("right-chevron"));
         playerCyclePrev.setIcon(Load.icon("left-chevron"));
         play.setIcon(Load.icon("Play"));
@@ -530,24 +525,6 @@ public final class Menu {
                 c.setForeground(getForeground());
             }
             return c;
-        }
-    }
-
-    static class TooltipMouseAdapter extends MouseAdapter {
-        /**
-         * L'attesa iniziale affinché il tooltip si attivi è più breve.
-         * Il tooltip persiste per un'ora se il cursore vi giace sopra per tanto.
-         */
-        public void mouseEntered(MouseEvent ignored) {
-            ToolTipManager.sharedInstance().setInitialDelay(100);
-            ToolTipManager.sharedInstance().setDismissDelay(3_600_000);
-        }
-
-        /**
-         * Il tooltip viene nascosto non appena il cursore abbandona il componente.
-         */
-        public void mouseExited(MouseEvent ignored) {
-            ToolTipManager.sharedInstance().setDismissDelay(0);
         }
     }
 }

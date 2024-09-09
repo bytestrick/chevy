@@ -14,27 +14,22 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 public class CounterBar extends JPanel {
-    private final int counter = 0;
+    private static final int counter = 0;
     private final JLabel text = new JLabel(String.valueOf(counter), SwingConstants.RIGHT);
     private final MyPanelUI ui;
     private final Dimension dimension;
     private final SpringLayout springLayout;
     private final float scale;
-    private int rightSpace = 0;
     private Font font;
     private int fontSize = 13;
-    private int offsetY = 0;
-
-    public CounterBar(Dimension dimension) {
-        this(dimension, 1f);
-    }
+    private int offsetY;
 
     public CounterBar(Dimension dimension, float scale) {
         this.scale = scale;
         this.dimension = dimension;
 
         setOpaque(false);
-        ui = new MyPanelUI(null);
+        ui = new MyPanelUI();
         setUI(ui);
 
         setDimension(Window.scale);
@@ -53,38 +48,30 @@ public class CounterBar extends JPanel {
         add(text);
     }
 
-    public void setRightSpace(int rightSpace) {
-        this.rightSpace = rightSpace;
-    }
-
-    public void setTexture(int i, String path) {
+    protected void setTexture(int i, String path) {
         ui.setTexture(i, path);
         revalidate();
         repaint();
     }
 
-    public void setFontSize(int value) {
+    protected void setFontSize(int value) {
         fontSize = value;
         resizeFont();
     }
 
-    public void setFont(String path) {
-        font = Load.font(path);
+    protected void setFont() {
+        font = Load.font("superstar_2/superstar_memesbruh03");
         resizeFont();
     }
 
-    public void setColor(Color color) {
-        text.setForeground(color);
-    }
+    protected void setColor() {text.setForeground(Color.BLACK);}
 
     private void resizeFont() {
         font = font.deriveFont(fontSize * Window.scale);
         text.setFont(font);
     }
 
-    public void setText(String text) {
-        this.text.setText(text);
-    }
+    protected void setText(String text) {this.text.setText(text);}
 
     private void setDimension(float scale) {
         Dimension dimensionScaled = new Dimension((int) (dimension.getWidth() * scale),
@@ -96,14 +83,15 @@ public class CounterBar extends JPanel {
     }
 
     private void setConstraints(float scale) {
+        final int rightSpace = 0;
         springLayout.putConstraint(SpringLayout.EAST, text,
-                -((int) (rightSpace * scale) + ui.getWidth(MyPanelUI.BAR_R)), SpringLayout.EAST, this);
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, text, offsetY, SpringLayout.VERTICAL_CENTER, this);
+                -((int) (rightSpace * scale) + ui.getWidth(MyPanelUI.BAR_R)), SpringLayout.EAST,
+                this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, text, offsetY,
+                SpringLayout.VERTICAL_CENTER, this);
     }
 
-    public void setOffsetY(int offsetY) {
-        this.offsetY = offsetY;
-    }
+    protected void setOffsetY(int offsetY) {this.offsetY = offsetY;}
 
     public void windowResized(float scale) {
         scale = scale * this.scale;

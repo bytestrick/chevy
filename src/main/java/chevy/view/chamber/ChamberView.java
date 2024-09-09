@@ -4,7 +4,7 @@ import chevy.model.chamber.drawOrder.Layer;
 import chevy.model.entity.Entity;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
 import chevy.service.Data;
-import chevy.service.Render;
+import chevy.service.Renderable;
 import chevy.service.RenderManager;
 import chevy.utils.Load;
 import chevy.utils.Log;
@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Disegna la stanza
  */
-public final class ChamberView extends JPanel implements Render {
+public final class ChamberView extends JPanel implements Renderable {
     /** Offset per centrare il contenuto in {@link Window} */
     private static final Dimension windowOffset = new Dimension();
     public static boolean drawCollision = Data.get("options.drawHitBoxes");
@@ -43,7 +43,7 @@ public final class ChamberView extends JPanel implements Render {
 
     public ChamberView() {
         setOpaque(false);
-        RenderManager.addToRender(this);
+        RenderManager.register(this);
     }
 
     /**
@@ -118,7 +118,7 @@ public final class ChamberView extends JPanel implements Render {
 
                         g.drawImage(image, x, y, with, height, null);
 
-                        if (entity.toNotDraw()) {
+                        if (entity.shouldNotDraw()) {
                             it.remove();
                             Log.info("Entity rimossa dal ridisegno: " + entity.getType());
                             entityView.remove();
@@ -145,5 +145,5 @@ public final class ChamberView extends JPanel implements Render {
     }
 
     @Override
-    public void render(double delta) {repaint();}
+    public synchronized void render(double delta) {repaint();}
 }

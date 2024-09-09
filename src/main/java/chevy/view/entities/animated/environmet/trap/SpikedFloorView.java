@@ -14,7 +14,7 @@ public final class SpikedFloorView extends TrapView {
         final Vector2<Integer> offset = new Vector2<>(0, -7);
 
         final float disabledDuration = trap.getState(State.DISABLED).getDuration();
-        animate(State.DISABLED, null, 1, disabledDuration, offset, RES + "disabled");
+        animate(State.DISABLED, null, 1, disabledDuration, offset, RES + "setSafeToCross");
 
         final float activatedDuration = trap.getState(State.ACTIVATED).getDuration();
         animate(State.ACTIVATED, null, 2, activatedDuration, offset, RES + "active");

@@ -1,13 +1,13 @@
 package chevy.model.entity.stateMachine;
 
-import chevy.service.Update;
+import chevy.service.Updatable;
 import chevy.service.UpdateManager;
 import chevy.utils.Log;
 
 /**
  * Tiene traccia del tempo trascorso
  */
-public class Timer implements Update {
+public class Timer implements Updatable {
     private final double duration;
     private double time;
     private boolean running;
@@ -21,7 +21,7 @@ public class Timer implements Update {
      * Fa iniziare l'interpolazione dal punto in cui si è fermata. Se la si usa
      * per la prima volta l'interpolazione partirà dall'inizio.
      */
-    public void start() {
+    private void start() {
         if (duration <= 0d) {
             Log.warn("Il timer non è stato creato perché la sua durata è: " + duration);
             return;
@@ -31,7 +31,7 @@ public class Timer implements Update {
 
         if (delete) {
             delete = false;
-            UpdateManager.addToUpdate(this);
+            UpdateManager.register(this);
         }
     }
 

@@ -8,7 +8,7 @@ public final class Skeleton extends Enemy {
     private boolean invincible = true;
 
     public Skeleton(Vector2<Integer> initPosition) {
-        super(initPosition, Type.SKELETON, 1.8f, 0.5f, 0.5f, 0.15f, 0.3f);
+        super(initPosition, Type.SKELETON, 1.8f, 0.15f);
         invincibility = new Vertex(State.INVINCIBILITY);
 
         health = 5;
@@ -16,25 +16,9 @@ public final class Skeleton extends Enemy {
         maxDamage = 4;
         minDamage = 1;
 
-        initStateMachine();
-    }
-
-    @Override
-    protected void initStateMachine() {
         stateMachine.setName("Skeleton");
-        stateMachine.setInitialState(idle);
-
-        idle.linkVertex(move);
-        idle.linkVertex(attack);
-        idle.linkVertex(hit);
         idle.linkVertex(invincibility);
         invincibility.linkVertex(idle);
-        move.linkVertex(idle);
-        move.linkVertex(hit);
-        attack.linkVertex(idle);
-        attack.linkVertex(hit);
-        hit.linkVertex(idle);
-        hit.linkVertex(dead);
     }
 
     @Override

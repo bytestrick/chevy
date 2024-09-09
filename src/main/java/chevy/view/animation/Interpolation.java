@@ -1,19 +1,19 @@
 package chevy.view.animation;
 
-import chevy.service.Render;
 import chevy.service.RenderManager;
+import chevy.service.Renderable;
 import chevy.utils.Log;
 
 /**
  * Interpolazione di valori
  */
-public final class Interpolation implements Render {
+public final class Interpolation implements Renderable {
+    /** Tipo di interpolazione da utilizzare */
+    private final Type type;
     /** Tempo trascorso dall'inizio dell'interpolazione */
     private double time;
     /** Se l'interpolazione è attualmente in esecuzione */
     private boolean isRunning;
-    /** Tipo di interpolazione da utilizzare */
-    private final Type type;
     /** Valore iniziale dell'interpolazione */
     private double start;
     /** Valore finale dell'interpolazione */
@@ -108,7 +108,8 @@ public final class Interpolation implements Render {
                 yield linearInterpolation(a, b, x);
             }
             case EASE_IN_OUT_QUINT -> {
-                final double x = t < 0.5 ? 16 * t * t * t * t * t : (1 - Math.pow(-2 * t + 2, 5) / 2);
+                final double x = t < 0.5 ? 16 * t * t * t * t * t :
+                        (1 - Math.pow(-2 * t + 2, 5) / 2);
                 yield linearInterpolation(a, b, x);
             }
             case EASE_IN_EXPO -> {
@@ -120,7 +121,8 @@ public final class Interpolation implements Render {
                 yield linearInterpolation(a, b, x);
             }
             case EASE_IN_OUT_EXPO -> {
-                final double x = t == 0 ? 0 : t == 1 ? 1 : t < 0.5 ? (Math.pow(2, 20 * t - 10) / 2) :
+                final double x = t == 0 ? 0 : t == 1 ? 1 : t < 0.5 ?
+                        (Math.pow(2, 20 * t - 10) / 2) :
                         ((2 - Math.pow(2, -20 * t + 10)) / 2);
                 yield linearInterpolation(a, b, x);
             }
@@ -152,8 +154,9 @@ public final class Interpolation implements Render {
             case EASE_IN_OUT_BACK -> {
                 final double c1 = 1.70158;
                 final double c2 = c1 * 1.525;
-                final double x = t < 0.5 ? (Math.pow(2 * t, 2) * ((c2 + 1) * 2 * t - c2)) / 2 : (Math.pow(2 * t - 2,
-                        2) * ((c2 + 1) * (t * 2 - 2) + c2) + 2) / 2;
+                final double x = t < 0.5 ? (Math.pow(2 * t, 2) * ((c2 + 1) * 2 * t - c2)) / 2 :
+                        (Math.pow(2 * t - 2,
+                                2) * ((c2 + 1) * (t * 2 - 2) + c2) + 2) / 2;
                 yield linearInterpolation(a, b, x);
             }
             case EASE_IN_ELASTIC -> {
@@ -164,13 +167,15 @@ public final class Interpolation implements Render {
             }
             case EASE_OUT_ELASTIC -> {
                 final double c4 = (2 * Math.PI) / 3;
-                final double x = t == 0 ? 0 : t == 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1;
+                final double x = t == 0 ? 0 : t == 1 ? 1 :
+                        Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1;
                 yield linearInterpolation(a, b, x);
             }
             case EASE_IN_OUT_ELASTIC -> {
                 final double c5 = (2 * Math.PI) / 4.5;
                 final double c6 = Math.sin((20 * t - 11.125) * c5);
-                final double x = t == 0 ? 0 : t == 1 ? 1 : t < 0.5 ? -1 * (Math.pow(2, 20 * t - 10) * c6) / 2 :
+                final double x = t == 0 ? 0 : t == 1 ? 1 : t < 0.5 ? -1 * (Math.pow(2,
+                        20 * t - 10) * c6) / 2 :
                         (Math.pow(2, -20 * t + 10) * c6) / 2 + 1;
                 yield linearInterpolation(a, b, x);
             }
@@ -180,7 +185,8 @@ public final class Interpolation implements Render {
             }
             case EASE_OUT_BOUNCE -> linearInterpolation(a, b, easeOutBounce(t));
             case EASE_IN_OUT_BOUNCE -> {
-                final double x = t < 0.5 ? (1 - easeOutBounce(t)) / 2 : (1 + easeOutBounce(t - 1)) / 2;
+                final double x = t < 0.5 ? (1 - easeOutBounce(t)) / 2 :
+                        (1 + easeOutBounce(t - 1)) / 2;
                 yield linearInterpolation(a, b, x);
             }
             case LINEAR -> linearInterpolation(a, b, t);
@@ -201,7 +207,7 @@ public final class Interpolation implements Render {
 
         if (delete) {
             delete = false;
-            RenderManager.addToRender(this);
+            RenderManager.register(this);
         }
     }
 
@@ -226,11 +232,11 @@ public final class Interpolation implements Render {
     }
 
     /**
-     * Interrompe l'aggiornamento dell'interpolazione, ma non in modo permanente. L'interpolazione può essere
-     * ripresa in seguito usando la funzione start(), oppure, può essere fatta ripartire da capo usando
-     * la funzione restart().
+     * Interrompe l'aggiornamento dell'interpolazione, ma non in modo permanente.
+     * L'interpolazione può essere ripresa in seguito usando {@link #start()}, oppure, può
+     * essere fatta ripartire da capo usando {@link #restart()}
      */
-    public void stop() { isRunning = false; }
+    private void stop() {isRunning = false;}
 
     /**
      * Aggiorna l'interpolazione in base al tempo trascorso.
@@ -250,39 +256,37 @@ public final class Interpolation implements Render {
     /**
      * @return il valore corrente dell'interpolazione
      */
-    public double getValue() { return interpolate(type, end, time, start); }
+    public double getValue() {return interpolate(type, end, time, start);}
 
     /**
      * @param start imposta il valore di inizio dell'interpolazione
      */
-    public void changeStart(double start) { this.start = start; }
+    public void changeStart(double start) {this.start = start;}
 
     /**
      * @param end imposta il valore finale dell'interpolazione
      */
-    public void changeEnd(double end) { this.end = end; }
+    public void changeEnd(double end) {this.end = end;}
 
     /**
      * @param duration imposta la durata dell'interpolazione
      */
-    public void changeDuration(float duration) { this.duration = duration; }
-
-    /**
-     * @return true se l'interpolazione è in esecuzione, false altrimenti
-     */
-    public boolean isRunning() { return isRunning && !delete; }
+    public void changeDuration(float duration) {this.duration = duration;}
 
     /**
      * @return true se l'interpolazione è terminata, false altrimenti
      */
     @Override
-    public boolean renderFinished() { return delete; }
+    public boolean renderFinished() {return delete;}
 
     public enum Type {
-        LINEAR, EASE_IN_SINE, EASE_OUT_SINE, EASE_IN_OUT_SINE, EASE_IN_QUAD, EASE_OUT_QUAD, EASE_IN_OUT_QUAD,
-        EASE_IN_CUBIC, EASE_OUT_CUBIC, EASE_IN_OUT_CUBIC, EASE_IN_QUART, EASE_OUT_QUART, EASE_IN_OUT_QUART,
-        EASE_IN_QUINT, EASE_OUT_QUINT, EASE_IN_OUT_QUINT, EASE_IN_EXPO, EASE_OUT_EXPO, EASE_IN_OUT_EXPO, EASE_IN_CIRC
-        , EASE_OUT_CIRC, EASE_IN_OUT_CIRC, EASE_IN_BACK, EASE_OUT_BACK, EASE_IN_OUT_BACK, EASE_IN_ELASTIC,
+        LINEAR, EASE_IN_SINE, EASE_OUT_SINE, EASE_IN_OUT_SINE, EASE_IN_QUAD, EASE_OUT_QUAD,
+        EASE_IN_OUT_QUAD,
+        EASE_IN_CUBIC, EASE_OUT_CUBIC, EASE_IN_OUT_CUBIC, EASE_IN_QUART, EASE_OUT_QUART,
+        EASE_IN_OUT_QUART,
+        EASE_IN_QUINT, EASE_OUT_QUINT, EASE_IN_OUT_QUINT, EASE_IN_EXPO, EASE_OUT_EXPO,
+        EASE_IN_OUT_EXPO, EASE_IN_CIRC, EASE_OUT_CIRC, EASE_IN_OUT_CIRC, EASE_IN_BACK,
+        EASE_OUT_BACK, EASE_IN_OUT_BACK, EASE_IN_ELASTIC,
         EASE_OUT_ELASTIC, EASE_IN_OUT_ELASTIC, EASE_IN_BOUNCE, EASE_OUT_BOUNCE, EASE_IN_OUT_BOUNCE
     }
 }

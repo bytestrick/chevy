@@ -1,6 +1,5 @@
 package chevy.view.entities.animated.environmet;
 
-import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.utils.Vector2;
@@ -20,9 +19,6 @@ abstract class EnvironmentView extends AnimatedEntityView {
     }
 
     @Override
-    protected Direction getAnimationDirection(EntityState state) {return null;}
-
-    @Override
     public Vector2<Integer> getOffset() {
         AnimatedSprite currentAnimatedSprite = getAnimatedSprite(environment.getState(), null);
         if (currentAnimatedSprite != null) {
@@ -36,7 +32,7 @@ abstract class EnvironmentView extends AnimatedEntityView {
         final EntityState state = environment.getState();
         final AnimatedSprite animatedSprite = getAnimatedSprite(state, null);
         if (animatedSprite != null) {
-            if (!animatedSprite.isRunning()) {
+            if (animatedSprite.isRunning()) {
                 if (previousAnimationState != Environment.State.OPEN) {
                     animatedSprite.restart();
                 } else if (state != Environment.State.OPEN) {

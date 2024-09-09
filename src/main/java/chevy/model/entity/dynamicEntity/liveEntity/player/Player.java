@@ -12,21 +12,21 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public abstract class Player extends LiveEntity {
-    protected final Vertex idle;
-    protected final Vertex move;
-    protected final Vertex attack;
-    protected final Vertex hit;
-    protected final Vertex dead;
-    protected final Vertex sludge;
-    protected final Type type;
+    private final Vertex idle;
+    private final Vertex move;
+    private final Vertex attack;
+    final Vertex hit;
+    private final Vertex dead;
+    private final Vertex sludge;
+    private final Type type;
     private final Vertex glide;
-    private final Vertex fall;
+    final Vertex fall;
     private final float speed;
     private final Map<PowerUp.Type, PowerUp> ownedPowerUp = new EnumMap<>(PowerUp.Type.class);
 
-    public Player(Vector2<Integer> initPosition, Type type, float speed, int health, int shield,
-                  int maxDamage, int minDamage, float attackDuration, float hitDuration,
-                  float deadDuration) {
+    Player(Vector2<Integer> initPosition, Type type, float speed, int health, int shield,
+           int maxDamage, int minDamage, float attackDuration,
+           float deadDuration) {
         super(initPosition, LiveEntity.Type.PLAYER);
         this.type = type;
 
@@ -41,7 +41,7 @@ public abstract class Player extends LiveEntity {
         idle = new Vertex(State.IDLE);
         move = new Vertex(State.MOVE, speed, true);
         attack = new Vertex(State.ATTACK, attackDuration, true);
-        hit = new Vertex(State.HIT, hitDuration);
+        hit = new Vertex(State.HIT, (float) 0.2);
         dead = new Vertex(State.DEAD, deadDuration);
         sludge = new Vertex(State.SLUDGE, speed);
         glide = new Vertex(State.GLIDE, speed, true);
@@ -75,8 +75,7 @@ public abstract class Player extends LiveEntity {
     @Override
     public String toString() {return type.toString();}
 
-    @Override
-    protected void initStateMachine() {
+    private void initStateMachine() {
         idle.linkVertex(move);
         idle.linkVertex(attack);
         idle.linkVertex(hit);
@@ -84,7 +83,6 @@ public abstract class Player extends LiveEntity {
         hit.linkVertex(idle);
         hit.linkVertex(dead);
         hit.linkVertex(move);
-        hit.linkVertex(fall);
         move.linkVertex(glide);
         move.linkVertex(hit);
         move.linkVertex(fall);
@@ -101,7 +99,6 @@ public abstract class Player extends LiveEntity {
         sludge.linkVertex(idle);
         fall.linkVertex(idle);
         fall.linkVertex(dead);
-
         stateMachine.setInitialState(idle);
     }
 

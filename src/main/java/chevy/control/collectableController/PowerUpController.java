@@ -19,7 +19,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
 import chevy.service.Data;
 
-public final class PowerUpController {
+final class PowerUpController {
     private static final String STATS_PREFIX = "stats.collectable.powerUp.specific.";
     private final Chamber chamber;
     private final HUDController hudController;
@@ -29,7 +29,7 @@ public final class PowerUpController {
         this.hudController = hudController;
     }
 
-    public void playerInInteraction(Player player, PowerUp powerUp) {
+    void playerInInteraction(Player player, PowerUp powerUp) {
         if (powerUp.changeState(PowerUp.State.COLLECTED)) {
             powerUp.collect();
             chamber.findAndRemoveEntity(powerUp);
@@ -119,8 +119,8 @@ public final class PowerUpController {
                     LongSword longSword =
                             (LongSword) player.getOwnedPowerUp(PowerUp.Type.LONG_SWORD);
                     if (longSword != null && longSword.canUse() && player instanceof Knight) {
-                        player.changeMinDamage(player.getMinDamage() + LongSword.getDamageBoost());
-                        player.changeMaxDamage(player.getMaxDamage() + LongSword.getDamageBoost());
+                        player.setDamage(player.getMinDamage() + LongSword.getDamageBoost(),
+                                player.getMaxDamage() + LongSword.getDamageBoost());
                         hudController.changeMaxAttack(player.getMaxDamage());
                         hudController.setTextAttackBar(player.getMinDamage() + " ~ " + player.getMaxDamage());
                     }
@@ -129,8 +129,8 @@ public final class PowerUpController {
                     SlimePiece slimePiece =
                             (SlimePiece) player.getOwnedPowerUp(PowerUp.Type.SLIME_PIECE);
                     if (slimePiece != null && slimePiece.canUse()) {
-                        player.changeMinDamage(player.getMinDamage() + SlimePiece.getDamageBoost());
-                        player.changeMaxDamage(player.getMaxDamage() + SlimePiece.getDamageBoost());
+                        player.setDamage(player.getMinDamage() + SlimePiece.getDamageBoost(),
+                                player.getMaxDamage() + SlimePiece.getDamageBoost());
                         hudController.changeMaxAttack(player.getMaxDamage());
                         hudController.setTextAttackBar(player.getMinDamage() + " ~ " + player.getMaxDamage());
                     }
@@ -142,10 +142,10 @@ public final class PowerUpController {
         }
     }
 
-    public void update(PowerUp powerUp) {
+    void update(PowerUp powerUp) {
         if (powerUp.isCollected()) {
             if (powerUp.getState(PowerUp.State.COLLECTED).isFinished()) {
-                powerUp.setToDraw(false);
+                powerUp.setShouldDraw(false);
                 powerUp.removeFromUpdate();
             }
         } else {

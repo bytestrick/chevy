@@ -11,7 +11,7 @@ public abstract class Projectile extends DynamicEntity {
     private final Direction direction;
     private boolean collision;
 
-    public Projectile(Vector2<Integer> initPosition, Type type, Direction direction) {
+    Projectile(Vector2<Integer> initPosition, Type type, Direction direction) {
         super(initPosition, DynamicEntity.Type.PROJECTILE);
         this.type = type;
         this.direction = direction;

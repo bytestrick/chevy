@@ -4,7 +4,7 @@ import chevy.control.HUDController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.staticEntity.environment.Chest;
 
-public final  class ChestController {
+final class ChestController {
     private final Chamber chamber;
     private final HUDController hudController;
 
@@ -13,7 +13,9 @@ public final  class ChestController {
         this.hudController = hudController;
     }
 
-    public void update(Chest chest) {
+    void update(Chest chest) {
+        // TODO: fare in modo che si possibile aprire le chest anche dopo che tutti i mob siano
+        //  stati uccisi
         if (chamber.getDirectionToHitPlayer(chest) != null) {
             if (chest.checkAndChangeState(Chest.State.OPEN)) {
                 if (chest.isFirstOpen()) {

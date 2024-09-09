@@ -28,7 +28,7 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.service.Data;
 import chevy.service.Sound;
-import chevy.service.Update;
+import chevy.service.Updatable;
 import chevy.service.UpdateManager;
 import chevy.utils.Log;
 import chevy.utils.Vector2;
@@ -42,9 +42,9 @@ import static chevy.model.entity.staticEntity.environment.Environment.Type.TRAP;
 
 /**
  * Gestisce le interazioni del giocatore con i nemici, i proiettili e le trappole. * Implementa
- * l'interfaccia Update per aggiornare lo stato del giocatore a ogni ciclo di gioco.
+ * l'interfaccia Updatable per aggiornare lo stato del giocatore a ogni ciclo di gioco.
  */
-public final class PlayerController implements Update {
+public final class PlayerController implements Updatable {
     private static final double invSqrtTwo = 1 / Math.sqrt(2);
     private final Chamber chamber;
     private final Player player;
@@ -66,7 +66,7 @@ public final class PlayerController implements Update {
         player = chamber.getPlayer();
 
         // Aggiunge il controller del giocatore all'UpdateManager.
-        UpdateManager.addToUpdate(this);
+        UpdateManager.register(this);
     }
 
     private static void playerMoveSound(Player player) {
@@ -226,8 +226,7 @@ public final class PlayerController implements Update {
                     final Arrow arrow = new Arrow(new Vector2<>(player.getRow(), player.getCol())
                             , player.getDirection());
 
-                    arrow.changeMinDamage(player.getMinDamage());
-                    arrow.changeMaxDamage(player.getMaxDamage());
+                    arrow.setDamage(player.getMinDamage(), player.getMaxDamage());
                     Sound.play(Sound.Effect.ARROW_SWOOSH);
 
                     chamber.addProjectile(arrow);
@@ -346,14 +345,12 @@ public final class PlayerController implements Update {
             // cambia il danno del player in modo da infliggere solo la parte di danno
             int minDamage = player.getMinDamage();
             int maxDamage = player.getMaxDamage();
-            player.changeMinDamage(partialDamage);
-            player.changeMaxDamage(partialDamage);
+            player.setDamage(partialDamage, partialDamage);
 
             player.changeState(Player.State.ATTACK);
             enemyController.handleInteraction(Interaction.PLAYER_IN, player, enemy);
 
-            player.changeMinDamage(minDamage);
-            player.changeMaxDamage(maxDamage);
+            player.setDamage(minDamage, maxDamage);
         }
 
         hitPlayer(-1 * (damage - partialDamage));
@@ -361,8 +358,6 @@ public final class PlayerController implements Update {
 
     /**
      * Aggiorna lo stato del giocatore a ogni ciclo di gioco.
-     *
-     * @param delta il tempo trascorso dall'ultimo aggiornamento
      */
     @Override
     public void update(double delta) {

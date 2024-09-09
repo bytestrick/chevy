@@ -12,46 +12,34 @@ import java.util.PriorityQueue;
 /**
  * Algoritmo euristico per la ricerca del cammino minimo
  */
-public final class AStar {
+final class AStar {
     private final Chamber chamber;
     private final Dimension size;
 
-    public AStar(Chamber chamber) {
+    AStar(Chamber chamber) {
         this.chamber = chamber;
-        this.size = chamber.getSize();
-    }
-
-    /**
-     * @return true se la coppia cell(row, col) è valida, false altrimenti.
-     */
-    private boolean isValid(Vector2<Integer> cell) {
-        return chamber.validatePosition(cell);
-    }
-
-    /**
-     * @return true se non è possibile passare su quella cella.
-     */
-    private boolean isBlocked(Vector2<Integer> cell) {
-        return !chamber.isSafeToCross(cell);
+        size = chamber.getSize();
     }
 
     /**
      * @return true se si è raggiunta la destinazione, false altrimenti.
      */
-    private boolean isDestination(Vector2<Integer> position, Vector2<Integer> destination) {
+    private static boolean isDestination(Vector2<Integer> position, Vector2<Integer> destination) {
         return position.equals(destination);
     }
 
     /**
      * Calcolo della funzione euristica.
      */
-    private double calculateHValue(Vector2<Integer> src, Vector2<Integer> destination) {
+    private static double calculateHValue(Vector2<Integer> src, Vector2<Integer> destination) {
         // distanza tra i due punti
-        return Math.sqrt(Math.pow((src.first - destination.first), 2) + Math.pow((src.second - destination.second), 2));
+        return Math.sqrt(Math.pow((src.first - destination.first), 2)
+                + Math.pow((src.second - destination.second), 2));
     }
 
     // Ricostruisce il path minimo
-    private List<Vector2<Integer>> tracePath(Cell[][] cellDetails, Vector2<Integer> destination) {
+    private static List<Vector2<Integer>> tracePath(Cell[][] cellDetails,
+                                                    Vector2<Integer> destination) {
         List<Vector2<Integer>> path = new LinkedList<>();
 
         // scorre a ritroso finché non arriva al nodo iniziale
@@ -68,12 +56,24 @@ public final class AStar {
         return path;
     }
 
-    public List<Vector2<Integer>> find(Entity src, Entity destination) {
+    /**
+     * @return true se la coppia cell(row, col) è valida, false altrimenti.
+     */
+    private boolean isValid(Vector2<Integer> cell) {return chamber.validatePosition(cell);}
+
+    /**
+     * @return true se non è possibile passare su quella cella.
+     */
+    private boolean isBlocked(Vector2<Integer> cell) {
+        return !chamber.isSafeToCross(cell);
+    }
+
+    List<Vector2<Integer>> find(Entity src, Entity destination) {
         return find(new Vector2<>(src.getRow(), src.getCol()), new Vector2<>(destination.getRow(),
                 destination.getCol()));
     }
 
-    public List<Vector2<Integer>> find(Vector2<Integer> src, Vector2<Integer> destination) {
+    private List<Vector2<Integer>> find(Vector2<Integer> src, Vector2<Integer> destination) {
         if (!isValid(src)) {
             Log.error("Il punto di partenza non è valido");
             return null;
@@ -96,12 +96,11 @@ public final class AStar {
         cellDetails[currentCell.first][currentCell.second] = new Cell();
         cellDetails[currentCell.first][currentCell.second].f = 0.0;
         cellDetails[currentCell.first][currentCell.second].g = 0.0;
-        cellDetails[currentCell.first][currentCell.second].h = 0.0;
         cellDetails[currentCell.first][currentCell.second].parent = new Vector2<>(currentCell.first,
                 currentCell.second);
         // Aggiunge la prima cella nella coda dei nodi da esplorare con valore della funzione
         // euristica pari a 0
-        openList.add(new Details(0.0d, currentCell.first, currentCell.second));
+        openList.add(new Details(0d, currentCell.first, currentCell.second));
 
         while (!openList.isEmpty()) {
             Details details = openList.peek();
@@ -153,7 +152,6 @@ public final class AStar {
                                 // cella del vicinato come visitabile
                                 // aggiorna i valori della cella, del vicinato considerata
                                 cellDetails[neighbor.first][neighbor.second].g = gNew;
-                                cellDetails[neighbor.first][neighbor.second].h = hNew;
                                 cellDetails[neighbor.first][neighbor.second].f = fNew;
                                 cellDetails[neighbor.first][neighbor.second].parent =
                                         new Vector2<>(currentCell.first
@@ -172,32 +170,18 @@ public final class AStar {
      * Contiene le informazioni necessarie per ricostruire il cammino minimo
      */
     private static class Cell {
-        public Vector2<Integer> parent = new Vector2<>(-1, -1);
-        /** Valore di valutazione <code>f = {@link #h} + {@link #g}</code> */
-        public double f = -1;
+        Vector2<Integer> parent = new Vector2<>(-1, -1);
+        double f = -1;
         /** Costo esatto del cammino fino al nodo corrente */
-        public double g = -1;
-        /** Costo stimato del cammino fino all'obiettivo */
-        public double h = -1;
+        double g = -1;
     }
 
     /**
      * Contiene informazioni sul nodo (row, col) {@link #f} è il valore della funzione euristica
      */
-    private static class Details implements Comparable<Details> {
-        public double f;
-        public int row;
-        public int col;
-
-        public Details(double f, int row, int col) {
-            this.f = f;
-            this.row = row;
-            this.col = col;
-        }
+    private record Details(double f, int row, int col) implements Comparable<Details> {
 
         @Override
-        public int compareTo(Details o) {
-            return (int) Math.round(f - o.f);
-        }
+        public int compareTo(Details o) {return (int) Math.round(f - o.f);}
     }
 }

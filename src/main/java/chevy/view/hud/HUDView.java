@@ -13,8 +13,8 @@ public final class HUDView extends JPanel {
     private final SpringLayout springLayout;
 
     public HUDView(float scale) {
-        coinBar = new CoinBar(64, 12, scale);
-        keyBar = new KeyBar(48, 12, scale);
+        coinBar = new CoinBar(scale);
+        keyBar = new KeyBar(scale);
         playerInfo = new PlayerInfo(scale);
         powerUpText = new PowerUpText();
         springLayout = new SpringLayout();

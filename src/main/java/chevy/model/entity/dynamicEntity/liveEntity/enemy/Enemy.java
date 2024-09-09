@@ -21,27 +21,28 @@ public abstract class Enemy extends LiveEntity {
      */
     private static final int[] DROPPABLE_COLLECTABLE_PROB = {40, 10, 15};
     private static final int DROP_PROBABILITY = 100;
-    protected final Vertex move;
-    protected final Vertex attack;
-    protected final Vertex hit;
-    protected final Vertex dead;
+    private final Vertex move;
+    private final Vertex attack;
+    private final Vertex hit;
+    private final Vertex dead;
     private final Type type;
-    protected Vertex idle;
+    Vertex idle;
     Vertex invincibility;
     private boolean canAttack;
 
-    public Enemy(Vector2<Integer> initPosition, Type type, float idleDuration, float moveDuration
-            , float attackDuration, float hitDuration, float deadDuration) {
+    Enemy(Vector2<Integer> initPosition, Type type, float idleDuration,
+          float hitDuration) {
         super(initPosition, LiveEntity.Type.ENEMY);
         this.type = type;
 
         idle = new Vertex(Skeleton.State.IDLE, idleDuration);
-        move = new Vertex(Skeleton.State.MOVE, moveDuration);
-        attack = new Vertex(Skeleton.State.ATTACK, attackDuration);
+        move = new Vertex(Skeleton.State.MOVE, (float) 0.5);
+        attack = new Vertex(Skeleton.State.ATTACK, (float) 0.5);
         hit = new Vertex(Skeleton.State.HIT, hitDuration);
-        dead = new Vertex(Skeleton.State.DEAD, deadDuration);
+        dead = new Vertex(Skeleton.State.DEAD, (float) 0.3);
 
         drawLayer = 2;
+        initStateMachine();
     }
 
     public static void changeDropPercentage(int i, int newDropPercentage) {
@@ -76,8 +77,7 @@ public abstract class Enemy extends LiveEntity {
     @Override
     public String toString() {return type.toString();}
 
-    @Override
-    protected void initStateMachine() {
+    void initStateMachine() {
         stateMachine.setInitialState(idle);
 
         idle.linkVertex(move);

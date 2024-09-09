@@ -46,7 +46,7 @@ import chevy.view.Menu;
 /**
  * Mappa i valori di Rosso dei pixel dell'immagine di un livello a entità del gioco
  */
-public final class EntityFromColor {
+final class EntityFromColor {
     // Wall
     private static final int WALL_INTERIOR_CORNER_BOTTOM_LEFT = 255;
     private static final int WALL_BOTTOM = 254;
@@ -56,10 +56,6 @@ public final class EntityFromColor {
     private static final int WALL_TOP = 248;
     private static final int WALL_INTERIOR_CORNER_TOP_RIGHT = 247;
     private static final int WALL_INTERIOR_CORNER_BOTTOM_RIGHT = 253;
-    private static final int WALL_TOP_TORCH = 254;
-    private static final int WALL_TOP_HOLE = 255;
-    private static final int WALL_TOP_HOLE_2 = 256;
-    private static final int WALL_TOP_BROKEN = 257;
     private static final int WALL_EXTERNAL_CORNER_TOP_LEFT = 246;
     private static final int WALL_EXTERNAL_CORNER_TOP_RIGHT = 245;
     private static final int WALL_EXTERNAL_CORNER_BOTTOM_LEFT = 244;
@@ -136,10 +132,7 @@ public final class EntityFromColor {
     private static final int STAIR_RIGHT = 51;
     private static final int STAIR_LEFT = 52;
 
-    // ---
-    private static final int NULL = 0; // assenza di colore rosso
-
-    public static Entity get(int r, int row, int col) {
+    static Entity get(int r, int row, int col) {
         Vector2<Integer> startPosition = new Vector2<>(row, col);
         return switch (r) {
             //@formatter:off
@@ -227,13 +220,9 @@ public final class EntityFromColor {
             case HEDGEHOG_SPINES -> new HedgehogSpines(startPosition);
             case SLIME_PIECE -> new SlimePiece(startPosition);
 
-            // ---
             case CHEST -> new Chest(startPosition);
-            case STAIR_LEFT -> new Stair(startPosition);
-            case STAIR_RIGHT -> new Stair(startPosition);
+            case STAIR_LEFT, STAIR_RIGHT -> new Stair(startPosition);
 
-            // ---
-            case NULL -> null;
             default -> null;
         };
     }

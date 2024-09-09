@@ -7,18 +7,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * La classe LayerManager gestisce l'ordine di disegno delle entità nel gioco.
- * Utilizza una lista di Layer, ognuno dei quali contiene un insieme di entità da disegnare.
+ * Ordine di disegno delle entità nel gioco.
+ * Usa una lista di Layer, ognuno dei quali contiene un insieme di entità da disegnare.
  */
 public final class LayerManager {
     private final List<Layer> drawOrder;
 
-    public LayerManager() {
-        this.drawOrder = new LinkedList<>();
-    }
+    public LayerManager() {drawOrder = new LinkedList<>();}
 
     /**
-     * Trova un Layer specifico nella lista. Se il Layer non esiste, lo crea e lo aggiunge alla lista.
+     * Trova un Layer specifico nella lista. Se il Layer non esiste, lo crea e lo aggiunge alla
+     * lista.
      *
      * @param nLayer priorità di ridisegno del livello da trovare.
      * @return ll Layer trovato o creato.
@@ -36,15 +35,15 @@ public final class LayerManager {
     }
 
     /**
-     * Aggiunge un'entità a un Layer specifico.
+     * Aggiunge un'entità a un Layer specifico
      *
-     * @param entity L'entità da aggiungere.
-     * @param nLayer Il numero del Layer a cui aggiungere l'entità.
+     * @param entity L'entità da aggiungere
+     * @param nLayer Il numero del Layer a cui aggiungere l'entità
      */
     public synchronized void add(Entity entity, int nLayer) {
         Layer layer = findLayer(nLayer);
         layer.add(entity);
     }
 
-    public synchronized List<Layer> getDrawOrder() { return drawOrder; }
+    public synchronized List<Layer> getDrawOrder() {return drawOrder;}
 }

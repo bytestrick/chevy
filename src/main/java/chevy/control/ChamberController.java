@@ -39,7 +39,7 @@ public final class ChamberController {
         final EnemyController enemyController = new EnemyController(chamber, playerController);
         playerController.setEnemyController(enemyController);
         if (enemyUpdateController != null) {
-            enemyUpdateController.updateTerminate();
+            EnemyUpdateController.stopUpdate();
         }
         enemyUpdateController = new EnemyUpdateController(enemyController, chamber.getEnemies());
 
@@ -47,7 +47,7 @@ public final class ChamberController {
                 enemyController);
         playerController.setTrapController(trapsController);
         if (trapsUpdateController != null) {
-            trapsUpdateController.updateTerminate();
+            trapsUpdateController.stopUpdate();
         }
         trapsUpdateController = new TrapsUpdateController(trapsController, chamber.getTraps());
 
@@ -68,15 +68,16 @@ public final class ChamberController {
                 enemyController);
         playerController.setProjectileController(projectileController);
         if (projectileUpdateController != null) {
-            projectileUpdateController.updateTerminate();
+            ProjectileUpdateController.stopUpdate();
         }
         projectileUpdateController = new ProjectileUpdateController(projectileController,
                 chamber.getProjectiles());
 
-        final EnvironmentController environmentController = new EnvironmentController(chamber, hudController, gamePanel);
+        final EnvironmentController environmentController =
+                new EnvironmentController(chamber, hudController, gamePanel);
         playerController.setEnvironmentController(environmentController);
         if (environmentUpdateController != null) {
-            environmentUpdateController.updateTerminate();
+            environmentUpdateController.stopUpdate();
         }
         environmentUpdateController = new EnvironmentUpdateController(environmentController,
                 chamber.getEnvironments());
