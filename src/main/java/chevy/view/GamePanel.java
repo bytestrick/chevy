@@ -38,6 +38,8 @@ public final class GamePanel extends JPanel {
     private final HUDView hudView = new HUDView(1.3f);
     private final Tutorial tutorial;
     private final Window window;
+    private String oldTitle;
+    private boolean ignoreTitle;
 
     GamePanel(Window window) {
         this.window = window;
@@ -97,6 +99,9 @@ public final class GamePanel extends JPanel {
         if (!(pauseDialogActive || playerDeathDialogActive || winDialogActive
                 || Window.isQuitDialogActive())) {
             pauseDialogActive = true;
+            if (!ignoreTitle) {
+                oldTitle = window.getTitle();
+            }
             window.setTitle("Chevy - Pausa");
             GameLoop.stop();
             Sound.stopMusic();
@@ -117,6 +122,7 @@ public final class GamePanel extends JPanel {
                 case 1 -> {
                     Sound.play(Sound.Effect.BUTTON);
                     window.setScene(Window.Scene.OPTIONS);
+                    ignoreTitle = true;
                 }
                 case 2 -> {
                     Sound.play(Sound.Effect.BUTTON);
@@ -133,6 +139,7 @@ public final class GamePanel extends JPanel {
                         if (subAns == 1) {
                             Sound.play(Sound.Effect.BUTTON);
                         }
+                        ignoreTitle = false;
                         pauseDialogActive = false;
                         pauseDialog();
                     }
@@ -152,6 +159,7 @@ public final class GamePanel extends JPanel {
                         if (subAns == 1) {
                             Sound.play(Sound.Effect.BUTTON);
                         }
+                        ignoreTitle = false;
                         pauseDialogActive = false;
                         pauseDialog();
                     }
@@ -162,13 +170,10 @@ public final class GamePanel extends JPanel {
                     }
                     // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
                     GameLoop.start();
+                    ignoreTitle = false;
                     Sound.startMusic(Sound.Music.SAME_SONG);
 
-                    if (window.getScene() == Window.Scene.TUTORIAL) {
-                        window.setTitle("Chevy - Tutorial");
-                    } else {
-                        window.setTitle("Chevy");
-                    }
+                    window.setTitle(oldTitle);
                 }
             }
             pauseDialogActive = false;
@@ -204,7 +209,7 @@ public final class GamePanel extends JPanel {
             }
             default -> playerDeathDialog(); // Questo dialogo non può essere ignorato
         }
-        window.setTitle("Chevy - Morte");
+        //window.setTitle("Chevy - Morte");
         playerDeathDialogActive = false;
     }
 
@@ -246,7 +251,6 @@ public final class GamePanel extends JPanel {
             }
             default -> winDialog(); // Questo dialogo non può essere ignorato
         }
-        window.setTitle("Chevy");
         winDialogActive = false;
     }
 
