@@ -15,7 +15,7 @@ public class Totem extends Trap {
         this.directionShot = directionShot;
         crossable = false;
         shouldUpdate = true;
-        drawLayer = 3;
+        drawLayer = 5;
         initStateMachine();
     }
 
