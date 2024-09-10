@@ -72,7 +72,7 @@ abstract class ProjectileView extends AnimatedEntityView {
         if (animatedSprite != null) {
             if (animatedSprite.isNotRunning()) {
                 animatedSprite.restart();
-            } else if (state != Projectile.State.END && vertex.isFinished()) {
+            } else if (state == Projectile.State.END && vertex.isFinished()) {
                 projectile.setShouldDraw(false);
             }
             return animatedSprite.getFrame();

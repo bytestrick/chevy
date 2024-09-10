@@ -19,7 +19,7 @@ public class Stair extends Environment {
         super(position, Type.STAIR);
         crossable = true;
         shouldUpdate = true;
-        drawLayer = 3;
+        drawLayer = 2;
         initStateMachine();
     }
 

@@ -16,8 +16,8 @@ public abstract class Collectable extends Entity {
 
         shouldUpdate = true;
         crossable = true;
-        this.safeToCross = false;
-        drawLayer = 3;
+        safeToCross = false;
+        drawLayer = 4;
     }
 
     public void collect() {collected = true;}
