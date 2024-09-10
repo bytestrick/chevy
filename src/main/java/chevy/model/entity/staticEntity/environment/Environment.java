@@ -2,7 +2,6 @@ package chevy.model.entity.staticEntity.environment;
 
 import chevy.model.entity.Entity;
 import chevy.model.entity.EntityType;
-import chevy.model.entity.stateMachine.EntityState;
 
 import java.awt.Point;
 
@@ -25,6 +24,4 @@ public abstract class Environment extends Entity {
     public String toString() {return type.toString();}
 
     public enum Type implements EntityType {GROUND, WALL, STAIR, TRAP, CHEST}
-
-    public enum State implements EntityState {OPEN}
 }

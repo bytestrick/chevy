@@ -1,7 +1,9 @@
 package chevy.view.entities.animated.environmet;
 
 import chevy.model.entity.stateMachine.EntityState;
+import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Environment;
+import chevy.model.entity.staticEntity.environment.Stair;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.entities.animated.AnimatedEntityView;
 
@@ -32,11 +34,14 @@ abstract class EnvironmentView extends AnimatedEntityView {
     public BufferedImage getFrame() {
         final EntityState state = environment.getState();
         final AnimatedSprite animatedSprite = getAnimatedSprite(state, null);
+
         if (animatedSprite != null) {
+            EntityState open = environment.getType() == Environment.Type.CHEST ?
+                    Chest.State.OPEN : Stair.State.OPEN;
             if (animatedSprite.isNotRunning()) {
-                if (previousAnimationState != Environment.State.OPEN) {
+                if (previousAnimationState != open) {
                     animatedSprite.restart();
-                } else if (state != Environment.State.OPEN) {
+                } else if (state != open) {
                     animatedSprite.restart();
                 }
             }

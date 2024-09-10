@@ -15,9 +15,12 @@ public final class ChestView extends EnvironmentView {
         final Point offset = new Point(0, -4);
         float idleDuration = 0f;
         animate(State.IDLE_LOCKED, null, 1, idleDuration, offset, RES + "idle/locked");
-        animate(State.IDLE_UNLOCKED, null, 1, idleDuration, offset, RES + "idle" + "/unlocked");
-        animate(State.CLOSE, null, 5, environment.getState(State.CLOSE).getDuration(), offset, RES + "close");
-        animate(State.OPEN, null, 6, environment.getState(State.OPEN).getDuration(), offset, RES + "open");
-        animate(State.UNLOCK, null, 3, environment.getState(State.UNLOCK).getDuration(), offset, RES + "unlock");
+        animate(State.IDLE_UNLOCKED, null, 1, idleDuration, offset, RES + "idle/unlocked");
+        animate(State.CLOSE, null, 5, environment.getState(State.CLOSE).getDuration(), offset,
+                RES + "close");
+        animate(State.OPEN, null, 6, environment.getState(State.OPEN).getDuration(), offset,
+                RES + "open");
+        animate(State.UNLOCK, null, 3, environment.getState(State.UNLOCK).getDuration(), offset,
+                RES + "unlock");
     }
 }

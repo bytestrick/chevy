@@ -16,7 +16,7 @@ import java.util.List;
  * Gestisce l'aggiunta, l'aggiornamento e la rimozione dei nemici dall'aggiornamento.
  */
 public final class EnemyUpdateController implements Updatable {
-    private static boolean running;
+    private static boolean running, paused;
     private final EnemyController enemyController;
     private final Collection<Enemy> enemies = new ArrayList<>();
     private final List<Enemy> enemiesToAdd;
@@ -30,12 +30,15 @@ public final class EnemyUpdateController implements Updatable {
         this.enemyController = enemyController;
         enemiesToAdd = enemies;
         running = true;
+        paused = false;
 
         // Aggiunge questo controller al gestore degli aggiornamenti.
         UpdateManager.register(this);
     }
 
     public static void stopUpdate() {running = false;}
+
+    public static void setPaused(boolean paused) {EnemyUpdateController.paused = paused;}
 
     /**
      * Aggiunge i nuovi nemici alla lista degli aggiornamenti e svuota la lista temporanea.
@@ -50,18 +53,19 @@ public final class EnemyUpdateController implements Updatable {
      */
     @Override
     public void update(double delta) {
-        if (running) {
-            addEnemies();
+        if (paused) {
+            return;
+        }
+        addEnemies();
 
-            // Itera attraverso la lista dei nemici per aggiornarli e rimuove quelli che devono
-            // essere rimossi.
-            Iterator<Enemy> it = enemies.iterator();
-            while (it.hasNext()) {
-                Enemy enemy = it.next();
-                enemyController.handleInteraction(Interaction.UPDATE, enemy, null);
-                if (enemy.shouldNotUpdate()) {
-                    it.remove();
-                }
+        // Itera attraverso la lista dei nemici per aggiornarli e rimuove quelli che devono
+        // essere rimossi.
+        Iterator<Enemy> it = enemies.iterator();
+        while (it.hasNext()) {
+            Enemy enemy = it.next();
+            enemyController.handleInteraction(Interaction.UPDATE, enemy, null);
+            if (enemy.shouldNotUpdate()) {
+                it.remove();
             }
         }
     }
