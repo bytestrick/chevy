@@ -15,7 +15,7 @@ public class Timer implements Update {
 
     public Timer(double secDuration) {this.duration = secDuration;}
 
-    public boolean isRunning() {return isRunning && !delete;}
+    public boolean isRunning() { return isRunning && !delete; }
 
     /**
      * Fa iniziare l'interpolazione dal punto in cui si è fermata. Se la si usa
