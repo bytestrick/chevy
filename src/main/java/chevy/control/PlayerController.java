@@ -32,6 +32,7 @@ import chevy.service.Updatable;
 import chevy.service.UpdateManager;
 import chevy.utils.Log;
 import chevy.view.GamePanel;
+import chevy.view.Window;
 import chevy.view.chamber.ChamberView;
 
 import java.awt.Point;
@@ -113,28 +114,30 @@ public final class PlayerController implements Updatable {
      * @param click posizione del click del mouse nella finestra
      */
     void mousePressed(final Point click) {
-        final Point playerPos = player.getPosition();
-        playerPos.setLocation(
-                ChamberView.tileSide * playerPos.x + playerViewOffset.x,
-                ChamberView.tileSide * playerPos.y + playerViewOffset.y
-                        + gamePanel.getWindow().getHeight() - gamePanel.getHeight()
-        );
+        if (gamePanel.getWindow().getScene() == Window.Scene.PLAYING) {
+            final Point playerPos = player.getPosition();
+            playerPos.setLocation(
+                    ChamberView.tileSide * playerPos.x + playerViewOffset.x,
+                    ChamberView.tileSide * playerPos.y + playerViewOffset.y
+                            + gamePanel.getWindow().getHeight() - gamePanel.getHeight()
+            );
 
-        final double adj = playerPos.x - click.x, opp = playerPos.y - click.y;
-        final double hyp = Math.sqrt(adj * adj + opp * opp);
-        final double cosTheta = adj / hyp, sinTheta = opp / hyp;
+            final double adj = playerPos.x - click.x, opp = playerPos.y - click.y;
+            final double hyp = Math.sqrt(adj * adj + opp * opp);
+            final double cosTheta = adj / hyp, sinTheta = opp / hyp;
 
-        Direction direction = null;
-        if (cosTheta > -invSqrtTwo && cosTheta < invSqrtTwo && sinTheta >= invSqrtTwo) {
-            direction = Direction.UP;
-        } else if (sinTheta > -invSqrtTwo && sinTheta < invSqrtTwo && cosTheta <= -invSqrtTwo) {
-            direction = Direction.RIGHT;
-        } else if (cosTheta > -invSqrtTwo && cosTheta < invSqrtTwo && sinTheta <= -invSqrtTwo) {
-            direction = Direction.DOWN;
-        } else if (sinTheta > -invSqrtTwo && sinTheta < invSqrtTwo && cosTheta >= invSqrtTwo) {
-            direction = Direction.LEFT;
+            Direction direction = null;
+            if (cosTheta > -invSqrtTwo && cosTheta < invSqrtTwo && sinTheta >= invSqrtTwo) {
+                direction = Direction.UP;
+            } else if (sinTheta > -invSqrtTwo && sinTheta < invSqrtTwo && cosTheta <= -invSqrtTwo) {
+                direction = Direction.RIGHT;
+            } else if (cosTheta > -invSqrtTwo && cosTheta < invSqrtTwo && sinTheta <= -invSqrtTwo) {
+                direction = Direction.DOWN;
+            } else if (sinTheta > -invSqrtTwo && sinTheta < invSqrtTwo && cosTheta >= invSqrtTwo) {
+                direction = Direction.LEFT;
+            }
+            freeAttack(direction);
         }
-        freeAttack(direction);
     }
 
     /**

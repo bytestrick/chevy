@@ -124,7 +124,10 @@ public final class Options {
 
     public void keyPressed(KeyEvent keyEvent) {
         if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            back.requestFocus();
+            Sound.play(Sound.Effect.BUTTON);
             backAction();
+            window.requestFocus();
         }
     }
 
@@ -316,9 +319,6 @@ public final class Options {
     private static class SizedCheckBoxIcon extends FlatCheckBoxIcon {
         private final float scaleFactor;
 
-        /**
-         *
-         */
         SizedCheckBoxIcon() {
             assert super.getIconHeight() == super.getIconWidth() : "assunzione errata";
             scaleFactor = 1f * 50 / super.getIconHeight();

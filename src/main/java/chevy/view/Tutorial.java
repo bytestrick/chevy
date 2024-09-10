@@ -83,11 +83,11 @@ public final class Tutorial extends JPanel {
 
     Tutorial(Window window) {
         this.window = window;
-        initializedComponents();
+        initUI();
         setConstraints();
     }
 
-    private void initializedComponents() {
+    private void initUI() {
         add(left);
         add(right);
         add(textPane);
@@ -234,6 +234,7 @@ public final class Tutorial extends JPanel {
     public void keyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_ESCAPE -> {
+                Sound.play(Sound.Effect.STOP);
                 final int ans = JOptionPane.showOptionDialog(window, "Abbandonare il tutorial?",
                         null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, HOME,
                         new String[]{"Si", "No"}, "No");
@@ -245,8 +246,17 @@ public final class Tutorial extends JPanel {
                     Sound.play(Sound.Effect.BUTTON);
                 }
             }
-            case KeyEvent.VK_RIGHT -> stepAhead();
-            case KeyEvent.VK_LEFT -> stepBack();
+            case KeyEvent.VK_RIGHT -> {
+                right.requestFocus();
+                Sound.play(Sound.Effect.BUTTON);
+                stepAhead();
+            }
+            case KeyEvent.VK_LEFT -> {
+                left.requestFocus();
+                Sound.play(Sound.Effect.BUTTON);
+                stepBack();
+            }
         }
+        window.requestFocus();
     }
 }
