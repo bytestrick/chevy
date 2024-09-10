@@ -63,16 +63,16 @@ public final class Menu {
                 "e poi la mia pancia decide di brontolare nel momento più critico.”"}};
     // @formatter:on
     private static final Dimension spriteSize = new Dimension(200, 200);
-    private static final Color[] barsColors = new Color[]{new Color(153, 255, 153), new Color(189
-            , 189, 189), new Color(255, 80, 80), new Color(255, 255, 102)};
+    private static final Color[] barsColors = new Color[]{new Color(255, 0, 68), new Color(212
+            , 212, 212), new Color(228, 166, 114), new Color(254, 231, 97)};
     private static final Color progressBarDimmedForeground = new Color(144, 144, 144);
     private static final int archerCost = 500, ninjaCost = 1000;
     private static final Icon coin = Load.icon("Coin");
-    private static final Icon[] statsIcons = new Icon[]{Load.icon("heart"),
-            Load.icon("shield", 36, 36), Load.icon("sword"), Load.icon("boot", 28, 28)};
+    private static final Icon[] statsIcons = new Icon[]{Load.icon("heart_2"),
+            Load.icon("shield_2", 36, 36), Load.icon("attack"), Load.icon("lightning", 28, 28)};
     private static final Icon[] statsIconsGreyScale = new Icon[]{Load.icon(
-            "heart_greyscale"), Load.icon("shield_greyscale", 36, 36),
-            Load.icon("sword_greyscale"), Load.icon("boot_greyscale", 28, 28)};
+            "heart_2_greyscale"), Load.icon("shield_2_greyscale", 36, 36),
+            Load.icon("attack_greyscale"), Load.icon("lightning_greyscale", 28, 28)};
     private static final String[] statsTooltipPrefixes = new String[]{"Salute: ", "Scudo: ",
             "Danno: ", "Velocità: "};
     public static Player.Type playerType = Player.Type.valueOf(Data.get("menu.playerType"));
