@@ -24,8 +24,6 @@ public abstract class LiveEntityView extends AnimatedEntityView {
                 Interpolation.Type.EASE_OUT_SINE);
         vertical = new Interpolation(viewPosition.y, viewPosition.y, duration,
                 Interpolation.Type.EASE_OUT_SINE);
-
-        initializeAnimation();
     }
 
     @Override

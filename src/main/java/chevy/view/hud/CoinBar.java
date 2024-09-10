@@ -10,6 +10,7 @@ public final class CoinBar extends CounterBar {
 
     CoinBar(float scale) {
         super(new Dimension(64, 12), scale);
+        initUI();
         setTexture(MyPanelUI.BAR_L, COIN_BAR_PATH + "coin/leftBar.png");
         setTexture(MyPanelUI.BAR_R, COIN_BAR_PATH + "rightBar.png");
         setTexture(MyPanelUI.CENTER, COIN_BAR_PATH + "centerPanel.png");

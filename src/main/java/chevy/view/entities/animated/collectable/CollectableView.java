@@ -19,8 +19,6 @@ abstract class CollectableView extends AnimatedEntityView {
         float offsetY = -0.5f;
         float duration = 2f;
         vertical = new Interpolation(viewPosition.y, viewPosition.y + offsetY, duration, Interpolation.Type.EASE_OUT_EXPO);
-
-        initializeAnimation();
     }
 
     @Override

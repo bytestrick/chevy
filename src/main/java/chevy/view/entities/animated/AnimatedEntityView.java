@@ -93,9 +93,4 @@ public abstract class AnimatedEntityView extends EntityView {
      * @return il fotogramma corrente dell'animazione
      */
     public abstract BufferedImage getFrame();
-
-    /**
-     * Predispone le animazioni per gli specifici stati di ciascuna entità
-     */
-    protected abstract void initializeAnimation();
 }

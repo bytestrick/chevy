@@ -9,19 +9,17 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 public final class TotemView extends TrapView {
-    private static final String RES = "/sprites/traps/totem/";
+    public TotemView(Totem totem) {
+        super(totem);
 
-    public TotemView(Totem totem) {super(totem);}
-
-    @Override
-    protected void initializeAnimation() {
+        final String res = "/sprites/traps/totem/";
         final Point offset = new Point(0, -6);
         final float shotDuration = trap.getState(State.SHOT).getDuration();
         final float reloadDuration = trap.getState(State.RELOAD).getDuration();
         for (Direction direction : Direction.values()) {
             final String dir = direction.toString().toLowerCase();
-            animate(State.SHOT, direction, 1, shotDuration, offset, RES + dir);
-            animate(State.RELOAD, direction, 1, reloadDuration, offset, RES + dir);
+            animate(State.SHOT, direction, 1, shotDuration, offset, res + dir);
+            animate(State.RELOAD, direction, 1, reloadDuration, offset, res + dir);
         }
     }
 

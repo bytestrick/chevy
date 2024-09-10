@@ -215,7 +215,7 @@ public final class GamePanel extends JPanel {
     public void winDialog() {
         winDialogActive = true;
         Sound.stopMusic();
-        window.setTitle("Chevy - Vittoria");
+        window.setTitle("Chevy - Livello completato");
         GameLoop.stop();
         String[] option = new String[]{"Esci", "Rigioca", "Torna al menù", "Prossimo livello"};
         int defaultOption = 3;

@@ -16,34 +16,29 @@ import java.awt.Font;
 public class CounterBar extends JPanel {
     private static final int counter = 0;
     private final JLabel text = new JLabel(String.valueOf(counter), SwingConstants.RIGHT);
-    private final MyPanelUI ui;
+    private final MyPanelUI ui = new MyPanelUI();
     private final Dimension dimension;
-    private final SpringLayout springLayout;
+    private final SpringLayout springLayout = new SpringLayout();
     private final float scale;
-    private Font font;
     private int fontSize = 13;
+    private Font font = text.getFont().deriveFont(fontSize * Window.scale);
     private int offsetY;
 
     public CounterBar(Dimension dimension, float scale) {
         this.scale = scale;
         this.dimension = dimension;
 
-        setOpaque(false);
-        ui = new MyPanelUI();
-        setUI(ui);
-
-        setDimension(Window.scale);
-
-        springLayout = new SpringLayout();
-        setLayout(springLayout);
-        setConstraints(Window.scale);
-
-        font = text.getFont();
-        font = font.deriveFont(fontSize * Window.scale);
-        text.setMaximumSize(getMaximumSize());
         text.setAlignmentX(Component.RIGHT_ALIGNMENT);
         text.setAlignmentY(Component.CENTER_ALIGNMENT);
+    }
 
+    protected void initUI() {
+        text.setMaximumSize(getMaximumSize());
+        setOpaque(false);
+        setUI(ui);
+        setDimension(Window.scale);
+        setLayout(springLayout);
+        setConstraints(Window.scale);
         add(Box.createHorizontalGlue());
         add(text);
     }

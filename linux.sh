@@ -15,7 +15,7 @@ then
   set -x
   mvn package
   mkdir -p "$LOCAL"/opt/
-  cp target/chevy.jar "$LOCAL"/opt/
+  cp target/chevy-jar-with-dependencies.jar "$LOCAL"/opt/chevy.jar
   mkdir -p "$LOCAL"/share/applications
   cp src/main/resources/chevy.desktop "$LOCAL"/share/applications
   mkdir -p "$LOCAL"/share/icons/hicolor/256x256/apps/

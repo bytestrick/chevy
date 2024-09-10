@@ -22,7 +22,6 @@ abstract class ProjectileView extends AnimatedEntityView {
         final float duration = vertex.getDuration();
         horizontal = new Interpolation(viewPosition.x, viewPosition.x, duration, Interpolation.Type.LINEAR);
         vertical = new Interpolation(viewPosition.y, viewPosition.y, duration, Interpolation.Type.LINEAR);
-        initializeAnimation();
     }
 
     @Override

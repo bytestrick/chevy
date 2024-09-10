@@ -18,7 +18,6 @@ abstract class EnvironmentView extends AnimatedEntityView {
     EnvironmentView(Environment environment) {
         this.environment = environment;
         viewPosition = new Point2D.Double(environment.getCol(), environment.getRow());
-        initializeAnimation();
     }
 
     @Override
