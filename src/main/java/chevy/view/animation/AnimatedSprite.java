@@ -119,10 +119,7 @@ public final class AnimatedSprite implements Renderable {
      */
     public int getNFrame() {return nFrame;}
 
-    /**
-     * @return true se l'animazione è in esecuzione, false altrimenti
-     */
-    public boolean isRunning() {return !running;}
+    public boolean isNotRunning() {return !running;}
 
     /**
      * @return il tipo di animazione per lo sprite

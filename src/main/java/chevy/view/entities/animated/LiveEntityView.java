@@ -58,7 +58,7 @@ public abstract class LiveEntityView extends AnimatedEntityView {
         AnimatedSprite animatedSprite = getAnimatedSprite(currentState, direction);
 
         if (animatedSprite != null) {
-            if (animatedSprite.isRunning()) {
+            if (animatedSprite.isNotRunning()) {
                 animatedSprite.restart();
             }
             return animatedSprite.getFrame();

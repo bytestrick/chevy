@@ -44,7 +44,7 @@ abstract class CollectableView extends AnimatedEntityView {
         AnimatedSprite currentAnimatedSprite = getAnimatedSprite(currentState, null);
 
         if (currentAnimatedSprite != null) {
-            if (currentAnimatedSprite.isRunning()) {
+            if (currentAnimatedSprite.isNotRunning()) {
                 currentAnimatedSprite.restart();
             }
             return currentAnimatedSprite.getFrame();

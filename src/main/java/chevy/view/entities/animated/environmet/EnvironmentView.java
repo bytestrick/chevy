@@ -33,7 +33,7 @@ abstract class EnvironmentView extends AnimatedEntityView {
         final EntityState state = environment.getState();
         final AnimatedSprite animatedSprite = getAnimatedSprite(state, null);
         if (animatedSprite != null) {
-            if (animatedSprite.isRunning()) {
+            if (animatedSprite.isNotRunning()) {
                 if (previousAnimationState != Environment.State.OPEN) {
                     animatedSprite.restart();
                 } else if (state != Environment.State.OPEN) {

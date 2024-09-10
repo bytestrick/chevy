@@ -14,7 +14,7 @@ public final class EnvironmentUpdateController implements Updatable {
     private final EnvironmentController environmentController;
     private final Collection<Environment> environments = new ArrayList<>();
     private final List<Environment> environmentsToAdd;
-    private boolean updateFinished;
+    private boolean running;
 
     /**
      * @param environmentController il controller delle casse
@@ -23,7 +23,7 @@ public final class EnvironmentUpdateController implements Updatable {
     public EnvironmentUpdateController(EnvironmentController environmentController, List<Environment> environments) {
         this.environmentController = environmentController;
         environmentsToAdd = environments;
-
+        running = true;
         UpdateManager.register(this);
     }
 
@@ -56,7 +56,7 @@ public final class EnvironmentUpdateController implements Updatable {
         }
     }
 
-    public void stopUpdate() {updateFinished = true;}
+    public void stopUpdate() {running = false;}
 
     /**
      * Verifica se gli aggiornamenti delle casse sono terminati
@@ -64,5 +64,5 @@ public final class EnvironmentUpdateController implements Updatable {
      * @return {@code true} se non ci sono più trappole da aggiornare, altrimenti {@code false}
      */
     @Override
-    public boolean updateFinished() {return environments.isEmpty() || updateFinished;}
+    public boolean updateFinished() {return environments.isEmpty() || !running;}
 }

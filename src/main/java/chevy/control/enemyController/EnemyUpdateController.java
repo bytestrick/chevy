@@ -16,8 +16,7 @@ import java.util.List;
  * Gestisce l'aggiunta, l'aggiornamento e la rimozione dei nemici dall'aggiornamento.
  */
 public final class EnemyUpdateController implements Updatable {
-    private static boolean stopUpdate;
-    private static boolean updateFinished;
+    private static boolean running;
     private final EnemyController enemyController;
     private final Collection<Enemy> enemies = new ArrayList<>();
     private final List<Enemy> enemiesToAdd;
@@ -30,14 +29,13 @@ public final class EnemyUpdateController implements Updatable {
     public EnemyUpdateController(EnemyController enemyController, List<Enemy> enemies) {
         this.enemyController = enemyController;
         enemiesToAdd = enemies;
+        running = true;
 
         // Aggiunge questo controller al gestore degli aggiornamenti.
         UpdateManager.register(this);
     }
 
-    public static void runUpdate() {stopUpdate = false;}
-
-    public static void stopUpdate() {updateFinished = true;}
+    public static void stopUpdate() {running = false;}
 
     /**
      * Aggiunge i nuovi nemici alla lista degli aggiornamenti e svuota la lista temporanea.
@@ -52,20 +50,18 @@ public final class EnemyUpdateController implements Updatable {
      */
     @Override
     public void update(double delta) {
-        if (stopUpdate) {
-            return;
-        }
+        if (running) {
+            addEnemies();
 
-        addEnemies();
-
-        // Itera attraverso la lista dei nemici per aggiornarli e rimuove quelli che devono
-        // essere rimossi.
-        Iterator<Enemy> it = enemies.iterator();
-        while (it.hasNext()) {
-            Enemy enemy = it.next();
-            enemyController.handleInteraction(Interaction.UPDATE, enemy, null);
-            if (enemy.shouldNotUpdate()) {
-                it.remove();
+            // Itera attraverso la lista dei nemici per aggiornarli e rimuove quelli che devono
+            // essere rimossi.
+            Iterator<Enemy> it = enemies.iterator();
+            while (it.hasNext()) {
+                Enemy enemy = it.next();
+                enemyController.handleInteraction(Interaction.UPDATE, enemy, null);
+                if (enemy.shouldNotUpdate()) {
+                    it.remove();
+                }
             }
         }
     }
@@ -76,5 +72,5 @@ public final class EnemyUpdateController implements Updatable {
      * @return true se la lista dei nemici è vuota, false altrimenti.
      */
     @Override
-    public boolean updateFinished() {return enemies.isEmpty() || updateFinished;}
+    public boolean updateFinished() {return enemies.isEmpty() || !running;}
 }
