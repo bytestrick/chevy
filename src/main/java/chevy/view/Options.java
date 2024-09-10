@@ -44,7 +44,7 @@ import static chevy.view.GamePanel.caution;
 
 public final class Options {
     private static final Icon HOME = Load.icon("Home");
-    private static final Icon basket = Load.icon("Basket");
+    private static final Icon basket = Load.icon("Trashbin");
     private static final Icon gamePad = Load.icon("GamePad");
     private static final Icon speaker = Load.icon("SpeakerOn"), speakerMute = Load.icon(
             "SpeakerMute"), notes = Load.icon("MusicNotes");
