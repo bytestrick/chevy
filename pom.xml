@@ -149,7 +149,6 @@
                     <compilerArgs>
                         <arg>-Xlint:-serial</arg>
                         <arg>-Xlint</arg>
-                        <!-- <arg>-Xdoclint</arg> -->
                     </compilerArgs>
                 </configuration>
             </plugin>
