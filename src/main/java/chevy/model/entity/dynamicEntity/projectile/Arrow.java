@@ -8,7 +8,7 @@ import chevy.utils.Vector2;
 public final class Arrow extends Projectile {
     private static int addDamage;
     private final Vertex loop = new Vertex(State.LOOP, .2f, true);
-    private final Vertex end = new Vertex(State.END, .5f);
+    private final Vertex end = new Vertex(State.END, 0.5f);
 
     public Arrow(Vector2<Integer> initPosition, Direction direction) {
         super(initPosition, Type.ARROW, direction);

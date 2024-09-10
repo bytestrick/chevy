@@ -644,7 +644,15 @@ public final class Chamber {
 
     public List<Environment> getEnvironments() {return environments;}
 
-    private void addEntityToDraw(Entity entity, int layer) {drawOrderChamber.add(entity, layer);}
+    private void addEntityToDraw(Entity entity, int layer) {
+        synchronized (drawOrderChamber) {
+            drawOrderChamber.add(entity, layer);
+        }
+    }
 
-    public List<Layer> getDrawOrderChamber() {return Collections.unmodifiableList(drawOrderChamber.getDrawOrder());}
+    public List<Layer> getDrawOrderChamber() {
+        synchronized (drawOrderChamber) {
+            return Collections.unmodifiableList(drawOrderChamber.getDrawOrder());
+        }
+    }
 }

@@ -74,54 +74,56 @@ public final class ChamberView extends JPanel implements Render {
             return;
         }
 
-        for (Layer layer : drawOrder) {
-            Iterator<Entity> it = layer.getLayer().iterator();
-            while (it.hasNext()) {
-                Entity entity = it.next();
-                if (entity != null) {
-                    if (drawCollision && entity instanceof DynamicEntity) {
-                        // disegna lo sfondo della collisione
-                        g.setColor(collisionBG);
-                        int x = entity.getCol() * tileSide + windowOffset.width;
-                        int y = entity.getRow() * tileSide + windowOffset.height;
-                        g.fillRect(x, y, tileSide, tileSide);
-                    }
-
-                    EntityView entityView = EntityToEntityView.getSpecific(entity);
-                    if (entityView == null) {
-                        entityView = EntityToEntityView.getGeneric(entity);
-                    }
-
-                    if (entityView != null) {
-                        BufferedImage image = entityView.getCurrentFrame();
-                        if (image == null) {
-                            image = NULL_IMAGE;
+        synchronized (drawOrder) {
+            for (Layer layer : drawOrder) {
+                Iterator<Entity> it = layer.getLayer().iterator();
+                while (it.hasNext()) {
+                    Entity entity = it.next();
+                    if (entity != null) {
+                        if (drawCollision && entity instanceof DynamicEntity) {
+                            // disegna lo sfondo della collisione
+                            g.setColor(collisionBG);
+                            int x = entity.getCol() * tileSide + windowOffset.width;
+                            int y = entity.getRow() * tileSide + windowOffset.height;
+                            g.fillRect(x, y, tileSide, tileSide);
                         }
 
-                        Vector2<Integer> offset = entityView.getOffset();
-                        float offsetX = (float) offset.first / TILE_SIZE;
-                        if (offset.first == 0) {
-                            offsetX = 0;
-                        }
-                        float offsetY = (float) offset.second / TILE_SIZE;
-                        if (offset.second == 0) {
-                            offsetY = 0;
+                        EntityView entityView = EntityToEntityView.getSpecific(entity);
+                        if (entityView == null) {
+                            entityView = EntityToEntityView.getGeneric(entity);
                         }
 
-                        Vector2<Double> position = entityView.getCurrentViewPosition();
-                        float scale = entityView.getScale();
-                        int x = (int) ((position.first + offsetX) * tileSide * scale + windowOffset.width);
-                        int y = (int) ((position.second + offsetY) * tileSide * scale + windowOffset.height);
+                        if (entityView != null) {
+                            BufferedImage image = entityView.getCurrentFrame();
+                            if (image == null) {
+                                image = NULL_IMAGE;
+                            }
 
-                        int with = (int) (tileSide * scale * image.getWidth() / TILE_SIZE);
-                        int height = (int) (tileSide * scale * image.getHeight() / TILE_SIZE);
+                            Vector2<Integer> offset = entityView.getOffset();
+                            float offsetX = (float) offset.first / TILE_SIZE;
+                            if (offset.first == 0) {
+                                offsetX = 0;
+                            }
+                            float offsetY = (float) offset.second / TILE_SIZE;
+                            if (offset.second == 0) {
+                                offsetY = 0;
+                            }
 
-                        g.drawImage(image, x, y, with, height, null);
+                            Vector2<Double> position = entityView.getCurrentViewPosition();
+                            float scale = entityView.getScale();
+                            int x = (int) ((position.first + offsetX) * tileSide * scale + windowOffset.width);
+                            int y = (int) ((position.second + offsetY) * tileSide * scale + windowOffset.height);
 
-                        if (entity.toNotDraw()) {
-                            it.remove();
-                            Log.info("Entity rimossa dal ridisegno: " + entity.getSpecificType());
-                            entityView.wasRemoved();
+                            int with = (int) (tileSide * scale * image.getWidth() / TILE_SIZE);
+                            int height = (int) (tileSide * scale * image.getHeight() / TILE_SIZE);
+
+                            g.drawImage(image, x, y, with, height, null);
+
+                            if (entity.toNotDraw()) {
+                                it.remove();
+                                Log.info("Entity rimossa dal ridisegno: " + entity.getSpecificType());
+                                entityView.wasRemoved();
+                            }
                         }
                     }
                 }

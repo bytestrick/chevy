@@ -82,10 +82,10 @@ public final class SlimeShotView extends AnimatedEntityView {
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, type);
 
         if (currentAnimatedSprite != null) {
-            if (currentEnumState == SlimeShot.State.END && currentVertex.isFinished()) {
-                slimeShot.setToDraw(false);
-            } else if (!currentAnimatedSprite.isRunning()) {
+            if (!currentAnimatedSprite.isRunning()) {
                 currentAnimatedSprite.start();
+            } else if (currentEnumState == SlimeShot.State.END && currentVertex.isFinished()) {
+                slimeShot.setToDraw(false);
             }
             return currentAnimatedSprite.getCurrentFrame();
         }
