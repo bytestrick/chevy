@@ -10,6 +10,8 @@ public final class KeyBar extends CounterBar {
 
     KeyBar(float scale) {
         super(new Dimension(48, 12), scale);
+        initUI();
+
         setTexture(MyPanelUI.BAR_L, KEY_BAR_PATH + "key/leftBar.png");
         setTexture(MyPanelUI.BAR_R, KEY_BAR_PATH + "rightBar.png");
         setTexture(MyPanelUI.CENTER, KEY_BAR_PATH + "centerPanel.png");

@@ -9,12 +9,10 @@ import chevy.view.entities.animated.LiveEntityView;
 import java.awt.Point;
 
 public final class KnightView extends LiveEntityView {
-    private static final String RES = "/sprites/player/knight/";
+    public KnightView(Knight knight) {
+        super(knight);
 
-    public KnightView(Knight knight) {super(knight);}
-
-    @Override
-    protected void initializeAnimation() {
+        final String res = "/sprites/player/knight/";
         final Point offset = new Point(-8, -8);
         final float idleDuration = 1f;
         final float moveDuration = entity.getState(State.MOVE).getDuration();
@@ -27,15 +25,15 @@ public final class KnightView extends LiveEntityView {
         for (Direction direction : Direction.values()) {
             final String dir = direction.toString().toLowerCase();
             animate(State.IDLE, direction, 2, true, 2, idleDuration, offset, 1,
-                    RES + "idle/" + dir);
-            animate(State.MOVE, direction, 8, moveDuration, offset, RES + "move/" + dir);
-            animate(State.ATTACK, direction, 6, attackDuration, offset, RES + "attack/" + dir);
-            animate(State.HIT, direction, 1, hitDuration, offset, RES + "hit/" + dir);
+                    res + "idle/" + dir);
+            animate(State.MOVE, direction, 8, moveDuration, offset, res + "move/" + dir);
+            animate(State.ATTACK, direction, 6, attackDuration, offset, res + "attack/" + dir);
+            animate(State.HIT, direction, 1, hitDuration, offset, res + "hit/" + dir);
             if (direction == Direction.RIGHT || direction == Direction.LEFT) {
-                animate(State.DEAD, direction, 8, deadDuration, offset, RES + "dead/" + dir);
-                animate(State.SLUDGE, direction, 1, sludgeDuration, offset, RES + "idle/" + dir);
-                animate(State.FALL, direction, 2, fallDuration, offset, RES + "dead/" + dir);
-                animate(State.GLIDE, direction, 1, glideDuration, offset, RES + "idle/" + dir);
+                animate(State.DEAD, direction, 8, deadDuration, offset, res + "dead/" + dir);
+                animate(State.SLUDGE, direction, 1, sludgeDuration, offset, res + "idle/" + dir);
+                animate(State.FALL, direction, 2, fallDuration, offset, res + "dead/" + dir);
+                animate(State.GLIDE, direction, 1, glideDuration, offset, res + "idle/" + dir);
             }
         }
     }

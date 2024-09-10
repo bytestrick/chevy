@@ -10,26 +10,25 @@ import java.awt.image.BufferedImage;
 import static chevy.model.entity.collectable.powerUp.PowerUp.State.*;
 
 public final class PowerUpView extends CollectableView {
-    private static final String RES = "/sprites/collectable/powerUp/";
     private EntityState previousAnimationState;
 
-    public PowerUpView(PowerUp powerUp) {super(powerUp);}
+    public PowerUpView(PowerUp powerUp) {
+        super(powerUp);
 
-    @Override
-    protected void initializeAnimation() {
+        final String res = "/sprites/collectable/powerUp/";
         final Point offset = new Point(0, -6);
 
         final float idleDuration = collectable.getState(PowerUp.State.IDLE).getDuration();
-        animate(IDLE, null, 3, idleDuration, offset,  RES + "idle");
+        animate(IDLE, null, 3, idleDuration, offset, res + "idle");
 
         final float selectedDuration = collectable.getState(SELECTED).getDuration();
-        animate(SELECTED, null, 4, selectedDuration, offset,  RES + "selected");
+        animate(SELECTED, null, 4, selectedDuration, offset, res + "selected");
 
         final float deselectedDuration = collectable.getState(DESELECTED).getDuration();
-        animate(DESELECTED, null, 4, deselectedDuration, offset,  RES + "deselected");
+        animate(DESELECTED, null, 4, deselectedDuration, offset, res + "deselected");
 
         final float collectedDuration = collectable.getState(PowerUp.State.COLLECTED).getDuration();
-        animate(COLLECTED, null, 7, collectedDuration, offset,  RES + "collected");
+        animate(COLLECTED, null, 7, collectedDuration, offset, res + "collected");
     }
 
     @Override

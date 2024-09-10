@@ -14,7 +14,6 @@ abstract class TrapView extends AnimatedEntityView {
     TrapView(Trap trap) {
         this.trap = trap;
         viewPosition = new Point2D.Double(trap.getCol(), trap.getRow());
-        initializeAnimation();
     }
 
     @Override

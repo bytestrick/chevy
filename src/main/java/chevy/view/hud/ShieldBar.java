@@ -9,6 +9,7 @@ public final class ShieldBar extends ProgressBar {
 
     ShieldBar(float scale) {
         super(0, 0, scale);
+        initUI();
 
         setTexture(MyPanelUI.BAR_L, SHIELD_BAR_PATH + "leftBar.png");
         setTexture(MyPanelUI.BAR_R, PROGRESS_BAR_PATH + "rightBar.png");

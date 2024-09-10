@@ -9,15 +9,13 @@ import java.awt.Dimension;
 public final class PlayerFrame extends JPanel {
     private static final String PANEL_PATH = "/sprites/component/panel/";
     private static final String PAYER_RESOURCES_PATH = "/sprites/player/";
-    private final MyPanelUI ui;
+    private final MyPanelUI ui = new MyPanelUI();
     private final float scale;
     private final Dimension dimension;
 
     PlayerFrame(Dimension dimension, float scale) {
-        setOpaque(false);
         this.scale = scale;
         this.dimension = new Dimension((int) (dimension.getWidth()), (int) (dimension.getHeight()));
-        ui = new MyPanelUI();
 
         ui.setTexture(MyPanelUI.CENTER, PANEL_PATH + "centerPanel.png");
         ui.setTexture(MyPanelUI.CORNER_TL, PANEL_PATH + "topLeftCorner.png");
@@ -31,6 +29,7 @@ public final class PlayerFrame extends JPanel {
 
         setUI(ui);
         setDimension(scale);
+        setOpaque(false);
     }
 
     private void setDimension(float scale) {

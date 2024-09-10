@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 public class ProgressBar extends JPanel {
     private final float scale;
     private final JPanel containerImage = new JPanel();
-    private final MyPanelUI ui;
+    private final MyPanelUI ui = new MyPanelUI();
     private final SpringLayout springLayout = new SpringLayout();
     private BufferedImage stepTexture;
     private int maxValue;
@@ -23,15 +23,16 @@ public class ProgressBar extends JPanel {
     public ProgressBar(int value, int maxValue, float scale) {
         this.value = value;
         this.scale = scale;
+        this.maxValue = maxValue;
 
-        setOpaque(false);
-        containerImage.setOpaque(false);
-        ui = new MyPanelUI();
-        setUI(ui);
-
-        setLayout(springLayout);
         containerImage.setLayout(new BoxLayout(containerImage, BoxLayout.X_AXIS));
+        containerImage.setOpaque(false);
+    }
 
+    protected void initUI() {
+        setUI(ui);
+        setOpaque(false);
+        setLayout(springLayout);
         setMaxValue(maxValue);
         add(containerImage);
     }

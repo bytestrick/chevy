@@ -7,29 +7,27 @@ import chevy.model.entity.stateMachine.EntityState;
 import chevy.view.entities.animated.LiveEntityView;
 
 public final class BigSlimeView extends LiveEntityView {
-    private static final String RES = "/sprites/enemy/bigSlime/";
+    public BigSlimeView(BigSlime bigSlime) {
+        super(bigSlime);
 
-    public BigSlimeView(BigSlime bigSlime) {super(bigSlime);}
-
-    @Override
-    protected void initializeAnimation() {
+        final String res = "/sprites/enemy/bigSlime/";
         float idleDuration = entity.getState(State.IDLE).getDuration();
-        animate(State.IDLE, null, 4, 2, idleDuration, RES + "idle");
+        animate(State.IDLE, null, 4, 2, idleDuration, res + "idle");
 
         float moveDuration = entity.getState(State.MOVE).getDuration();
-        animate(State.MOVE, null, 4, moveDuration, RES + "move");
+        animate(State.MOVE, null, 4, moveDuration, res + "move");
 
         float attackDuration = entity.getState(State.ATTACK).getDuration();
         for (Direction direction : Direction.values()) {
-            final String path = RES + "attack/" + direction.toString().toLowerCase();
+            final String path = res + "attack/" + direction.toString().toLowerCase();
             animate(State.ATTACK, direction, 4, attackDuration, path);
         }
 
         float hitDuration = entity.getState(State.HIT).getDuration();
-        animate(State.HIT, null, 1, hitDuration, RES + "hit");
+        animate(State.HIT, null, 1, hitDuration, res + "hit");
 
         float deadDuration = entity.getState(State.DEAD).getDuration();
-        animate(State.DEAD, null, 4, deadDuration, RES + "dead");
+        animate(State.DEAD, null, 4, deadDuration, res + "dead");
     }
 
     @Override

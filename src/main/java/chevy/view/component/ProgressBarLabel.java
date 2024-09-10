@@ -14,17 +14,18 @@ import java.awt.Font;
 public class ProgressBarLabel extends JPanel {
     private final ProgressBar progressBar;
     private final JLabel label = new JLabel();
-    private Font font;
+    private Font font = label.getFont();
     private int fontSize = 13;
 
     public ProgressBarLabel(int value, int maxValue, float scale) {
-        setOpaque(false);
         progressBar = new ProgressBar(value, maxValue, scale);
-
-        font = label.getFont();
+        progressBar.initUI();
         label.setForeground(Color.WHITE);
         label.setText(String.valueOf(value));
+    }
 
+    protected void initUI() {
+        setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         add(progressBar);
         add(Box.createRigidArea(new Dimension(5, 0)));

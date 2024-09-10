@@ -6,12 +6,10 @@ import chevy.model.entity.staticEntity.environment.Stair;
 import java.awt.Point;
 
 public final class StairView extends EnvironmentView {
-    private static final String RES = "/sprites/stair/";
+    public StairView(Stair stair) {
+        super(stair);
 
-    public StairView(Stair stair) {super(stair);}
-
-    @Override
-    protected void initializeAnimation() {
+        final String res = "/sprites/stair/";
         Point offset = new Point(0, -5);
         String folder = "right/";
 
@@ -21,13 +19,13 @@ public final class StairView extends EnvironmentView {
         }
 
         animate(Stair.State.IDLE, null, 1, environment.getState(Stair.State.IDLE).getDuration(),
-                offset, RES + folder + "idle");
+                offset, res + folder + "idle");
 
         animate(Stair.State.OPEN, null, 6, environment.getState(Stair.State.OPEN).getDuration(),
-                offset, RES + folder + "open");
+                offset, res + folder + "open");
 
         animate(Stair.State.IDLE_ENTRY, null, 6,
                 environment.getState(Stair.State.IDLE_ENTRY).getDuration(), offset,
-                RES + folder + "idleEntry");
+                res + folder + "idleEntry");
     }
 }
