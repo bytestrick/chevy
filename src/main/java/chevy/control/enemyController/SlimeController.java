@@ -86,8 +86,6 @@ public final class SlimeController {
             } else if (slime.canChange(Slime.State.ATTACK)) {
                 Entity entity = chamber.getEntityNearOnTop(slime, direction);
                 if (entity instanceof Player && slime.changeState(Slime.State.ATTACK)) {
-                    Sound.play(Sound.Effect.SLIME_HIT);
-                    playerController.handleInteraction(Interaction.ENEMY, slime);
                     slime.setCanAttack(true);
                 }
             }
