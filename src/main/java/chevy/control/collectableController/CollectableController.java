@@ -1,8 +1,7 @@
 package chevy.control.collectableController;
 
-import chevy.control.Interaction;
-import chevy.control.PlayerController;
 import chevy.control.HUDController;
+import chevy.control.Interaction;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.Coin;
@@ -13,26 +12,20 @@ import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 
 public final class CollectableController {
-    private final PlayerController playerController;
     private final CoinController coinController;
     private final HealthController healthController;
     private final KeyController keyController;
     private final PowerUpController powerUpController;
-    private final HUDController hudController;
-    private final Chamber chamber;
 
-    public CollectableController(Chamber chamber, PlayerController playerController, HUDController hudController) {
-        this.chamber = chamber;
-        this.playerController = playerController;
-        this.hudController = hudController;
-        this.keyController = new KeyController(chamber, hudController);
-        this.healthController = new HealthController(hudController, chamber);
-        this.coinController = new CoinController(chamber, hudController);
-        this.powerUpController = new PowerUpController(chamber, hudController);
+    public CollectableController(Chamber chamber, HUDController hudController) {
+        keyController = new KeyController(chamber, hudController);
+        healthController = new HealthController(hudController, chamber);
+        coinController = new CoinController(chamber, hudController);
+        powerUpController = new PowerUpController(chamber, hudController);
     }
 
     /**
-     * Gestisce il tipo di interazione ricevuta.
+     * Gestisce il tipo di interazione ricevuta
      *
      * @param interaction il tipo di interazione da gestire.
      * @param subject     l'entità che avvia l'interazione.
@@ -42,21 +35,22 @@ public final class CollectableController {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, object);
             case UPDATE -> update(subject);
-            default -> { }
+            default -> {}
         }
     }
 
     /**
-     * Gestisce l'interazione di un giocatore con un oggetto collezionabile.
+     * Gestisce l'interazione di un giocatore con un oggetto collezionabile
      *
      * @param collectable l'oggetto da collezionare.
      */
     private void playerInInteraction(Player player, Collectable collectable) {
-        switch (collectable.getSpecificType()) {
-            case Collectable.Type.HEALTH -> healthController.playerInInteraction(player, (Health) collectable);
+        switch (collectable.getType()) {
+            case Collectable.Type.HEALTH ->
+                    healthController.playerInInteraction(player, (Health) collectable);
             case Collectable.Type.COIN -> coinController.playerInInteraction((Coin) collectable);
             case Collectable.Type.KEY -> keyController.playerInInteraction((Key) collectable);
-            default -> { }
+            default -> {}
         }
         if (collectable.getGenericType() == Collectable.Type.POWER_UP) {
             powerUpController.playerInInteraction(player, (PowerUp) collectable);
@@ -64,13 +58,14 @@ public final class CollectableController {
     }
 
     private void update(Entity subject) {
-        switch (subject.getSpecificType()) {
-            case Collectable.Type.HEALTH -> healthController.update((Health) subject);
-            case Collectable.Type.COIN -> coinController.update((Coin) subject);
-            case Collectable.Type.KEY -> keyController.update((Key) subject);
-            default -> { }
+        switch (subject.getType()) {
+            case Collectable.Type.HEALTH -> HealthController.update((Health) subject);
+            case Collectable.Type.COIN -> CoinController.update((Coin) subject);
+            case Collectable.Type.KEY -> KeyController.update((Key) subject);
+            default -> {}
         }
         if (subject.getGenericType() == Collectable.Type.POWER_UP) {
+            assert subject instanceof PowerUp;
             powerUpController.update((PowerUp) subject);
         }
     }

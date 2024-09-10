@@ -63,16 +63,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Mappa le entità alle loro rappresentazioni visive.
+ * Mappa model e view delle entità
  */
 public final class EntityToEntityView {
     public static final Map<Entity, EntityView> entityView = new HashMap<>();
 
     /**
-     * Ottieni la rappresentazione specifica di un entità.
+     * Ottieni la rappresentazione specifica di un entità
      */
-    public static EntityView getSpecific(Entity entity) {
-        return switch (entity.getSpecificType()) {
+    static EntityView getSpecific(Entity entity) {
+        return switch (entity.getType()) {
             // Enemy
             case Enemy.Type.SLIME -> {
                 SlimeView slimeView;
@@ -311,7 +311,7 @@ public final class EntityToEntityView {
     /**
      * Ottieni la rappresentazione generica di un entità.
      */
-    public static EntityView getGeneric(Entity entity) {
+    static EntityView getGeneric(Entity entity) {
         return switch (entity.getGenericType()) {
             case Environment.Type.WALL -> {
                 WallView wallView;

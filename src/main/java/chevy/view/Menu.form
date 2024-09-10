@@ -342,7 +342,7 @@
                       <opaque value="false"/>
                     </properties>
                   </component>
-                  <component id="94319" class="javax.swing.JLabel" binding="healthLabel">
+                  <component id="94319" class="javax.swing.JLabel" binding="health">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -352,7 +352,7 @@
                       <text value="Salute" noi18n="true"/>
                     </properties>
                   </component>
-                  <component id="80b47" class="javax.swing.JLabel" binding="damageLabel">
+                  <component id="80b47" class="javax.swing.JLabel" binding="damage">
                     <constraints>
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -362,7 +362,7 @@
                       <text value="Danno" noi18n="true"/>
                     </properties>
                   </component>
-                  <component id="76c70" class="javax.swing.JLabel" binding="speedLabel">
+                  <component id="76c70" class="javax.swing.JLabel" binding="speed">
                     <constraints>
                       <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -380,7 +380,7 @@
                     </constraints>
                     <properties/>
                   </component>
-                  <component id="525d0" class="javax.swing.JLabel" binding="shieldLabel">
+                  <component id="525d0" class="javax.swing.JLabel" binding="shield">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>

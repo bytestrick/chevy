@@ -1,13 +1,12 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class Void extends Trap {
-    public Void(Vector2<Integer> initVelocity) {
-        super(initVelocity, Type.VOID);
-        this.maxDamage = 1;
-        this.minDamage = 1;
-
-        this.safeToCross = false;
+    public Void(Point initialVelocity) {
+        super(initialVelocity, Type.VOID);
+        maxDamage = 1;
+        minDamage = 1;
+        safeToCross = false;
     }
 }

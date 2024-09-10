@@ -10,9 +10,10 @@ import chevy.view.chamber.ChamberView;
 import chevy.view.hud.HUDView;
 
 import javax.swing.*;
+import java.awt.Color;
 
 public final class GamePanel extends JPanel {
-    public static final Icon restart = Load.icon("Restart", 48, 48);
+    private static final Icon restart = Load.icon("Restart", 48, 48);
     static final Icon caution = Load.icon("caution", 48, 48);
     private static final Icon playPause = Load.icon("PlayPause", 48, 48);
     private static final Icon skull = Load.icon("Skull", 48, 48);
@@ -45,7 +46,7 @@ public final class GamePanel extends JPanel {
         tutorial = new Tutorial(window);
 
         setLayout();
-        setBackground(Window.bg);
+        setBackground(new Color(24, 20, 37));
     }
 
     void addComponents(boolean tutorialBool) {
@@ -214,7 +215,7 @@ public final class GamePanel extends JPanel {
     public void winDialog() {
         winDialogActive = true;
         Sound.stopMusic();
-        window.setTitle("Chevy - Vittoria");
+        window.setTitle("Chevy - Livello completato");
         GameLoop.stop();
         String[] option = new String[]{"Esci", "Rigioca", "Torna al menù", "Prossimo livello"};
         int defaultOption = 3;

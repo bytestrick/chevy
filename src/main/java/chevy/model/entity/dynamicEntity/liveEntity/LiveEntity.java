@@ -1,9 +1,10 @@
 package chevy.model.entity.dynamicEntity.liveEntity;
 
-import chevy.model.entity.CommonEntityType;
+import chevy.model.entity.EntityType;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
 import chevy.utils.Log;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public abstract class LiveEntity extends DynamicEntity {
     private final Type type;
@@ -11,14 +12,12 @@ public abstract class LiveEntity extends DynamicEntity {
     protected int currentHealth;
     protected int shield;
     protected int currentShield;
-    protected boolean flying;
     private boolean alive;
 
-    public LiveEntity(Vector2<Integer> initPosition, Type type) {
+    public LiveEntity(Point initPosition, Type type) {
         super(initPosition, DynamicEntity.Type.LIVE_ENTITY);
         this.type = type;
-        this.alive = true;
-        this.flying = false;
+        alive = true;
     }
 
     public synchronized void decreaseHealthShield(int value) {
@@ -66,9 +65,9 @@ public abstract class LiveEntity extends DynamicEntity {
 
     public int getCurrentShield() {return currentShield;}
 
-    public synchronized void changeShield(int value) {this.shield = value;}
+    public synchronized void changeShield(int value) {shield = value;}
 
-    public synchronized void changeHealth(int value) {this.health = value;}
+    public synchronized void changeHealth(int value) {health = value;}
 
     public synchronized int getHealth() {return health;}
 
@@ -77,13 +76,13 @@ public abstract class LiveEntity extends DynamicEntity {
     public synchronized boolean isDead() {return !alive;}
 
     @Override
-    public CommonEntityType getSpecificType() {return type;}
+    public EntityType getType() {return type;}
 
     @Override
-    public CommonEntityType getGenericType() {return super.getSpecificType();}
+    public EntityType getGenericType() {return super.getType();}
 
     @Override
     public String toString() {return type.toString();}
 
-    public enum Type implements CommonEntityType {PLAYER, ENEMY}
+    public enum Type implements EntityType {PLAYER, ENEMY}
 }

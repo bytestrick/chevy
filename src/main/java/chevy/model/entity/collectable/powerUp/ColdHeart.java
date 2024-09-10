@@ -1,20 +1,18 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class ColdHeart extends PowerUp {
-    private final int increaseShield = 3;
+    private static final int SHIELD_BOOST = 3;
 
-    public ColdHeart(Vector2<Integer> initVelocity) {
-        super(initVelocity, Type.COLD_HEART);
+    public ColdHeart(Point position) {
+        super(position, Type.COLD_HEART);
 
-        this.inStock = 1;
-        this.occurringPercentage = 100;
-        this.name = "Cuore di Ghiaccio\n";
-        this.description = "Lo scudo avrà un aumento di +" + increaseShield + ".\nEffetto monouso";
+        inStock = 1;
+        occurringPercentage = 100;
+        name = "Cuore di Ghiaccio\n";
+        description = "Lo scudo avrà un aumento di +" + SHIELD_BOOST + ".\nEffetto monouso";
     }
 
-    public int getIncreaseShield() {
-        return increaseShield;
-    }
+    public static int getShieldBoost() {return SHIELD_BOOST;}
 }

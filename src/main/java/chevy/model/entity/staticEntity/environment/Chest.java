@@ -1,10 +1,11 @@
 package chevy.model.entity.staticEntity.environment;
 
 import chevy.model.entity.collectable.Collectable;
-import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class Chest extends Environment {
     /** Oggetti collezionabili che i nemici possono rilasciare */
@@ -21,14 +22,19 @@ public final class Chest extends Environment {
     private boolean onePowerUp;
     private boolean isFirstOpen = true;
 
-    public Chest(Vector2<Integer> initVelocity) {
-        super(initVelocity, Type.CHEST);
+    public Chest(Point position) {
+        super(position, Type.CHEST);
         shouldUpdate = true;
         initStateMachine();
     }
 
+    public static int getSpawnQuantity() {
+        final int minDrop = 3, maxDrop = 6;
+        return Utils.random.nextInt(minDrop, maxDrop + 1);
+    }
+
     private void initStateMachine() {
-        stateMachine.setStateMachineName("Chest");
+        stateMachine.setName("Chest");
         stateMachine.setInitialState(idleLocked);
 
         idleLocked.linkVertex(unlock);
@@ -55,11 +61,6 @@ public final class Chest extends Environment {
         return DROPPABLE_COLLECTABLE[index];
     }
 
-    public static int getSpawnQuantity() {
-        final int minDrop = 3, maxDrop = 6;
-        return Utils.random.nextInt(minDrop, maxDrop + 1);
-    }
-
     public boolean isFirstOpen() {
         if (isFirstOpen) {
             isFirstOpen = false;
@@ -68,8 +69,8 @@ public final class Chest extends Environment {
         return false;
     }
 
-    public synchronized Vertex getState(CommonState commonEnumStates) {
-        State chestState = (State) commonEnumStates;
+    public synchronized Vertex getState(EntityState state) {
+        State chestState = (State) state;
         return switch (chestState) {
             case IDLE_LOCKED -> idleLocked;
             case IDLE_UNLOCKED -> idleUnlocked;
@@ -79,7 +80,5 @@ public final class Chest extends Environment {
         };
     }
 
-    public enum State implements CommonState {
-        IDLE_LOCKED, IDLE_UNLOCKED, OPEN, UNLOCK, CLOSE
-    }
+    public enum State implements EntityState {IDLE_LOCKED, IDLE_UNLOCKED, OPEN, UNLOCK, CLOSE}
 }

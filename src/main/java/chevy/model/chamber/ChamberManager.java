@@ -86,7 +86,7 @@ public final class ChamberManager {
                                         chamber.addProjectile((Projectile) entity);
                                 case LiveEntity.Type.ENEMY -> chamber.addEnemy((Enemy) entity);
                                 case LiveEntity.Type.PLAYER -> {
-                                    entity.setToDraw(false);
+                                    entity.setShouldDraw(false);
                                     chamber.setPlayer((Player) entity);
                                 }
                                 case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->

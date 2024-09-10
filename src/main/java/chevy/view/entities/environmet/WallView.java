@@ -2,88 +2,78 @@ package chevy.view.entities.environmet;
 
 import chevy.model.entity.staticEntity.environment.Wall;
 import chevy.utils.Load;
-import chevy.utils.Vector2;
 import chevy.view.entities.EntityView;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public final class WallView extends EntityView {
     private static final String COMMON_PATH = "/sprites/chamberTiles/wallTiles/";
-    private static BufferedImage TOP_IMAGE = null;
-    private static BufferedImage BOTTOM_IMAGE = null;
-    private static BufferedImage LEFT_IMAGE = null;
-    private static BufferedImage RIGHT_IMAGE = null;
-    private static BufferedImage EXTERNAL_CORNER_TOP_LEFT_IMAGE = null;
-    private static BufferedImage EXTERNAL_CORNER_TOP_RIGHT_IMAGE = null;
-    private static BufferedImage EXTERNAL_CORNER_BOTTOM_LEFT_IMAGE = null;
-    private static BufferedImage EXTERNAL_CORNER_BOTTOM_RIGHT_IMAGE = null;
-
+    private static BufferedImage top, bottom, left, right, topLeftCorner, topRightCorner,
+            bottomLeftCorner, bottomRightCorner;
     private final Wall wall;
-    private final Vector2<Double> position = new Vector2<>(0d, 0d);
+    private final Point2D.Double position = new Point2D.Double(0, 0);
 
-    public WallView(Wall wall) {
-        this.wall = wall;
-    }
+    public WallView(Wall wall) {this.wall = wall;}
 
     @Override
-    public BufferedImage getCurrentFrame() {
-        return switch (wall.getSpecificType()) {
+    public BufferedImage getFrame() {
+        return switch (wall.getType()) {
             case TOP -> {
-                if (TOP_IMAGE == null) {
-                    TOP_IMAGE = Load.image(COMMON_PATH + "top.png");
+                if (top == null) {
+                    top = Load.image(COMMON_PATH + "top.png");
                 }
-                yield TOP_IMAGE;
+                yield top;
             }
             case BOTTOM -> {
-                if (BOTTOM_IMAGE == null) {
-                    BOTTOM_IMAGE = Load.image(COMMON_PATH + "bottom.png");
+                if (bottom == null) {
+                    bottom = Load.image(COMMON_PATH + "bottom.png");
                 }
-                yield BOTTOM_IMAGE;
+                yield bottom;
             }
             case LEFT -> {
-                if (LEFT_IMAGE == null) {
-                    LEFT_IMAGE = Load.image(COMMON_PATH + "left.png");
+                if (left == null) {
+                    left = Load.image(COMMON_PATH + "left.png");
                 }
-                yield LEFT_IMAGE;
+                yield left;
             }
             case RIGHT -> {
-                if (RIGHT_IMAGE == null) {
-                    RIGHT_IMAGE = Load.image(COMMON_PATH + "right.png");
+                if (right == null) {
+                    right = Load.image(COMMON_PATH + "right.png");
                 }
-                yield RIGHT_IMAGE;
+                yield right;
             }
             case EXTERNAL_CORNER_BOTTOM_LEFT -> {
-                if (EXTERNAL_CORNER_BOTTOM_LEFT_IMAGE == null) {
-                    EXTERNAL_CORNER_BOTTOM_LEFT_IMAGE = Load.image(COMMON_PATH + "externalCornerBottomLeft.png");
+                if (bottomLeftCorner == null) {
+                    bottomLeftCorner = Load.image(COMMON_PATH + "bottomLeftCorner.png");
                 }
-                yield EXTERNAL_CORNER_BOTTOM_LEFT_IMAGE;
+                yield bottomLeftCorner;
             }
             case EXTERNAL_CORNER_BOTTOM_RIGHT -> {
-                if (EXTERNAL_CORNER_BOTTOM_RIGHT_IMAGE == null) {
-                    EXTERNAL_CORNER_BOTTOM_RIGHT_IMAGE = Load.image(COMMON_PATH + "externalCornerBottomRight.png");
+                if (bottomRightCorner == null) {
+                    bottomRightCorner = Load.image(COMMON_PATH + "bottomRightCorner.png");
                 }
-                yield EXTERNAL_CORNER_BOTTOM_RIGHT_IMAGE;
+                yield bottomRightCorner;
             }
             case EXTERNAL_CORNER_TOP_LEFT -> {
-                if (EXTERNAL_CORNER_TOP_LEFT_IMAGE == null) {
-                    EXTERNAL_CORNER_TOP_LEFT_IMAGE = Load.image(COMMON_PATH + "externalCornerTopLeft.png");
+                if (topLeftCorner == null) {
+                    topLeftCorner = Load.image(COMMON_PATH + "topLeftCorner.png");
                 }
-                yield EXTERNAL_CORNER_TOP_LEFT_IMAGE;
+                yield topLeftCorner;
             }
             case EXTERNAL_CORNER_TOP_RIGHT -> {
-                if (EXTERNAL_CORNER_TOP_RIGHT_IMAGE == null) {
-                    EXTERNAL_CORNER_TOP_RIGHT_IMAGE = Load.image(COMMON_PATH + "externalCornerTopRight.png");
+                if (topRightCorner == null) {
+                    topRightCorner = Load.image(COMMON_PATH + "topRightCorner.png");
                 }
-                yield EXTERNAL_CORNER_TOP_RIGHT_IMAGE;
+                yield topRightCorner;
             }
             default -> null;
         };
     }
 
     @Override
-    public Vector2<Double> getCurrentViewPosition() {
-        position.changeFirst((double) wall.getCol());
-        position.changeSecond((double) wall.getRow());
+    public Point2D.Double getViewPosition() {
+        position.setLocation(wall.getPosition());
         return position;
     }
 }

@@ -1,25 +1,20 @@
 package chevy.view.entities;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public abstract class EntityView {
-    protected Vector2<Double> currentViewPosition;
+    protected Point2D.Double viewPosition;
 
-    public EntityView() { }
+    public Point getOffset() {return new Point(0, 0);}
 
-    public Vector2<Integer> getOffset() {
-        return new Vector2<>(0, 0);
-    }
+    public float getScale() {return 1f;}
 
-    public float getScale() {
-        return 1f;
-    }
+    public abstract BufferedImage getFrame();
 
-    public abstract BufferedImage getCurrentFrame();
+    public Point2D.Double getViewPosition() {return viewPosition;}
 
-    public abstract Vector2<Double> getCurrentViewPosition();
-
-    public void wasRemoved() { }
+    public void remove() {}
 }

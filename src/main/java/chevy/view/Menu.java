@@ -23,7 +23,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.Color;
@@ -42,7 +41,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.stream.Stream;
@@ -71,16 +69,13 @@ public final class Menu {
     private static final int archerCost = 500, ninjaCost = 1000;
     private static final Icon coin = Load.icon("Coin");
     private static final Icon[] statsIcons = new Icon[]{Load.icon("heart"),
-            Load.icon("shield", 36, 36), Load.icon("sword"), Load.icon(
-            "boot", 28, 28)};
+            Load.icon("shield", 36, 36), Load.icon("sword"), Load.icon("boot", 28, 28)};
     private static final Icon[] statsIconsGreyScale = new Icon[]{Load.icon(
             "heart_greyscale"), Load.icon("shield_greyscale", 36, 36),
-            Load.icon(
-                    "sword_greyscale"), Load.icon("boot_greyscale", 28, 28)};
+            Load.icon("sword_greyscale"), Load.icon("boot_greyscale", 28, 28)};
     private static final String[] statsTooltipPrefixes = new String[]{"Salute: ", "Scudo: ",
             "Danno: ", "Velocità: "};
     public static Player.Type playerType = Player.Type.valueOf(Data.get("menu.playerType"));
-    private static int level = Data.get("menu.level");
     private static boolean currentPlayerLocked;
     private static boolean animationPaused;
     private static boolean alternateAnimation = true;
@@ -91,58 +86,33 @@ public final class Menu {
     private final Image[][] sprites = new Image[3][4];
     private final Object updateAnimation = new Object();
     private final Window window;
-    private JPanel root;
+    private final JLabel[] statsLabels;
+    private final JProgressBar[] bars;
+    private JPanel root, characterAnimation;
     private JComboBox<String> levelSelector;
-    private JButton play;
-    private JButton playerCycleNext;
-    private JButton playerCyclePrev;
-    private JButton quit;
-    private JButton options;
-    private JLabel coins;
-    private JLabel keys;
-    private JRadioButton knightIndicator;
-    private JRadioButton archerIndicator;
-    private JRadioButton ninjaIndicator;
+    private JButton play, playerCycleNext, playerCyclePrev, quit, options, unlock;
+    private JLabel coins, keys, characterName, health, shield, damage, speed, cost;
+    private JRadioButton knightIndicator, archerIndicator, ninjaIndicator;
     private final JRadioButton[] indicators = new JRadioButton[]{knightIndicator, archerIndicator,
             ninjaIndicator};
-    private JPanel characterAnimation;
-    private JLabel characterName;
-    private JProgressBar healthBar;
-    private JProgressBar damageBar;
-    private JProgressBar speedBar;
-    private JProgressBar shieldBar;
-    private final JProgressBar[] bars = new JProgressBar[]{healthBar, shieldBar, damageBar,
-            speedBar};
-    private JLabel healthLabel;
-    private JLabel shieldLabel;
-    private JLabel damageLabel;
-    private JLabel speedLabel;
-    private final JLabel[] statsLabels = new JLabel[]{healthLabel, shieldLabel, damageLabel,
-            speedLabel};
-    private JButton unlock;
-    private JLabel cost;
-    private final ActionListener actionListener = this::actionPerformed;
+    private JProgressBar healthBar, damageBar, speedBar, shieldBar;
 
-    Menu(final Window window) {
+    Menu(Window window) {
         this.window = window;
+
+        statsLabels = new JLabel[]{health, shield, damage, speed};
+        bars = new JProgressBar[]{healthBar, shieldBar, damageBar, speedBar};
 
         List.of(play, quit, options, playerCycleNext, playerCyclePrev, unlock)
                 .forEach(c -> c.addActionListener(actionListener));
-        levelSelector.addActionListener(actionListener);
-        final MouseListener tooltipMouseAdapter = new TooltipMouseAdapter();
-        Stream.of(playerCycleNext, playerCyclePrev,
-                characterAnimation, coins, keys, options, healthBar, shieldBar, damageBar,
-                speedBar, levelSelector, healthLabel, shieldLabel, damageLabel, speedLabel, play,
-                characterName).forEach(c -> c.addMouseListener(tooltipMouseAdapter));
         levelSelector.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
                 Sound.play(Sound.Effect.BUTTON);
             }
         });
 
-        initializeComponents();
+        initUI();
         loadCharactersSprites();
         setPlayerType(playerType);
 
@@ -155,9 +125,10 @@ public final class Menu {
      */
     public static void incrementLevel() {
         if (!ChamberManager.isLastChamber()) {
-            ++level;
+            Data.increment("progress.lastUnlockedLevel");
+            final int level = Data.get("progress.lastUnlockedLevel");
             Data.set("progress.lastUnlockedLevel", level);
-            LevelSelectorRenderer.setEnabledInterval(level);
+            LevelSelectorRenderer.setLastEnabledItemIndex(level);
         }
     }
 
@@ -170,7 +141,7 @@ public final class Menu {
             case ARCHER -> "ARCIERE";
             case NINJA -> "NINJA";
         };
-    }
+    }    private final ActionListener actionListener = this::actionPerformed;
 
     private void actionPerformed(ActionEvent event) {
         switch (event.getActionCommand()) {
@@ -189,26 +160,57 @@ public final class Menu {
             case "levelChanged" -> changeLevelAction();
             case "unlock" -> unlockPlayerAction();
         }
+        window.requestFocus();
+    }
+
+    public void keyPressed(KeyEvent keyEvent) {
+        switch (keyEvent.getKeyCode()) {
+            case KeyEvent.VK_ENTER -> {
+                if (!currentPlayerLocked) {
+                    play.requestFocus();
+                    playAction();
+                } else {
+                    Sound.play(Sound.Effect.STOP);
+                }
+            }
+            case KeyEvent.VK_ESCAPE -> {
+                Sound.play(Sound.Effect.BUTTON);
+                quit.requestFocus();
+                window.quitAction();
+            }
+            case KeyEvent.VK_RIGHT -> {
+                playerCycleNext.requestFocus();
+                playerCycleNextAction();
+            }
+            case KeyEvent.VK_LEFT -> {
+                playerCyclePrev.requestFocus();
+                playerCyclePrevAction();
+            }
+        }
+        SwingUtilities.invokeLater(window::requestFocus);
     }
 
     /**
-     * Aggiorna i componenti dopo il cambio scena
-     * Impostare l'elemento attivo per JComboBox richiede che il componente sia visibile
+     * Aggiorna i componenti dopo il cambio scena.
+     * Impostare l'elemento attivo per {@link JComboBox} richiede che il componente sia visibile.
      */
     void updateComponents() {
         coins.setText(Data.get("progress.coins").toString());
         keys.setText(Data.get("progress.keys").toString());
-        levelSelector.setSelectedIndex(level);
+        levelSelector.setSelectedIndex(Data.get("menu.level"));
+        if (levelSelector.getActionListeners().length == 0) {
+            levelSelector.addActionListener(actionListener);
+        }
     }
 
     /**
      * Procedura del costruttore: costruzione dell'interfaccia
      */
-    private void initializeComponents() {
+    private void initUI() {
         root.setBackground(new Color(33, 6, 47));
         levelSelector.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         levelSelector.setRenderer(new LevelSelectorRenderer());
-        LevelSelectorRenderer.setEnabledInterval(Data.get("progress.lastUnlockedLevel"));
+        LevelSelectorRenderer.setLastEnabledItemIndex(Data.get("progress.lastUnlockedLevel"));
         levelSelector.addItem("Tutorial");
         for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS; ++i) {
             levelSelector.addItem("Livello " + i);
@@ -225,26 +227,18 @@ public final class Menu {
         cost.setIcon(coin);
         characterName.setFont(UIManager.getFont("defaultFont").deriveFont(Font.BOLD, 50f));
         unlock.setIcon(Load.icon("Unlocked", 30, 30));
-
-        // https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/AbstractButton.html#setMnemonic(int)
-        // Uno di questi tasti + ALT causa l'interazione col componente
-        play.setMnemonic(KeyEvent.VK_ENTER);
-        quit.setMnemonic(KeyEvent.VK_ESCAPE);
-        playerCyclePrev.setMnemonic(KeyEvent.VK_LEFT);
-        playerCycleNext.setMnemonic(KeyEvent.VK_RIGHT);
     }
 
     private void changeLevelAction() {
-        final int i = levelSelector.getSelectedIndex();
-        if (LevelSelectorRenderer.isInsideInterval(i)) {
-            level = i;
+        final int level = levelSelector.getSelectedIndex();
+        if (LevelSelectorRenderer.isInsideInterval(level)) {
             Data.set("menu.level", level);
             Log.info("Cambiato livello: " + level);
         } else {
             levelSelector.hidePopup();
             levelSelector.setSelectedIndex(level);
             Sound.play(Sound.Effect.STOP);
-            JOptionPane.showMessageDialog(window, "Il livello " + i + " è bloccato.", null,
+            JOptionPane.showMessageDialog(window, "Il livello " + level + " è bloccato.", null,
                     JOptionPane.WARNING_MESSAGE, ex);
             SwingUtilities.invokeLater(levelSelector::showPopup);
         }
@@ -274,7 +268,8 @@ public final class Menu {
     }
 
     /**
-     * L'azione di passare alla scena PLAYING e avviare il gioco. È innescata dal JButton play e
+     * L'azione di passare a {@link Window.Scene#PLAYING} e avviare il gioco. È innescata dal
+     * JButton play e
      * dal tasto 'invio'
      * sulla tastiera.
      */
@@ -282,6 +277,7 @@ public final class Menu {
         Sound.play(Sound.Effect.PLAY_BUTTON);
         stopCharacterAnimation();
         Sound.stopLoop();
+        final int level = Data.get("menu.level");
         if (level == 0) {
             window.getGamePanel().getTutorial().updateDraw(0);
             window.setScene(Window.Scene.TUTORIAL);
@@ -323,7 +319,6 @@ public final class Menu {
         indicators[playerType.ordinal()].setSelected(false);
         playerType = type;
         Data.set("menu.playerType", playerType.toString());
-        Data.set("menu.level", level);
         final int p = playerType.ordinal();
         characterName.setText(getUIString(playerType));
         indicators[p].setSelected(true);
@@ -482,15 +477,15 @@ public final class Menu {
     JPanel getRoot() {return root;}
 
     /**
-     * Rende possibile avere elementi non selezionabili in {@link JComboBox} (
-     * <a href="https://stackoverflow.com/a/23724201">StackOverflow</a>).
+     * Rende possibile avere elementi non selezionabili in {@link JComboBox}
+     * <p>
+     * <a href="https://stackoverflow.com/a/23724201">Fonte</a>
      * <p>
      * Funziona in combinazione con l'{@link java.awt.event.ActionListener} di
      * {@link #levelSelector}
      */
     private static class LevelSelectorRenderer extends BasicComboBoxRenderer {
         private static final ListSelectionModel model = new DefaultListSelectionModel();
-        private static int enabledFirst;
         private static int enabledLast;
 
         /**
@@ -498,9 +493,8 @@ public final class Menu {
          *
          * @param last fine dell'intervallo
          */
-        static void setEnabledInterval(int last) {
-            enabledFirst = 0;
-            level = enabledLast = last;
+        static void setLastEnabledItemIndex(final int last) {
+            enabledLast = last;
             model.setSelectionInterval(0, last);
         }
 
@@ -511,7 +505,7 @@ public final class Menu {
          * altrimenti
          */
         private static boolean isInsideInterval(final int x) {
-            return x >= enabledFirst && x <= enabledLast;
+            return x >= 0 && x <= enabledLast;
         }
 
         @Override
@@ -534,21 +528,5 @@ public final class Menu {
         }
     }
 
-    static class TooltipMouseAdapter extends MouseAdapter {
-        /**
-         * L'attesa iniziale affinché il tooltip si attivi è più breve.
-         * Il tooltip persiste per un'ora se il cursore vi giace sopra per tanto.
-         */
-        public void mouseEntered(MouseEvent ignored) {
-            ToolTipManager.sharedInstance().setInitialDelay(100);
-            ToolTipManager.sharedInstance().setDismissDelay(3_600_000);
-        }
 
-        /**
-         * Il tooltip viene nascosto non appena il cursore abbandona il componente.
-         */
-        public void mouseExited(MouseEvent ignored) {
-            ToolTipManager.sharedInstance().setDismissDelay(0);
-        }
-    }
 }
