@@ -13,6 +13,7 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Log;
+import chevy.view.Window;
 import chevy.view.chamber.EntityToEntityView;
 
 import javax.imageio.ImageIO;
@@ -28,6 +29,8 @@ import java.net.URL;
 public final class ChamberManager {
     public static final int NUMBER_OF_CHAMBERS = 10;
     private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
+    private static Window window;
+
     /** Indice della stanza corrente nel gioco. */
     private static int currentChamberIndex;
 
@@ -131,6 +134,7 @@ public final class ChamberManager {
      */
     public static void enterChamber(final int index) {
         if (index < NUMBER_OF_CHAMBERS) {
+            window.setTitle("Chevy - Livello " + index);
             currentChamberIndex = index;
             chambers[currentChamberIndex] = loadChamber(index);
             ChamberController.refresh();
@@ -142,4 +146,6 @@ public final class ChamberManager {
     }
 
     public static int getCurrentChamberIndex() {return currentChamberIndex;}
+
+    public static void setWindow(Window window) {ChamberManager.window = window;}
 }
