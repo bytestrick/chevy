@@ -98,7 +98,7 @@ public final class PlayerController implements Updatable {
                 case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> Direction.RIGHT;
                 default -> null;
             };
-            if (direction != null) {
+            if (direction != null && player.getState(Player.State.SLUDGE).isFinished()) {
                 if (key >= KeyEvent.VK_I && key <= KeyEvent.VK_L) {
                     freeAttack(direction);
                 } else {

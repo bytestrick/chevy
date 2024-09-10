@@ -17,6 +17,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.Chest;
 import chevy.model.entity.staticEntity.environment.Environment;
+import chevy.model.entity.staticEntity.environment.traps.Sludge;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.utils.Log;
@@ -335,7 +336,7 @@ public final class Chamber {
     }
 
     public synchronized void spawnCollectable(Enemy enemy) {
-        if (Enemy.canDrop()) {
+        if (!(getEntityOnTop(enemy.getPosition()) instanceof Sludge) && Enemy.canDrop()) {
             Collectable.Type collectableType = Enemy.getDrop();
             if (collectableType == null) {
                 return;
@@ -378,7 +379,7 @@ public final class Chamber {
                 if (randomI != 0 || randomJ != 0) {
                     Point position = chest.getPosition();
                     position.translate(randomJ, randomI);
-                    if (canSpawn(position)) {
+                    if (canSpawn(position) && !(getEntityOnTop(position) instanceof Sludge)) {
                         Collectable.Type collectableType = chest.getDrop();
                         if (collectableType == null) {
                             return;

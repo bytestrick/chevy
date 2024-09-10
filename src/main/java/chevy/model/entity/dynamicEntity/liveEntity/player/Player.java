@@ -37,11 +37,11 @@ public abstract class Player extends LiveEntity {
         attack = new Vertex(State.ATTACK, attackDuration, true);
         hit = new Vertex(State.HIT,.2f);
         dead = new Vertex(State.DEAD, deadDuration);
-        sludge = new Vertex(State.SLUDGE, speed);
+        sludge = new Vertex(State.SLUDGE, 0.3f);
         glide = new Vertex(State.GLIDE, speed, true);
         fall = new Vertex(State.FALL, .2f);
 
-        drawLayer = 2;
+        drawLayer = 3;
         initStateMachine();
     }
 
@@ -91,6 +91,7 @@ public abstract class Player extends LiveEntity {
         glide.linkVertex(hit);
         glide.linkVertex(sludge);
         sludge.linkVertex(idle);
+        sludge.linkVertex(hit);
         fall.linkVertex(idle);
         fall.linkVertex(dead);
         stateMachine.setInitialState(idle);
