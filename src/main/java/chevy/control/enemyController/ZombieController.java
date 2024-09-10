@@ -68,8 +68,8 @@ public final class ZombieController {
                 zombie.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(zombie);
-                Data.increment("data.kills.total.count");
-                Data.increment("data.kills.enemies.zombie.count");
+                Data.increment("stats.kills.total.count");
+                Data.increment("stats.kills.enemies.zombie.count");
                 return;
             }
         } else if (zombie.getCurrentHealth() <= 0 && zombie.checkAndChangeState(Zombie.State.DEAD)) {

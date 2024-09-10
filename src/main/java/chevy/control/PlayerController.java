@@ -56,6 +56,7 @@ public final class PlayerController implements Update {
     private EnvironmentController environmentController;
     private HUDController hudController;
     private boolean updateFinished;
+    private int trap_damage = 0;
 
     /**
      * @param chamber riferimento alla stanza di gioco
@@ -184,16 +185,13 @@ public final class PlayerController implements Update {
     private void trapInteraction(Trap trap) {
         Trap.Type trapType = (Trap.Type) trap.getSpecificType();
         switch (trapType) {
-            case VOID -> hitPlayer(-1 * trap.getDamage());
+            case VOID, TRAPDOOR -> {
+                player.changeState(Player.State.FALL);
+                trap_damage = trap.getDamage();
+            }
             case SPIKED_FLOOR -> {
                 SpikedFloor spikedFloor = (SpikedFloor) trap;
                 hitPlayer(-1 * spikedFloor.getDamage());
-            }
-            case TRAPDOOR -> {
-                Trapdoor trapdoor = (Trapdoor) trap;
-                hitPlayer(-1 * trapdoor.getDamage());
-
-                player.changeState(Player.State.FALL);
             }
             default -> {}
         }
@@ -276,7 +274,6 @@ public final class PlayerController implements Update {
                     enemyController.handleInteraction(Interaction.PLAYER_IN, player,
                             (Enemy) entityNextCell);
                 }
-                player.checkAndChangeState(Player.State.IDLE);
             }
             case Environment.Type.TRAP -> {
                 if (chamber.canCross(player, direction)
@@ -375,9 +372,9 @@ public final class PlayerController implements Update {
 
                 Data.increment("stats.deaths.total.count");
                 switch (player.getSpecificType()) {
-                    case KNIGHT -> Data.increment("stats.deaths.knight.count");
-                    case NINJA -> Data.increment("stats.deaths.ninja.count");
-                    case ARCHER -> Data.increment("stats.deaths.archer.count");
+                    case KNIGHT -> Data.increment("stats.deaths.characters.knight.count");
+                    case NINJA -> Data.increment("stats.deaths.characters.ninja.count");
+                    case ARCHER -> Data.increment("stats.deaths.characters.archer.count");
                 }
 
                 gamePanel.playerDeathDialog();
@@ -437,7 +434,7 @@ public final class PlayerController implements Update {
                 && player.getState(Player.State.FALL).isFinished()
                 && chamber.canCross(player, player.getDirection().getOpposite())) {
             chamber.moveDynamicEntity(player, player.getDirection().getOpposite());
-            player.checkAndChangeState(Player.State.IDLE);
+            hitPlayer(-trap_damage);
         } else if (player.getCurrentState() != Player.State.SLUDGE) {
             player.checkAndChangeState(Player.State.IDLE);
         }

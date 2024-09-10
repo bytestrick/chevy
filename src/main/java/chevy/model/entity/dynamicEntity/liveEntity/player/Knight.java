@@ -32,7 +32,7 @@ public final class Knight extends Player {
         this.dead = new Vertex(State.DEAD, .6f);
         this.glide = new Vertex(State.GLIDE, speed, true);
         this.sludge = new Vertex(State.SLUDGE, speed);
-        this.fall = new Vertex(State.FALL);
+        this.fall = new Vertex(State.FALL, 0.2f);
         initStateMachine();
     }
 
@@ -61,6 +61,7 @@ public final class Knight extends Player {
         sludge.linkVertex(idle);
         fall.linkVertex(idle);
         fall.linkVertex(dead);
+        fall.linkVertex(hit);
 
         stateMachine.setStateMachineName("Knight");
         stateMachine.setInitialState(idle);

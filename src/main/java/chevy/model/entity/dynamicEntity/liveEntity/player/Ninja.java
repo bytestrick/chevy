@@ -32,7 +32,7 @@ public final class Ninja extends Player {
         this.dead = new Vertex(State.DEAD, .3f);
         this.glide = new Vertex(State.GLIDE, speed, true);
         this.sludge = new Vertex(State.SLUDGE, speed);
-        this.fall = new Vertex(State.FALL);
+        this.fall = new Vertex(State.FALL, 0.2f);
         initStateMachine();
     }
 
@@ -44,6 +44,7 @@ public final class Ninja extends Player {
         hit.linkVertex(idle);
         hit.linkVertex(dead);
         hit.linkVertex(move);
+        hit.linkVertex(fall);
         move.linkVertex(glide);
         move.linkVertex(hit);
         move.linkVertex(fall);
