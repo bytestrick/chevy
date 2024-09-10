@@ -57,6 +57,9 @@ final class EntityFromColor {
     private static final int WALL_TOP = 248;
     private static final int WALL_INTERIOR_CORNER_TOP_RIGHT = 247;
     private static final int WALL_INTERIOR_CORNER_BOTTOM_RIGHT = 253;
+    private static final int WALL_TOP_HOLE = 219;
+    private static final int WALL_TOP_HOLE_2 = 218;
+    private static final int WALL_TOP_BROKEN = 217;
     private static final int WALL_EXTERNAL_CORNER_TOP_LEFT = 246;
     private static final int WALL_EXTERNAL_CORNER_TOP_RIGHT = 245;
     private static final int WALL_EXTERNAL_CORNER_BOTTOM_LEFT = 244;
@@ -150,6 +153,9 @@ final class EntityFromColor {
             case WALL_EXTERNAL_CORNER_BOTTOM_RIGHT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_BOTTOM_RIGHT);
             case WALL_EXTERNAL_CORNER_TOP_LEFT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_TOP_LEFT);
             case WALL_EXTERNAL_CORNER_TOP_RIGHT -> new Wall(startPosition, Wall.WallTypes.EXTERNAL_CORNER_TOP_RIGHT);
+            case WALL_TOP_HOLE -> new Wall(startPosition, Wall.WallTypes.TOP_HOLE);
+            case WALL_TOP_HOLE_2 -> new Wall(startPosition, Wall.WallTypes.TOP_HOLE_2);
+            case WALL_TOP_BROKEN -> new Wall(startPosition, Wall.WallTypes.TOP_BROKEN);
 
             // Ground
             case GROUND_TOP -> new Ground(startPosition, Ground.GroundTypes.TOP);

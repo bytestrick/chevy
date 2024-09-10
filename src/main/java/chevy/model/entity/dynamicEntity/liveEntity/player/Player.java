@@ -39,7 +39,7 @@ public abstract class Player extends LiveEntity {
         dead = new Vertex(State.DEAD, deadDuration);
         sludge = new Vertex(State.SLUDGE, speed);
         glide = new Vertex(State.GLIDE, speed, true);
-        fall = new Vertex(State.FALL);
+        fall = new Vertex(State.FALL, .2f);
 
         drawLayer = 2;
         initStateMachine();
