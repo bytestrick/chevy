@@ -22,8 +22,8 @@ public final class Chest extends Environment {
     private boolean onePowerUp;
     private boolean isFirstOpen = true;
 
-    public Chest(Point initVelocity) {
-        super(initVelocity, Type.CHEST);
+    public Chest(Point position) {
+        super(position, Type.CHEST);
         shouldUpdate = true;
         initStateMachine();
     }

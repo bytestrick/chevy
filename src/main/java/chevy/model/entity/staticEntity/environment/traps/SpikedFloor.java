@@ -10,8 +10,8 @@ public class SpikedFloor extends Trap {
     private final Vertex disabled = new Vertex(State.DISABLED, 3f);
     private final Vertex damage = new Vertex(State.DAMAGE, .8f);
 
-    public SpikedFloor(Point initVelocity) {
-        super(initVelocity, Type.SPIKED_FLOOR);
+    public SpikedFloor(Point position) {
+        super(position, Type.SPIKED_FLOOR);
         safeToCross = true;
         shouldUpdate = true;
         maxDamage = 2;

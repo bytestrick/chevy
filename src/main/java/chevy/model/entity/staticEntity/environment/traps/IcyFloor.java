@@ -9,8 +9,8 @@ public class IcyFloor extends Trap {
     private final Vertex icyFloor = new Vertex(State.ICY_FLOOR, 2f);
     private final Vertex icyFloorSparkling = new Vertex(State.ICY_FLOOR_SPARKLING, 0.8f);
 
-    public IcyFloor(Point initVelocity) {
-        super(initVelocity, Type.ICY_FLOOR);
+    public IcyFloor(Point position) {
+        super(position, Type.ICY_FLOOR);
         shouldUpdate = true;
         initStateMachine();
     }

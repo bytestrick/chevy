@@ -9,8 +9,8 @@ public class Sludge extends Trap {
     private final Vertex active = new Vertex(State.SLUDGE_BUBBLES, 0.8f);
     private int nMoveToUnlock;
 
-    public Sludge(Point initVelocity) {
-        super(initVelocity, Type.SLUDGE);
+    public Sludge(Point position) {
+        super(position, Type.SLUDGE);
         nMoveToUnlock = 1;
         initStateMachine();
     }

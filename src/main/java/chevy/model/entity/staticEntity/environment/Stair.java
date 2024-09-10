@@ -15,8 +15,8 @@ public class Stair extends Environment {
     private final Vertex open = new Vertex(State.OPEN, .3f);
     private final Vertex idleEntry = new Vertex(State.IDLE_ENTRY, .5f);
 
-    public Stair(Point initialVelocity) {
-        super(initialVelocity, Type.STAIR);
+    public Stair(Point position) {
+        super(position, Type.STAIR);
         crossable = true;
         shouldUpdate = true;
         initStateMachine();

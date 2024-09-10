@@ -19,8 +19,8 @@ public abstract class PowerUp extends Collectable {
     int occurringPercentage;
     int inStock = -1; // quantità infinita
 
-    PowerUp(Point initVelocity, Type type) {
-        super(initVelocity, Collectable.Type.POWER_UP);
+    PowerUp(Point position, Type type) {
+        super(position, Collectable.Type.POWER_UP);
         this.type = type;
 
         initStaticMachine();

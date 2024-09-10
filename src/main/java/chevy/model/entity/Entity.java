@@ -24,8 +24,8 @@ public abstract class Entity {
     private Direction direction = Direction.getRandom();
     private boolean shouldDraw;
 
-    public Entity(Point initialPosition, Type type) {
-        position = initialPosition;
+    public Entity(Point position, Type type) {
+        this.position = position;
         this.type = type;
     }
 

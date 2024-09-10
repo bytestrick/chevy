@@ -86,40 +86,22 @@ public final class Menu {
     private final Image[][] sprites = new Image[3][4];
     private final Object updateAnimation = new Object();
     private final Window window;
-    private JPanel root;
+    private final JLabel[] statsLabels;
+    private final JProgressBar[] bars;
+    private JPanel root, characterAnimation;
     private JComboBox<String> levelSelector;
-    private JButton play;
-    private JButton playerCycleNext;
-    private JButton playerCyclePrev;
-    private JButton quit;
-    private JButton options;
-    private JLabel coins;
-    private JLabel keys;
-    private JRadioButton knightIndicator;
-    private JRadioButton archerIndicator;
-    private JRadioButton ninjaIndicator;
+    private JButton play, playerCycleNext, playerCyclePrev, quit, options, unlock;
+    private JLabel coins, keys, characterName, health, shield, damage, speed, cost;
+    private JRadioButton knightIndicator, archerIndicator, ninjaIndicator;
     private final JRadioButton[] indicators = new JRadioButton[]{knightIndicator, archerIndicator,
             ninjaIndicator};
-    private JPanel characterAnimation;
-    private JLabel characterName;
-    private JProgressBar healthBar;
-    private JProgressBar damageBar;
-    private JProgressBar speedBar;
-    private JProgressBar shieldBar;
-    private final JProgressBar[] bars = new JProgressBar[]{healthBar, shieldBar, damageBar,
-            speedBar};
-    private JLabel healthLabel;
-    private JLabel shieldLabel;
-    private JLabel damageLabel;
-    private JLabel speedLabel;
-    private final JLabel[] statsLabels = new JLabel[]{healthLabel, shieldLabel, damageLabel,
-            speedLabel};
-    private JButton unlock;
-    private JLabel cost;
-    private final ActionListener actionListener = this::actionPerformed;
+    private JProgressBar healthBar, damageBar, speedBar, shieldBar;
 
-    Menu(final Window window) {
+    Menu(Window window) {
         this.window = window;
+
+        statsLabels = new JLabel[]{health, shield, damage, speed};
+        bars = new JProgressBar[]{healthBar, shieldBar, damageBar, speedBar};
 
         List.of(play, quit, options, playerCycleNext, playerCyclePrev, unlock)
                 .forEach(c -> c.addActionListener(actionListener));
@@ -159,7 +141,7 @@ public final class Menu {
             case ARCHER -> "ARCIERE";
             case NINJA -> "NINJA";
         };
-    }
+    }    private final ActionListener actionListener = this::actionPerformed;
 
     private void actionPerformed(ActionEvent event) {
         switch (event.getActionCommand()) {
@@ -286,7 +268,8 @@ public final class Menu {
     }
 
     /**
-     * L'azione di passare a {@link Window.Scene#PLAYING} e avviare il gioco. È innescata dal JButton play e
+     * L'azione di passare a {@link Window.Scene#PLAYING} e avviare il gioco. È innescata dal
+     * JButton play e
      * dal tasto 'invio'
      * sulla tastiera.
      */
@@ -544,4 +527,6 @@ public final class Menu {
             return c;
         }
     }
+
+
 }

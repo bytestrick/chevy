@@ -10,8 +10,8 @@ public class Trapdoor extends Trap {
     private final Vertex open = new Vertex(State.OPEN, .4f);
     private final Vertex damage = new Vertex(State.DAMAGE);
 
-    public Trapdoor(Point initVelocity) {
-        super(initVelocity, Type.TRAPDOOR);
+    public Trapdoor(Point position) {
+        super(position, Type.TRAPDOOR);
         maxDamage = 1;
         minDamage = 1;
         shouldUpdate = true;

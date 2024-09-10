@@ -7,8 +7,8 @@ import java.awt.Point;
 public final class Ground extends Environment {
     private final GroundTypes type;
 
-    public Ground(Point initVelocity, GroundTypes type) {
-        super(initVelocity, Type.GROUND);
+    public Ground(Point position, GroundTypes type) {
+        super(position, Type.GROUND);
         this.type = type;
         crossable = true;
         drawLayer = 0;

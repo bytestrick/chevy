@@ -5,8 +5,8 @@ import java.awt.Point;
 public final class GoldArrow extends PowerUp {
     private static final int DAMAGE_BOOST = 2;
 
-    public GoldArrow(Point initVelocity) {
-        super(initVelocity, Type.GOLD_ARROW);
+    public GoldArrow(Point position) {
+        super(position, Type.GOLD_ARROW);
 
         inStock = 1;
         occurringPercentage = 100;

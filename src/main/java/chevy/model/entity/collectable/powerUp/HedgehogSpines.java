@@ -5,8 +5,8 @@ import java.awt.Point;
 public final class HedgehogSpines extends PowerUp {
     private static final float DAMAGE_MULTIPLIER = .2f;
 
-    public HedgehogSpines(Point initVelocity) {
-        super(initVelocity, Type.HEDGEHOG_SPINES);
+    public HedgehogSpines(Point position) {
+        super(position, Type.HEDGEHOG_SPINES);
 
         occurringPercentage = 50;
         name = "Aculei di Riccio\n";

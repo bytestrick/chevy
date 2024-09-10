@@ -5,8 +5,8 @@ import java.awt.Point;
 public final class LongSword extends PowerUp {
     private static final int DAMAGE_BOOST = 2;
 
-    public LongSword(Point initVelocity) {
-        super(initVelocity, Type.LONG_SWORD);
+    public LongSword(Point position) {
+        super(position, Type.LONG_SWORD);
 
         inStock = 1;
         occurringPercentage = 100;

@@ -5,8 +5,8 @@ import java.awt.Point;
 public final class ColdHeart extends PowerUp {
     private static final int SHIELD_BOOST = 3;
 
-    public ColdHeart(Point initVelocity) {
-        super(initVelocity, Type.COLD_HEART);
+    public ColdHeart(Point position) {
+        super(position, Type.COLD_HEART);
 
         inStock = 1;
         occurringPercentage = 100;
