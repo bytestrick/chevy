@@ -1,6 +1,7 @@
 package chevy.view;
 
 import chevy.control.WindowController;
+import chevy.model.chamber.ChamberManager;
 import chevy.service.Data;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
@@ -74,6 +75,7 @@ public final class Window extends JFrame {
             updateSize(getSize());
             gamePanel.windowResized(scale);
         });
+        ChamberManager.setWindow(this);
         Log.info("Window: creazione terminata [w: " + size.width + ", h: " + size.height + "]");
     }
 

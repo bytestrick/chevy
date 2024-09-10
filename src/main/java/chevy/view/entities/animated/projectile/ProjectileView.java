@@ -20,8 +20,10 @@ abstract class ProjectileView extends AnimatedEntityView {
 
         assert vertex != null;
         final float duration = vertex.getDuration();
-        horizontal = new Interpolation(viewPosition.x, viewPosition.x, duration, Interpolation.Type.LINEAR);
-        vertical = new Interpolation(viewPosition.y, viewPosition.y, duration, Interpolation.Type.LINEAR);
+        horizontal = new Interpolation(viewPosition.x, viewPosition.x, duration,
+                Interpolation.Type.LINEAR);
+        vertical = new Interpolation(viewPosition.y, viewPosition.y, duration,
+                Interpolation.Type.LINEAR);
     }
 
     @Override
@@ -56,7 +58,8 @@ abstract class ProjectileView extends AnimatedEntityView {
 
     private Direction getAnimationDirection(EntityState state) {
         return switch (state) {
-            case Projectile.State.START, Projectile.State.LOOP, Projectile.State.END -> projectile.getDirection();
+            case Projectile.State.START, Projectile.State.LOOP, Projectile.State.END ->
+                    projectile.getDirection();
             default -> null;
         };
     }
@@ -65,14 +68,14 @@ abstract class ProjectileView extends AnimatedEntityView {
     public BufferedImage getFrame() {
         final EntityState state = projectile.getState();
         final Direction direction = projectile.getDirection();
-        final AnimatedSprite currentAnimatedSprite = getAnimatedSprite(state, direction);
-        if (currentAnimatedSprite != null) {
-            if (state == Projectile.State.END && vertex.isFinished()) {
+        final AnimatedSprite animatedSprite = getAnimatedSprite(state, direction);
+        if (animatedSprite != null) {
+            if (animatedSprite.isNotRunning()) {
+                animatedSprite.restart();
+            } else if (state != Projectile.State.END && vertex.isFinished()) {
                 projectile.setShouldDraw(false);
-            } else if (currentAnimatedSprite.isNotRunning()) {
-                currentAnimatedSprite.restart();
             }
-            return currentAnimatedSprite.getFrame();
+            return animatedSprite.getFrame();
         }
         return null;
     }

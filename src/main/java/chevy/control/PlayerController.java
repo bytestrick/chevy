@@ -25,7 +25,6 @@ import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
-import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.service.Data;
 import chevy.service.Sound;
 import chevy.service.Updatable;
@@ -60,6 +59,7 @@ public final class PlayerController implements Updatable {
     private EnvironmentController environmentController;
     private HUDController hudController;
     private boolean updateFinished;
+    private int trap_damage;
 
     /**
      * @param chamber riferimento alla stanza di gioco
@@ -194,16 +194,13 @@ public final class PlayerController implements Updatable {
     private void trapInteraction(Trap trap) {
         Trap.Type trapType = (Trap.Type) trap.getType();
         switch (trapType) {
-            case VOID -> hitPlayer(-1 * trap.getDamage());
+            case VOID, TRAPDOOR -> {
+                player.changeState(Player.State.FALL);
+                trap_damage = trap.getDamage();
+            }
             case SPIKED_FLOOR -> {
                 SpikedFloor spikedFloor = (SpikedFloor) trap;
                 hitPlayer(-1 * spikedFloor.getDamage());
-            }
-            case TRAPDOOR -> {
-                Trapdoor trapdoor = (Trapdoor) trap;
-                hitPlayer(-1 * trapdoor.getDamage());
-
-                player.changeState(Player.State.FALL);
             }
             default -> {}
         }
@@ -284,7 +281,6 @@ public final class PlayerController implements Updatable {
                     enemyController.handleInteraction(Interaction.PLAYER_IN, player,
                             (Enemy) entityNextCell);
                 }
-                player.checkAndChangeState(Player.State.IDLE);
             }
             case Environment.Type.TRAP -> {
                 if (chamber.canCross(player, direction)
@@ -379,9 +375,9 @@ public final class PlayerController implements Updatable {
 
                 Data.increment("stats.deaths.total.count");
                 switch (player.getType()) {
-                    case KNIGHT -> Data.increment("stats.deaths.characters.knight.count");
-                    case NINJA -> Data.increment("stats.deaths.characters.ninja.count");
-                    case ARCHER -> Data.increment("stats.deaths.characters.archer.count");
+                    case KNIGHT -> Data.increment("stats.deaths.knight.count");
+                    case NINJA -> Data.increment("stats.deaths.ninja.count");
+                    case ARCHER -> Data.increment("stats.deaths.archer.count");
                 }
 
                 gamePanel.playerDeathDialog();
@@ -441,7 +437,7 @@ public final class PlayerController implements Updatable {
                 && player.getState(Player.State.FALL).isFinished()
                 && chamber.canCross(player, player.getDirection().getOpposite())) {
             chamber.moveDynamicEntity(player, player.getDirection().getOpposite());
-            player.checkAndChangeState(Player.State.IDLE);
+            hitPlayer(-trap_damage);
         } else if (player.getState() != Player.State.SLUDGE) {
             player.checkAndChangeState(Player.State.IDLE);
         }
@@ -455,6 +451,7 @@ public final class PlayerController implements Updatable {
      * @param damage la quantità di danno da applicare
      */
     private void hitPlayer(int damage) {
+        Sound.play(Sound.Effect.DAMAGE);
         PowerUp agility = player.getOwnedPowerUp(PowerUp.Type.AGILITY);
         boolean dodged = false;
         if (agility != null) {

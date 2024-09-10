@@ -83,7 +83,7 @@ public final class TrapsController {
         switch (trap.getType()) {
             case Trap.Type.SLUDGE -> SludgeController.playerInInteraction(player);
             case Trap.Type.ICY_FLOOR -> IcyFloorController.playerInInteraction(player);
-            case Trap.Type.VOID -> voidController.playerInInteraction(player, (Void) trap);
+            case Trap.Type.VOID -> voidController.playerInInteraction((Void) trap);
             case Trap.Type.TRAPDOOR -> trapdoorController.playerInInteraction((Trapdoor) trap);
             case Trap.Type.SPIKED_FLOOR ->
                     spikedFloorController.playerInInteraction(player, (SpikedFloor) trap);
