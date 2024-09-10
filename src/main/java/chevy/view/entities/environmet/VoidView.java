@@ -2,9 +2,9 @@ package chevy.view.entities.environmet;
 
 import chevy.model.entity.staticEntity.environment.traps.Void;
 import chevy.utils.Load;
-import chevy.utils.Vector2;
 import chevy.view.entities.EntityView;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public final class VoidView extends EntityView {
@@ -12,16 +12,9 @@ public final class VoidView extends EntityView {
     private static final BufferedImage frame = Load.image(VOID_RESOURCES);
 
     public VoidView(Void _void) {
-        this.currentViewPosition = new Vector2<>((double) _void.getCol(), (double) _void.getRow());
+        viewPosition = new Point2D.Double(_void.getCol(), _void.getRow());
     }
 
     @Override
-    public BufferedImage getCurrentFrame() {
-        return frame;
-    }
-
-    @Override
-    public Vector2<Double> getCurrentViewPosition() {
-        return currentViewPosition;
-    }
+    public BufferedImage getFrame() {return frame;}
 }

@@ -1,45 +1,38 @@
 package chevy.model.entity.staticEntity.environment;
 
-import chevy.model.entity.dynamicEntity.Direction;
-import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 /**
- * Classe che rappresenta il punto in cui il player si deve recare per poter passare alla stanza
- * successiva.
- * La scala rimane bloccata finché non si eliminano tutti i nemici presenti nella stanza, dopo
+ * Punto in cui il player si deve recare per poter passare alla stanza successiva.
+ * La scala rimane bloccata finché non si eliminano tutti i nemici presenti nella stanza. Dopo
  * averli eliminati tutti si apre e permette il passaggio a un altra stanza.
  */
 public class Stair extends Environment {
     private final Vertex idle = new Vertex(State.IDLE);
-    private final Vertex open = new Vertex(State.OPEN, 0.3f);
-    private final Vertex idleEntry = new Vertex(State.IDLE_ENTRY, 0.5f);
-    private final Direction directions;
+    private final Vertex open = new Vertex(State.OPEN, .3f);
+    private final Vertex idleEntry = new Vertex(State.IDLE_ENTRY, .5f);
 
-    public Stair(Vector2<Integer> initVelocity, Direction directions) {
-        super(initVelocity, Type.STAIR);
-        this.directions = directions;
+    public Stair(Point position) {
+        super(position, Type.STAIR);
         crossable = true;
         shouldUpdate = true;
         initStateMachine();
     }
 
     private void initStateMachine() {
-        stateMachine.setStateMachineName("Stair");
+        stateMachine.setName("Stair");
         stateMachine.setInitialState(idle);
 
         idle.linkVertex(open);
         open.linkVertex(idleEntry);
     }
 
-    public Direction getDirections() {
-        return directions;
-    }
-
     @Override
-    public Vertex getState(CommonState commonEnumStates) {
-        State stairState = (State) commonEnumStates;
+    public Vertex getState(EntityState state) {
+        State stairState = (State) state;
         return switch (stairState) {
             case IDLE -> idle;
             case OPEN -> open;
@@ -47,5 +40,5 @@ public class Stair extends Environment {
         };
     }
 
-    public enum State implements CommonState {IDLE, OPEN, IDLE_ENTRY}
+    public enum State implements EntityState {IDLE, OPEN, IDLE_ENTRY}
 }

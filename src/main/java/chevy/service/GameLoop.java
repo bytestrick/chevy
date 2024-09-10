@@ -13,8 +13,8 @@ public final class GameLoop {
     private static final Thread.Builder.OfPlatform worker =
             Thread.ofPlatform().priority(Thread.MAX_PRIORITY);
     private static final Object mutex = new Object();
-    private static boolean isRunning;
-    private static boolean isPaused;
+    private static final Toolkit toolkit = Toolkit.getDefaultToolkit();
+    private static boolean isRunning, isPaused;
     /** Serve a tenere traccia del tempo di gioco */
     private static long timeStarted;
 
@@ -78,7 +78,7 @@ public final class GameLoop {
 
             UpdateManager.update(delta);
             RenderManager.render(delta);
-            Toolkit.getDefaultToolkit().sync();
+            toolkit.sync();
         }
         Log.error("Game loop terminato");
     }

@@ -30,7 +30,7 @@ public final class Load {
         BufferedImage image = null;
         try {
             final URL input = Load.class.getResource(path);
-            assert input != null : "risorsa non trovata";
+            assert input != null : "risorsa non trovata: " + path;
             image = ImageIO.read(input);
         } catch (IOException e) {
             Log.error("Immagine '" + path + "' non trovata (" + e.getMessage() + ")");

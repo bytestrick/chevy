@@ -1,14 +1,14 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class AngelRing extends PowerUp {
-    public AngelRing(Vector2<Integer> initVelocity) {
-        super(initVelocity, Type.ANGEL_RING);
+    public AngelRing(Point position) {
+        super(position, Type.ANGEL_RING);
 
-        this.inStock = 1;
-        this.occurringPercentage = 100;
-        this.name = "Anello d'Angelo\n";
-        this.description = "Il giocatore viene riportato in vita\n quando muore. Effetto monouso";
+        inStock = 1;
+        occurringPercentage = 100;
+        name = "Anello d'Angelo\n";
+        description = "Il giocatore viene riportato in vita\n quando muore. Effetto monouso";
     }
 }

@@ -149,7 +149,6 @@
                     <compilerArgs>
                         <arg>-Xlint:-serial</arg>
                         <arg>-Xlint</arg>
-                        <!-- <arg>-Xdoclint</arg> -->
                     </compilerArgs>
                 </configuration>
             </plugin>
@@ -168,7 +167,6 @@
                 </executions>
                 <configuration>
                     <finalName>${project.name}</finalName>
-                    <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
                             <mainClass>${exec.mainClass}</mainClass>

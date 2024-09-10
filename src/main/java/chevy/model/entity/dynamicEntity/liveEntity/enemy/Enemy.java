@@ -1,10 +1,13 @@
 package chevy.model.entity.dynamicEntity.liveEntity.enemy;
 
-import chevy.model.entity.CommonEntityType;
+import chevy.model.entity.EntityType;
 import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.dynamicEntity.liveEntity.LiveEntity;
+import chevy.model.entity.stateMachine.EntityState;
+import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public abstract class Enemy extends LiveEntity {
     /**
@@ -18,15 +21,26 @@ public abstract class Enemy extends LiveEntity {
      * Probabilità di rilascio degli oggetti collezionabili
      */
     private static final int[] DROPPABLE_COLLECTABLE_PROB = {40, 10, 15};
+    private static final int DROP_PROBABILITY = 100;
+    private final Vertex move, attack, hit, dead;
     private final Type type;
-    protected boolean canAttack;
-    protected int dropProbability = 100;
+    Vertex idle;
+    Vertex invincibility;
+    private boolean canAttack;
 
-    public Enemy(Vector2<Integer> initPosition, Type type) {
+    Enemy(Point initPosition, Type type, float idleDuration,
+          float hitDuration) {
         super(initPosition, LiveEntity.Type.ENEMY);
         this.type = type;
 
-        this.drawLayer = 2;
+        idle = new Vertex(State.IDLE, idleDuration);
+        move = new Vertex(State.MOVE, .5f);
+        attack = new Vertex(State.ATTACK, .5f);
+        hit = new Vertex(State.HIT, hitDuration);
+        dead = new Vertex(State.DEAD, .3f);
+
+        drawLayer = 2;
+        initStateMachine();
     }
 
     public static void changeDropPercentage(int i, int newDropPercentage) {
@@ -35,16 +49,9 @@ public abstract class Enemy extends LiveEntity {
 
     public static int getDropPercentage(int i) {return DROPPABLE_COLLECTABLE_PROB[i];}
 
-    /**
-     * @return {@code true} se il player è in grado di attaccare, {@code false} altrimenti
-     */
-    public boolean canAttack() {return canAttack;}
+    public static boolean canDrop() {return Utils.isOccurring(DROP_PROBABILITY);}
 
-    public void setCanAttack(boolean canAttack) {this.canAttack = canAttack;}
-
-    public boolean canDrop() {return Utils.isOccurring(dropProbability);}
-
-    public Collectable.Type getDrop() {
+    public static Collectable.Type getDrop() {
         int index = Utils.isOccurring(DROPPABLE_COLLECTABLE_PROB);
         if (index == -1) {
             return null;
@@ -52,16 +59,51 @@ public abstract class Enemy extends LiveEntity {
         return DROPPABLE_COLLECTABLE[index];
     }
 
-    @Override
-    public CommonEntityType getSpecificType() {return type;}
+    /**
+     * @return {@code true} se il player è in grado di attaccare, {@code false} altrimenti
+     */
+    public boolean canAttack() {return canAttack;}
+
+    public void setCanAttack(boolean canAttack) {this.canAttack = canAttack;}
 
     @Override
-    public CommonEntityType getGenericType() {return super.getSpecificType();}
+    public EntityType getType() {return type;}
+
+    @Override
+    public EntityType getGenericType() {return super.getType();}
 
     @Override
     public String toString() {return type.toString();}
 
-    public enum Type implements CommonEntityType {
+    private void initStateMachine() {
+        stateMachine.setInitialState(idle);
+
+        idle.linkVertex(move);
+        idle.linkVertex(attack);
+        idle.linkVertex(hit);
+        move.linkVertex(idle);
+        move.linkVertex(hit);
+        attack.linkVertex(idle);
+        attack.linkVertex(hit);
+        hit.linkVertex(idle);
+        hit.linkVertex(dead);
+    }
+
+    @Override
+    public synchronized Vertex getState(EntityState state) {
+        return switch ((State) state) {
+            case MOVE -> move;
+            case ATTACK -> attack;
+            case HIT -> hit;
+            case DEAD -> dead;
+            case IDLE -> idle;
+            case INVINCIBILITY -> invincibility;
+        };
+    }
+
+    public enum State implements EntityState {MOVE, ATTACK, HIT, DEAD, IDLE, INVINCIBILITY}
+
+    public enum Type implements EntityType {
         WRAITH, ZOMBIE, SKELETON, SLIME, BIG_SLIME, BEETLE
     }
 }

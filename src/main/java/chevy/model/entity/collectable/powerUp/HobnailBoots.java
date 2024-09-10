@@ -1,13 +1,13 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class HobnailBoots extends PowerUp {
-    public HobnailBoots(Vector2<Integer> initVelocity) {
-        super(initVelocity, Type.HOBNAIL_BOOTS);
+    public HobnailBoots(Point position) {
+        super(position, Type.HOBNAIL_BOOTS);
 
-        this.occurringPercentage = 100;
-        this.name = "Stivali Chiodati\n";
-        this.description = "Aumenta la presa sul ghiaccio\nimpedendo di scivolarci sopra";
+        occurringPercentage = 100;
+        name = "Stivali Chiodati\n";
+        description = "Aumenta la presa sul ghiaccio\nimpedendo di scivolarci sopra";
     }
 }

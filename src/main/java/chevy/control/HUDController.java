@@ -15,10 +15,8 @@ public final class HUDController {
     public HUDController(HUD hud, HUDView hudView) {
         this.hudView = hudView;
         this.hud = hud;
-
         addKeys(Data.get("progress.keys"));
         addCoins(Data.get("progress.coins"));
-
         hudView.getPlayerInfo().getPlayerFrame().setIconFrame();
         hudView.getPlayerInfo().getPowerUpEquippedView().clear();
     }
@@ -30,7 +28,7 @@ public final class HUDController {
         }
     }
 
-    public void changeShield(int shield) {
+    void changeShield(int shield) {
         ShieldBar shieldBar = hudView.getPlayerInfo().getShieldBar();
         if (shieldBar.getValue() != shield) {
             shieldBar.setValue(shield);

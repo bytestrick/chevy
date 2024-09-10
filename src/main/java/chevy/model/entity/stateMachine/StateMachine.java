@@ -3,17 +3,15 @@ package chevy.model.entity.stateMachine;
 import chevy.utils.Log;
 
 /**
- * La StateMachine è una macchina a stati finiti (FSM - Finite State Machine) che gestisce le transizioni tra i
+ * La StateMachine è una macchina a stati finiti (FSM - Finite State Machine) che gestisce le
+ * transizioni tra i
  * diversi stati.
  */
 public class StateMachine {
     private Vertex currentVertex;
-    private Vertex previousVertex;
     private Vertex nextVertex;
     private boolean usedWithCanChange;
-    private String stateMachineName; // solo per capire di chi è la stampa
-
-    public StateMachine() { }
+    private String name; // solo per capire di chi è la stampa
 
     /**
      * Cambia lo stato corrente della macchina a stati.
@@ -21,7 +19,7 @@ public class StateMachine {
      * @param state L'enumerazione dello stato a cui passare.
      * @return true se lo stato è cambiato con successo, false altrimenti.
      */
-    public synchronized boolean changeState(CommonState state) {
+    public synchronized boolean changeState(EntityState state) {
         if (currentVertex == null) {
             Log.error("Non è presente uno stato iniziale");
             return false;
@@ -29,8 +27,8 @@ public class StateMachine {
 
         // solo per la stampa
         String logMessage = "";
-        if (stateMachineName != null) {
-            logMessage += stateMachineName + ": " + currentVertex;
+        if (name != null) {
+            logMessage += name + ": " + currentVertex;
         }
 
         if (!usedWithCanChange) {
@@ -38,11 +36,11 @@ public class StateMachine {
         }
 
         if (nextVertex != null) {
-            previousVertex = currentVertex;
+            final Vertex previousVertex = currentVertex;
             currentVertex = nextVertex;
 
             // solo per la stampa
-            if (stateMachineName != null) {
+            if (name != null) {
                 Log.info(logMessage + " -> " + nextVertex);
             }
 
@@ -53,7 +51,7 @@ public class StateMachine {
         }
 
         // solo per la stampa
-        if (stateMachineName != null) {
+        if (name != null) {
             Log.info(logMessage);
         }
 
@@ -66,7 +64,7 @@ public class StateMachine {
      * @param state L'enumerazione dello stato a cui passare.
      * @return true se è possibile cambiare lo stato, false altrimenti.
      */
-    public synchronized boolean canChange(CommonState state) {
+    public synchronized boolean canChange(EntityState state) {
         if (currentVertex == null) {
             Log.error("Non è presente uno stato iniziale");
             return false;
@@ -86,7 +84,7 @@ public class StateMachine {
      * @param state L'enumerazione dello stato a cui passare.
      * @return true se lo stato è cambiato con successo, false altrimenti.
      */
-    public synchronized boolean checkAndChangeState(CommonState state) {
+    public synchronized boolean checkAndChangeState(EntityState state) {
         if (canChange(state)) {
             usedWithCanChange = true;
             changeState(state);
@@ -96,10 +94,6 @@ public class StateMachine {
         return false;
     }
 
-    public synchronized boolean changeToPreviousState() {
-        return changeState(previousVertex.getState());
-    }
-
     public synchronized Vertex getCurrentState() {
         if (currentVertex == null) {
             Log.error("Non è presente uno stato iniziale");
@@ -107,15 +101,15 @@ public class StateMachine {
         return currentVertex;
     }
 
-    public synchronized Vertex getPreviousVertex() { return previousVertex; }
-
     public void setInitialState(Vertex startVertex) {
-        this.currentVertex = startVertex;
-        this.currentVertex.startStateTimer();
+        currentVertex = startVertex;
+        currentVertex.startStateTimer();
     }
 
-    // solo per la stampa
-    public void setStateMachineName(String stateMachineName) {
-        this.stateMachineName = stateMachineName;
-    }
+    /**
+     * Usato nella stanza
+     *
+     * @param name nome dell'entità a cui è associata la StateMachine
+     */
+    public void setName(String name) {this.name = name;}
 }
