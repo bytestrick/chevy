@@ -52,10 +52,11 @@ public final class ArrowView extends AnimatedEntityView {
         AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, type);
 
         if (currentAnimatedSprite != null) {
-            if (currentEnumState == Arrow.State.END && currentVertex.isFinished()) {
-                arrow.setToDraw(false);
-            } else if (!currentAnimatedSprite.isRunning()) {
+            if (!currentAnimatedSprite.isRunning()) {
                 currentAnimatedSprite.restart();
+            }
+            else if (currentEnumState == Arrow.State.END && currentVertex.isFinished()) {
+                arrow.setToDraw(false);
             }
             return currentAnimatedSprite.getCurrentFrame();
         }

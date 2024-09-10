@@ -22,6 +22,7 @@ public class Stair extends Environment {
         this.directions = directions;
         crossable = true;
         shouldUpdate = true;
+        drawLayer = 3;
         initStateMachine();
     }
 
