@@ -13,7 +13,7 @@ import java.util.List;
  * Gestisce l'aggiunta, la rimozione e l'aggiornamento dei proiettili
  */
 public final class ProjectileUpdateController implements Updatable {
-    private static boolean running;
+    private static boolean running, paused;
     /**
      * Controller dei proiettili per gestire gli aggiornamenti specifici dei proiettili
      */
@@ -40,12 +40,15 @@ public final class ProjectileUpdateController implements Updatable {
         this.projectiles = new LinkedList<>();
         projectilesToAdd = projectiles;
         running = true;
+        paused = false;
 
         // Aggiungiamo questo controller agli aggiornamenti gestiti da UpdateManager
         UpdateManager.register(this);
     }
 
     public static void stopUpdate() {running = false;}
+
+    public static void setPaused(boolean paused) {ProjectileUpdateController.paused = paused;}
 
     /**
      * Metodo privato per aggiungere i proiettili alla lista principale. Viene chiamato prima di
@@ -64,17 +67,18 @@ public final class ProjectileUpdateController implements Updatable {
      */
     @Override
     public void update(double delta) {
-        if (running) {
-            addProjectile(); // Aggiunge i proiettili alla lista principale prima dell'iterazione
+        if (paused) {
+            return;
+        }
+        addProjectile(); // Aggiunge i proiettili alla lista principale prima dell'iterazione
 
-            Iterator<Projectile> it = projectiles.iterator();
-            while (it.hasNext()) {
-                Projectile projectile = it.next();
-                projectileController.handleInteraction(Interaction.UPDATE, projectile, null); //
-                // Gestisce l'aggiornamento del proiettile
-                if (projectile.isCollision()) { // Se il proiettile collide, si rimuove dalla lista
-                    it.remove();
-                }
+        Iterator<Projectile> it = projectiles.iterator();
+        while (it.hasNext()) {
+            Projectile projectile = it.next();
+            projectileController.handleInteraction(Interaction.UPDATE, projectile, null); //
+            // Gestisce l'aggiornamento del proiettile
+            if (projectile.isCollision()) { // Se il proiettile collide, si rimuove dalla lista
+                it.remove();
             }
         }
     }

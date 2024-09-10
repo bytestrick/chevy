@@ -137,6 +137,8 @@ final class PowerUpController {
                 }
                 default -> {}
             }
+            EnemyUpdateController.setPaused(false);
+            ProjectileUpdateController.setPaused(false);
         }
     }
 
@@ -149,12 +151,14 @@ final class PowerUpController {
         } else {
             if (chamber.getDirectionToHitPlayer(powerUp) != null) {
                 if (powerUp.changeState(PowerUp.State.SELECTED)) {
-                    EnemyUpdateController.stopUpdate();
-                    ProjectileUpdateController.stopUpdate();
+                    EnemyUpdateController.setPaused(true);
+                    ProjectileUpdateController.setPaused(true);
                     hudController.PowerUpText(powerUp);
                 }
             } else if (powerUp.checkAndChangeState(PowerUp.State.DESELECTED)) {
                 hudController.hidePowerUpText();
+                EnemyUpdateController.setPaused(false);
+                ProjectileUpdateController.setPaused(false);
             }
             powerUp.checkAndChangeState(PowerUp.State.IDLE);
         }
