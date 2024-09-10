@@ -39,7 +39,7 @@ public abstract class Enemy extends LiveEntity {
         hit = new Vertex(State.HIT, hitDuration);
         dead = new Vertex(State.DEAD, .3f);
 
-        drawLayer = 2;
+        drawLayer = 3;
         initStateMachine();
     }
 
