@@ -448,6 +448,7 @@ public final class PlayerController implements Update {
      * @param damage la quantità di danno da applicare
      */
     private void hitPlayer(int damage) {
+        Sound.play(Sound.Effect.DAMAGE);
         PowerUp agility = player.getOwnedPowerUp(PowerUp.Type.AGILITY);
         boolean dodged = false;
         if (agility != null) {

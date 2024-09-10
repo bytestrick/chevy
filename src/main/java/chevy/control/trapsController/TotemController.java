@@ -3,6 +3,7 @@ package chevy.control.trapsController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
+import chevy.service.Sound;
 import chevy.utils.Vector2;
 
 public final class TotemController {
@@ -14,6 +15,7 @@ public final class TotemController {
 
     public void update(Totem totem) {
         if (totem.checkAndChangeState(Totem.EnumState.SHOT)) {
+            Sound.play(Sound.Effect.ARROW_SWOOSH);
             Arrow arrow = new Arrow(new Vector2<>(totem.getRow(), totem.getCol()), totem.getDirectionShot());
             chamber.addProjectile(arrow);
             chamber.addEntityOnTop(arrow);
