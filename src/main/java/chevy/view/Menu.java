@@ -217,7 +217,6 @@ public final class Menu {
         }
         final Font menuFont = UIManager.getFont("defaultFont").deriveFont(35f);
         Stream.of(quit, play, keys, cost, coins, unlock).forEach(c -> c.setFont(menuFont));
-        // TODO: cambiare le icone chevron con delle icone più belle
         playerCycleNext.setIcon(Load.icon("right-chevron"));
         playerCyclePrev.setIcon(Load.icon("left-chevron"));
         play.setIcon(Load.icon("Play"));
