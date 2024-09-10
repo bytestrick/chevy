@@ -375,9 +375,9 @@ public final class PlayerController implements Updatable {
 
                 Data.increment("stats.deaths.total.count");
                 switch (player.getType()) {
-                    case KNIGHT -> Data.increment("stats.deaths.knight.count");
-                    case NINJA -> Data.increment("stats.deaths.ninja.count");
-                    case ARCHER -> Data.increment("stats.deaths.archer.count");
+                    case KNIGHT -> Data.increment("stats.deaths.characters.knight.count");
+                    case NINJA -> Data.increment("stats.deaths.characters.ninja.count");
+                    case ARCHER -> Data.increment("stats.deaths.characters.archer.count");
                 }
 
                 gamePanel.playerDeathDialog();
