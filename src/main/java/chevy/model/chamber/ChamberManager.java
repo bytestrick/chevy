@@ -26,7 +26,7 @@ import java.net.URL;
  * Gestisce l'insieme di {@link Chamber} nel gioco
  */
 public final class ChamberManager {
-    public static final int NUMBER_OF_CHAMBERS = 6;
+    public static final int NUMBER_OF_CHAMBERS = 10;
     private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
     /** Indice della stanza corrente nel gioco. */
     private static int currentChamberIndex;
