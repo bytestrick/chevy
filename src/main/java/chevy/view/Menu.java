@@ -130,7 +130,7 @@ public final class Menu {
             }
         });
 
-        initializeComponents();
+        initUI();
         loadCharactersSprites();
         setPlayerType(playerType);
 
@@ -183,11 +183,29 @@ public final class Menu {
 
     public void keyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getKeyCode()) {
-            case KeyEvent.VK_ENTER -> playAction();
-            case KeyEvent.VK_ESCAPE -> window.quitAction();
-            case KeyEvent.VK_RIGHT -> playerCycleNextAction();
-            case KeyEvent.VK_LEFT -> playerCyclePrevAction();
+            case KeyEvent.VK_ENTER -> {
+                if (!currentPlayerLocked) {
+                    play.requestFocus();
+                    playAction();
+                } else {
+                    Sound.play(Sound.Effect.STOP);
+                }
+            }
+            case KeyEvent.VK_ESCAPE -> {
+                Sound.play(Sound.Effect.BUTTON);
+                quit.requestFocus();
+                window.quitAction();
+            }
+            case KeyEvent.VK_RIGHT -> {
+                playerCycleNext.requestFocus();
+                playerCycleNextAction();
+            }
+            case KeyEvent.VK_LEFT -> {
+                playerCyclePrev.requestFocus();
+                playerCyclePrevAction();
+            }
         }
+        SwingUtilities.invokeLater(window::requestFocus);
     }
 
     /**
@@ -206,7 +224,7 @@ public final class Menu {
     /**
      * Procedura del costruttore: costruzione dell'interfaccia
      */
-    private void initializeComponents() {
+    private void initUI() {
         root.setBackground(new Color(33, 6, 47));
         levelSelector.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         levelSelector.setRenderer(new LevelSelectorRenderer());
