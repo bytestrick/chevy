@@ -2,18 +2,23 @@ package chevy.model.entity.dynamicEntity;
 
 import chevy.model.entity.Entity;
 import chevy.utils.Utils;
-import chevy.utils.Vector2;
 
+import java.awt.Point;
+
+/**
+ * Punti cardinali
+ */
 public enum Direction {
-    DOWN(new Vector2<>(1, 0)),
-    LEFT(new Vector2<>(0, -1)),
-    RIGHT(new Vector2<>(0, 1)),
-    UP(new Vector2<>(-1, 0));
+    UP(0, -1),
+    RIGHT(1, 0),
+    DOWN(0, 1),
+    LEFT(-1, 0);
 
-    private final Vector2<Integer> direction;
+    public final int x, y;
 
-    Direction(Vector2<Integer> direction) {
-        this.direction = direction;
+    Direction(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public static Direction getRandom() {
@@ -25,32 +30,38 @@ public enum Direction {
         return positionToDirection(a.getPosition(), b.getPosition());
     }
 
-    public static Direction positionToDirection(Vector2<Integer> a, Vector2<Integer> b) {
-        int i = b.first - a.first;
-        int j = b.second - a.second;
+    public static Direction positionToDirection(Point a, Point b) {
+        final int x = b.x - a.x, y = b.y - a.y;
 
-        if (i == 1 && j == 0) {
-            return DOWN;
-        } else if (i == -1 && j == 0) {
+        if (x == -1 && y == 0) {
             return UP;
-        } else if (i == 0 && j == 1) {
+        } else if (x == 0 && y == 1) {
             return RIGHT;
-        } else if (i == 0 && j == -1) {
+        } else if (x == 1 && y == 0) {
+            return DOWN;
+        } else if (x == 0 && y == -1) {
             return LEFT;
         }
         return null;
     }
 
+    /**
+     * Avanza una posizione di una cella nella direzione corrente
+     *
+     * @param position posizione corrente
+     * @return la posizione successiva
+     */
+    public Point advance(Point position) {
+        position.translate(x, y);
+        return position;
+    }
+
     public Direction getOpposite() {
         return switch (this) {
             case UP -> DOWN;
-            case DOWN -> UP;
             case LEFT -> RIGHT;
+            case DOWN -> UP;
             case RIGHT -> LEFT;
         };
     }
-
-    public Integer col() {return direction.second;}
-
-    public Integer row() {return direction.first;}
 }

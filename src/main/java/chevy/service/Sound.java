@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * Effetti sonori e musica del gioco
+ * Effetti sonori e musica
  */
 public final class Sound {
     private static final Clip[] effects = new Clip[Effect.values().length];
@@ -157,6 +157,9 @@ public final class Sound {
         }
     }
 
+    /**
+     * Mette in pausa la musica del menù
+     */
     public static void stopLoop() {
         if (currentLoop != null) {
             currentLoop.stop();

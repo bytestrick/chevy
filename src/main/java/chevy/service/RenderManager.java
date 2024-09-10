@@ -1,33 +1,33 @@
 package chevy.service;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Aggiorna i componenti di {@link chevy.view}
  */
-public class RenderManager {
-    private static final List<Render> renderList = new LinkedList<>();
-    private static final List<Render> toAdd = new LinkedList<>();
+public final class RenderManager {
+    private static final Collection<Renderable> renderables = new LinkedList<>();
+    private static final Collection<Renderable> queued = new LinkedList<>();
 
-    public static void addToRender(Render r) {
-        synchronized (toAdd) {
-            toAdd.add(r);
+    public static void register(Renderable r) {
+        synchronized (queued) {
+            queued.add(r);
         }
     }
 
-    public static void render(double delta) {
-        synchronized (toAdd) {
-            renderList.addAll(toAdd);
-            toAdd.clear();
+    static void render(double delta) {
+        synchronized (queued) {
+            renderables.addAll(queued);
+            queued.clear();
         }
 
-        Iterator<Render> it = renderList.iterator();
+        Iterator<Renderable> it = renderables.iterator();
         while (it.hasNext()) {
-            Render currentRenderElement = it.next();
-            currentRenderElement.render(delta);
-            if (currentRenderElement.renderFinished()) {
+            Renderable renderable = it.next();
+            renderable.render(delta);
+            if (renderable.renderFinished()) {
                 it.remove();
             }
         }

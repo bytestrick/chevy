@@ -2,164 +2,154 @@ package chevy.view.entities.environmet;
 
 import chevy.model.entity.staticEntity.environment.Ground;
 import chevy.utils.Load;
-import chevy.utils.Vector2;
 import chevy.view.entities.EntityView;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public final class GroundView extends EntityView {
-    private static final String TILES_RESOURCES = "/sprites/chamberTiles/groundTiles/";
-    private static BufferedImage CENTRAL = null;
-    private static BufferedImage LEFT = null;
-    private static BufferedImage RIGHT = null;
-    private static BufferedImage TOP = null;
-    private static BufferedImage INTERIOR_CORNER_TOP_LEFT = null;
-    private static BufferedImage INTERIOR_CORNER_TOP_RIGHT = null;
-    private static BufferedImage EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM = null;
-    private static BufferedImage EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT = null;
-    private static BufferedImage EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM = null;
-    private static BufferedImage EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT = null;
-    private static BufferedImage EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT = null;
-    private static BufferedImage EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT = null;
-    private static BufferedImage EXTERNAL_CORNER_BOTTOM_RIGHT = null;
-    private static BufferedImage CENTRAL_PATTERNED_2 = null;
-    private static BufferedImage CENTRAL_PATTERNED = null;
-    private static BufferedImage CENTRAL_BROKEN_2 = null;
-    private static BufferedImage CENTRAL_BROKEN = null;
-    private static BufferedImage CENTRAL_BROKEN_3 = null;
-    private static BufferedImage EXTERNAL_CORNER_BOTTOM_LEFT = null;
+    private static final String RES = "/sprites/chamberTiles/groundTiles/";
+    private static BufferedImage middle, left, right, top, topLeftInnerCorner,
+            topRightInnerCorner, externalCornerBottomRightSideBottom,
+            externalCornerBottomRightSideRight, externalCornerBottomLeftSideBottom,
+            externalCornerBottomLeftSideLeft, externalCornerTopRightSideRight,
+            externalCornerTopLeftSideLeft, externalCornerBottomRight, centralPatterned2,
+            centralPatterned, centralBroken2, centralBroken, centralBroken3,
+            externalCornerBottomLeft;
     private final Ground ground;
-    private final Vector2<Double> position = new Vector2<>(0d, 0d);
+    private final Point2D.Double position = new Point2D.Double(0, 0);
 
-    public GroundView(Ground ground) {
-        this.ground = ground;
-    }
+    public GroundView(Ground ground) {this.ground = ground;}
 
     @Override
-    public BufferedImage getCurrentFrame() {
-        return switch (ground.getSpecificType()) {
+    public BufferedImage getFrame() {
+        return switch (ground.getType()) {
             case CENTRAL -> {
-                if (CENTRAL == null) {
-                    CENTRAL = Load.image(TILES_RESOURCES + "central.png");
+                if (middle == null) {
+                    middle = Load.image(RES + "middle.png");
                 }
-                yield CENTRAL;
+                yield middle;
             }
             case LEFT -> {
-                if (LEFT == null) {
-                    LEFT = Load.image(TILES_RESOURCES + "left.png");
+                if (left == null) {
+                    left = Load.image(RES + "left.png");
                 }
-                yield LEFT;
+                yield left;
             }
             case RIGHT -> {
-                if (RIGHT == null) {
-                    RIGHT = Load.image(TILES_RESOURCES + "right.png");
+                if (right == null) {
+                    right = Load.image(RES + "right.png");
                 }
-                yield RIGHT;
+                yield right;
             }
             case TOP -> {
-                if (TOP == null) {
-                    TOP = Load.image(TILES_RESOURCES + "top.png");
+                if (top == null) {
+                    top = Load.image(RES + "top.png");
                 }
-                yield TOP;
+                yield top;
             }
             case INTERIOR_CORNER_TOP_LEFT -> {
-                if (INTERIOR_CORNER_TOP_LEFT == null) {
-                    INTERIOR_CORNER_TOP_LEFT = Load.image(TILES_RESOURCES + "interiorCornerTopLeft.png");
+                if (topLeftInnerCorner == null) {
+                    topLeftInnerCorner = Load.image(RES + "topLeftInnerCorner.png");
                 }
-                yield INTERIOR_CORNER_TOP_LEFT;
+                yield topLeftInnerCorner;
             }
             case INTERIOR_CORNER_TOP_RIGHT -> {
-                if (INTERIOR_CORNER_TOP_RIGHT == null) {
-                    INTERIOR_CORNER_TOP_RIGHT = Load.image(TILES_RESOURCES + "interiorCornerTopRight.png");
+                if (topRightInnerCorner == null) {
+                    topRightInnerCorner = Load.image(RES + "topRightInnerCorner.png");
                 }
-                yield INTERIOR_CORNER_TOP_RIGHT;
+                yield topRightInnerCorner;
             }
             case EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM -> {
-                if (EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM == null) {
-                    EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM = Load.image(TILES_RESOURCES + "externalCornerBottomRightSideBottom.png");
+                if (externalCornerBottomRightSideBottom == null) {
+                    externalCornerBottomRightSideBottom = Load.image(RES +
+                            "externalCornerBottomRightSideBottom.png");
                 }
-                yield EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_BOTTOM;
+                yield externalCornerBottomRightSideBottom;
             }
             case EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT -> {
-                if (EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT == null) {
-                    EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT = Load.image(TILES_RESOURCES + "externalCornerBottomRightSideRight.png");
+                if (externalCornerBottomRightSideRight == null) {
+                    externalCornerBottomRightSideRight = Load.image(RES +
+                            "externalCornerBottomRightSideRight.png");
                 }
-                yield EXTERNAL_CORNER_BOTTOM_RIGHT_SIDE_RIGHT;
+                yield externalCornerBottomRightSideRight;
             }
             case EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM -> {
-                if (EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM == null) {
-                    EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM = Load.image(TILES_RESOURCES + "externalCornerBottomLeftSideBottom.png");
+                if (externalCornerBottomLeftSideBottom == null) {
+                    externalCornerBottomLeftSideBottom = Load.image(RES +
+                            "externalCornerBottomLeftSideBottom.png");
                 }
-                yield EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_BOTTOM;
+                yield externalCornerBottomLeftSideBottom;
             }
             case EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT -> {
-                if (EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT == null) {
-                    EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT = Load.image(TILES_RESOURCES + "externalCornerBottomLeftSideLeft.png");
+                if (externalCornerBottomLeftSideLeft == null) {
+                    externalCornerBottomLeftSideLeft = Load.image(RES +
+                            "externalCornerBottomLeftSideLeft.png");
                 }
-                yield EXTERNAL_CORNER_BOTTOM_LEFT_SIDE_LEFT;
+                yield externalCornerBottomLeftSideLeft;
             }
             case EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT -> {
-                if (EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT == null) {
-                    EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT = Load.image(TILES_RESOURCES + "externalCornerTopRightSideRight.png");
+                if (externalCornerTopRightSideRight == null) {
+                    externalCornerTopRightSideRight = Load.image(RES +
+                            "externalCornerTopRightSideRight.png");
                 }
-                yield EXTERNAL_CORNER_TOP_RIGHT_SIDE_RIGHT;
+                yield externalCornerTopRightSideRight;
             }
             case EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT -> {
-                if (EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT == null) {
-                    EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT = Load.image(TILES_RESOURCES + "externalCornerTopLeftSideLeft.png");
+                if (externalCornerTopLeftSideLeft == null) {
+                    externalCornerTopLeftSideLeft = Load.image(RES +
+                            "externalCornerTopLeftSideLeft.png");
                 }
-                yield EXTERNAL_CORNER_TOP_LEFT_SIDE_LEFT;
+                yield externalCornerTopLeftSideLeft;
             }
             case EXTERNAL_CORNER_BOTTOM_RIGHT -> {
-                if (EXTERNAL_CORNER_BOTTOM_RIGHT == null) {
-                    EXTERNAL_CORNER_BOTTOM_RIGHT = Load.image(TILES_RESOURCES + "externalCornerBottomRight.png");
+                if (externalCornerBottomRight == null) {
+                    externalCornerBottomRight = Load.image(RES + "externalCornerBottomRight.png");
                 }
-                yield EXTERNAL_CORNER_BOTTOM_RIGHT;
+                yield externalCornerBottomRight;
             }
             case CENTRAL_PATTERNED_2 -> {
-                if (CENTRAL_PATTERNED_2 == null) {
-                    CENTRAL_PATTERNED_2 = Load.image(TILES_RESOURCES + "centralPatterned2.png");
+                if (centralPatterned2 == null) {
+                    centralPatterned2 = Load.image(RES + "centralPatterned2.png");
                 }
-                yield CENTRAL_PATTERNED_2;
+                yield centralPatterned2;
             }
             case CENTRAL_PATTERNED -> {
-                if (CENTRAL_PATTERNED == null) {
-                    CENTRAL_PATTERNED = Load.image(TILES_RESOURCES + "centralPatterned.png");
+                if (centralPatterned == null) {
+                    centralPatterned = Load.image(RES + "centralPatterned.png");
                 }
-                yield CENTRAL_PATTERNED;
+                yield centralPatterned;
             }
             case CENTRAL_BROKEN_2 -> {
-                if (CENTRAL_BROKEN_2 == null) {
-                    CENTRAL_BROKEN_2 = Load.image(TILES_RESOURCES + "centralBroken3.png");
+                if (centralBroken2 == null) {
+                    centralBroken2 = Load.image(RES + "centralBroken3.png");
                 }
-                yield CENTRAL_BROKEN_2;
+                yield centralBroken2;
             }
             case CENTRAL_BROKEN -> {
-                if (CENTRAL_BROKEN == null) {
-                    CENTRAL_BROKEN = Load.image(TILES_RESOURCES + "centralBroken.png");
+                if (centralBroken == null) {
+                    centralBroken = Load.image(RES + "centralBroken.png");
                 }
-                yield CENTRAL_BROKEN;
+                yield centralBroken;
             }
             case EXTERNAL_CORNER_BOTTOM_LEFT -> {
-                if (EXTERNAL_CORNER_BOTTOM_LEFT == null) {
-                    EXTERNAL_CORNER_BOTTOM_LEFT = Load.image(TILES_RESOURCES + "externalCornerBottomLeft.png");
+                if (externalCornerBottomLeft == null) {
+                    externalCornerBottomLeft = Load.image(RES + "externalCornerBottomLeft.png");
                 }
-                yield EXTERNAL_CORNER_BOTTOM_LEFT;
+                yield externalCornerBottomLeft;
             }
             case CENTRAL_BROKEN_3 -> {
-                if (CENTRAL_BROKEN_3 == null) {
-                    CENTRAL_BROKEN_3 = Load.image(TILES_RESOURCES + "centralBroken3.png");
+                if (centralBroken3 == null) {
+                    centralBroken3 = Load.image(RES + "centralBroken3.png");
                 }
-                yield CENTRAL_BROKEN_3;
+                yield centralBroken3;
             }
-            default -> null;
         };
     }
 
     @Override
-    public Vector2<Double> getCurrentViewPosition() {
-        position.changeFirst((double) ground.getCol());
-        position.changeSecond((double) ground.getRow());
+    public Point2D.Double getViewPosition() {
+        position.setLocation(ground.getPosition());
         return position;
     }
 }

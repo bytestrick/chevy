@@ -3,10 +3,11 @@ package chevy.utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 public final class Utils {
-    /** Generatore di numeri casuali */
-    public static final Random random = new Random();
+    /** Generatore di numeri casuali unico */
+    public static final RandomGenerator random = new Random();
 
     /**
      * Questa funzione prende un valore e un intervallo definito da min e max, e restituisce un

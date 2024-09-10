@@ -14,7 +14,7 @@ public final class Log {
      * @param message il messaggio diagnostico che descrive l'evento
      */
     public static void error(String message) {
-        if (logLevel.compareTo(Level.ERROR) >= 0) {
+        if (Level.ERROR.compareTo(logLevel) >= 0) {
             System.err.println("\033[91;1m[x]\033[0m " + message);
         }
     }
@@ -26,7 +26,7 @@ public final class Log {
      * @param message il messaggio diagnostico che descrive l'evento
      */
     public static void warn(String message) {
-        if (logLevel.compareTo(Level.WARN) >= 0) {
+        if (Level.WARN.compareTo(logLevel) >= 0) {
             System.out.println("\033[93;1m[!]\033[0m " + message);
         }
     }
@@ -38,18 +38,16 @@ public final class Log {
      * @param message il messaggio diagnostico che descrive l'evento
      */
     public static void info(String message) {
-        if (logLevel.compareTo(Level.INFO) >= 0) {
+        if (Level.INFO.compareTo(logLevel) >= 0) {
             System.out.println("\033[90;1m[i]\033[0m " + message);
         }
     }
 
     /**
-     * Livello di verbosità del logging.
+     * Granularità della diagnostica
      * <p>
      * {@link #INFO} è il più verboso, {@link #ERROR} il più terso. {@link #OFF} lo disabilita
      * completamente.
      */
-    public enum Level {
-        OFF, ERROR, WARN, INFO
-    }
+    public enum Level {OFF, INFO, WARN, ERROR}
 }

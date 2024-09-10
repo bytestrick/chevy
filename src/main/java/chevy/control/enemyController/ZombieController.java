@@ -14,18 +14,20 @@ import chevy.service.Sound;
 import chevy.utils.Log;
 
 /**
- * Gestisce il comportamento e le interazioni del nemico Zombie all'interno del gioco. Gestisce come lo Zombie
- * risponde agli attacchi del giocatore,
+ * Gestisce il comportamento e le interazioni del nemico {@link Zombie} all'interno del gioco.
+ * Gestisce come lo Zombie risponde agli attacchi del giocatore,
  * ai colpi dei proiettili e coordina il suo stato e i suoi movimenti.
  */
-public final class ZombieController {
+final class ZombieController {
     /**
-     * Riferimento alla stanza di gioco in cui si trova lo Zombie. Utilizzato per verificare le posizioni,
+     * Riferimento alla stanza di gioco in cui si trova lo Zombie. Utilizzato per verificare le
+     * posizioni,
      * aggiungere/rimuovere entità.
      */
     private final Chamber chamber;
     /**
-     * Riferimento al controller del giocatore, utilizzato per gestire le interazioni tra lo Zombie e il giocatore.
+     * Riferimento al controller del giocatore, utilizzato per gestire le interazioni tra lo
+     * Zombie e il giocatore.
      */
     private final PlayerController playerController;
 
@@ -33,7 +35,7 @@ public final class ZombieController {
      * @param chamber          riferimento della stanza di gioco
      * @param playerController riferimento al controllo del giocatore
      */
-    public ZombieController(Chamber chamber, PlayerController playerController) {
+    ZombieController(Chamber chamber, PlayerController playerController) {
         this.chamber = chamber;
         this.playerController = playerController;
     }
@@ -44,15 +46,44 @@ public final class ZombieController {
      * @param player il giocatore che interagisce con lo Zombie
      * @param zombie lo Zombie che subisce l'interazione
      */
-    public void playerInInteraction(Player player, Zombie zombie) {
-        switch (player.getCurrentState()) {
-            // Se il giocatore è in stato di attacco, lo Zombie viene danneggiato in base al danno del giocatore.
-            case Player.State.ATTACK -> {
-                Sound.play(Sound.Effect.ZOMBIE_HIT);
-                zombie.setDirection(Direction.positionToDirection(player, zombie));
-                hitZombie(zombie, -1 * player.getDamage());
-            }
-            default -> Log.warn("Lo ZombieController non gestisce questa azione: " + player.getCurrentState());
+    static void playerInInteraction(Player player, Zombie zombie) {
+        // Se il giocatore è in stato di attacco, lo Zombie viene danneggiato in base al danno
+        // del giocatore.
+        if (player.getState().equals(Player.State.ATTACK)) {
+            Sound.play(Sound.Effect.ZOMBIE_HIT);
+            zombie.setDirection(Direction.positionToDirection(player, zombie));
+            hitZombie(zombie, -1 * player.getDamage());
+        } else {
+            Log.warn("Lo ZombieController non gestisce questa azione: " + player.getState());
+        }
+    }
+
+    /**
+     * Gestisce le interazioni dello {@link Zombie} con i proiettili
+     *
+     * @param projectile il proiettile che colpisce lo Zombie
+     * @param zombie     lo Zombie che subisce l'interazione
+     */
+    static void projectileInteraction(Projectile projectile, Zombie zombie) {
+        zombie.setDirection(Direction.positionToDirection(projectile, zombie));
+        hitZombie(zombie, -1 * projectile.getDamage());
+    }
+
+    /**
+     * Applica danno allo {@link Zombie} e aggiorna il suo stato se possibile
+     *
+     * @param zombie lo Zombie che subisce il danno
+     * @param damage il danno da applicare
+     */
+    private static void hitZombie(Zombie zombie, int damage) {
+        if (zombie.changeState(Zombie.State.HIT)) {
+            zombie.decreaseHealthShield(damage);
+        }
+    }
+
+    static void trapInteraction(Trap trap, Zombie zombie) {
+        if (trap.getType().equals(Trap.Type.SPIKED_FLOOR)) {
+            hitZombie(zombie, -1 * trap.getDamage());
         }
     }
 
@@ -61,7 +92,7 @@ public final class ZombieController {
      *
      * @param zombie lo Zombie da aggiornare
      */
-    public void update(Zombie zombie) {
+    void update(Zombie zombie) {
         if (zombie.isDead()) {
             if (zombie.getState(Zombie.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(zombie);
@@ -107,38 +138,6 @@ public final class ZombieController {
 
         if (zombie.checkAndChangeState(Zombie.State.IDLE)) {
             zombie.setCanAttack(false);
-        }
-    }
-
-    /**
-     * Gestisce le interazioni dello Zombie con i proiettili.
-     *
-     * @param projectile il proiettile che colpisce lo Zombie
-     * @param zombie     lo Zombie che subisce l'interazione
-     */
-    public void projectileInteraction(Projectile projectile, Zombie zombie) {
-        zombie.setDirection(Direction.positionToDirection(projectile, zombie));
-        hitZombie(zombie, -1 * projectile.getDamage());
-    }
-
-    /**
-     * Applica danno allo Zombie e aggiorna il suo stato se possibile.
-     *
-     * @param zombie lo Zombie che subisce il danno
-     * @param damage il danno da applicare
-     */
-    private void hitZombie(Zombie zombie, int damage) {
-        if (zombie.changeState(Zombie.State.HIT)) {
-            zombie.decreaseHealthShield(damage);
-        }
-    }
-
-    public void trapInteraction(Trap trap, Zombie zombie) {
-        switch (trap.getSpecificType()) {
-            case Trap.Type.SPIKED_FLOOR -> {
-                hitZombie(zombie, -1 * trap.getDamage());
-            }
-            default -> { }
         }
     }
 }

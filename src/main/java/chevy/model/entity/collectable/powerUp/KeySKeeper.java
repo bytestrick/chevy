@@ -1,21 +1,19 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class KeySKeeper extends PowerUp {
-    private final float increaseDropPercentage = .3f;
+    private static final float INCREASED_DROP_PROBABILITY = .3f;
 
-    public KeySKeeper(Vector2<Integer> initVelocity) {
-        super(initVelocity, Type.KEY_S_KEEPER);
+    public KeySKeeper(Point position) {
+        super(position, Type.KEY_S_KEEPER);
 
-        this.inStock = 1;
-        this.occurringPercentage = 100;
-        this.name = "Guardiano delle chiavi\n";
-        this.description =
-                "I nemici aumentano la probabilità di\nrilasciare chiavi del " + (int) (increaseDropPercentage * 100) + "%";
+        inStock = 1;
+        occurringPercentage = 100;
+        name = "Guardiano delle chiavi\n";
+        description = "I nemici aumentano la probabilità di\nrilasciare chiavi del "
+                + Math.round(INCREASED_DROP_PROBABILITY * 100) + "%";
     }
 
-    public float getIncreaseDropPercentage() {
-        return increaseDropPercentage;
-    }
+    public static float getIncreasedDropProbability() {return INCREASED_DROP_PROBABILITY;}
 }

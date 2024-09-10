@@ -1,35 +1,27 @@
 package chevy.model.entity.staticEntity.environment;
 
-import chevy.model.entity.CommonEntityType;
 import chevy.model.entity.Entity;
-import chevy.utils.Vector2;
+import chevy.model.entity.EntityType;
+
+import java.awt.Point;
 
 public abstract class Environment extends Entity {
     private final Type type;
 
-    public Environment(Vector2<Integer> initVelocity, Type type) {
-        super(initVelocity, Entity.Type.ENVIRONMENT);
+    public Environment(Point position, Type type) {
+        super(position, Entity.Type.ENVIRONMENT);
         this.type = type;
-
-        this.drawLayer = 1;
+        drawLayer = 1;
     }
 
     @Override
-    public CommonEntityType getSpecificType() {
-        return type;
-    }
+    public EntityType getType() {return type;}
 
     @Override
-    public CommonEntityType getGenericType() {
-        return super.getSpecificType();
-    }
+    public EntityType getGenericType() {return super.getType();}
 
     @Override
-    public String toString() {
-        return type.toString();
-    }
+    public String toString() {return type.toString();}
 
-    public enum Type implements CommonEntityType {
-        GROUND, WALL, STAIR, BARRIER, TRAP, CHEST
-    }
+    public enum Type implements EntityType {GROUND, WALL, STAIR, TRAP, CHEST}
 }

@@ -66,8 +66,13 @@ public final class WindowController extends KeyAdapter implements WindowListener
         switch (window.getScene()) {
             case PLAYING -> playerController.keyPressed(keyEvent);
             case TUTORIAL -> window.getGamePanel().getTutorial().keyPressed(keyEvent);
+            case MENU -> window.getMenu().keyPressed(keyEvent);
+            case OPTIONS -> window.getOptions().keyPressed(keyEvent);
         }
     }
+
+    @Override
+    public void windowClosing(WindowEvent windowEvent) {window.quitAction();}
 
     public void setPlayerController(PlayerController playerController) {
         this.playerController = playerController;
@@ -75,9 +80,6 @@ public final class WindowController extends KeyAdapter implements WindowListener
 
     @Override
     public void windowOpened(WindowEvent windowEvent) {}
-
-    @Override
-    public void windowClosing(WindowEvent windowEvent) {window.quitAction();}
 
     @Override
     public void windowClosed(WindowEvent windowEvent) {}

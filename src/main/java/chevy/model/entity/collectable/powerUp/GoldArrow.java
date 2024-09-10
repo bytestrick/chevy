@@ -1,20 +1,18 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
 public final class GoldArrow extends PowerUp {
-    private final int increaseDamage = 2;
+    private static final int DAMAGE_BOOST = 2;
 
-    public GoldArrow(Vector2<Integer> initVelocity) {
-        super(initVelocity, Type.GOLD_ARROW);
+    public GoldArrow(Point position) {
+        super(position, Type.GOLD_ARROW);
 
-        this.inStock = 1;
-        this.occurringPercentage = 100;
-        this.name = "Frecce Dorate\n";
-        this.description = "Aumenta il danno delle frecce di +" + increaseDamage;
+        inStock = 1;
+        occurringPercentage = 100;
+        name = "Frecce Dorate\n";
+        description = "Aumenta il danno delle frecce di +" + DAMAGE_BOOST;
     }
 
-    public int getIncreaseDamage() {
-        return increaseDamage;
-    }
+    public static int getDamageBoost() {return DAMAGE_BOOST;}
 }
