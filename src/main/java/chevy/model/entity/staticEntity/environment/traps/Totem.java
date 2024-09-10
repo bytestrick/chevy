@@ -11,8 +11,8 @@ public class Totem extends Trap {
     private final Vertex shot = new Vertex(State.SHOT, 3f);
     private final Vertex reload = new Vertex(State.RELOAD, 5f);
 
-    public Totem(Point initVelocity, Direction shotDirection) {
-        super(initVelocity, Type.TOTEM);
+    public Totem(Point position, Direction shotDirection) {
+        super(position, Type.TOTEM);
         this.shotDirection = shotDirection;
         crossable = false;
         shouldUpdate = true;

@@ -70,7 +70,7 @@ public final class ChamberManager {
         while (chamberImage != null) {
             final Dimension size = new Dimension(chamberImage.getWidth(), chamberImage.getHeight());
             if (!chamber.isInitialized()) {
-                chamber.initializeWorld(size);
+                chamber.initWorld(size);
             }
 
             for (int i = 0; i < size.height; ++i) {

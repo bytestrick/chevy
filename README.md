@@ -1,3 +1,5 @@
+![banner](src/main/resources/banner.png)
+
 ### Maven
 
 > [!TIP]

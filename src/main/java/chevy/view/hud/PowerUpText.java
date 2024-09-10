@@ -34,13 +34,13 @@ public final class PowerUpText extends JPanel {
     private String description = "Description";
 
     PowerUpText() {
-        initializeLayout();
-        initializeStyles();
+        initLayout();
+        initStyles();
         setFont();
         setVisible(true);
     }
 
-    private void initializeLayout() {
+    private void initLayout() {
         setOpaque(true);
         setBackground(COLOR_BG);
         SpringLayout springLayout = new SpringLayout();
@@ -62,7 +62,7 @@ public final class PowerUpText extends JPanel {
         add(textPane);
     }
 
-    private void initializeStyles() {
+    private void initStyles() {
         StyleConstants.setAlignment(titleStyle, StyleConstants.ALIGN_CENTER);
         StyleConstants.setForeground(titleStyle, COLOR_TITLE);
 

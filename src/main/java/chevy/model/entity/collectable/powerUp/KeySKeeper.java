@@ -5,8 +5,8 @@ import java.awt.Point;
 public final class KeySKeeper extends PowerUp {
     private static final float INCREASED_DROP_PROBABILITY = .3f;
 
-    public KeySKeeper(Point initVelocity) {
-        super(initVelocity, Type.KEY_S_KEEPER);
+    public KeySKeeper(Point position) {
+        super(position, Type.KEY_S_KEEPER);
 
         inStock = 1;
         occurringPercentage = 100;

@@ -6,8 +6,8 @@ public final class SlimePiece extends PowerUp {
     private static final int NUMBER_OF_SLIMES = 1;
     private static final int DAMAGE_BOOST = 4;
 
-    public SlimePiece(Point initVelocity) {
-        super(initVelocity, Type.SLIME_PIECE);
+    public SlimePiece(Point position) {
+        super(position, Type.SLIME_PIECE);
 
         occurringPercentage = 100;
         name = "Pezzo di Slime\n";

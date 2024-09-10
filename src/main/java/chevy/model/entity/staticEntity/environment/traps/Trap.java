@@ -9,8 +9,8 @@ import java.awt.Point;
 public abstract class Trap extends Environment {
     private final Type type;
 
-    Trap(Point initVelocity, Type type) {
-        super(initVelocity, Environment.Type.TRAP);
+    Trap(Point position, Type type) {
+        super(position, Environment.Type.TRAP);
         this.type = type;
         crossable = true;
     }

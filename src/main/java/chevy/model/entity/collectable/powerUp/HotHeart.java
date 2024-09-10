@@ -5,8 +5,8 @@ import java.awt.Point;
 public final class HotHeart extends PowerUp {
     private static final int HEALTH_BOOST = 3;
 
-    public HotHeart(Point initVelocity) {
-        super(initVelocity, Type.HOT_HEART);
+    public HotHeart(Point position) {
+        super(position, Type.HOT_HEART);
 
         inStock = 1;
         occurringPercentage = 100;

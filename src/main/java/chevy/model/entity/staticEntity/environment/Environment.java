@@ -8,8 +8,8 @@ import java.awt.Point;
 public abstract class Environment extends Entity {
     private final Type type;
 
-    public Environment(Point initVelocity, Type type) {
-        super(initVelocity, Entity.Type.ENVIRONMENT);
+    public Environment(Point position, Type type) {
+        super(position, Entity.Type.ENVIRONMENT);
         this.type = type;
         drawLayer = 1;
     }

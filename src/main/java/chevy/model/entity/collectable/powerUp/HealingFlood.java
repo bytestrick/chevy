@@ -8,8 +8,8 @@ import java.awt.Point;
 public final class HealingFlood extends PowerUp {
     private static final float INCREASED_DROP_PROBABILITY = .3f;
 
-    public HealingFlood(Point initVelocity) {
-        super(initVelocity, Type.HEALING_FLOOD);
+    public HealingFlood(Point position) {
+        super(position, Type.HEALING_FLOOD);
 
         inStock = 1;
         occurringPercentage = 100;

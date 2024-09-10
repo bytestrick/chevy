@@ -64,7 +64,7 @@ public final class Chamber {
     /**
      * @param size numero di colonne e righe della griglia di gioco
      */
-    void initializeWorld(Dimension size) {
+    void initWorld(Dimension size) {
         this.size = size;
         ChamberView.updateSize(size);
 

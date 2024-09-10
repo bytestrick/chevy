@@ -3,8 +3,8 @@ package chevy.model.entity.collectable.powerUp;
 import java.awt.Point;
 
 public final class AngelRing extends PowerUp {
-    public AngelRing(Point initVelocity) {
-        super(initVelocity, Type.ANGEL_RING);
+    public AngelRing(Point position) {
+        super(position, Type.ANGEL_RING);
 
         inStock = 1;
         occurringPercentage = 100;

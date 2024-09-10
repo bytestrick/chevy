@@ -7,8 +7,8 @@ import java.awt.Point;
 public final class Wall extends Environment {
     private final WallTypes type;
 
-    public Wall(Point initVelocity, WallTypes type) {
-        super(initVelocity, Type.WALL);
+    public Wall(Point position, WallTypes type) {
+        super(position, Type.WALL);
         this.type = type;
     }
 

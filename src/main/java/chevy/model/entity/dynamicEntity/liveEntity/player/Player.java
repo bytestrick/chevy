@@ -12,8 +12,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public abstract class Player extends LiveEntity {
-    final Vertex hit;
-    final Vertex fall;
+    final Vertex hit, fall;
     private final Vertex idle, move, attack, dead, sludge, glide;
     private final Type type;
     private final float speed;
@@ -36,7 +35,7 @@ public abstract class Player extends LiveEntity {
         idle = new Vertex(State.IDLE);
         move = new Vertex(State.MOVE, speed, true);
         attack = new Vertex(State.ATTACK, attackDuration, true);
-        hit = new Vertex(State.HIT, (float) 0.2);
+        hit = new Vertex(State.HIT,.2f);
         dead = new Vertex(State.DEAD, deadDuration);
         sludge = new Vertex(State.SLUDGE, speed);
         glide = new Vertex(State.GLIDE, speed, true);

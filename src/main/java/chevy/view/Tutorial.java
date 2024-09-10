@@ -99,7 +99,7 @@ public final class Tutorial extends JPanel {
         textPane.setEditable(false);
         textPane.setCaret(new NoCaret());
         textPane.setBorder(new EmptyBorder(new Insets(MARGIN, MARGIN, MARGIN, MARGIN)));
-        initializeStyles();
+        initStyles();
         progress.setBorder(new EmptyBorder(new Insets(MARGIN, MARGIN, MARGIN, MARGIN)));
         progress.setFont(font.deriveFont(FONT_SIZE));
         gif.setBorder(new EmptyBorder(new Insets(MARGIN, MARGIN, MARGIN, MARGIN)));
@@ -182,7 +182,7 @@ public final class Tutorial extends JPanel {
         }
     }
 
-    private void initializeStyles() {
+    private void initStyles() {
         StyleConstants.setAlignment(titleStyle, StyleConstants.ALIGN_CENTER);
         StyleConstants.setForeground(titleStyle, TITLE_COLOR);
         StyleConstants.setFontFamily(titleStyle, font.getFamily());
