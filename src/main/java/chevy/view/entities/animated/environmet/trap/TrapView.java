@@ -24,7 +24,7 @@ abstract class TrapView extends AnimatedEntityView {
     public BufferedImage getFrame() {
         final AnimatedSprite animatedSprite = getAnimatedSprite(trap.getState(), null);
         if (animatedSprite != null) {
-            if (animatedSprite.isRunning()) {
+            if (animatedSprite.isNotRunning()) {
                 animatedSprite.restart();
             }
             return animatedSprite.getFrame();

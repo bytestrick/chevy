@@ -190,7 +190,9 @@ public final class Options {
                 case ERROR -> "Errori";
             });
         }
-        logLevel.setSelectedIndex(Log.Level.valueOf(Data.get("options.logLevel")).ordinal());
+        final Log.Level lvl = Log.Level.valueOf(Data.get("options.logLevel"));
+        Log.logLevel = lvl;
+        logLevel.setSelectedIndex(lvl.ordinal());
         logLevel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         showHitBoxes.setSelected(Data.get("options.drawHitBoxes"));

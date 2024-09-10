@@ -137,8 +137,6 @@ final class PowerUpController {
                 }
                 default -> {}
             }
-            EnemyUpdateController.runUpdate();
-            ProjectileUpdateController.runUpdate();
         }
     }
 
@@ -157,8 +155,6 @@ final class PowerUpController {
                 }
             } else if (powerUp.checkAndChangeState(PowerUp.State.DESELECTED)) {
                 hudController.hidePowerUpText();
-                EnemyUpdateController.runUpdate();
-                ProjectileUpdateController.runUpdate();
             }
             powerUp.checkAndChangeState(PowerUp.State.IDLE);
         }

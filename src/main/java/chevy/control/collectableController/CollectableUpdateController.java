@@ -18,7 +18,7 @@ public final class CollectableUpdateController implements Updatable {
     private final CollectableController collectableController;
     private final Collection<Collectable> collectables = new ArrayList<>();
     private final List<Collectable> collectablesToAdd;
-    private boolean updateFinished;
+    private boolean running;
 
     /**
      * @param collectableController il controller degli oggetti collezionabili responsabile della
@@ -30,6 +30,7 @@ public final class CollectableUpdateController implements Updatable {
                                        List<Collectable> collectables) {
         this.collectableController = collectableController;
         collectablesToAdd = collectables;
+        running = true;
 
         // Aggiunge questo controller al gestore degli aggiornamenti.
         UpdateManager.register(this);
@@ -63,8 +64,8 @@ public final class CollectableUpdateController implements Updatable {
         }
     }
 
-    public void stopUpdate() {updateFinished = true;}
+    public void stopUpdate() {running = false;}
 
     @Override
-    public boolean updateFinished() {return updateFinished;}
+    public boolean updateFinished() {return !running;}
 }

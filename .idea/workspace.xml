@@ -8,19 +8,21 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2bf1fbcc-0f2c-4bf6-8ca2-c4be4845c916" name="Changes" comment="Pulizia">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+    <list default="true" id="2bf1fbcc-0f2c-4bf6-8ca2-c4be4845c916" name="Changes" comment="Rimosso Vector2">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chevy/control/collectableController/CollectableUpdateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/control/collectableController/CollectableUpdateController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chevy/control/collectableController/PowerUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/control/collectableController/PowerUpController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chevy/control/enemyController/EnemyUpdateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/control/enemyController/EnemyUpdateController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chevy/control/environmentController/ChestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/control/environmentController/ChestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chevy/control/environmentController/EnvironmentUpdateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/control/environmentController/EnvironmentUpdateController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chevy/control/projectileController/ProjectileUpdateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/control/projectileController/ProjectileUpdateController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chevy/control/trapsController/TrapsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/control/trapsController/TrapsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chevy/control/trapsController/TrapsUpdateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/control/trapsController/TrapsUpdateController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chevy/model/entity/dynamicEntity/liveEntity/enemy/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/model/entity/dynamicEntity/liveEntity/enemy/Enemy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chevy/model/entity/stateMachine/Vertex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/model/entity/stateMachine/Vertex.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chevy/view/animation/AnimatedSprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/view/animation/AnimatedSprite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/AnimatedEntityView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/AnimatedEntityView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/LiveEntityView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/LiveEntityView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/collectable/CollectableView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/collectable/CollectableView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/collectable/PowerUpView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/collectable/PowerUpView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/environmet/EnvironmentView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/environmet/EnvironmentView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/environmet/trap/TrapView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/environmet/trap/TrapView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/projectile/ProjectileView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chevy/view/entities/animated/projectile/ProjectileView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +65,7 @@
     <setting file="jar://$MAVEN_REPOSITORY$/com/jayway/jsonpath/json-path/2.9.0/json-path-2.9.0.jar!/com/jayway/jsonpath/JsonPath.class" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -523,7 +525,23 @@
       <option name="project" value="LOCAL" />
       <updated>1725890198705</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Rimosso Vector2">
+      <option name="closed" value="true" />
+      <created>1725952745410</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1725952745411</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Rimosso Vector2">
+      <option name="closed" value="true" />
+      <created>1725952796591</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1725952796591</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -549,7 +567,7 @@
             <State>
               <option name="CUSTOM_BOOLEAN_PROPERTIES">
                 <map>
-                  <entry key="Show.Git.Branches" value="false" />
+                  <entry key="Show.Git.Branches" value="true" />
                 </map>
               </option>
               <option name="FILTERS">
@@ -570,7 +588,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Aggiunta la possibilità di portare l'app allo stato predefinito" />
     <MESSAGE value="Aggiunto scudo e icone alle statistiche nel menù&#10;&#10;Ridotto la lunghezza della riga sorgente a 100 caratteri.&#10;Introdotto la Utility per caricare le icone." />
     <MESSAGE value="Introdotto il meccanismo di sblocco personaggio.&#10;Semplificato Data::get e Data::set." />
     <MESSAGE value="Introdotto il meccanismo di sblocco personaggio.&#10;Semplificato Data::get e Data::set.&#10;Ora il livello selezionato nel menù persiste tra cambi&#10;di stanza e anche dopo terminazione/avvio dell'app." />
@@ -595,7 +612,8 @@
     <MESSAGE value="Refactor: rimozione codice duplicato chevy.model e chevy.view" />
     <MESSAGE value="Aggiustamenti all'allineamento dei componenti nel TUTORIAL" />
     <MESSAGE value="Pulizia" />
-    <option name="LAST_COMMIT_MESSAGE" value="Pulizia" />
+    <MESSAGE value="Rimosso Vector2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rimosso Vector2" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/chevy$Main.ic" NAME="Main Coverage Results" MODIFIED="1725889660698" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
