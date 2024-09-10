@@ -1,22 +1,22 @@
 package chevy.model.entity.collectable.powerUp;
 
-import chevy.utils.Vector2;
+import java.awt.Point;
 
+/**
+ * I nemici aumentano la probabilità di rilasciare pozioni di cura del 30%
+ */
 public final class HealingFlood extends PowerUp {
-    private final float increaseDropPercentage = .3f;
+    private static final float INCREASED_DROP_PROBABILITY = .3f;
 
-    public HealingFlood(Vector2<Integer> initVelocity) {
-        super(initVelocity, Type.HEALING_FLOOD);
+    public HealingFlood(Point position) {
+        super(position, Type.HEALING_FLOOD);
 
-        // Healing Flood: I nemici aumentano la probabilità di rilasciare pozioni di cura del 15%.
-        this.inStock = 1;
-        this.occurringPercentage = 100;
-        this.name = "Inondazione Curativa\n";
-        this.description =
-                "I nemici aumentano la probabilità di\nrilasciare pozioni di cura del " + (int) (increaseDropPercentage * 100) + "%";
+        inStock = 1;
+        occurringPercentage = 100;
+        name = "Inondazione Curativa\n";
+        description = "I nemici aumentano la probabilità di\nrilasciare pozioni di cura del "
+                + Math.round(INCREASED_DROP_PROBABILITY * 100) + "%";
     }
 
-    public float getIncreaseDropPercentage() {
-        return increaseDropPercentage;
-    }
+    public static float getIncreasedDropProbability() {return INCREASED_DROP_PROBABILITY;}
 }

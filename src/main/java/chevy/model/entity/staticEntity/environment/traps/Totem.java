@@ -1,18 +1,19 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
 import chevy.model.entity.dynamicEntity.Direction;
-import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public class Totem extends Trap {
-    private final Direction directionShot;
-    private final Vertex shot = new Vertex(EnumState.SHOT, 3f);
-    private final Vertex reload = new Vertex(EnumState.RELOAD, 5f);
+    private final Direction shotDirection;
+    private final Vertex shot = new Vertex(State.SHOT, 3f);
+    private final Vertex reload = new Vertex(State.RELOAD, 5f);
 
-    public Totem(Vector2<Integer> initVelocity, Direction directionShot) {
-        super(initVelocity, Type.TOTEM);
-        this.directionShot = directionShot;
+    public Totem(Point position, Direction shotDirection) {
+        super(position, Type.TOTEM);
+        this.shotDirection = shotDirection;
         crossable = false;
         shouldUpdate = true;
         drawLayer = 5;
@@ -20,27 +21,23 @@ public class Totem extends Trap {
     }
 
     private void initStateMachine() {
-        stateMachine.setStateMachineName("Totem");
+        stateMachine.setName("Totem");
         stateMachine.setInitialState(reload);
 
         reload.linkVertex(shot);
         shot.linkVertex(reload);
     }
 
-    public Direction getDirectionShot() {
-        return directionShot;
-    }
+    @Override
+    public Direction getShotDirection() {return shotDirection;}
 
     @Override
-    public Vertex getState(CommonState commonStates) {
-        EnumState totemState = (EnumState) commonStates;
-        return switch (totemState) {
+    public Vertex getState(EntityState state) {
+        return switch ((State) state) {
             case SHOT -> shot;
             case RELOAD -> reload;
         };
     }
 
-    public enum EnumState implements CommonState {
-        SHOT, RELOAD
-    }
+    public enum State implements EntityState {SHOT, RELOAD}
 }

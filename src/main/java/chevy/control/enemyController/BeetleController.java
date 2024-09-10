@@ -13,16 +13,16 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.service.Data;
 import chevy.service.Sound;
 import chevy.utils.Log;
-import chevy.utils.Vector2;
 
 /**
- * Gestisce il comportamento e le interazioni di un nemico di tipo Beetle all'interno del gioco.
- * Si occupa di come il Beetle reagisce alle azioni del giocatore, ai proiettili, e gestisce i suoi aggiornamenti di
- * stato e movimento.
+ * Gestisce il comportamento e le interazioni di un nemico di tipo {@link Beetle} all'interno del
+ * gioco. Si occupa di come il Beetle reagisce alle azioni del giocatore, ai proiettili, e
+ * gestisce i suoi aggiornamenti di stato e movimento.
  */
-public final class BeetleController {
+final class BeetleController {
     /**
-     * Riferimento alla stanza di gioco in cui si trova il Beetle. Utilizzato per verificare le posizioni,
+     * Riferimento alla stanza di gioco in cui si trova il Beetle. Utilizzato per verificare le
+     * posizioni,
      * aggiungere/rimuovere entità
      */
     private final Chamber chamber;
@@ -35,7 +35,7 @@ public final class BeetleController {
      * @param chamber          la stanza di gioco
      * @param playerController il controller del giocatore
      */
-    public BeetleController(Chamber chamber, PlayerController playerController) {
+    BeetleController(Chamber chamber, PlayerController playerController) {
         this.chamber = chamber;
         this.playerController = playerController;
     }
@@ -46,14 +46,15 @@ public final class BeetleController {
      * @param player il giocatore che interagisce con il Beetle
      * @param beetle il Beetle che subisce l'interazione
      */
-    public void playerInInteraction(Player player, Beetle beetle) {
-        // Se il giocatore è in stato di attacco, il Beetle viene danneggiato in base al danno del giocatore.
-        if (player.getCurrentState().equals(Player.State.ATTACK)) {
+    static void playerInInteraction(Player player, Beetle beetle) {
+        // Se il giocatore è in stato di attacco, il Beetle viene danneggiato in base al danno
+        // del giocatore.
+        if (player.getState().equals(Player.State.ATTACK)) {
             beetle.setDirection(Direction.positionToDirection(player, beetle));
             hitBeetle(beetle, -1 * player.getDamage());
             Sound.play(Sound.Effect.ROBOTIC_INSECT);
         } else {
-            Log.warn("Il BeetleController non gestisce questa azione: " + player.getCurrentState());
+            Log.warn("Il BeetleController non gestisce questa azione: " + player.getState());
         }
     }
 
@@ -63,19 +64,44 @@ public final class BeetleController {
      * @param projectile il proiettile che colpisce il Beetle
      * @param beetle     il Beetle che subisce l'interazione
      */
-    public void projectileInteraction(Projectile projectile, Beetle beetle) {
+    static void projectileInteraction(Projectile projectile, Beetle beetle) {
         beetle.setDirection(Direction.positionToDirection(projectile, beetle));
         hitBeetle(beetle, -1 * projectile.getDamage());
         Sound.play(Sound.Effect.ROBOTIC_INSECT);
     }
 
     /**
-     * Aggiorna lo stato del Beetle a ogni ciclo di gioco. Gestisce il cambiamento di stato, il movimento e le azioni
+     * Gestisce le interazioni del Beetle con le trappole.
+     *
+     * @param trap   la trappola che interagisce con il beetle
+     * @param beetle il Beetle che subisce l'interazione
+     */
+    static void trapInteraction(Trap trap, Beetle beetle) {
+        if (trap.getType().equals(Trap.Type.SPIKED_FLOOR)) {
+            hitBeetle(beetle, -1 * trap.getDamage());
+        }
+    }
+
+    /**
+     * Inferisce danno al Beetle e cambia il suo stato a "colpito" se possibile.
+     *
+     * @param beetle il Beetle che subisce il danno
+     * @param damage la quantità di danno da applicare
+     */
+    private static void hitBeetle(Beetle beetle, int damage) {
+        if (beetle.changeState(Beetle.State.HIT)) {
+            beetle.decreaseHealthShield(damage);
+        }
+    }
+
+    /**
+     * Aggiorna lo stato del Beetle a ogni ciclo di gioco. Gestisce il cambiamento di stato, il
+     * movimento e le azioni
      * del Beetle
      *
      * @param beetle il Beetle da aggiornare.
      */
-    public void update(Beetle beetle) {
+    void update(Beetle beetle) {
         // Se il Beetle non è vivo e il suo stato "DEAD" è terminato, viene rimosso dalla stanza.
         if (beetle.isDead()) {
             if (beetle.getState(Beetle.State.DEAD).isFinished()) {
@@ -107,8 +133,8 @@ public final class BeetleController {
                 // Se può cambiare lo stato a "ATTACK", cerca di attaccare il giocatore.
                 for (int distance = 1; distance <= 3; ++distance) {
                     Entity entity = chamber.getEntityNearOnTop(beetle, direction, distance);
-                    // muoviti in modo casuale, non sparare, se tra te è il player c'è un ostacolo che non può essere
-                    // attraversato
+                    // muoviti in modo casuale, non sparare, se tra te è il player c'è un
+                    // ostacolo che non può essere attraversato
                     if (!(entity instanceof Player) && !entity.isCrossable()) {
                         if (beetle.checkAndChangeState(Beetle.State.MOVE)) {
                             chamber.moveRandomPlus(beetle);
@@ -117,8 +143,7 @@ public final class BeetleController {
                     }
 
                     if (distance > 1 && entity instanceof Player && beetle.changeState(Beetle.State.ATTACK)) {
-                        Projectile slimeShot = new SlimeShot(new Vector2<>(beetle.getRow(), beetle.getCol()),
-                                direction);
+                        Projectile slimeShot = new SlimeShot(beetle.getPosition(), direction);
                         chamber.addProjectile(slimeShot);
                         chamber.addEntityOnTop(slimeShot);
                         break;
@@ -143,30 +168,6 @@ public final class BeetleController {
 
         if (beetle.checkAndChangeState(Beetle.State.IDLE)) {
             beetle.setCanAttack(false);
-        }
-    }
-
-    /**
-     * Gestisce le interazioni del Beetle con le trappole.
-     *
-     * @param trap   la trappola che interagisce con il beetle
-     * @param beetle il Beetle che subisce l'interazione
-     */
-    public void trapInteraction(Trap trap, Beetle beetle) {
-        if (trap.getSpecificType().equals(Trap.Type.SPIKED_FLOOR)) {
-            hitBeetle(beetle, -1 * trap.getDamage());
-        }
-    }
-
-    /**
-     * Inferisce danno al Beetle e cambia il suo stato a "colpito" se possibile.
-     *
-     * @param beetle il Beetle che subisce il danno
-     * @param damage la quantità di danno da applicare
-     */
-    private void hitBeetle(Beetle beetle, int damage) {
-        if (beetle.changeState(Beetle.State.HIT)) {
-            beetle.decreaseHealthShield(damage);
         }
     }
 }

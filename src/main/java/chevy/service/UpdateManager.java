@@ -1,34 +1,42 @@
 package chevy.service;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Aggiorna tutti gli oggetti di {@link chevy.model}
  */
-public class UpdateManager {
-    private static final List<Update> updateList = new LinkedList<>();
-    private static final List<Update> toAdd = new LinkedList<>();
+public final class UpdateManager {
+    private static final Collection<Updatable> updatables = new LinkedList<>();
+    private static final Collection<Updatable> queued = new LinkedList<>();
 
-    public static void addToUpdate(Update u) {
-        synchronized (toAdd) {
-            toAdd.add(u);
+    /**
+     * Registra un oggetto per l'aggiornamento
+     */
+    public static void register(Updatable updatable) {
+        synchronized (queued) {
+            queued.add(updatable);
         }
     }
 
-    public static void update(double delta) {
-        synchronized (toAdd) {
-            updateList.addAll(toAdd);
-            toAdd.clear();
+    /**
+     * Aggiorna tutti gli oggetti registrati
+     *
+     * @param delta tempo trascorso dall'ultimo aggiornamento
+     */
+    static void update(double delta) {
+        synchronized (queued) {
+            updatables.addAll(queued);
+            queued.clear();
         }
 
-        Iterator<Update> iterator = updateList.iterator();
-        while (iterator.hasNext()) {
-            Update current = iterator.next();
-            current.update(delta);
-            if (current.updateFinished()) {
-                iterator.remove();
+        Iterator<Updatable> it = updatables.iterator();
+        while (it.hasNext()) {
+            Updatable updatable = it.next();
+            updatable.update(delta);
+            if (updatable.updateFinished()) {
+                it.remove();
             }
         }
     }

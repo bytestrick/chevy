@@ -8,12 +8,12 @@ import chevy.service.Sound;
 import chevy.view.GamePanel;
 import chevy.view.Menu;
 
-public final class StairController {
+final class StairController {
     private static GamePanel gamePanel;
     private static HUDController hudController;
 
-    public static void playerInInteraction(Stair stair) {
-        if (stair.getCurrentState() == Stair.State.IDLE_ENTRY) {
+    static void playerInInteraction(Stair stair) {
+        if (stair.getState() == Stair.State.IDLE_ENTRY) {
             // Livello completato
             Data.set("progress.coins", hudController.getCoins());
             Data.set("progress.keys", hudController.getKeys());
@@ -23,18 +23,18 @@ public final class StairController {
         }
     }
 
-    public static void update(Stair stair) {
+    static void update(Stair stair) {
         if (ChamberManager.getCurrentChamber().getEnemyCounter() == 0) {
             stair.checkAndChangeState(Stair.State.OPEN);
         }
 
-        if (stair.getCurrentState() == Stair.State.OPEN && stair.getState(Stair.State.OPEN).isFinished()) {
+        if (stair.getState() == Stair.State.OPEN && stair.getState(Stair.State.OPEN).isFinished()) {
             stair.changeState(Stair.State.IDLE_ENTRY);
             stair.removeFromUpdate();
         }
     }
 
-    public static void setGamePanel(GamePanel gamePanel) {StairController.gamePanel = gamePanel;}
+    static void setGamePanel(GamePanel gamePanel) {StairController.gamePanel = gamePanel;}
 
     public static void setHUDController(HUDController hudController) {
         StairController.hudController = hudController;

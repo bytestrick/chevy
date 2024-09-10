@@ -40,13 +40,14 @@ import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Totem;
 import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.model.entity.staticEntity.environment.traps.Void;
-import chevy.utils.Vector2;
 import chevy.view.Menu;
+
+import java.awt.Point;
 
 /**
  * Mappa i valori di Rosso dei pixel dell'immagine di un livello a entità del gioco
  */
-public final class EntityFromColor {
+final class EntityFromColor {
     // Wall
     private static final int WALL_INTERIOR_CORNER_BOTTOM_LEFT = 255;
     private static final int WALL_BOTTOM = 254;
@@ -135,11 +136,8 @@ public final class EntityFromColor {
     private static final int STAIR_RIGHT = 51;
     private static final int STAIR_LEFT = 52;
 
-    // ---
-    private static final int NULL = 0; // assenza di colore rosso
-
-    public static Entity get(int r, int row, int col) {
-        Vector2<Integer> startPosition = new Vector2<>(row, col);
+    static Entity get(int r, int row, int col) {
+        final Point startPosition = new Point(col, row);
         return switch (r) {
             //@formatter:off
             // Wall
@@ -229,13 +227,9 @@ public final class EntityFromColor {
             case HEDGEHOG_SPINES -> new HedgehogSpines(startPosition);
             case SLIME_PIECE -> new SlimePiece(startPosition);
 
-            // ---
             case CHEST -> new Chest(startPosition);
-            case STAIR_LEFT -> new Stair(startPosition, Direction.LEFT);
-            case STAIR_RIGHT -> new Stair(startPosition, Direction.RIGHT);
+            case STAIR_LEFT, STAIR_RIGHT -> new Stair(startPosition);
 
-            // ---
-            case NULL -> null;
             default -> null;
         };
     }

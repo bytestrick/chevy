@@ -1,41 +1,32 @@
 package chevy.model.entity.collectable;
 
-import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
-import chevy.utils.Vector2;
+
+import java.awt.Point;
 
 public final class Health extends Collectable {
     private final Vertex idle = new Vertex(State.IDLE, 1.6f);
     private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
 
-    public Health(Vector2<Integer> initPosition) {
+    public Health(Point initPosition) {
         super(initPosition, Type.HEALTH);
-
         initStateMachine();
     }
 
     private void initStateMachine() {
-        this.stateMachine.setStateMachineName("Health");
-        this.stateMachine.setInitialState(idle);
+        stateMachine.setName("Health");
+        stateMachine.setInitialState(idle);
 
         idle.linkVertex(collected);
     }
 
-    public int getRecoverHealth() {
-        if (isCollected()) {
-            return 0;
-        }
+    public int getRecoverHealth() {return isCollected() ? 0 : 2;}
 
-        return 2;
-    }
-
-    public synchronized Vertex getState(CommonState commonState) {
-        State healthState = (State) commonState;
-        return switch (healthState) {
+    public synchronized Vertex getState(EntityState state) {
+        return switch ((State) state) {
             case IDLE -> idle;
             case COLLECTED -> collected;
         };
     }
-
-    public enum State implements CommonState { IDLE, COLLECTED }
 }

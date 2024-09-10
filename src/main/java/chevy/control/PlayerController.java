@@ -20,19 +20,18 @@ import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
-import chevy.model.entity.stateMachine.CommonState;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
-import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.service.Data;
 import chevy.service.Sound;
-import chevy.service.Update;
+import chevy.service.Updatable;
 import chevy.service.UpdateManager;
 import chevy.utils.Log;
-import chevy.utils.Vector2;
 import chevy.view.GamePanel;
+import chevy.view.Window;
 import chevy.view.chamber.ChamberView;
 
 import java.awt.Point;
@@ -42,10 +41,14 @@ import static chevy.model.entity.staticEntity.environment.Environment.Type.TRAP;
 
 /**
  * Gestisce le interazioni del giocatore con i nemici, i proiettili e le trappole. * Implementa
- * l'interfaccia Update per aggiornare lo stato del giocatore a ogni ciclo di gioco.
+ * l'interfaccia Updatable per aggiornare lo stato del giocatore a ogni ciclo di gioco.
  */
-public final class PlayerController implements Update {
+public final class PlayerController implements Updatable {
     private static final double invSqrtTwo = 1 / Math.sqrt(2);
+    private static final Point playerViewOffset = new Point(
+            ChamberView.tileSide / 2 + ChamberView.windowOffset.width,
+            ChamberView.tileSide / 2 + ChamberView.windowOffset.height
+    );
     private final Chamber chamber;
     private final Player player;
     private final GamePanel gamePanel;
@@ -56,7 +59,7 @@ public final class PlayerController implements Update {
     private EnvironmentController environmentController;
     private HUDController hudController;
     private boolean updateFinished;
-    private int trap_damage = 0;
+    private int trap_damage;
 
     /**
      * @param chamber riferimento alla stanza di gioco
@@ -67,11 +70,11 @@ public final class PlayerController implements Update {
         player = chamber.getPlayer();
 
         // Aggiunge il controller del giocatore all'UpdateManager.
-        UpdateManager.addToUpdate(this);
+        UpdateManager.register(this);
     }
 
     private static void playerMoveSound(Player player) {
-        Sound.play(switch (player.getSpecificType()) {
+        Sound.play(switch (player.getType()) {
             case ARCHER -> Sound.Effect.ARCHER_FOOTSTEPS;
             case NINJA -> Sound.Effect.NINJA_FOOTSTEPS;
             case KNIGHT -> Sound.Effect.KNIGHT_FOOTSTEPS;
@@ -82,7 +85,7 @@ public final class PlayerController implements Update {
      * Gestisce gli eventi di pressione dei tasti, convertendo il codice del tasto in una direzione.
      */
     void keyPressed(final KeyEvent keyEvent) {
-        final CommonState currentPlayerState = player.getCurrentState();
+        final EntityState currentPlayerState = player.getState();
         final int key = keyEvent.getKeyCode();
         if (key == KeyEvent.VK_ESCAPE) {
             gamePanel.pauseDialog();
@@ -111,24 +114,30 @@ public final class PlayerController implements Update {
      * @param click posizione del click del mouse nella finestra
      */
     void mousePressed(final Point click) {
-        final Point playerPos = ChamberView.getPlayerViewPosition(
-                new Point(player.getCol(), player.getRow()), gamePanel);
+        if (gamePanel.getWindow().getScene() == Window.Scene.PLAYING) {
+            final Point playerPos = player.getPosition();
+            playerPos.setLocation(
+                    ChamberView.tileSide * playerPos.x + playerViewOffset.x,
+                    ChamberView.tileSide * playerPos.y + playerViewOffset.y
+                            + gamePanel.getWindow().getHeight() - gamePanel.getHeight()
+            );
 
-        final double adj = playerPos.x - click.x, opp = playerPos.y - click.y;
-        final double hyp = Math.sqrt(adj * adj + opp * opp);
-        final double cosTheta = adj / hyp, sinTheta = opp / hyp;
+            final double adj = playerPos.x - click.x, opp = playerPos.y - click.y;
+            final double hyp = Math.sqrt(adj * adj + opp * opp);
+            final double cosTheta = adj / hyp, sinTheta = opp / hyp;
 
-        Direction direction = null;
-        if (cosTheta > -invSqrtTwo && cosTheta < invSqrtTwo && sinTheta >= invSqrtTwo) {
-            direction = Direction.UP;
-        } else if (sinTheta > -invSqrtTwo && sinTheta < invSqrtTwo && cosTheta <= -invSqrtTwo) {
-            direction = Direction.RIGHT;
-        } else if (cosTheta > -invSqrtTwo && cosTheta < invSqrtTwo && sinTheta <= -invSqrtTwo) {
-            direction = Direction.DOWN;
-        } else if (sinTheta > -invSqrtTwo && sinTheta < invSqrtTwo && cosTheta >= invSqrtTwo) {
-            direction = Direction.LEFT;
+            Direction direction = null;
+            if (cosTheta > -invSqrtTwo && cosTheta < invSqrtTwo && sinTheta >= invSqrtTwo) {
+                direction = Direction.UP;
+            } else if (sinTheta > -invSqrtTwo && sinTheta < invSqrtTwo && cosTheta <= -invSqrtTwo) {
+                direction = Direction.RIGHT;
+            } else if (cosTheta > -invSqrtTwo && cosTheta < invSqrtTwo && sinTheta <= -invSqrtTwo) {
+                direction = Direction.DOWN;
+            } else if (sinTheta > -invSqrtTwo && sinTheta < invSqrtTwo && cosTheta >= invSqrtTwo) {
+                direction = Direction.LEFT;
+            }
+            freeAttack(direction);
         }
-        freeAttack(direction);
     }
 
     /**
@@ -152,7 +161,7 @@ public final class PlayerController implements Update {
      * @param collectable collezionabile con cui il giocatore interagisce
      */
     private void collectableInteraction(Collectable collectable) {
-        Collectable.Type collectableType = (Collectable.Type) collectable.getSpecificType();
+        Collectable.Type collectableType = (Collectable.Type) collectable.getType();
         if (collectableType == Collectable.Type.HEALTH) {
             Health health = (Health) collectable;
             player.increaseCurrentHealth(health.getRecoverHealth());
@@ -183,7 +192,7 @@ public final class PlayerController implements Update {
      * @param trap la trappola con cui il giocatore interagisce
      */
     private void trapInteraction(Trap trap) {
-        Trap.Type trapType = (Trap.Type) trap.getSpecificType();
+        Trap.Type trapType = (Trap.Type) trap.getType();
         switch (trapType) {
             case VOID, TRAPDOOR -> {
                 player.changeState(Player.State.FALL);
@@ -208,9 +217,9 @@ public final class PlayerController implements Update {
             if (player.getDirection() != direction) {
                 player.setDirection(direction);
             }
-            switch (player.getSpecificType()) {
+            switch (player.getType()) {
                 case Player.Type.KNIGHT, Player.Type.NINJA -> {
-                    if (player.getSpecificType() == Player.Type.NINJA) {
+                    if (player.getType() == Player.Type.NINJA) {
                         Sound.play(Sound.Effect.PUNCH);
                     } else {
                         Sound.play(Sound.Effect.BLADE_SLASH);
@@ -221,11 +230,9 @@ public final class PlayerController implements Update {
                     }
                 }
                 case ARCHER -> { // Spara freccia
-                    final Arrow arrow = new Arrow(new Vector2<>(player.getRow(), player.getCol())
-                            , player.getDirection());
+                    final Arrow arrow = new Arrow(player.getPosition(), player.getDirection());
 
-                    arrow.changeMinDamage(player.getMinDamage());
-                    arrow.changeMaxDamage(player.getMaxDamage());
+                    arrow.setDamage(player.getMinDamage(), player.getMaxDamage());
                     Sound.play(Sound.Effect.ARROW_SWOOSH);
 
                     chamber.addProjectile(arrow);
@@ -236,7 +243,7 @@ public final class PlayerController implements Update {
             final VampireFangs vampireFangs =
                     (VampireFangs) player.getOwnedPowerUp(PowerUp.Type.VAMPIRE_FANGS);
             if (vampireFangs != null && vampireFangs.canUse()) {
-                player.increaseCurrentHealth(vampireFangs.getRecoveryHealth());
+                player.increaseCurrentHealth(VampireFangs.getHealthBoost());
                 hudController.changeHealth(player.getCurrentHealth());
             }
         }
@@ -266,7 +273,7 @@ public final class PlayerController implements Update {
                     if (player.getDirection() != direction) {
                         player.setDirection(direction);
                     }
-                    switch (player.getSpecificType()) {
+                    switch (player.getType()) {
                         case Player.Type.NINJA -> Sound.play(Sound.Effect.PUNCH);
                         case Player.Type.ARCHER -> Sound.play(Sound.Effect.ARROW_SWOOSH);
                         case Player.Type.KNIGHT -> Sound.play(Sound.Effect.BLADE_SLASH);
@@ -338,19 +345,17 @@ public final class PlayerController implements Update {
         int partialDamage = 0;
         int damage = enemy.getDamage();
         if (hedgehogSpines != null && hedgehogSpines.canUse()) {
-            partialDamage = damage - (int) (damage * hedgehogSpines.getDamagePercentage());
+            partialDamage = damage - (int) (damage * HedgehogSpines.getDamageMultiplier());
 
             // cambia il danno del player in modo da infliggere solo la parte di danno
             int minDamage = player.getMinDamage();
             int maxDamage = player.getMaxDamage();
-            player.changeMinDamage(partialDamage);
-            player.changeMaxDamage(partialDamage);
+            player.setDamage(partialDamage, partialDamage);
 
             player.changeState(Player.State.ATTACK);
             enemyController.handleInteraction(Interaction.PLAYER_IN, player, enemy);
 
-            player.changeMinDamage(minDamage);
-            player.changeMaxDamage(maxDamage);
+            player.setDamage(minDamage, maxDamage);
         }
 
         hitPlayer(-1 * (damage - partialDamage));
@@ -358,8 +363,6 @@ public final class PlayerController implements Update {
 
     /**
      * Aggiorna lo stato del giocatore a ogni ciclo di gioco.
-     *
-     * @param delta il tempo trascorso dall'ultimo aggiornamento
      */
     @Override
     public void update(double delta) {
@@ -371,10 +374,10 @@ public final class PlayerController implements Update {
                 updateFinished = true;
 
                 Data.increment("stats.deaths.total.count");
-                switch (player.getSpecificType()) {
-                    case KNIGHT -> Data.increment("stats.deaths.characters.knight.count");
-                    case NINJA -> Data.increment("stats.deaths.characters.ninja.count");
-                    case ARCHER -> Data.increment("stats.deaths.characters.archer.count");
+                switch (player.getType()) {
+                    case KNIGHT -> Data.increment("stats.deaths.knight.count");
+                    case NINJA -> Data.increment("stats.deaths.ninja.count");
+                    case ARCHER -> Data.increment("stats.deaths.archer.count");
                 }
 
                 gamePanel.playerDeathDialog();
@@ -398,8 +401,8 @@ public final class PlayerController implements Update {
         }
 
         // gestione dello scivolamento del player (stato GLIDE)
-        if (player.getCurrentState() == Player.State.GLIDE
-                && player.getState(player.getCurrentState()).isFinished()
+        if (player.getState() == Player.State.GLIDE
+                && player.getState(player.getState()).isFinished()
                 && chamber.canCross(player, player.getDirection())
                 && chamber.getEntityBelowTheTop(player) instanceof IcyFloor) {
             Entity previousEntityBelowTheTop = chamber.getEntityBelowTheTop(player);
@@ -430,12 +433,12 @@ public final class PlayerController implements Update {
         }
 
         // IDLE
-        if (player.getCurrentState() == Player.State.FALL
+        if (player.getState() == Player.State.FALL
                 && player.getState(Player.State.FALL).isFinished()
                 && chamber.canCross(player, player.getDirection().getOpposite())) {
             chamber.moveDynamicEntity(player, player.getDirection().getOpposite());
             hitPlayer(-trap_damage);
-        } else if (player.getCurrentState() != Player.State.SLUDGE) {
+        } else if (player.getState() != Player.State.SLUDGE) {
             player.checkAndChangeState(Player.State.IDLE);
         }
     }
@@ -461,7 +464,7 @@ public final class PlayerController implements Update {
         HolyShield holyShield = (HolyShield) player.getOwnedPowerUp(PowerUp.Type.HOLY_SHIELD);
         int reduceDamage = 0;
         if (holyShield != null && holyShield.canUse()) {
-            reduceDamage = (int) (damage * holyShield.getReduceDamage());
+            reduceDamage = (int) (damage * HolyShield.getDamageReductionMultiplier());
         }
 
         if (!dodged && player.changeState(Player.State.HIT)) {

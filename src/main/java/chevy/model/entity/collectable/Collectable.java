@@ -1,14 +1,16 @@
 package chevy.model.entity.collectable;
 
-import chevy.model.entity.CommonEntityType;
 import chevy.model.entity.Entity;
-import chevy.utils.Vector2;
+import chevy.model.entity.EntityType;
+import chevy.model.entity.stateMachine.EntityState;
+
+import java.awt.Point;
 
 public abstract class Collectable extends Entity {
     private final Type type;
     private boolean collected;
 
-    public Collectable(Vector2<Integer> initPosition, Type type) {
+    public Collectable(Point initPosition, Type type) {
         super(initPosition, Entity.Type.COLLECTABLE);
         this.type = type;
 
@@ -23,13 +25,15 @@ public abstract class Collectable extends Entity {
     public boolean isCollected() {return collected;}
 
     @Override
-    public CommonEntityType getSpecificType() {return type;}
+    public EntityType getType() {return type;}
 
     @Override
-    public CommonEntityType getGenericType() {return super.getSpecificType();}
+    public EntityType getGenericType() {return super.getType();}
 
     @Override
     public String toString() {return type.toString();}
 
-    public enum Type implements CommonEntityType {POWER_UP, COIN, HEALTH, KEY}
+    public enum Type implements EntityType {POWER_UP, COIN, HEALTH, KEY}
+
+    public enum State implements EntityState {IDLE, COLLECTED}
 }

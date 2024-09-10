@@ -61,12 +61,12 @@
         <dependency>
             <groupId>com.jetbrains.intellij.java</groupId>
             <artifactId>java-compiler-ant-tasks</artifactId>
-            <version>242.21829.167</version>
+            <version>242.21829.173</version>
         </dependency>
         <dependency>
             <groupId>com.jetbrains.intellij.java</groupId>
             <artifactId>java-gui-forms-rt</artifactId>
-            <version>242.21829.167</version>
+            <version>242.21829.173</version>
         </dependency>
         <dependency>
             <groupId>org.apache.ant</groupId>
@@ -149,7 +149,6 @@
                     <compilerArgs>
                         <arg>-Xlint:-serial</arg>
                         <arg>-Xlint</arg>
-                        <!-- <arg>-Xdoclint</arg> -->
                     </compilerArgs>
                 </configuration>
             </plugin>
@@ -168,7 +167,6 @@
                 </executions>
                 <configuration>
                     <finalName>${project.name}</finalName>
-                    <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
                             <mainClass>${exec.mainClass}</mainClass>

@@ -1,87 +1,62 @@
 package chevy.view.entities.animated.collectable;
 
 import chevy.model.entity.collectable.powerUp.PowerUp;
-import chevy.model.entity.stateMachine.CommonState;
-import chevy.utils.Vector2;
+import chevy.model.entity.stateMachine.EntityState;
 import chevy.view.animation.AnimatedSprite;
-import chevy.view.animation.Interpolation;
-import chevy.view.entities.animated.AnimatedEntityView;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
-public final class PowerUpView extends AnimatedEntityView {
-    private static final String POWER_UP_PATH = "/sprites/collectable/powerUp/";
-    private final Interpolation moveInterpolationY;
-    private final PowerUp powerUp;
-    private CommonState previousAnimationState = null;
+import static chevy.model.entity.collectable.powerUp.PowerUp.State.*;
+
+public final class PowerUpView extends CollectableView {
+    private EntityState previousAnimationState;
 
     public PowerUpView(PowerUp powerUp) {
-        this.powerUp = powerUp;
-        this.currentViewPosition = new Vector2<>((double) powerUp.getCol(), (double) powerUp.getRow());
-        float offsetY = -0.5f;
-        float duration = 1f;
-        this.moveInterpolationY = new Interpolation(currentViewPosition.second, currentViewPosition.second + offsetY,
-                duration, Interpolation.Type.EASE_OUT_EXPO);
+        super(powerUp);
 
-        iniAnimation();
-    }
+        final String res = "/sprites/collectable/powerUp/";
+        final Point offset = new Point(0, -6);
 
-    private void iniAnimation() {
-        Vector2<Integer> offset = new Vector2<>(0, -6);
-        createAnimation(PowerUp.State.IDLE, 0, 3, powerUp.getState(PowerUp.State.IDLE).getDuration(), offset, 1,
-                POWER_UP_PATH + "idle", ".png");
+        final float idleDuration = collectable.getState(PowerUp.State.IDLE).getDuration();
+        animate(IDLE, null, 3, idleDuration, offset, res + "idle");
 
-        createAnimation(PowerUp.State.SELECTED, 0, 4, powerUp.getState(PowerUp.State.SELECTED).getDuration(), offset,
-                1, POWER_UP_PATH + "selected", ".png");
+        final float selectedDuration = collectable.getState(SELECTED).getDuration();
+        animate(SELECTED, null, 4, selectedDuration, offset, res + "selected");
 
-        createAnimation(PowerUp.State.DESELECTED, 0, 4, powerUp.getState(PowerUp.State.DESELECTED).getDuration(),
-                offset, 1, POWER_UP_PATH + "deselected", ".png");
+        final float deselectedDuration = collectable.getState(DESELECTED).getDuration();
+        animate(DESELECTED, null, 4, deselectedDuration, offset, res + "deselected");
 
-        createAnimation(PowerUp.State.COLLECTED, 0, 7, powerUp.getState(PowerUp.State.COLLECTED).getDuration(),
-                offset, 1, POWER_UP_PATH + "collected", ".png");
+        final float collectedDuration = collectable.getState(PowerUp.State.COLLECTED).getDuration();
+        animate(COLLECTED, null, 7, collectedDuration, offset, res + "collected");
     }
 
     @Override
-    public Vector2<Integer> getOffset() {
-        CommonState currentStateState = powerUp.getCurrentState();
-        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentStateState, 0);
-        if (currentAnimatedSprite != null) {
-            return currentAnimatedSprite.getOffset();
+    public Point getOffset() {
+        EntityState state = collectable.getState();
+        AnimatedSprite animatedSprite = getAnimatedSprite(state, null);
+        if (animatedSprite != null) {
+            return animatedSprite.getOffset();
         }
-        return new Vector2<>(0, 0);
+        return super.getOffset();
     }
 
     @Override
-    public BufferedImage getCurrentFrame() {
-        CommonState currentEnumState = powerUp.getCurrentState();
-        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentEnumState, 0);
+    public BufferedImage getFrame() {
+        EntityState currentEnumState = collectable.getState();
+        AnimatedSprite currentAnimatedSprite = getAnimatedSprite(currentEnumState, null);
 
         if (currentAnimatedSprite != null) {
-            if (!currentAnimatedSprite.isRunning()) {
-                if (previousAnimationState != PowerUp.State.SELECTED) {
+            if (currentAnimatedSprite.isNotRunning()) {
+                if (previousAnimationState != SELECTED) {
                     currentAnimatedSprite.restart();
-                } else if (currentEnumState != PowerUp.State.SELECTED) {
+                } else if (currentEnumState != SELECTED) {
                     currentAnimatedSprite.restart();
                 }
             }
             previousAnimationState = currentEnumState;
-            return currentAnimatedSprite.getCurrentFrame();
+            return currentAnimatedSprite.getFrame();
         }
         return null;
-    }
-
-    @Override
-    public Vector2<Double> getCurrentViewPosition() {
-        if (powerUp.getCurrentState() == PowerUp.State.COLLECTED) {
-            moveInterpolationY.start();
-        }
-        currentViewPosition.second = moveInterpolationY.getValue();
-        return currentViewPosition;
-    }
-
-    @Override
-    public void wasRemoved() {
-        super.deleteAnimations();
-        this.moveInterpolationY.delete();
     }
 }

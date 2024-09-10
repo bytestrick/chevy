@@ -10,20 +10,22 @@ import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
 
 /**
- * Gestisce le frecce (Projectile) nel gioco, inclusa la gestione delle collisioni e degli aggiornamenti delle loro
- * posizioni.
+ * Gestisce le frecce (Projectile) nel gioco, inclusa la gestione delle collisioni e degli
+ * aggiornamenti delle loro posizioni.
  */
-public final class ArrowController {
+final class ArrowController {
     /**
      * Riferimento alla stanza di gioco in cui si trova la freccia.
      */
     private final Chamber chamber;
     /**
-     * Riferimento al controller del giocatore, utilizzato per gestire le interazioni tra la freccia e il giocatore.
+     * Riferimento al controller del giocatore, utilizzato per gestire le interazioni tra la
+     * freccia e il giocatore
      */
     private final PlayerController playerController;
     /**
-     * Riferimento al controller del nemico, utilizzato per gestire le interazioni tra la freccia e i nemici.
+     * Riferimento al controller del nemico, utilizzato per gestire le interazioni tra la freccia
+     * e i nemici
      */
     private final EnemyController enemyController;
 
@@ -32,7 +34,8 @@ public final class ArrowController {
      * @param playerController il controller del giocatore
      * @param enemyController  il controller dei nemici
      */
-    public ArrowController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
+    ArrowController(Chamber chamber, PlayerController playerController,
+                    EnemyController enemyController) {
         this.chamber = chamber;
         this.playerController = playerController;
         this.enemyController = enemyController;
@@ -43,7 +46,7 @@ public final class ArrowController {
      *
      * @param arrow il proiettile (freccia) che interagisce con il giocatore
      */
-    public void playerInInteraction(Arrow arrow) {
+    void playerInInteraction(Arrow arrow) {
         if (arrow.changeState(Arrow.State.END)) {
             chamber.findAndRemoveEntity(arrow);
             arrow.setCollision(true);
@@ -52,19 +55,22 @@ public final class ArrowController {
     }
 
     /**
-     * Aggiorna lo stato della freccia a ogni ciclo di gioco, gestendo la sua posizione e le sue collisioni.
+     * Aggiorna lo stato della freccia a ogni ciclo di gioco, gestendo la sua posizione e le sue
+     * collisioni.
      *
      * @param arrow il proiettile (freccia) da aggiornare
      */
-    public void update(Arrow arrow) {
+    void update(Arrow arrow) {
         if (arrow.checkAndChangeState(Arrow.State.LOOP)) {
             Entity nextEntity = chamber.getEntityNearOnTop(arrow, arrow.getDirection());
 
             switch (nextEntity.getGenericType()) {
-                case LiveEntity.Type.PLAYER -> playerController.handleInteraction(Interaction.PROJECTILE, arrow);
+                case LiveEntity.Type.PLAYER ->
+                        playerController.handleInteraction(Interaction.PROJECTILE, arrow);
                 case LiveEntity.Type.ENEMY ->
-                        enemyController.handleInteraction(Interaction.PROJECTILE, arrow, (Enemy) nextEntity);
-                default -> { }
+                        enemyController.handleInteraction(Interaction.PROJECTILE, arrow,
+                                (Enemy) nextEntity);
+                default -> {}
             }
 
             if (nextEntity.isCrossable()) {

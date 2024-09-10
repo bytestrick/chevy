@@ -1,54 +1,17 @@
 package chevy.view.entities.animated.environmet.trap;
 
-import chevy.model.entity.stateMachine.CommonState;
 import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
-import chevy.utils.Vector2;
-import chevy.view.animation.AnimatedSprite;
-import chevy.view.entities.animated.AnimatedEntityView;
+import chevy.model.entity.staticEntity.environment.traps.IcyFloor.State;
 
-import java.awt.image.BufferedImage;
-
-public final class IcyFloorView extends AnimatedEntityView {
-    private static final String ICY_FLOOR_PATH = "/sprites/traps/icyFloor/";
-    private final IcyFloor icyFloor;
-
+public final class IcyFloorView extends TrapView {
     public IcyFloorView(IcyFloor icyFloor) {
-        this.icyFloor = icyFloor;
-        this.currentViewPosition = new Vector2<>((double) icyFloor.getCol(), (double) icyFloor.getRow());
+        super(icyFloor);
 
-        initAnimation();
-    }
+        final String res = "/sprites/traps/icyFloor/";
+        final float icyFloorDuration = trap.getState(State.ICY_FLOOR).getDuration();
+        animate(State.ICY_FLOOR, null, 1, icyFloorDuration, res + "base");
 
-    private void initAnimation() {
-        createAnimation(IcyFloor.EnumState.ICY_FLOOR, 0, 1,
-                icyFloor.getState(IcyFloor.EnumState.ICY_FLOOR).getDuration(), ICY_FLOOR_PATH + "base", ".png");
-
-        createAnimation(IcyFloor.EnumState.ICY_FLOOR_SPARKLING, 0, 8,
-                icyFloor.getState(IcyFloor.EnumState.ICY_FLOOR_SPARKLING).getDuration(), ICY_FLOOR_PATH + "sparkling"
-                , ".png");
-    }
-
-    @Override
-    public BufferedImage getCurrentFrame() {
-        CommonState currentState = icyFloor.getCurrentState();
-        AnimatedSprite currentAnimatedSprite = this.getAnimatedSprite(currentState, 0);
-
-        if (currentAnimatedSprite != null) {
-            if (!currentAnimatedSprite.isRunning()) {
-                currentAnimatedSprite.restart();
-            }
-            return currentAnimatedSprite.getCurrentFrame();
-        }
-        return null;
-    }
-
-    @Override
-    public Vector2<Double> getCurrentViewPosition() {
-        return currentViewPosition;
-    }
-
-    @Override
-    public void wasRemoved() {
-        super.deleteAnimations();
+        final float sparklingDuration = trap.getState(State.ICY_FLOOR_SPARKLING).getDuration();
+        animate(State.ICY_FLOOR_SPARKLING, null, 8, sparklingDuration, res + "sparkling");
     }
 }

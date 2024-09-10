@@ -21,58 +21,29 @@ public final class MyPanelUI extends PanelUI {
     private final BufferedImage[] texture = new BufferedImage[9];
     private final int[] textureWidth = new int[9];
     private final int[] textureHeight = new int[9];
-    private final String[] texturePath;
-
     private float scale = 1f;
-
-    public MyPanelUI(String[] texturePath) {
-        this(texturePath, 1f);
-    }
-
-    public MyPanelUI(String[] texturePath, float scale) {
-        this.texturePath = texturePath;
-        this.scale = scale;
-
-        if (texturePath != null) {
-            loadTexture();
-        }
-    }
-
-    private void loadTexture() {
-        for (int i = 0; i < texturePath.length; ++i) {
-            setTexture(i, texturePath[i]);
-        }
-    }
 
     public void setTexture(int i, String path) {
         if (path == null) {
             return;
         }
-
         setTexture(i, Load.image(path));
     }
 
-    public void setTexture(int i, BufferedImage image) {
+    private void setTexture(int i, BufferedImage image) {
         if (i < 0 || i >= texture.length) {
             return;
         }
-
         texture[i] = image;
         textureWidth[i] = (int) (texture[i].getWidth() * scale);
         textureHeight[i] = (int) (texture[i].getHeight() * scale);
     }
 
-    public void setScale(float scale) {
-        this.scale = scale;
-    }
+    public void setScale(float scale) {this.scale = scale;}
 
-    public int getWidth(int i) {
-        return (int) (textureWidth[i] * scale);
-    }
+    int getWidth(int i) {return Math.round(textureWidth[i] * scale);}
 
-    public int getHeight(int i) {
-        return (int) (textureHeight[i] * scale);
-    }
+    int getHeight(int i) {return Math.round(textureHeight[i] * scale);}
 
     @Override
     public void paint(Graphics g, JComponent c) {
@@ -86,7 +57,8 @@ public final class MyPanelUI extends PanelUI {
             g.drawImage(texture[BAR_T], getWidth(CORNER_TL), 0, barTWidth, getHeight(BAR_T), null);
         }
         if (texture[CORNER_TR] != null) {
-            g.drawImage(texture[CORNER_TR], c.getWidth() - getWidth(CORNER_TR), 0, getWidth(CORNER_TR),
+            g.drawImage(texture[CORNER_TR], c.getWidth() - getWidth(CORNER_TR), 0,
+                    getWidth(CORNER_TR),
                     getHeight(CORNER_TR), null);
         }
 
@@ -98,28 +70,33 @@ public final class MyPanelUI extends PanelUI {
         if (texture[CENTER] != null) {
             int centerWidth = c.getWidth() - getWidth(BAR_L) - getWidth(BAR_R);
             int centerHeight = c.getHeight() - getHeight(BAR_T) - getHeight(BAR_B);
-            g.drawImage(texture[CENTER], getWidth(BAR_L), getHeight(BAR_T), centerWidth, centerHeight, null);
+            g.drawImage(texture[CENTER], getWidth(BAR_L), getHeight(BAR_T), centerWidth,
+                    centerHeight, null);
         }
 
         if (texture[BAR_R] != null) {
             int barRHeight = c.getHeight() - getWidth(CORNER_TR) - getWidth(CORNER_BR);
-            g.drawImage(texture[BAR_R], c.getWidth() - getWidth(BAR_R), getHeight(CORNER_TR), getWidth(BAR_R),
+            g.drawImage(texture[BAR_R], c.getWidth() - getWidth(BAR_R), getHeight(CORNER_TR),
+                    getWidth(BAR_R),
                     barRHeight, null);
         }
 
         if (texture[CORNER_BL] != null) {
-            g.drawImage(texture[CORNER_BL], 0, c.getHeight() - getHeight(CORNER_TL), getWidth(CORNER_TL),
+            g.drawImage(texture[CORNER_BL], 0, c.getHeight() - getHeight(CORNER_TL),
+                    getWidth(CORNER_TL),
                     getHeight(CORNER_TL), null);
         }
 
         if (texture[BAR_B] != null) {
             int barBWidth = c.getWidth() - getWidth(CORNER_BL) - getWidth(CORNER_BR);
-            g.drawImage(texture[BAR_B], getWidth(CORNER_BL), c.getHeight() - getHeight(BAR_B), barBWidth,
+            g.drawImage(texture[BAR_B], getWidth(CORNER_BL), c.getHeight() - getHeight(BAR_B),
+                    barBWidth,
                     getHeight(BAR_B), null);
         }
 
         if (texture[CORNER_BR] != null) {
-            g.drawImage(texture[CORNER_BR], c.getWidth() - getWidth(CORNER_BR), c.getHeight() - getHeight(CORNER_BR),
+            g.drawImage(texture[CORNER_BR], c.getWidth() - getWidth(CORNER_BR),
+                    c.getHeight() - getHeight(CORNER_BR),
                     getWidth(CORNER_BR), getHeight(CORNER_BR), null);
         }
     }
