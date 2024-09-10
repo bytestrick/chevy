@@ -1,4 +1,4 @@
-![banner](src/main/resources/banner.png)
+![banner](src/main/resources/banner-rounded.png)
 
 ### Maven
 
