@@ -15,8 +15,7 @@ public abstract class Entity {
     protected final StateMachine stateMachine = new StateMachine();
     private final UUID uuid = UUID.randomUUID();
     private final Type type;
-    protected int maxDamage;
-    protected int minDamage;
+    protected int maxDamage, minDamage;
     protected boolean safeToCross = true;
     protected boolean crossable;
     protected int drawLayer;
