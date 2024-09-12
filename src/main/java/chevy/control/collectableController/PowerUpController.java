@@ -39,7 +39,7 @@ final class PowerUpController {
                 Data.increment("stats.collectable.powerUp.total.count");
 
                 switch ((PowerUp.Type) powerUp.getType()) {
-                    case HOLY_SHIELD -> Data.increment("holyShield.count");
+                    case HOLY_SHIELD -> Data.increment(STATS_PREFIX + "holyShield.count");
                     case VAMPIRE_FANGS -> Data.increment(STATS_PREFIX + "vampireFangs.count");
                     case ANGEL_RING -> Data.increment(STATS_PREFIX + "angelRing.count");
                     case LONG_SWORD -> Data.increment(STATS_PREFIX + "longSword.count");
