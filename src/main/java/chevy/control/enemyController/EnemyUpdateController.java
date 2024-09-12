@@ -73,7 +73,7 @@ public final class EnemyUpdateController implements Updatable {
     /**
      * Verifica se l'aggiornamento è terminato, ovvero se non ci sono più nemici da aggiornare.
      *
-     * @return true se la lista dei nemici è vuota, false altrimenti.
+     * @return {@code true} se la lista dei nemici è vuota, {@code false} altrimenti.
      */
     @Override
     public boolean updateFinished() {return enemies.isEmpty() || !running;}
