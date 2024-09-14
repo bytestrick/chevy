@@ -101,7 +101,7 @@ final class SkeletonController {
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(skeleton);
                 Data.increment("stats.kills.total.count");
-                Data.increment("stats.kills.enemies.slime.count");
+                Data.increment("stats.kills.enemies.skeleton.count");
                 return;
             }
         } else if (skeleton.getCurrentHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.State.DEAD)) {
