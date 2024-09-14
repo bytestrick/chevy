@@ -101,7 +101,7 @@ final class BigSlimeController {
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(bigSlime);
                 Data.increment("stats.kills.total.count");
-                Data.increment("stats.kills.enemies.slime.count");
+                Data.increment("stats.kills.enemies.bigSlime.count");
                 return;
             }
         } else if (bigSlime.getCurrentHealth() <= 0 && bigSlime.checkAndChangeState(BigSlime.State.DEAD)) {
