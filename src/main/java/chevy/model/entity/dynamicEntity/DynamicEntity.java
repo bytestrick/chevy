@@ -8,13 +8,13 @@ import java.awt.Point;
 public abstract class DynamicEntity extends Entity {
     private final Type type;
 
-    public DynamicEntity(Point initPosition, Type type) {
-        super(initPosition, Entity.Type.DYNAMIC);
+    public DynamicEntity(Point position, Type type) {
+        super(position, Entity.Type.DYNAMIC);
         this.type = type;
         shouldUpdate = true;
     }
 
-    public void changePosition(Point velocity) {position.setLocation(velocity);}
+    public void setPosition(Point position) {this.position.setLocation(position);}
 
     @Override
     public EntityType getType() {return type;}

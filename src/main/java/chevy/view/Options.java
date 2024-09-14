@@ -32,7 +32,6 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -45,19 +44,18 @@ import java.util.Map;
 import static chevy.view.GamePanel.caution;
 
 public final class Options {
-    private static final Icon HOME = Load.icon("Home");
-    private static final Icon basket = Load.icon("Trashbin");
-    private static final Icon gamePad = Load.icon("GamePad");
-    private static final Icon speaker = Load.icon("SpeakerOn"), speakerMute = Load.icon(
-            "SpeakerMute"), notes = Load.icon("MusicNotes");
-    private static final MouseListener jComboBoxClickListener = new MouseAdapter() {
+    static final MouseListener SELECTOR_CLICK_LISTENER = new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
             Sound.play(Sound.Effect.BUTTON);
         }
     };
+    private static final Icon HOME = Load.icon("Home"), TRASH_BIN = Load.icon("TrashBin"),
+            GAME_PAD = Load.icon("GamePad"), SPEAKER = Load.icon("SpeakerOn"), SPEAKER_MUTE =
+            Load.icon("SpeakerMute"), NOTES = Load.icon("MusicNotes");
     private final Window window;
     private final ChangeListener changeListener = this::volumeChanged;
+    private final ActionListener actionListener = this::actionPerformed;
     /**
      * Contenitore radice dell'interfaccia, contiene tutti gli altri componenti ed è contenuto
      * in un {@link javax.swing.JScrollPane}
@@ -71,16 +69,17 @@ public final class Options {
     private JList<Statistic> statistics;
     private JSlider effectsVolume, musicVolume;
     private JScrollPane scrollPane;
-    private JLabel audioLabel, advancedLabel, statsLabel, effectsLabel, musicLabel;
+    private JLabel audioLabel, advancedLabel, statsLabel, effectsLabel, musicLabel, generalLabel;
     private JCheckBox showHitBoxes;
     private JComboBox<String> logLevel, languageSelector;
-    private JLabel generalLabel;
     private Window.Scene sceneToReturnTo;
-    private final ActionListener actionListener = this::actionPerformed;
 
     Options(Window window) {
         this.window = window;
+
+        // FIXME: la sensibilità di scrolling del JScrollPane principale è troppo bassa
         initUI();
+
         List.of(back, restoreApp, showHitBoxes).forEach(c -> c.addActionListener(actionListener));
         List.of(musicVolume, effectsVolume).forEach(c -> c.addChangeListener(changeListener));
         showHitBoxes.addItemListener(itemEvent -> {
@@ -95,9 +94,8 @@ public final class Options {
         });
         logLevel.addActionListener(actionListener);
         languageSelector.addActionListener(actionListener);
-        languageSelector.addMouseListener(jComboBoxClickListener);
-        logLevel.addMouseListener(jComboBoxClickListener);
-        effectsLabel.addComponentListener(new ComponentAdapter() {});
+        languageSelector.addMouseListener(SELECTOR_CLICK_LISTENER);
+        logLevel.addMouseListener(SELECTOR_CLICK_LISTENER);
     }
 
     private void actionPerformed(ActionEvent event) {
@@ -141,11 +139,11 @@ public final class Options {
         slider.setToolTipText(info);
         if (slider == musicVolume) {
             Sound.setMusicVolume(value / 100d);
-            musicLabel.setIcon(value == 0 ? speakerMute : notes);
+            musicLabel.setIcon(value == 0 ? SPEAKER_MUTE : NOTES);
             musicLabel.setToolTipText(info);
         } else {
             Sound.setEffectsVolume(value / 100d);
-            effectsLabel.setIcon(value == 0 ? speakerMute : speaker);
+            effectsLabel.setIcon(value == 0 ? SPEAKER_MUTE : SPEAKER);
             effectsLabel.setToolTipText(info);
         }
     }
@@ -220,7 +218,7 @@ public final class Options {
                 "focusColor", destructiveActionBg.brighter().brighter().brighter(),
                 "focusedBorderColor", destructiveActionBg.brighter().brighter().brighter()
         ));
-        restoreApp.setIcon(basket);
+        restoreApp.setIcon(TRASH_BIN);
     }
 
     /**
@@ -235,7 +233,7 @@ public final class Options {
         sceneToReturnTo = scene;
         String message = "Torna al ";
         if (scene == Window.Scene.PLAYING) {
-            back.setIcon(gamePad);
+            back.setIcon(GAME_PAD);
             getStats(Data.get("stats"), null, -2);
             message += "gioco";
         } else if (scene == Window.Scene.TUTORIAL) {
@@ -253,8 +251,8 @@ public final class Options {
      * inizializzare e aggiornare la visualizzazione delle statistiche.
      *
      * @param node        sotto nodo di cui fare il parsing
-     * @param listModel   il model di {@link javax.swing.JList} a cui aggiungere i record
-     *                    {@link chevy.view.Options.Statistic}
+     * @param listModel   il model di {@link JList} a cui aggiungere i record
+     *                    {@link Statistic}
      *                    man mano che si creano
      * @param indentLevel livello di indentazione fisico di ciascuna statistica
      */

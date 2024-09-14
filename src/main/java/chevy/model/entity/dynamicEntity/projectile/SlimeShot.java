@@ -11,8 +11,8 @@ public final class SlimeShot extends Projectile {
     private final Vertex loop = new Vertex(SlimeShot.State.LOOP, 1f, true);
     private final Vertex end = new Vertex(SlimeShot.State.END, .5f);
 
-    public SlimeShot(Point initPosition, Direction direction) {
-        super(initPosition, Projectile.Type.SLIME_SHOT, direction);
+    public SlimeShot(Point position, Direction direction) {
+        super(position, Projectile.Type.SLIME_SHOT, direction);
         maxDamage = 3;
         minDamage = 2;
         initStateMachine();

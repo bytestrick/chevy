@@ -256,7 +256,7 @@ public final class Chamber {
             dynamicEntity.setDirection(direction);
 
             if (findAndRemoveEntity(dynamicEntity)) {
-                dynamicEntity.changePosition(nextPosition);
+                dynamicEntity.setPosition(nextPosition);
                 addEntityOnTop(dynamicEntity);
             }
         }

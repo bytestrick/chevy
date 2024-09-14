@@ -8,16 +8,12 @@ import java.awt.Point;
 
 public abstract class LiveEntity extends DynamicEntity {
     private final Type type;
-    protected int health;
-    protected int currentHealth;
-    protected int shield;
-    protected int currentShield;
-    private boolean alive;
+    protected int health, currentHealth, shield, currentShield;
+    private boolean alive = true;
 
-    public LiveEntity(Point initPosition, Type type) {
-        super(initPosition, DynamicEntity.Type.LIVE_ENTITY);
+    public LiveEntity(Point position, Type type) {
+        super(position, DynamicEntity.Type.LIVE_ENTITY);
         this.type = type;
-        alive = true;
     }
 
     public synchronized void decreaseHealthShield(int value) {

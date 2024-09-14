@@ -10,8 +10,8 @@ public abstract class Collectable extends Entity {
     private final Type type;
     private boolean collected;
 
-    public Collectable(Point initPosition, Type type) {
-        super(initPosition, Entity.Type.COLLECTABLE);
+    public Collectable(Point position, Type type) {
+        super(position, Entity.Type.COLLECTABLE);
         this.type = type;
 
         shouldUpdate = true;

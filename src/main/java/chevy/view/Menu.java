@@ -39,11 +39,12 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static chevy.view.Options.SELECTOR_CLICK_LISTENER;
 
 public final class Menu {
     private static final Icon ex = Load.icon("x", 48, 48);
@@ -76,10 +77,8 @@ public final class Menu {
     private static final String[] statsTooltipPrefixes = new String[]{"Salute: ", "Scudo: ",
             "Danno: ", "Velocità: "};
     public static Player.Type playerType = Player.Type.valueOf(Data.get("menu.playerType"));
-    private static boolean currentPlayerLocked;
-    private static boolean animationPaused;
-    private static boolean alternateAnimation = true;
-    private static boolean animationRunning;
+    private static boolean currentPlayerLocked, animationPaused, alternateAnimation = true,
+            animationRunning;
     private static Thread animationWorker;
     private final int[][] playerStats = new int[][]{new Knight(null).getStats(),
             new Archer(null).getStats(), new Ninja(null).getStats()};
@@ -96,21 +95,12 @@ public final class Menu {
     private final JRadioButton[] indicators = new JRadioButton[]{knightIndicator, archerIndicator,
             ninjaIndicator};
     private JProgressBar healthBar, damageBar, speedBar, shieldBar;
+    private final ActionListener actionListener = this::actionPerformed;
 
     Menu(Window window) {
         this.window = window;
-
         statsLabels = new JLabel[]{health, shield, damage, speed};
         bars = new JProgressBar[]{healthBar, shieldBar, damageBar, speedBar};
-
-        List.of(play, quit, options, playerCycleNext, playerCyclePrev, unlock)
-                .forEach(c -> c.addActionListener(actionListener));
-        levelSelector.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                Sound.play(Sound.Effect.BUTTON);
-            }
-        });
 
         initUI();
         loadCharactersSprites();
@@ -141,7 +131,7 @@ public final class Menu {
             case ARCHER -> "ARCIERE";
             case NINJA -> "NINJA";
         };
-    }    private final ActionListener actionListener = this::actionPerformed;
+    }
 
     private void actionPerformed(ActionEvent event) {
         switch (event.getActionCommand()) {
@@ -207,6 +197,10 @@ public final class Menu {
      * Procedura del costruttore: costruzione dell'interfaccia
      */
     private void initUI() {
+        List.of(play, quit, options, playerCycleNext, playerCyclePrev, unlock)
+                .forEach(c -> c.addActionListener(actionListener));
+        levelSelector.addMouseListener(SELECTOR_CLICK_LISTENER);
+
         root.setBackground(new Color(33, 6, 47));
         levelSelector.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         levelSelector.setRenderer(new LevelSelectorRenderer());
@@ -527,6 +521,4 @@ public final class Menu {
             return c;
         }
     }
-
-
 }

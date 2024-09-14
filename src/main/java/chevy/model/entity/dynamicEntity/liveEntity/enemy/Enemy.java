@@ -24,13 +24,12 @@ public abstract class Enemy extends LiveEntity {
     private static final int DROP_PROBABILITY = 100;
     private final Vertex move, attack, hit, dead;
     private final Type type;
-    Vertex idle;
-    Vertex invincibility;
+    Vertex idle, invincibility;
     private boolean canAttack;
 
-    Enemy(Point initPosition, Type type, float idleDuration,
+    Enemy(Point position, Type type, float idleDuration,
           float hitDuration) {
-        super(initPosition, LiveEntity.Type.ENEMY);
+        super(position, LiveEntity.Type.ENEMY);
         this.type = type;
 
         idle = new Vertex(State.IDLE, idleDuration);
@@ -43,7 +42,7 @@ public abstract class Enemy extends LiveEntity {
         initStateMachine();
     }
 
-    public static void changeDropPercentage(int i, int newDropPercentage) {
+    public static void setDropPercentage(int i, int newDropPercentage) {
         DROPPABLE_COLLECTABLE_PROB[i] = Math.clamp(newDropPercentage, 0, 100);
     }
 

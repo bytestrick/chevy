@@ -66,7 +66,7 @@ final class PowerUpController {
                         int currentPercentage = Enemy.getDropPercentage(0);
                         int increaseValue =
                                 (int) (currentPercentage * CoinOfGreed.getIncreasedDropProbability());
-                        Enemy.changeDropPercentage(0, currentPercentage + increaseValue);
+                        Enemy.setDropPercentage(0, currentPercentage + increaseValue);
                     }
                 }
                 case PowerUp.Type.COLD_HEART -> {
@@ -83,7 +83,7 @@ final class PowerUpController {
                     GoldArrow goldArrow =
                             (GoldArrow) player.getOwnedPowerUp(PowerUp.Type.GOLD_ARROW);
                     if (goldArrow != null && goldArrow.canUse()) {
-                        Arrow.changeAddDamage(GoldArrow.getDamageBoost());
+                        Arrow.setDamageBoost(GoldArrow.getDamageBoost());
                     }
                 }
                 case PowerUp.Type.HEALING_FLOOD -> {
@@ -93,7 +93,7 @@ final class PowerUpController {
                         int currentPercentage = Enemy.getDropPercentage(2);
                         int increaseValue =
                                 (int) (currentPercentage * HealingFlood.getIncreasedDropProbability());
-                        Enemy.changeDropPercentage(2, currentPercentage + increaseValue);
+                        Enemy.setDropPercentage(2, currentPercentage + increaseValue);
                     }
                 }
                 case PowerUp.Type.HOT_HEART -> {
@@ -112,7 +112,7 @@ final class PowerUpController {
                         int currentPercentage = Enemy.getDropPercentage(1);
                         int increaseValue =
                                 (int) (currentPercentage * KeySKeeper.getIncreasedDropProbability());
-                        Enemy.changeDropPercentage(1, currentPercentage + increaseValue);
+                        Enemy.setDropPercentage(1, currentPercentage + increaseValue);
                     }
                 }
                 case PowerUp.Type.LONG_SWORD -> {
