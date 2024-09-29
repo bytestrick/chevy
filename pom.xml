@@ -61,7 +61,7 @@
         <dependency>
             <groupId>com.jetbrains.intellij.java</groupId>
             <artifactId>java-compiler-ant-tasks</artifactId>
-            <version>242.21829.173</version>
+            <version>242.22855.92</version>
         </dependency>
         <dependency>
             <groupId>com.jetbrains.intellij.java</groupId>
