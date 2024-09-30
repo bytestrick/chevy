@@ -99,8 +99,8 @@ final class WraithController {
                 Entity entity = chamber.getEntityNearOnTop(wraith, direction);
                 if (entity instanceof Player) {
                     Sound.play(Sound.Effect.WRAITH_ATTACK);
-                    playerController.handleInteraction(Interaction.ENEMY, wraith);
                     wraith.setCanAttack(false);
+                    playerController.handleInteraction(Interaction.ENEMY, wraith);
                 }
             }
         }

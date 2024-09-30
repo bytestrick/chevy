@@ -115,8 +115,8 @@ final class BigSlimeController {
             Direction direction = chamber.getDirectionToHitPlayer(bigSlime);
             if (direction == null) {
                 if (chamber.wanderChasePlus(bigSlime, 3)) {
-                    bigSlime.changeState(BigSlime.State.MOVE);
                     bigSlime.setCanAttack(false);
+                    bigSlime.changeState(BigSlime.State.MOVE);
                 }
             } else if (bigSlime.canChange(BigSlime.State.ATTACK)) {
                 Entity entity = chamber.getEntityNearOnTop(bigSlime, direction);
