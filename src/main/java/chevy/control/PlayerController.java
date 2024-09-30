@@ -438,6 +438,7 @@ public final class PlayerController implements Updatable {
                 && chamber.canCross(player, player.getDirection().getOpposite())) {
             chamber.moveDynamicEntity(player, player.getDirection().getOpposite());
             hitPlayer(-trap_damage);
+            trap_damage = 0;
         } else if (player.getState() != Player.State.SLUDGE) {
             player.checkAndChangeState(Player.State.IDLE);
         }

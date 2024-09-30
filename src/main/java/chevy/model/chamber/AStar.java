@@ -60,10 +60,10 @@ final class AStar {
 
         // Inizializzazione della cella di partenza
         final Point currentCell = new Point(src);
-        cells[currentCell.y][currentCell.x] = new Cell(new Point(currentCell), 0, 0);
+        cells[currentCell.y][currentCell.x] = new Cell(new Point(currentCell), .0d, .0d);
         // Aggiunge la prima cella nella coda dei nodi da esplorare con valore della funzione
         // euristica pari a 0
-        openList.add(new Details(0, currentCell));
+        openList.add(new Details(.0d, currentCell));
 
         while (!openList.isEmpty()) {
             Details details = openList.peek();
@@ -98,13 +98,13 @@ final class AStar {
                             // se la cella del vicinato non è stata esplorata e ci si può passare
                             // sopra
 
-                            double gNew = cells[currentCell.y][currentCell.x].g + 1;
+                            double gNew = cells[currentCell.y][currentCell.x].g + 1.0d;
                             // costo del cammino fino al nodo corrente + 1
                             double hNew = neighbor.distance(dst);
                             double fNew = gNew + hNew;
                             // se la cella del vicinato non ha valore f, oppure, ha un valore
                             // migliore
-                            if (cells[neighbor.y][neighbor.x].f == -1
+                            if (cells[neighbor.y][neighbor.x].f == -1.0d
                                     || cells[neighbor.y][neighbor.x].f > fNew) {
                                 // aggiungi la cella del vicinato come visitabile aggiorna i
                                 // valori della cella, del vicinato considerata

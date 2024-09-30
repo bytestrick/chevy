@@ -31,16 +31,17 @@ public enum Direction {
     }
 
     public static Direction positionToDirection(Point a, Point b) {
-        final int x = b.x - a.x, y = b.y - a.y;
+        final int x = b.x - a.x,
+                  y = b.y - a.y;
 
         if (x == -1 && y == 0) {
-            return UP;
-        } else if (x == 0 && y == 1) {
-            return RIGHT;
-        } else if (x == 1 && y == 0) {
-            return DOWN;
-        } else if (x == 0 && y == -1) {
             return LEFT;
+        } else if (x == 0 && y == 1) {
+            return DOWN;
+        } else if (x == 1 && y == 0) {
+            return RIGHT;
+        } else if (x == 0 && y == -1) {
+            return UP;
         }
         return null;
     }

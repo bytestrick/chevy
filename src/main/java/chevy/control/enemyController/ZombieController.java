@@ -112,8 +112,9 @@ final class ZombieController {
         if (zombie.canChange(Zombie.State.MOVE)) {
             Direction direction = chamber.getDirectionToHitPlayer(zombie);
             // Se non c'è un giocatore nelle vicinanze, lo Zombie vaga casualmente.
-            if (direction == null) {
+            if (direction == null) { 
                 if (chamber.wanderChase(zombie, 4)) {
+                    zombie.setCanAttack(false);
                     zombie.changeState(Zombie.State.MOVE);
                 }
             } else if (zombie.changeState(Zombie.State.ATTACK)) {
