@@ -77,9 +77,7 @@ public final class Options {
     Options(Window window) {
         this.window = window;
 
-        // FIXME: la sensibilità di scrolling del JScrollPane principale è troppo bassa
         initUI();
-
         List.of(back, restoreApp, showHitBoxes).forEach(c -> c.addActionListener(actionListener));
         List.of(musicVolume, effectsVolume).forEach(c -> c.addChangeListener(changeListener));
         showHitBoxes.addItemListener(itemEvent -> {
@@ -168,13 +166,14 @@ public final class Options {
     }
 
     /**
-     * Effettua operazioni che non si può (o non conviene) fare tramite il file xml
+     * Effettua operazioni che non si possono (o non conviene) fare tramite il file xml
      * <code>Options.form</code> o il foglio di stile <code>FlatDarkLaf.properties</code>
      */
     private void initUI() {
         showHitBoxes.setIcon(new SizedCheckBoxIcon());
 
         scrollPane.getViewport().setOpaque(false);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(6);
 
         statistics.setCellRenderer(new ItemRenderer());
         getStats(Data.get("stats"), null, -2);
