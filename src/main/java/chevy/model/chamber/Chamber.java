@@ -152,9 +152,6 @@ public final class Chamber {
      */
     boolean isSafeToCross(Point position) {
         Entity onTop = getEntityOnTop(position);
-        // FIXME: rimuovimi
-        Log.warn(onTop + ".isSafeToCross() = " + (onTop != null && onTop.isSafeToCross()) + ", " +
-                "canCross() = " + canCross(position));
         return canCross(position) && onTop != null && onTop.isSafeToCross();
     }
 

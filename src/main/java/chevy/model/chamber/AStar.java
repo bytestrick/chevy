@@ -60,7 +60,7 @@ final class AStar {
 
         // Inizializzazione della cella di partenza
         final Point currentCell = new Point(src);
-        cells[currentCell.y][currentCell.x] = new Cell(new Point(currentCell), .0d, .0d);
+        cells[currentCell.y][currentCell.x] = new Cell(new Point(currentCell));
         // Aggiunge la prima cella nella coda dei nodi da esplorare con valore della funzione
         // euristica pari a 0
         openList.add(new Details(.0d, currentCell));
@@ -109,7 +109,8 @@ final class AStar {
                                 // aggiungi la cella del vicinato come visitabile aggiorna i
                                 // valori della cella, del vicinato considerata
                                 openList.add(new Details(fNew, neighbor));
-                                cells[neighbor.y][neighbor.x].set(new Point(currentCell), fNew, gNew);
+                                cells[neighbor.y][neighbor.x].set(new Point(currentCell), fNew,
+                                        gNew);
                             }
                         }
                     }
@@ -129,7 +130,7 @@ final class AStar {
         /** Costo esatto del cammino fino al nodo corrente */
         double g = -1;
 
-        Cell(Point parent, double f, double g) {set(parent, f, g);}
+        Cell(Point parent) {set(parent, 0.0, 0.0);}
 
         Cell() {}
 
