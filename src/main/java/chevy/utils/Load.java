@@ -57,17 +57,14 @@ public final class Load {
      * @param name il nome dell'icona senza estensione
      * @return l'icona caricata con dimensione 32x32
      */
-    public static Icon icon(String name) {
-        Image image = image("/icons/" + name + ".png");
-        return new ImageIcon(image.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_SMOOTH));
-    }
+    public static Icon icon(String name) {return Load.icon(name, ICON_SIZE, ICON_SIZE);}
 
     /**
      * @param name il path della gif senza estensione
      * @return la gif
      */
     public static Icon gif(String name) {
-        URL url =  Load.class.getResource("/" + name + ".gif");
+        URL url = Load.class.getResource("/" + name + ".gif");
         assert url != null;
         return new ImageIcon(url);
     }
