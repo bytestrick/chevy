@@ -179,7 +179,6 @@ public final class Window extends JFrame {
                 }
                 case PLAYING -> {
                     getRootPane().setBackground(gamePanel.getBackground());
-                    setTitle("Chevy");
                     gamePanel.addComponents(false);
                     yield gamePanel;
                 }

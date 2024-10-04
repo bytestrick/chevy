@@ -139,8 +139,6 @@ public final class ChamberManager {
         //  queste dovrebbero essere.
 
         if (index < NUMBER_OF_CHAMBERS) {
-            // FIXME: il titolo con il livello non è visibile quando si entra la stanza dopo aver
-            //  premuto 'Gioca'
             window.setTitle(String.format(Options.strings.getString("title.level"), index));
             currentChamberIndex = index;
             chambers[currentChamberIndex] = loadChamber(index);
