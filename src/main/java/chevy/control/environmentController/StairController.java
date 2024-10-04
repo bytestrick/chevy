@@ -15,6 +15,7 @@ final class StairController {
     static void playerInInteraction(Stair stair) {
         if (stair.getState() == Stair.State.IDLE_ENTRY) {
             // Livello completato
+            // FIXME: non si vede che il personaggio va sulle scale
             Data.set("progress.coins", hudController.getCoins());
             Data.set("progress.keys", hudController.getKeys());
             Sound.play(Sound.Effect.WIN);

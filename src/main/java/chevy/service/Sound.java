@@ -27,6 +27,8 @@ public final class Sound {
     private static LineListener currentSongLineListener;
     private static boolean musicPaused;
 
+    // TODO: aggiungere effetti per l'interazione con le casse
+
     static {
         final Effect[] e = Effect.values();
         for (int i = 0; i < e.length; ++i) {

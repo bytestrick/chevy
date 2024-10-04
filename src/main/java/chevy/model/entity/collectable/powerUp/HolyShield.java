@@ -1,5 +1,7 @@
 package chevy.model.entity.collectable.powerUp;
 
+import chevy.view.Options;
+
 import java.awt.Point;
 
 public final class HolyShield extends PowerUp {
@@ -9,10 +11,16 @@ public final class HolyShield extends PowerUp {
         super(position, Type.HOLY_SHIELD);
 
         occurringPercentage = 100;
-        name = "Scudo Sacro\n";
-        description = "Riduce i danni in arrivo del "
-                + Math.round(DAMAGE_REDUCTION_MULTIPLIER * 100) + "%";
     }
 
     public static float getDamageReductionMultiplier() {return DAMAGE_REDUCTION_MULTIPLIER;}
+
+    @Override
+    public String getName() {return Options.strings.getString("powerUp.holyShield.name");}
+
+    @Override
+    public String getDescription() {
+        return String.format(Options.strings.getString("powerUp.holyShield.desc"),
+                Math.round(DAMAGE_REDUCTION_MULTIPLIER * 100));
+    }
 }

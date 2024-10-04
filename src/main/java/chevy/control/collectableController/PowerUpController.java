@@ -36,7 +36,7 @@ final class PowerUpController {
             hudController.hidePowerUpText();
             if (player.acquirePowerUp((PowerUp.Type) powerUp.getType(), powerUp)) {
                 hudController.addPowerUpIcon(powerUp);
-                Data.increment("stats.collectable.powerUp.total.count");
+                Data.increment("stats.collectable.powerUp.totalPowerUps.count");
 
                 switch ((PowerUp.Type) powerUp.getType()) {
                     case HOLY_SHIELD -> Data.increment(STATS_PREFIX + "holyShield.count");
@@ -52,7 +52,7 @@ final class PowerUpController {
                     case AGILITY -> Data.increment(STATS_PREFIX + "agility.count");
                     case HEDGEHOG_SPINES -> Data.increment(STATS_PREFIX + "hedgehogSpines.count");
                     case SLIME_PIECE -> Data.increment(STATS_PREFIX + "slimePiece.count");
-                    case GOLD_ARROW -> Data.increment(STATS_PREFIX + "goldenArrow.count");
+                    case GOLD_ARROW -> Data.increment(STATS_PREFIX + "goldenArrows.count");
                     case HEALING_FLOOD -> Data.increment(STATS_PREFIX + "healingFlood.count");
                     case KEY_S_KEEPER -> Data.increment(STATS_PREFIX + "keySKeeper.count");
                 }

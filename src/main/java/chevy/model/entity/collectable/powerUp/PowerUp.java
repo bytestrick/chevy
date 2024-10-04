@@ -14,8 +14,6 @@ public abstract class PowerUp extends Collectable {
     private final Vertex selected = new Vertex(State.SELECTED, 0.2f);
     private final Vertex deselected = new Vertex(State.DESELECTED, 0.2f);
     private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
-    String name = "No name";
-    String description = "No description";
     int occurringPercentage;
     int inStock = -1; // quantità infinita
 
@@ -60,9 +58,9 @@ public abstract class PowerUp extends Collectable {
         deselected.linkVertex(collected);
     }
 
-    public String getName() {return name;}
+    public abstract String getName();
 
-    public String getDescription() {return description;}
+    public abstract String getDescription();
 
     public Vertex getState(EntityState state) {
         State powerUpState = (State) state;

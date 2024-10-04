@@ -100,7 +100,7 @@ final class SkeletonController {
                 skeleton.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(skeleton);
-                Data.increment("stats.kills.total.count");
+                Data.increment("stats.kills.totalKills.count");
                 Data.increment("stats.kills.enemies.skeleton.count");
                 return;
             }

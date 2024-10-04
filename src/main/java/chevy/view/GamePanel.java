@@ -9,29 +9,21 @@ import chevy.utils.Utils;
 import chevy.view.chamber.ChamberView;
 import chevy.view.hud.HUDView;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.List;
 
 public final class GamePanel extends JPanel {
-    private static final Icon restart = Load.icon("Restart", 48, 48);
     static final Icon caution = Load.icon("caution", 48, 48);
+    private static final Icon restart = Load.icon("Restart", 48, 48);
     private static final Icon playPause = Load.icon("PlayPause", 48, 48);
     private static final Icon skull = Load.icon("Skull", 48, 48);
     private static final Icon trophy = Load.icon("Trophy", 48, 48);
-    // @formatter:off
-    private static final String[] deathMessages = new String[]{
-            "Complimenti, hai vinto un biglietto per l'aldilà! Prossima fermata: riprova!",
-            "Sembra che il tuo personaggio abbia deciso di prendersi una pausa... dalla vita.",
-            "Ecco un esempio perfetto di cosa NON fare. Riprovaci!",
-            "Il tuo personaggio ha appena scoperto il modo più veloce per tornare al menu!",
-            "Se ti consola, anche i bot rideranno di questa mossa!"};
-    private static final String[] winMessages = new String[] {
-            "Grandioso! Ogni mossa è stata perfetta, livello conquistato!",
-            "Impressionante! Non c'è nulla che possa fermarti, grande performance!",
-            "Superbo! Questo livello non aveva alcuna chance contro di te!",
-            "Complimenti! La tua strategia ha fatto la differenza, livello completato!",
-            "Complimenti! Hai dimostrato ancora una volta la tua abilità!"};
-    // @formatter:on
     private static final ChamberView chamberView = new ChamberView();
     private static boolean pauseDialogActive;
     private static boolean playerDeathDialogActive;
@@ -51,13 +43,16 @@ public final class GamePanel extends JPanel {
         setBackground(new Color(24, 20, 37));
     }
 
+    public static boolean isPauseDialogNotActive() {return !pauseDialogActive;}
+
+    public static ChamberView getChamberView() {return chamberView;}
+
     void addComponents(boolean tutorialBool) {
         if (tutorialBool) {
             remove(hudView);
             remove(chamberView);
             add(tutorial);
-        }
-        else {
+        } else {
             remove(tutorial);
             add(hudView);
             add(chamberView);
@@ -68,29 +63,15 @@ public final class GamePanel extends JPanel {
         setLayout();
     }
 
-    public static boolean isPauseDialogNotActive() {return !pauseDialogActive;}
-
-    public static ChamberView getChamberView() {return chamberView;}
-
     private void setLayout() {
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
-
-        springLayout.putConstraint(SpringLayout.NORTH, chamberView, 0, SpringLayout.NORTH, this);
-        springLayout.putConstraint(SpringLayout.EAST, chamberView, 0, SpringLayout.EAST, this);
-        springLayout.putConstraint(SpringLayout.WEST, chamberView, 0, SpringLayout.WEST, this);
-        springLayout.putConstraint(SpringLayout.SOUTH, chamberView, 0, SpringLayout.SOUTH, this);
-
-        springLayout.putConstraint(SpringLayout.NORTH, hudView, 0, SpringLayout.NORTH, this);
-        springLayout.putConstraint(SpringLayout.EAST, hudView, 0, SpringLayout.EAST, this);
-        springLayout.putConstraint(SpringLayout.WEST, hudView, 0, SpringLayout.WEST, this);
-        springLayout.putConstraint(SpringLayout.SOUTH, hudView, 0, SpringLayout.SOUTH, this);
-
-
-        springLayout.putConstraint(SpringLayout.NORTH, tutorial, 0, SpringLayout.NORTH, this);
-        springLayout.putConstraint(SpringLayout.EAST, tutorial, 0, SpringLayout.EAST, this);
-        springLayout.putConstraint(SpringLayout.WEST, tutorial, 0, SpringLayout.WEST, this);
-        springLayout.putConstraint(SpringLayout.SOUTH, tutorial, 0, SpringLayout.SOUTH, this);
+        for (JComponent component : List.of(chamberView, hudView, tutorial)) {
+            for (String dir : List.of(SpringLayout.NORTH, SpringLayout.EAST, SpringLayout.WEST,
+                    SpringLayout.SOUTH)) {
+                springLayout.putConstraint(dir, component, 0, dir, this);
+            }
+        }
     }
 
     /**
@@ -103,12 +84,11 @@ public final class GamePanel extends JPanel {
             if (!ignoreTitle) {
                 oldTitle = window.getTitle();
             }
-            window.setTitle("Chevy - Pausa");
+            window.setTitle(Options.strings.getString("title.pause"));
             GameLoop.stop();
             Sound.stopMusic();
-            final String[] options = new String[]{"Esci", "Opzioni", "Rigioca", "Torna" +
-                    " al menù", "Riprendi"};
-            String message = "Chevy è in pausa, scegli cosa fare.";
+            final String[] options = Options.strings.getString("dialog.pauseActions").split(", ");
+            String message = Options.strings.getString("dialog.pause");
             final int ans = JOptionPane.showOptionDialog(window, message, null,
                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, playPause,
                     options,
@@ -128,11 +108,11 @@ public final class GamePanel extends JPanel {
                 case 2 -> {
                     Sound.play(Sound.Effect.BUTTON);
                     Sound.play(Sound.Effect.STOP);
-                    final String msg = "Ricominciando il livello perderai il progresso. " +
-                            "Continuare?";
-                    final int subAns = JOptionPane.showOptionDialog(window, msg, null,
+                    final String[] opts = Options.strings.getString("dialog.yesNo").split(",");
+                    final int subAns = JOptionPane.showOptionDialog(window,
+                            Options.strings.getString("dialog.pausePlayAgain"), null,
                             JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, restart,
-                            new String[]{"Si", "No"}, "No");
+                            opts, opts[opts.length - 1]);
                     if (subAns == 0) {
                         Sound.play(Sound.Effect.BUTTON);
                         ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
@@ -148,10 +128,11 @@ public final class GamePanel extends JPanel {
                 case 3 -> {
                     Sound.play(Sound.Effect.STOP);
                     Sound.play(Sound.Effect.BUTTON);
-                    final String msg = "Se torni al menù perderai il progresso. Continuare?";
-                    final int subAns = JOptionPane.showOptionDialog(window, msg, null,
+                    final String[] opts = Options.strings.getString("dialog.yesNo").split(",");
+                    final int subAns = JOptionPane.showOptionDialog(window,
+                            Options.strings.getString("dialog.pauseBackToMenu"), null,
                             JOptionPane.YES_NO_OPTION,
-                            JOptionPane.WARNING_MESSAGE, caution, new String[]{"Si", "No"}, "No");
+                            JOptionPane.WARNING_MESSAGE, caution, opts, opts[opts.length - 1]);
                     if (subAns == 0) {
                         Sound.play(Sound.Effect.BUTTON);
                         window.setScene(Window.Scene.MENU);
@@ -173,7 +154,6 @@ public final class GamePanel extends JPanel {
                     GameLoop.start();
                     ignoreTitle = false;
                     Sound.startMusic(Sound.Music.SAME_SONG);
-
                     window.setTitle(oldTitle);
                 }
             }
@@ -188,8 +168,9 @@ public final class GamePanel extends JPanel {
         playerDeathDialogActive = true;
         GameLoop.stop();
         Sound.stopMusic();
-        window.setTitle("Chevy - Morte");
-        final String[] options = new String[]{"Esci", "Torna al menù", "Rigioca"};
+        window.setTitle(Options.strings.getString("title.death"));
+        final String[] options = Options.strings.getString("dialog.deathActions").split(", ");
+        final String[] deathMessages = Options.strings.getString("dialog.deathMessages").split(";");
         switch (JOptionPane.showOptionDialog(window,
                 deathMessages[Utils.random.nextInt(deathMessages.length)],
                 null, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, skull,
@@ -220,18 +201,19 @@ public final class GamePanel extends JPanel {
     public void winDialog() {
         winDialogActive = true;
         Sound.stopMusic();
-        window.setTitle("Chevy - Livello completato");
+        window.setTitle(Options.strings.getString("title.levelCompleted"));
         GameLoop.stop();
-        String[] option = new String[]{"Esci", "Rigioca", "Torna al menù", "Prossimo livello"};
+        String[] options = Options.strings.getString("dialog.levelCompletedActions").split(", ");
         int defaultOption = 3;
         if (ChamberManager.isLastChamber()) {
-            option = new String[]{"Esci", "Rigioca", "Torna al menù"};
+            options = Arrays.copyOf(options, options.length - 1);
             defaultOption = 2;
         }
+        final String[] winMessages = Options.strings.getString("dialog.winMessages").split(";");
         switch (JOptionPane.showOptionDialog(window,
                 winMessages[Utils.random.nextInt(winMessages.length)], null,
-                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, trophy, option,
-                option[defaultOption])) {
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, trophy, options,
+                options[defaultOption])) {
             case 0 -> {
                 Sound.play(Sound.Effect.BUTTON);
                 window.quitAction();
@@ -255,13 +237,11 @@ public final class GamePanel extends JPanel {
         winDialogActive = false;
     }
 
-    public void windowResized(float scale) {
-        hudView.windowResized(scale);
-    }
+    public void windowResized(float scale) {hudView.windowResized(scale);}
 
     public HUDView getHudView() {return hudView;}
 
     public Window getWindow() {return window;}
 
-    public Tutorial getTutorial() { return tutorial; }
+    public Tutorial getTutorial() {return tutorial;}
 }

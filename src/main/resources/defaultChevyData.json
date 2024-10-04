@@ -4,13 +4,13 @@
     "keys": 0,
     "lastUnlockedLevel": 1,
     "player": {
-      "knight": {
+      "KNIGHT": {
         "locked": false
       },
-      "archer": {
+      "ARCHER": {
         "locked": true
       },
-      "ninja": {
+      "NINJA": {
         "locked": true
       }
     }
@@ -22,188 +22,157 @@
   "options": {
     "musicVolume": 0.3,
     "effectsVolume": 0.5,
+    "language": "it",
     "drawHitBoxes": false,
     "logLevel": "INFO"
   },
   "stats": {
     "time": {
-      "played": {
+      "totalPlayed": {
         "count": 0,
-        "string": "Tempo giocato",
         "icon": "sandClock"
       }
     },
     "kills": {
-      "total": {
+      "totalKills": {
         "count": 0,
-        "string": "Uccisioni totali",
         "icon": "sword"
       },
       "enemies": {
         "beetle": {
           "count": 0,
-          "string": "Scarafaggi uccisi",
           "icon": "beetle"
         },
         "bigSlime": {
           "count": 0,
-          "string": "Slime grandi uccisi",
           "icon": "bigSlime"
         },
         "skeleton": {
           "count": 0,
-          "string": "Scheletri uccisi",
           "icon": "skeleton"
         },
         "slime": {
           "count": 0,
-          "string": "Slime uccisi",
           "icon": "slime"
         },
         "wraith": {
           "count": 0,
-          "string": "Fantasmi uccisi",
           "icon": "wraith"
         },
         "zombie": {
           "count": 0,
-          "string": "Zombie uccisi",
           "icon": "zombie"
         }
       }
     },
     "deaths": {
-      "total": {
+      "totalDeaths": {
         "count": 0,
-        "string": "Morti totali",
         "icon": "Skull"
       },
       "characters": {
         "archer": {
           "count": 0,
-          "string": "Morti come arciere",
           "icon": "deathArcher"
         },
         "knight": {
           "count": 0,
-          "string": "Morti come cavaliere",
           "icon": "deathKnight"
         },
         "ninja": {
           "count": 0,
-          "string": "Morti come ninja",
           "icon": "deathNinja"
         }
       }
     },
     "collectable": {
-      "total": {
+      "totalCollected": {
         "count": 0,
-        "string": "Collezionabili raccolti totali",
         "icon": "Backpack"
       },
       "commons": {
-        "keys": {
-          "count": 0,
-          "string": "Monete raccolte",
-          "icon": "coin3"
-        },
         "coins": {
           "count": 0,
-          "string": "Chiavi raccolte",
+          "icon": "coin3"
+        },
+        "keys": {
+          "count": 0,
           "icon": "key2"
         },
         "healthPotions": {
           "count": 0,
-          "string": "Pozioni di cura raccolte",
           "icon": "health"
         }
       },
       "powerUp": {
-        "total": {
+        "totalPowerUps": {
           "count": 0,
-          "string": "Potenziamenti raccolti totali",
+          "string": "powerUps",
           "icon": "powerUp"
         },
         "specific": {
           "agility": {
             "count": 0,
-            "string": "Potenziamenti “Agilità” raccolti",
             "icon": "agility"
           },
           "angelRing": {
             "count": 0,
-            "string": "Potenziamenti “Anelli dell'Angelo” raccolti",
             "icon": "angelRing"
           },
           "brokenArrows": {
             "count": 0,
-            "string": "Potenziamenti “Spezza Frecce” raccolti",
             "icon": "brokenArrows"
           },
           "coinOfGreed": {
             "count": 0,
-            "string": "Potenziamenti “Avido di Monete” raccolti",
             "icon": "coinOfGreed"
           },
           "coldHeart": {
             "count": 0,
-            "string": "Potenziamenti “Cuore di Ghiaccio” raccolti",
             "icon": "coldHeart"
           },
           "goldenArrows": {
             "count": 0,
-            "string": "Potenziamenti “Frecce Dorate” raccolti",
             "icon": "goldenArrows"
           },
           "healingFlood": {
             "count": 0,
-            "string": "Potenziamenti “Inondazione Curativa” raccolti",
             "icon": "healingFlood"
           },
           "hedgehogSpines": {
             "count": 0,
-            "string": "Potenziamenti “Aculei di Riccio” raccolti",
             "icon": "hedgehogSpines"
           },
           "hobnailBoots": {
             "count": 0,
-            "string": "Potenziamenti “Stivali Chiodati” raccolti",
             "icon": "hobnailBoots"
           },
           "holyShield": {
             "count": 0,
-            "string": "Potenziamenti “Scudo Sacro” raccolti",
             "icon": "holyShield"
           },
           "hotHeart": {
             "count": 0,
-            "string": "Potenziamenti “Cuore di Fuoco” raccolti",
             "icon": "hotHeart"
           },
           "keySKeeper": {
             "count": 0,
-            "string": "Potenziamenti “Guardiano delle Chiavi” raccolti",
             "icon": "keySKeeper"
           },
           "longSword": {
             "count": 0,
-            "string": "Potenziamenti “Spada Lunga” raccolti",
             "icon": "longSword"
           },
           "slimePiece": {
             "count": 0,
-            "string": "Potenziamenti “Pezzo di Slime” raccolti",
             "icon": "slimePiece"
           },
           "stoneBoots": {
             "count": 0,
-            "string": "Potenziamenti “Stivali di Pietra” raccolti",
             "icon": "stoneBoots"
           },
           "vampireFangs": {
             "count": 0,
-            "string": "Potenziamenti “Zanne di Vampiro” raccolte",
             "icon": "vampireFangs"
           }
         }
