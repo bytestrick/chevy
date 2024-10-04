@@ -2,6 +2,7 @@ package chevy.control.environmentController;
 
 import chevy.control.HUDController;
 import chevy.model.chamber.ChamberManager;
+import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.staticEntity.environment.Stair;
 import chevy.service.Data;
 import chevy.service.Sound;
@@ -9,18 +10,13 @@ import chevy.view.GamePanel;
 import chevy.view.Menu;
 
 final class StairController {
+    static boolean onTrapDoor;
     private static GamePanel gamePanel;
     private static HUDController hudController;
 
     static void playerInInteraction(Stair stair) {
         if (stair.getState() == Stair.State.IDLE_ENTRY) {
-            // Livello completato
-            // FIXME: non si vede che il personaggio va sulle scale
-            Data.set("progress.coins", hudController.getCoins());
-            Data.set("progress.keys", hudController.getKeys());
-            Sound.play(Sound.Effect.WIN);
-            Menu.incrementLevel();
-            gamePanel.winDialog();
+            onTrapDoor = true;
         }
     }
 
@@ -31,6 +27,14 @@ final class StairController {
 
         if (stair.getState() == Stair.State.OPEN && stair.getState(Stair.State.OPEN).isFinished()) {
             stair.changeState(Stair.State.IDLE_ENTRY);
+        }
+
+        if (onTrapDoor && ChamberManager.getCurrentChamber().getPlayer().getState(Player.State.MOVE).isFinished()) {
+            Data.set("progress.coins", hudController.getCoins());
+            Data.set("progress.keys", hudController.getKeys());
+            Sound.play(Sound.Effect.WIN);
+            Menu.incrementLevel();
+            gamePanel.winDialog();
             stair.removeFromUpdate();
         }
     }
