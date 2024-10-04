@@ -264,15 +264,12 @@ public final class Options {
      */
     void setupReturnAction(Window.Scene scene) {
         sceneToReturnTo = scene;
-        String message;
+        String message = "";
         if (scene == Window.Scene.PLAYING) {
             back.setIcon(GAME_PAD);
             getStats(Data.get("stats"), "", null, -2);
             message = strings.getString("options.backToGame");
-        } else if (scene == Window.Scene.TUTORIAL) {
-            // FIXME: non serve
-            message = strings.getString("options.backToTutorial");
-        } else {
+        } else if (scene == Window.Scene.MENU){
             back.setIcon(HOME);
             message = strings.getString("options.backToHome");
         }
@@ -285,8 +282,8 @@ public final class Options {
      * inizializzare e aggiornare la visualizzazione delle statistiche.
      *
      * @param node        sotto nodo di cui fare il parsing
-     * @param listModel   il model di {@link JList} a cui aggiungere i record
-     *                    {@link Statistic}
+     * @param listModel   il model di {@link javax.swing.JList} a cui aggiungere i record
+     *                    {@link chevy.view.Options.Statistic}
      *                    man mano che si creano
      * @param indentLevel livello di indentazione fisico di ciascuna statistica
      */
