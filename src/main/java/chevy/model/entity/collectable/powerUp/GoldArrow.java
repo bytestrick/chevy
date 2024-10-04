@@ -1,5 +1,7 @@
 package chevy.model.entity.collectable.powerUp;
 
+import chevy.view.Options;
+
 import java.awt.Point;
 
 public final class GoldArrow extends PowerUp {
@@ -10,9 +12,15 @@ public final class GoldArrow extends PowerUp {
 
         inStock = 1;
         occurringPercentage = 100;
-        name = "Frecce Dorate\n";
-        description = "Aumenta il danno delle frecce di +" + DAMAGE_BOOST;
     }
 
     public static int getDamageBoost() {return DAMAGE_BOOST;}
+
+    @Override
+    public String getName() {return Options.strings.getString("powerUp.goldArrow.name");}
+
+    @Override
+    public String getDescription() {
+        return String.format(Options.strings.getString("powerUp.goldArrow.desc"), DAMAGE_BOOST);
+    }
 }

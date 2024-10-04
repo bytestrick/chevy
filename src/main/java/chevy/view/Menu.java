@@ -48,39 +48,23 @@ import static chevy.view.Options.SELECTOR_CLICK_LISTENER;
 
 public final class Menu {
     private static final Icon ex = Load.icon("x", 48, 48);
-    // @formatter:off
-    private static final String[][] quotes = new String[][]{
-            {"“Ho giurato di proteggere il regno, difendere i deboli e… sì, anche\n" +
-                "cercare di capire come si monta questa maledetta armatura!”",
-             "“Il mio cavallo è coraggioso, la mia spada è affilata, e io… beh,\n" +
-                "io mi sono già perso due volte cercando di arrivare qui.”"},
-            {"“Precisione millimetrica, occhio di falco, respiro controllato...\n" +
-                "ma se c’è una zanzara che mi gira intorno, non garantisco nulla.”",
-             "“Posso colpire una moneta a 100 passi, ma non\n" +
-                "chiedermi di trovare le chiavi quando ho fretta.”"},
-            {"“Muovermi nell’ombra, sparire nel nulla, essere silenzioso\n" +
-                "come il vento... e poi inciampo su una foglia secca.”",
-             "“Mi alleno per anni a diventare un maestro del silenzio...\n" +
-                "e poi la mia pancia decide di brontolare nel momento più critico.”"}};
-    // @formatter:on
     private static final Dimension spriteSize = new Dimension(200, 200);
-    private static final Color[] barsColors = new Color[]{new Color(255, 0, 68), new Color(212
+    private static final Color[] barsColors = {new Color(255, 0, 68), new Color(212
             , 212, 212), new Color(228, 166, 114), new Color(254, 231, 97)};
     private static final Color progressBarDimmedForeground = new Color(144, 144, 144);
     private static final int archerCost = 500, ninjaCost = 1000;
     private static final Icon coin = Load.icon("Coin");
-    private static final Icon[] statsIcons = new Icon[]{Load.icon("heart_2"),
+    private static final Icon[] statsIcons = {Load.icon("heart_2"),
             Load.icon("shield_2", 36, 36), Load.icon("attack"), Load.icon("lightning", 28, 28)};
-    private static final Icon[] statsIconsGreyScale = new Icon[]{Load.icon(
+    private static final Icon[] statsIconsGreyScale = {Load.icon(
             "heart_2_greyscale"), Load.icon("shield_2_greyscale", 36, 36),
             Load.icon("attack_greyscale"), Load.icon("lightning_greyscale", 28, 28)};
-    private static final String[] statsTooltipPrefixes = new String[]{"Salute: ", "Scudo: ",
-            "Danno: ", "Velocità: "};
+    private static final String[] statsTooltipPrefixes = {"health", "shield", "damage", "speed"};
     public static Player.Type playerType = Player.Type.valueOf(Data.get("menu.playerType"));
     private static boolean currentPlayerLocked, animationPaused, alternateAnimation = true,
             animationRunning;
     private static Thread animationWorker;
-    private final int[][] playerStats = new int[][]{new Knight(null).getStats(),
+    private final int[][] playerStats = {new Knight(null).getStats(),
             new Archer(null).getStats(), new Ninja(null).getStats()};
     private final Image[][] sprites = new Image[3][4];
     private final Object updateAnimation = new Object();
@@ -92,10 +76,8 @@ public final class Menu {
     private JButton play, playerCycleNext, playerCyclePrev, quit, options, unlock;
     private JLabel coins, keys, characterName, health, shield, damage, speed, cost;
     private JRadioButton knightIndicator, archerIndicator, ninjaIndicator;
-    private final JRadioButton[] indicators = new JRadioButton[]{knightIndicator, archerIndicator,
-            ninjaIndicator};
+    private final JRadioButton[] indicators = {knightIndicator, archerIndicator, ninjaIndicator};
     private JProgressBar healthBar, damageBar, speedBar, shieldBar;
-    private final ActionListener actionListener = this::actionPerformed;
 
     Menu(Window window) {
         this.window = window;
@@ -122,22 +104,12 @@ public final class Menu {
         }
     }
 
-    /**
-     * @return il nome del personaggio tradotto in italiano
-     */
-    private static String getUIString(Player.Type playerType) {
-        return switch (playerType) {
-            case KNIGHT -> "CAVALIERE";
-            case ARCHER -> "ARCIERE";
-            case NINJA -> "NINJA";
-        };
-    }
-
     private void actionPerformed(ActionEvent event) {
         switch (event.getActionCommand()) {
             case "play" -> playAction();
             case "quit" -> {
                 Sound.play(Sound.Effect.BUTTON);
+
                 window.quitAction();
             }
             case "options" -> {
@@ -151,7 +123,7 @@ public final class Menu {
             case "unlock" -> unlockPlayerAction();
         }
         window.requestFocus();
-    }
+    }    private final ActionListener actionListener = this::actionPerformed;
 
     public void keyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getKeyCode()) {
@@ -197,6 +169,7 @@ public final class Menu {
      * Procedura del costruttore: costruzione dell'interfaccia
      */
     private void initUI() {
+        setStrings();
         List.of(play, quit, options, playerCycleNext, playerCyclePrev, unlock)
                 .forEach(c -> c.addActionListener(actionListener));
         levelSelector.addMouseListener(SELECTOR_CLICK_LISTENER);
@@ -205,10 +178,6 @@ public final class Menu {
         levelSelector.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         levelSelector.setRenderer(new LevelSelectorRenderer());
         LevelSelectorRenderer.setLastEnabledItemIndex(Data.get("progress.lastUnlockedLevel"));
-        levelSelector.addItem("Tutorial");
-        for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS; ++i) {
-            levelSelector.addItem("Livello " + i);
-        }
         final Font menuFont = UIManager.getFont("defaultFont").deriveFont(35f);
         Stream.of(quit, play, keys, cost, coins, unlock).forEach(c -> c.setFont(menuFont));
         playerCycleNext.setIcon(Load.icon("right-chevron"));
@@ -223,17 +192,46 @@ public final class Menu {
         unlock.setIcon(Load.icon("Unlocked", 30, 30));
     }
 
+    void setStrings() {
+        play.setText(Options.strings.getString("menu.play"));
+        quit.setText(Options.strings.getString("menu.quit"));
+        health.setText(Options.strings.getString("menu.health"));
+        shield.setText(Options.strings.getString("menu.shield"));
+        damage.setText(Options.strings.getString("menu.damage"));
+        speed.setText(Options.strings.getString("menu.speed"));
+        unlock.setText(Options.strings.getString("menu.unlock"));
+        playerCycleNext.setToolTipText(Options.strings.getString("menu.nextCharacter"));
+        playerCyclePrev.setToolTipText(Options.strings.getString("menu.prevCharacter"));
+        options.setToolTipText(Options.strings.getString("menu.opts"));
+        keys.setToolTipText(Options.strings.getString("menu.keys"));
+        coins.setToolTipText(Options.strings.getString("menu.coins"));
+        levelSelector.setToolTipText(Options.strings.getString("menu.selectLevel"));
+
+        levelSelector.removeActionListener(actionListener);
+        levelSelector.removeAllItems();
+        levelSelector.addItem(Options.strings.getString("menu.tutorial"));
+        for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS; ++i) {
+            levelSelector.addItem(String.format(Options.strings.getString("menu.level"), i));
+        }
+        levelSelector.setSelectedIndex(Data.get("menu.level"));
+        levelSelector.addActionListener(actionListener);
+        setPlayerType(playerType);
+    }
+
     private void changeLevelAction() {
         final int level = levelSelector.getSelectedIndex();
         if (LevelSelectorRenderer.isInsideInterval(level)) {
             Data.set("menu.level", level);
             Log.info("Cambiato livello: " + level);
         } else {
+            // FIXME: il popup si nasconde subito
             levelSelector.hidePopup();
             levelSelector.setSelectedIndex(level);
             Sound.play(Sound.Effect.STOP);
-            JOptionPane.showMessageDialog(window, "Il livello " + level + " è bloccato.", null,
+            JOptionPane.showMessageDialog(window, String.format(Options.strings.getString("dialog" +
+                            ".levelLocked"), level), null,
                     JOptionPane.WARNING_MESSAGE, ex);
+            levelSelector.requestFocus();
             SwingUtilities.invokeLater(levelSelector::showPopup);
         }
     }
@@ -241,19 +239,22 @@ public final class Menu {
     private void unlockPlayerAction() {
         Sound.play(Sound.Effect.BUTTON);
         int actualCost = playerType == Player.Type.ARCHER ? archerCost : ninjaCost;
+        final String[] opts = Options.strings.getString("dialog.yesNo").split(",");
         if (JOptionPane.showOptionDialog(window,
-                "Sbloccare " + getUIString(playerType) + " per " + actualCost + " monete?", null,
+                String.format(Options.strings.getString("dialog.unlock"),
+                        Options.strings.getString("menu." + playerType), actualCost), null,
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Load.icon("Unlocked", 48
-                        , 48), new String[]{"Si", "No"}, "No") == 0) {
+                        , 48), opts, opts[opts.length - 1]) == 0) {
             if (actualCost > (int) Data.get("progress.coins")) {
                 Sound.play(Sound.Effect.STOP);
-                JOptionPane.showMessageDialog(window, "Monete insufficienti", null,
+                JOptionPane.showMessageDialog(window, Options.strings.getString("dialog" +
+                                ".notEnoughCoins"), null,
                         JOptionPane.WARNING_MESSAGE, ex);
                 return;
             }
             Sound.play(Sound.Effect.UNLOCK_CHARACTER);
             currentPlayerLocked = false;
-            Data.set("progress.player." + playerType.toString().toLowerCase() + ".locked", false);
+            Data.set("progress.player." + playerType + ".locked", false);
             int coinsLeft = (int) Data.get("progress.coins") - actualCost;
             Data.set("progress.coins", coinsLeft);
             coins.setText(Integer.toString(coinsLeft));
@@ -307,18 +308,19 @@ public final class Menu {
     /**
      * Controlla il selettore del personaggio
      *
-     * @param type il tipo di giocatore tra KNIGHT, ARHCER e NINJA
+     * @param type il tipo di giocatore in {@link Player.Type}
      */
     private void setPlayerType(final Player.Type type) {
         indicators[playerType.ordinal()].setSelected(false);
         playerType = type;
         Data.set("menu.playerType", playerType.toString());
         final int p = playerType.ordinal();
-        characterName.setText(getUIString(playerType));
+        characterName.setText(Options.strings.getString("menu." + playerType).toUpperCase());
         indicators[p].setSelected(true);
         for (int i = 0; i < bars.length; ++i) {
             bars[i].setValue(playerStats[p][i]);
-            final String statTooltip = statsTooltipPrefixes[i] + playerStats[p][i] / 10;
+            final String statTooltip =
+                    Options.strings.getString("menu." + statsTooltipPrefixes[i]) + ": " + playerStats[p][i] / 10;
             bars[i].setToolTipText(statTooltip);
             statsLabels[i].setToolTipText(statTooltip);
         }
@@ -326,12 +328,13 @@ public final class Menu {
             updateAnimation.notify();
         }
         currentPlayerLocked =
-                Data.get("progress.player." + playerType.toString().toLowerCase() + ".locked");
+                Data.get("progress.player." + playerType + ".locked");
         if (currentPlayerLocked) {
-            characterName.setToolTipText("Bloccato");
+            characterName.setToolTipText(Options.strings.getString("menu.locked"));
             characterAnimation.setToolTipText(null);
             play.setEnabled(false);
-            play.setToolTipText(getUIString(playerType) + " è bloccato");
+            play.setToolTipText(String.format(Options.strings.getString("menu.playerLocked"),
+                    Options.strings.getString("menu." + playerType)));
             unlock.setVisible(true);
             cost.setText(String.valueOf(playerType == Player.Type.ARCHER ? archerCost : ninjaCost));
             cost.setVisible(true);
@@ -340,7 +343,9 @@ public final class Menu {
                 statsLabels[i].setIcon(statsIconsGreyScale[i]);
             }
         } else {
-            characterAnimation.setToolTipText(quotes[p][Utils.random.nextInt(quotes[p].length)]);
+            final String[] quotes = Options.strings.getString("menu.quotes." + playerType).split(
+                    ";");
+            characterAnimation.setToolTipText(quotes[Utils.random.nextInt(quotes.length)]);
             characterName.setToolTipText(null);
             play.setEnabled(true);
             play.setToolTipText(null);
@@ -521,4 +526,6 @@ public final class Menu {
             return c;
         }
     }
+
+
 }

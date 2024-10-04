@@ -20,7 +20,7 @@ final class CoinController {
             int value = Coin.getValue();
             coin.collect();
             Sound.play(Sound.Effect.COIN);
-            Data.increase("stats.collectable.total.count", value);
+            Data.increase("stats.collectable.totalCollected.count", value);
             Data.increase("stats.collectable.commons.coins.count", value);
             hudController.addCoins(value);
             chamber.findAndRemoveEntity(coin);

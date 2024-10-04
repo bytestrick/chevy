@@ -1,5 +1,7 @@
 package chevy.model.entity.collectable.powerUp;
 
+import chevy.view.Options;
+
 import java.awt.Point;
 
 public final class HedgehogSpines extends PowerUp {
@@ -9,10 +11,16 @@ public final class HedgehogSpines extends PowerUp {
         super(position, Type.HEDGEHOG_SPINES);
 
         occurringPercentage = 50;
-        name = "Aculei di Riccio\n";
-        description = "Probabilità del " + occurringPercentage + "% di riflettere\nil "
-                + Math.round(DAMAGE_MULTIPLIER * 100) + "% di danno al tuo aguzzino";
     }
 
     public static float getDamageMultiplier() {return DAMAGE_MULTIPLIER;}
+
+    @Override
+    public String getName() {return Options.strings.getString("powerUp.hedgehogSpines.name");}
+
+    @Override
+    public String getDescription() {
+        return String.format(Options.strings.getString("powerUp.hedgehogSpines.desc"),
+                occurringPercentage, Math.round(DAMAGE_MULTIPLIER * 100));
+    }
 }

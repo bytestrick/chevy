@@ -13,6 +13,7 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Log;
+import chevy.view.Options;
 import chevy.view.Window;
 import chevy.view.chamber.EntityToEntityView;
 
@@ -114,9 +115,7 @@ public final class ChamberManager {
     /**
      * Sblocca e passa alla stanza successiva
      */
-    public static void nextChamber() {
-        enterChamber(currentChamberIndex + 1);
-    }
+    public static void nextChamber() {enterChamber(currentChamberIndex + 1);}
 
     public static boolean isLastChamber() {return currentChamberIndex == NUMBER_OF_CHAMBERS - 1;}
 
@@ -133,8 +132,16 @@ public final class ChamberManager {
      * @param index della stanza
      */
     public static void enterChamber(final int index) {
+        // FIXME: qualcosa non viene resettato e si verificano comportamenti strani
+        //  quando si rigioca tante volte lo stesso livello. Es: il giocatore viene
+        //  ucciso anche se non ha nemici vicini. Anche quando si passa al livello successivo, la
+        //  stanza a volte viene generata senza Stair e il player si trova nella posizione in cui
+        //  queste dovrebbero essere.
+
         if (index < NUMBER_OF_CHAMBERS) {
-            window.setTitle("Chevy - Livello " + index);
+            // FIXME: il titolo con il livello non è visibile quando si entra la stanza dopo aver
+            //  premuto 'Gioca'
+            window.setTitle(String.format(Options.strings.getString("title.level"), index));
             currentChamberIndex = index;
             chambers[currentChamberIndex] = loadChamber(index);
             ChamberController.refresh();

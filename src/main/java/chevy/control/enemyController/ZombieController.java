@@ -99,7 +99,7 @@ final class ZombieController {
                 zombie.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(zombie);
-                Data.increment("stats.kills.total.count");
+                Data.increment("stats.kills.totalKills.count");
                 Data.increment("stats.kills.enemies.zombie.count");
                 return;
             }

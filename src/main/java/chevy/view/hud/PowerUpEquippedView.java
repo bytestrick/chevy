@@ -24,6 +24,8 @@ public final class PowerUpEquippedView extends JComponent {
     public void add(PowerUp powerUp) {
         String path = RES;
 
+        // TODO: chissà se esiste una funzione che traduce da
+        //   CONSTANT_CASE a camelCase
         switch ((PowerUp.Type) powerUp.getType()) {
             case AGILITY -> path += "agility";
             case ANGEL_RING -> path += "angelRing";

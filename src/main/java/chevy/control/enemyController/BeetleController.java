@@ -109,7 +109,7 @@ final class BeetleController {
                 beetle.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(beetle);
-                Data.increment("stats.kills.total.count");
+                Data.increment("stats.kills.totalKills.count");
                 Data.increment("stats.kills.enemies.beetle.count");
                 return;
             }

@@ -103,7 +103,7 @@ public final class PowerUpText extends JPanel {
     public void show(PowerUp powerUp) {
         SwingUtilities.invokeLater(() -> {
             Sound.play(Sound.Effect.POWER_UP_UI);
-            name = powerUp.getName();
+            name = powerUp.getName() + "\n";
             description = powerUp.getDescription();
             write();
             setVisible(true);

@@ -99,7 +99,7 @@ final class SlimeController {
                 slime.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(slime);
-                Data.increment("stats.kills.total.count");
+                Data.increment("stats.kills.totalKills.count");
                 Data.increment("stats.kills.enemies.slime.count");
                 return;
             }

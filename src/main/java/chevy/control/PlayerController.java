@@ -373,7 +373,7 @@ public final class PlayerController implements Updatable {
                 player.removeFromUpdate();
                 updateFinished = true;
 
-                Data.increment("stats.deaths.total.count");
+                Data.increment("stats.deaths.totalDeaths.count");
                 switch (player.getType()) {
                     case KNIGHT -> Data.increment("stats.deaths.characters.knight.count");
                     case NINJA -> Data.increment("stats.deaths.characters.ninja.count");
