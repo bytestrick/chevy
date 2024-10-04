@@ -73,7 +73,7 @@ final class PowerUpController {
                     ColdHeart coldHeath =
                             (ColdHeart) player.getOwnedPowerUp(PowerUp.Type.COLD_HEART);
                     if (coldHeath != null && coldHeath.canUse()) {
-                        player.changeShield(player.getShield() + ColdHeart.getShieldBoost());
+                        player.setShield(player.getShield() + ColdHeart.getShieldBoost());
                         player.increaseCurrentShield(ColdHeart.getShieldBoost());
                         hudController.changeMaxShield(player.getCurrentShield(),
                                 player.getShield());
@@ -99,7 +99,7 @@ final class PowerUpController {
                 case PowerUp.Type.HOT_HEART -> {
                     HotHeart hotHeath = (HotHeart) player.getOwnedPowerUp(PowerUp.Type.HOT_HEART);
                     if (hotHeath != null && hotHeath.canUse()) {
-                        player.changeHealth(player.getHealth() + HotHeart.getHealthBoost());
+                        player.setHealth(player.getHealth() + HotHeart.getHealthBoost());
                         player.increaseCurrentHealth(HotHeart.getHealthBoost());
                         hudController.changeMaxHealth(player.getCurrentHealth(),
                                 player.getHealth());
