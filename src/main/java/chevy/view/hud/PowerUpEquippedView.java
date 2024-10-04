@@ -9,7 +9,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 public final class PowerUpEquippedView extends JComponent {
-    private static final String RES = "/sprites/powerUpIcons/";
     private static final int spacing = 2;
     private final float scale;
     private int frameWidth;
@@ -22,30 +21,8 @@ public final class PowerUpEquippedView extends JComponent {
     }
 
     public void add(PowerUp powerUp) {
-        String path = RES;
-
-        // TODO: chissà se esiste una funzione che traduce da
-        //   CONSTANT_CASE a camelCase
-        switch ((PowerUp.Type) powerUp.getType()) {
-            case AGILITY -> path += "agility";
-            case ANGEL_RING -> path += "angelRing";
-            case COLD_HEART -> path += "coldHeart";
-            case COIN_OF_GREED -> path += "coinOfGreed";
-            case BROKEN_ARROWS -> path += "brokenSArrows";
-            case GOLD_ARROW -> path += "goldenArrows";
-            case HEALING_FLOOD -> path += "healingFlood";
-            case HEDGEHOG_SPINES -> path += "hedgehogSpines";
-            case HOBNAIL_BOOTS -> path += "hobnailBoots";
-            case HOLY_SHIELD -> path += "holyShield";
-            case HOT_HEART -> path += "hotHeart";
-            case KEY_S_KEEPER -> path += "keySKeeper";
-            case LONG_SWORD -> path += "longSword";
-            case SLIME_PIECE -> path += "slimePiece";
-            case STONE_BOOTS -> path += "stoneBoots";
-            case VAMPIRE_FANGS -> path += "vampireFangs";
-        }
-
-        ImageVisualizer frame = new ImageVisualizer(path + ".png", scale * Window.scale);
+        ImageVisualizer frame =
+                new ImageVisualizer("/sprites/powerUpIcons/" + powerUp.getType().toString().toLowerCase() + ".png", scale * Window.scale);
         frame.setToolTipText(powerUp.getDescription());
         add(frame);
         setDimension();
