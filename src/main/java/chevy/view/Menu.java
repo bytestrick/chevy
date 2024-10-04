@@ -71,6 +71,7 @@ public final class Menu {
     private final Window window;
     private final JLabel[] statsLabels;
     private final JProgressBar[] bars;
+    private final ActionListener actionListener = this::actionPerformed;
     private JPanel root, characterAnimation;
     private JComboBox<String> levelSelector;
     private JButton play, playerCycleNext, playerCyclePrev, quit, options, unlock;
@@ -105,11 +106,11 @@ public final class Menu {
     }
 
     private void actionPerformed(ActionEvent event) {
-        switch (event.getActionCommand()) {
+        final String actionCommand = event.getActionCommand();
+        switch (actionCommand) {
             case "play" -> playAction();
             case "quit" -> {
                 Sound.play(Sound.Effect.BUTTON);
-
                 window.quitAction();
             }
             case "options" -> {
@@ -122,8 +123,10 @@ public final class Menu {
             case "levelChanged" -> changeLevelAction();
             case "unlock" -> unlockPlayerAction();
         }
-        window.requestFocus();
-    }    private final ActionListener actionListener = this::actionPerformed;
+        if (!actionCommand.equals("levelChanged")) {
+            window.requestFocus();
+        }
+    }
 
     public void keyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getKeyCode()) {
@@ -224,14 +227,12 @@ public final class Menu {
             Data.set("menu.level", level);
             Log.info("Cambiato livello: " + level);
         } else {
-            // FIXME: il popup si nasconde subito
             levelSelector.hidePopup();
             levelSelector.setSelectedIndex(level);
             Sound.play(Sound.Effect.STOP);
             JOptionPane.showMessageDialog(window, String.format(Options.strings.getString("dialog" +
                             ".levelLocked"), level), null,
                     JOptionPane.WARNING_MESSAGE, ex);
-            levelSelector.requestFocus();
             SwingUtilities.invokeLater(levelSelector::showPopup);
         }
     }
