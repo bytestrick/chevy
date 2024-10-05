@@ -23,10 +23,14 @@ final class PowerUpController {
     private static final String STATS_PREFIX = "stats.collectable.powerUp.specific.";
     private final Chamber chamber;
     private final HUDController hudController;
+    private final EnemyUpdateController enemyUpdateController;
+    private final ProjectileUpdateController projectileUpdateController;
 
-    PowerUpController(Chamber chamber, HUDController hudController) {
+    PowerUpController(Chamber chamber, HUDController hudController, EnemyUpdateController enemyUpdateController, ProjectileUpdateController projectileUpdateController) {
         this.chamber = chamber;
         this.hudController = hudController;
+        this.enemyUpdateController = enemyUpdateController;
+        this.projectileUpdateController = projectileUpdateController;
     }
 
     void playerInInteraction(Player player, PowerUp powerUp) {
@@ -137,8 +141,8 @@ final class PowerUpController {
                 }
                 default -> {}
             }
-            EnemyUpdateController.setPaused(false);
-            ProjectileUpdateController.setPaused(false);
+            enemyUpdateController.setPaused(false);
+            projectileUpdateController.setPaused(false);
         }
     }
 
@@ -151,14 +155,14 @@ final class PowerUpController {
         } else {
             if (chamber.getDirectionToHitPlayer(powerUp) != null) {
                 if (powerUp.changeState(PowerUp.State.SELECTED)) {
-                    EnemyUpdateController.setPaused(true);
-                    ProjectileUpdateController.setPaused(true);
+                    enemyUpdateController.setPaused(true);
+                    projectileUpdateController.setPaused(true);
                     hudController.PowerUpText(powerUp);
                 }
             } else if (powerUp.checkAndChangeState(PowerUp.State.DESELECTED)) {
                 hudController.hidePowerUpText();
-                EnemyUpdateController.setPaused(false);
-                ProjectileUpdateController.setPaused(false);
+                enemyUpdateController.setPaused(false);
+                projectileUpdateController.setPaused(false);
             }
             powerUp.checkAndChangeState(PowerUp.State.IDLE);
         }
