@@ -1,5 +1,7 @@
 package chevy.model.entity.collectable.powerUp;
 
+import chevy.view.Options;
+
 import java.awt.Point;
 
 /**
@@ -13,10 +15,16 @@ public final class HealingFlood extends PowerUp {
 
         inStock = 1;
         occurringPercentage = 100;
-        name = "Inondazione Curativa\n";
-        description = "I nemici aumentano la probabilità di\nrilasciare pozioni di cura del "
-                + Math.round(INCREASED_DROP_PROBABILITY * 100) + "%";
     }
 
     public static float getIncreasedDropProbability() {return INCREASED_DROP_PROBABILITY;}
+
+    @Override
+    public String getName() {return Options.strings.getString("powerUp.HealingFlood.name");}
+
+    @Override
+    public String getDescription() {
+        return String.format(Options.strings.getString("powerUp.healingFlood.desc"),
+                Math.round(INCREASED_DROP_PROBABILITY * 100));
+    }
 }

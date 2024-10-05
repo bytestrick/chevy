@@ -14,8 +14,6 @@ public abstract class PowerUp extends Collectable {
     private final Vertex selected = new Vertex(State.SELECTED, 0.2f);
     private final Vertex deselected = new Vertex(State.DESELECTED, 0.2f);
     private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
-    String name = "No name";
-    String description = "No description";
     int occurringPercentage;
     int inStock = -1; // quantità infinita
 
@@ -33,7 +31,7 @@ public abstract class PowerUp extends Collectable {
             case BROKEN_ARROWS -> new BrokenArrows(position);
             case COIN_OF_GREED -> new CoinOfGreed(position);
             case COLD_HEART -> new ColdHeart(position);
-            case GOLD_ARROW -> new GoldArrow(position);
+            case GOLD_ARROWS -> new GoldArrow(position);
             case HEALING_FLOOD -> new HealingFlood(position);
             case HEDGEHOG_SPINES -> new HedgehogSpines(position);
             case HOBNAIL_BOOTS -> new HobnailBoots(position);
@@ -60,9 +58,9 @@ public abstract class PowerUp extends Collectable {
         deselected.linkVertex(collected);
     }
 
-    public String getName() {return name;}
+    public abstract String getName();
 
-    public String getDescription() {return description;}
+    public abstract String getDescription();
 
     public Vertex getState(EntityState state) {
         State powerUpState = (State) state;
@@ -94,7 +92,7 @@ public abstract class PowerUp extends Collectable {
     public enum Type implements EntityType {
         HOLY_SHIELD, VAMPIRE_FANGS, ANGEL_RING, LONG_SWORD, HOBNAIL_BOOTS, COIN_OF_GREED,
         HOT_HEART, COLD_HEART,
-        STONE_BOOTS, BROKEN_ARROWS, AGILITY, HEDGEHOG_SPINES, SLIME_PIECE, GOLD_ARROW,
+        STONE_BOOTS, BROKEN_ARROWS, AGILITY, HEDGEHOG_SPINES, SLIME_PIECE, GOLD_ARROWS,
         HEALING_FLOOD, KEY_S_KEEPER;
 
         static Type getRandom() {

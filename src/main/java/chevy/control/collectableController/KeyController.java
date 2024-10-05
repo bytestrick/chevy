@@ -28,7 +28,7 @@ final class KeyController {
         if (key.changeState(Key.State.COLLECTED)) {
             Sound.play(Sound.Effect.KEY_EQUIPPED);
             key.collect();
-            Data.increment("stats.collectable.total.count");
+            Data.increment("stats.collectable.totalCollected.count");
             Data.increment("stats.collectable.commons.keys.count");
             hudController.addKeys(1);
             chamber.findAndRemoveEntity(key);

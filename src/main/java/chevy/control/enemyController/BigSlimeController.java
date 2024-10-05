@@ -100,7 +100,7 @@ final class BigSlimeController {
                 bigSlime.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(bigSlime);
-                Data.increment("stats.kills.total.count");
+                Data.increment("stats.kills.totalKills.count");
                 Data.increment("stats.kills.enemies.bigSlime.count");
                 return;
             }

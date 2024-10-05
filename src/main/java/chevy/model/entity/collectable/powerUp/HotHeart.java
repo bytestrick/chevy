@@ -1,5 +1,7 @@
 package chevy.model.entity.collectable.powerUp;
 
+import chevy.view.Options;
+
 import java.awt.Point;
 
 public final class HotHeart extends PowerUp {
@@ -10,9 +12,15 @@ public final class HotHeart extends PowerUp {
 
         inStock = 1;
         occurringPercentage = 100;
-        name = "Cuore di Fuoco\n";
-        description = "La vita avrà un aumento di +" + HEALTH_BOOST + ".\nEffetto monouso";
     }
 
     public static int getHealthBoost() {return HEALTH_BOOST;}
+
+    @Override
+    public String getName() {return Options.strings.getString("powerUp.hotHeart.name");}
+
+    @Override
+    public String getDescription() {
+        return String.format(Options.strings.getString("powerUp.hotHeart.desc"), HEALTH_BOOST);
+    }
 }
