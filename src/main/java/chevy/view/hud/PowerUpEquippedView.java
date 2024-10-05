@@ -21,8 +21,8 @@ public final class PowerUpEquippedView extends JComponent {
     }
 
     public void add(PowerUp powerUp) {
-        ImageVisualizer frame =
-                new ImageVisualizer("/sprites/powerUpIcons/" + powerUp.getType().toString().toLowerCase() + ".png", scale * Window.scale);
+        ImageVisualizer frame = new ImageVisualizer("/sprites/powerUpIcons/"
+                + powerUp.getType().toString().toLowerCase() + ".png", scale * Window.scale);
         frame.setToolTipText(powerUp.getDescription());
         add(frame);
         setDimension();

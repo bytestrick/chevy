@@ -21,7 +21,6 @@ import chevy.service.Data;
 import chevy.service.Sound;
 
 final class PowerUpController {
-    private static final String STATS_PREFIX = "stats.collectable.powerUp.specific.";
     private final Chamber chamber;
     private final HUDController hudController;
 
@@ -39,26 +38,8 @@ final class PowerUpController {
             if (player.acquirePowerUp((PowerUp.Type) powerUp.getType(), powerUp)) {
                 hudController.addPowerUpIcon(powerUp);
                 Data.increment("stats.collectable.powerUp.totalPowerUps.count");
-
-                // FIXME: rimuovere switch
-                switch ((PowerUp.Type) powerUp.getType()) {
-                    case HOLY_SHIELD -> Data.increment(STATS_PREFIX + "holyShield.count");
-                    case VAMPIRE_FANGS -> Data.increment(STATS_PREFIX + "vampireFangs.count");
-                    case ANGEL_RING -> Data.increment(STATS_PREFIX + "angelRing.count");
-                    case LONG_SWORD -> Data.increment(STATS_PREFIX + "longSword.count");
-                    case HOBNAIL_BOOTS -> Data.increment(STATS_PREFIX + "hobnailBoots.count");
-                    case COIN_OF_GREED -> Data.increment(STATS_PREFIX + "coinOfGreed.count");
-                    case HOT_HEART -> Data.increment(STATS_PREFIX + "hotHeart.count");
-                    case COLD_HEART -> Data.increment(STATS_PREFIX + "coldHeart.count");
-                    case STONE_BOOTS -> Data.increment(STATS_PREFIX + "stoneBoots.count");
-                    case BROKEN_ARROWS -> Data.increment(STATS_PREFIX + "brokenArrows.count");
-                    case AGILITY -> Data.increment(STATS_PREFIX + "agility.count");
-                    case HEDGEHOG_SPINES -> Data.increment(STATS_PREFIX + "hedgehogSpines.count");
-                    case SLIME_PIECE -> Data.increment(STATS_PREFIX + "slimePiece.count");
-                    case GOLD_ARROWS -> Data.increment(STATS_PREFIX + "goldArrows.count");
-                    case HEALING_FLOOD -> Data.increment(STATS_PREFIX + "healingFlood.count");
-                    case KEY_S_KEEPER -> Data.increment(STATS_PREFIX + "keySKeeper.count");
-                }
+                Data.increment("stats.collectable.powerUp.specific." + powerUp.getType() +
+                        ".count");
             }
 
             switch (powerUp.getType()) {

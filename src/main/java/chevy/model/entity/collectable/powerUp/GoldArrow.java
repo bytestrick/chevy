@@ -8,7 +8,7 @@ public final class GoldArrow extends PowerUp {
     private static final int DAMAGE_BOOST = 2;
 
     public GoldArrow(Point position) {
-        super(position, Type.GOLD_ARROW);
+        super(position, Type.GOLD_ARROWS);
 
         inStock = 1;
         occurringPercentage = 100;
