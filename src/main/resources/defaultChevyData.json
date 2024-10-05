@@ -1,6 +1,6 @@
 {
   "progress": {
-    "coins": 5000,
+    "coins": 0,
     "keys": 0,
     "lastUnlockedLevel": 1,
     "player": {
@@ -111,67 +111,67 @@
           "icon": "powerUp"
         },
         "specific": {
-          "agility": {
+          "AGILITY": {
             "count": 0,
             "icon": "agility"
           },
-          "angelRing": {
+          "ANGEL_RING": {
             "count": 0,
             "icon": "angelRing"
           },
-          "brokenArrows": {
+          "BROKEN_ARROWS": {
             "count": 0,
             "icon": "brokenArrows"
           },
-          "coinOfGreed": {
+          "COIN_OF_GREED": {
             "count": 0,
             "icon": "coinOfGreed"
           },
-          "coldHeart": {
+          "COLD_HEART": {
             "count": 0,
             "icon": "coldHeart"
           },
-          "goldenArrows": {
+          "GOLD_ARROW": {
             "count": 0,
-            "icon": "goldenArrows"
+            "icon": "goldArrow"
           },
-          "healingFlood": {
+          "HEALING_FLOOD": {
             "count": 0,
             "icon": "healingFlood"
           },
-          "hedgehogSpines": {
+          "HEDGEHOG_SPINES": {
             "count": 0,
             "icon": "hedgehogSpines"
           },
-          "hobnailBoots": {
+          "HOBNAIL_BOOTS": {
             "count": 0,
             "icon": "hobnailBoots"
           },
-          "holyShield": {
+          "HOLY_SHIELD": {
             "count": 0,
             "icon": "holyShield"
           },
-          "hotHeart": {
+          "HOT_HEART": {
             "count": 0,
             "icon": "hotHeart"
           },
-          "keySKeeper": {
+          "KEY_S_KEEPER": {
             "count": 0,
             "icon": "keySKeeper"
           },
-          "longSword": {
+          "LONG_SWORD": {
             "count": 0,
             "icon": "longSword"
           },
-          "slimePiece": {
+          "SLIME_PIECE": {
             "count": 0,
             "icon": "slimePiece"
           },
-          "stoneBoots": {
+          "STONE_BOOTS": {
             "count": 0,
             "icon": "stoneBoots"
           },
-          "vampireFangs": {
+          "VAMPIRE_FANGS": {
             "count": 0,
             "icon": "vampireFangs"
           }
