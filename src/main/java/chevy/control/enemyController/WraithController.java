@@ -81,8 +81,8 @@ final class WraithController {
             Direction direction = chamber.getDirectionToHitPlayer(wraith);
             if (direction == null) {
                 if (chamber.moveRandomPlus(wraith)) {
-                    wraith.changeState(Wraith.State.MOVE);
                     wraith.setCanAttack(false);
+                    wraith.changeState(Wraith.State.MOVE);
                 }
             } else if (wraith.canChange(Wraith.State.ATTACK)) {
                 Entity entity = chamber.getEntityNearOnTop(wraith, direction);
@@ -97,10 +97,12 @@ final class WraithController {
             Direction direction = chamber.getDirectionToHitPlayer(wraith);
             if (direction != null) {
                 Entity entity = chamber.getEntityNearOnTop(wraith, direction);
+                // TODO rimuovi
+                System.out.println(entity);
                 if (entity instanceof Player) {
                     Sound.play(Sound.Effect.WRAITH_ATTACK);
-                    wraith.setCanAttack(false);
                     playerController.handleInteraction(Interaction.ENEMY, wraith);
+                    wraith.setCanAttack(false);
                 }
             }
         }

@@ -16,7 +16,7 @@ import java.util.List;
  * Gestisce l'aggiunta, l'aggiornamento e la rimozione dei nemici dall'aggiornamento.
  */
 public final class EnemyUpdateController implements Updatable {
-    private static boolean running, paused;
+    private boolean running, paused;
     private final EnemyController enemyController;
     private final Collection<Enemy> enemies = new ArrayList<>();
     private final List<Enemy> enemiesToAdd;
@@ -36,9 +36,9 @@ public final class EnemyUpdateController implements Updatable {
         UpdateManager.register(this);
     }
 
-    public static void stopUpdate() {running = false;}
+    public void stopUpdate() { running = false; }
 
-    public static void setPaused(boolean paused) {EnemyUpdateController.paused = paused;}
+    public void setPaused(boolean paused) { this.paused = paused; }
 
     /**
      * Aggiunge i nuovi nemici alla lista degli aggiornamenti e svuota la lista temporanea.

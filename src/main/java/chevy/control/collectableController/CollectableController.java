@@ -2,6 +2,8 @@ package chevy.control.collectableController;
 
 import chevy.control.HUDController;
 import chevy.control.Interaction;
+import chevy.control.enemyController.EnemyUpdateController;
+import chevy.control.projectileController.ProjectileUpdateController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
 import chevy.model.entity.collectable.Coin;
@@ -17,11 +19,11 @@ public final class CollectableController {
     private final KeyController keyController;
     private final PowerUpController powerUpController;
 
-    public CollectableController(Chamber chamber, HUDController hudController) {
+    public CollectableController(Chamber chamber, HUDController hudController, EnemyUpdateController enemyUpdateController, ProjectileUpdateController projectileUpdateController) {
         keyController = new KeyController(chamber, hudController);
         healthController = new HealthController(hudController, chamber);
         coinController = new CoinController(chamber, hudController);
-        powerUpController = new PowerUpController(chamber, hudController);
+        powerUpController = new PowerUpController(chamber, hudController, enemyUpdateController, projectileUpdateController);
     }
 
     /**

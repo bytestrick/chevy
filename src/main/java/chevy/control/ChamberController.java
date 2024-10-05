@@ -39,7 +39,7 @@ public final class ChamberController {
         final EnemyController enemyController = new EnemyController(chamber, playerController);
         playerController.setEnemyController(enemyController);
         if (enemyUpdateController != null) {
-            EnemyUpdateController.stopUpdate();
+            enemyUpdateController.stopUpdate();
         }
         enemyUpdateController = new EnemyUpdateController(enemyController, chamber.getEnemies());
 
@@ -55,7 +55,7 @@ public final class ChamberController {
         playerController.setHUDController(hudController);
 
         CollectableController collectableController = new CollectableController(chamber,
-                hudController);
+                hudController, enemyUpdateController, projectileUpdateController);
         playerController.setCollectableController(collectableController);
         if (collectableUpdateController != null) {
             collectableUpdateController.stopUpdate();
@@ -68,7 +68,7 @@ public final class ChamberController {
                 enemyController);
         playerController.setProjectileController(projectileController);
         if (projectileUpdateController != null) {
-            ProjectileUpdateController.stopUpdate();
+            projectileUpdateController.stopUpdate();
         }
         projectileUpdateController = new ProjectileUpdateController(projectileController,
                 chamber.getProjectiles());
