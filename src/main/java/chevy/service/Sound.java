@@ -21,13 +21,11 @@ import java.util.stream.Stream;
 public final class Sound {
     private static final Clip[] effects = new Clip[Effect.values().length];
     private static final Clip[] songs = new Clip[Song.values().length];
-    private static final Clip[] loops = new Clip[]{Load.clip("loop0"), Load.clip("loop1")};
+    private static final Clip[] loops = {Load.clip("loop0"), Load.clip("loop1")};
     private static Clip currentLoop;
     private static Clip currentSong;
     private static LineListener currentSongLineListener;
     private static boolean musicPaused;
-
-    // TODO: aggiungere effetti per l'interazione con le casse
 
     static {
         final Effect[] e = Effect.values();
@@ -169,6 +167,10 @@ public final class Sound {
         }
     }
 
+    /**
+     * Una flag per gestire il comportamento di {@link #startMusic} e {@link #startLoop} senza usare un argomento
+     * boolean
+     */
     public enum Music {NEW_SONG, SAME_SONG}
 
     public enum Effect {
@@ -176,8 +178,8 @@ public final class Sound {
         NINJA_FOOTSTEPS, KNIGHT_FOOTSTEPS, ZOMBIE_BITE, ZOMBIE_CHOCKING, ZOMBIE_HIT, SKELETON_HIT,
         SKELETON_DISASSEMBLED, SKELETON_ATTACK, SLIDE, SLIME_HIT, SLIME_DEATH, ROBOTIC_INSECT,
         BEETLE_ATTACK, BEETLE_DEATH, WRAITH_ATTACK, WRAITH_HIT, WRAITH_DEATH, MUD, COIN,
-        KEY_EQUIPPED, POWER_UP_UI, HEALTH_POTION, LOST, PLAY_BUTTON, BUTTON, STOP, UNLOCK_CHARACTER,
-        DAMAGE
+        KEY_EQUIPPED, MAGIC, HEALTH_POTION, LOST, PLAY_BUTTON, BUTTON, STOP, UNLOCK_CHARACTER,
+        DAMAGE, CHEST_GLARE, CHEST_OPEN, CHEST_CLOSE, POWER_UP_EQUIPPED
     }
 
     private enum Song {BG1, BG2, BG3}
