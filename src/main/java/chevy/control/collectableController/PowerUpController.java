@@ -18,9 +18,9 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
 import chevy.service.Data;
+import chevy.service.Sound;
 
 final class PowerUpController {
-    private static final String STATS_PREFIX = "stats.collectable.powerUp.specific.";
     private final Chamber chamber;
     private final HUDController hudController;
     private final EnemyUpdateController enemyUpdateController;
@@ -35,31 +35,15 @@ final class PowerUpController {
 
     void playerInInteraction(Player player, PowerUp powerUp) {
         if (powerUp.changeState(PowerUp.State.COLLECTED)) {
+            Sound.play(Sound.Effect.POWER_UP_EQUIPPED);
             powerUp.collect();
             chamber.findAndRemoveEntity(powerUp);
             hudController.hidePowerUpText();
             if (player.acquirePowerUp((PowerUp.Type) powerUp.getType(), powerUp)) {
                 hudController.addPowerUpIcon(powerUp);
-                Data.increment("stats.collectable.powerUp.total.count");
-
-                switch ((PowerUp.Type) powerUp.getType()) {
-                    case HOLY_SHIELD -> Data.increment(STATS_PREFIX + "holyShield.count");
-                    case VAMPIRE_FANGS -> Data.increment(STATS_PREFIX + "vampireFangs.count");
-                    case ANGEL_RING -> Data.increment(STATS_PREFIX + "angelRing.count");
-                    case LONG_SWORD -> Data.increment(STATS_PREFIX + "longSword.count");
-                    case HOBNAIL_BOOTS -> Data.increment(STATS_PREFIX + "hobnailBoots.count");
-                    case COIN_OF_GREED -> Data.increment(STATS_PREFIX + "coinOfGreed.count");
-                    case HOT_HEART -> Data.increment(STATS_PREFIX + "hotHeart.count");
-                    case COLD_HEART -> Data.increment(STATS_PREFIX + "coldHeart.count");
-                    case STONE_BOOTS -> Data.increment(STATS_PREFIX + "stoneBoots.count");
-                    case BROKEN_ARROWS -> Data.increment(STATS_PREFIX + "brokenArrows.count");
-                    case AGILITY -> Data.increment(STATS_PREFIX + "agility.count");
-                    case HEDGEHOG_SPINES -> Data.increment(STATS_PREFIX + "hedgehogSpines.count");
-                    case SLIME_PIECE -> Data.increment(STATS_PREFIX + "slimePiece.count");
-                    case GOLD_ARROW -> Data.increment(STATS_PREFIX + "goldenArrow.count");
-                    case HEALING_FLOOD -> Data.increment(STATS_PREFIX + "healingFlood.count");
-                    case KEY_S_KEEPER -> Data.increment(STATS_PREFIX + "keySKeeper.count");
-                }
+                Data.increment("stats.collectable.powerUp.totalPowerUps.count");
+                Data.increment("stats.collectable.powerUp.specific." + powerUp.getType() +
+                        ".count");
             }
 
             switch (powerUp.getType()) {
@@ -77,15 +61,15 @@ final class PowerUpController {
                     ColdHeart coldHeath =
                             (ColdHeart) player.getOwnedPowerUp(PowerUp.Type.COLD_HEART);
                     if (coldHeath != null && coldHeath.canUse()) {
-                        player.changeShield(player.getShield() + ColdHeart.getShieldBoost());
+                        player.setShield(player.getShield() + ColdHeart.getShieldBoost());
                         player.increaseCurrentShield(ColdHeart.getShieldBoost());
                         hudController.changeMaxShield(player.getCurrentShield(),
                                 player.getShield());
                     }
                 }
-                case PowerUp.Type.GOLD_ARROW -> {
+                case PowerUp.Type.GOLD_ARROWS -> {
                     GoldArrow goldArrow =
-                            (GoldArrow) player.getOwnedPowerUp(PowerUp.Type.GOLD_ARROW);
+                            (GoldArrow) player.getOwnedPowerUp(PowerUp.Type.GOLD_ARROWS);
                     if (goldArrow != null && goldArrow.canUse()) {
                         Arrow.setDamageBoost(GoldArrow.getDamageBoost());
                     }
@@ -103,7 +87,7 @@ final class PowerUpController {
                 case PowerUp.Type.HOT_HEART -> {
                     HotHeart hotHeath = (HotHeart) player.getOwnedPowerUp(PowerUp.Type.HOT_HEART);
                     if (hotHeath != null && hotHeath.canUse()) {
-                        player.changeHealth(player.getHealth() + HotHeart.getHealthBoost());
+                        player.setHealth(player.getHealth() + HotHeart.getHealthBoost());
                         player.increaseCurrentHealth(HotHeart.getHealthBoost());
                         hudController.changeMaxHealth(player.getCurrentHealth(),
                                 player.getHealth());

@@ -61,9 +61,9 @@ public abstract class LiveEntity extends DynamicEntity {
 
     public int getCurrentShield() {return currentShield;}
 
-    public synchronized void changeShield(int value) {shield = value;}
+    public synchronized void setShield(int value) {shield = value;}
 
-    public synchronized void changeHealth(int value) {health = value;}
+    public synchronized void setHealth(int value) {health = value;}
 
     public synchronized int getHealth() {return health;}
 

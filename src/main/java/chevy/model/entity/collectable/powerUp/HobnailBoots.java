@@ -1,5 +1,7 @@
 package chevy.model.entity.collectable.powerUp;
 
+import chevy.view.Options;
+
 import java.awt.Point;
 
 public final class HobnailBoots extends PowerUp {
@@ -7,7 +9,11 @@ public final class HobnailBoots extends PowerUp {
         super(position, Type.HOBNAIL_BOOTS);
 
         occurringPercentage = 100;
-        name = "Stivali Chiodati\n";
-        description = "Aumenta la presa sul ghiaccio\nimpedendo di scivolarci sopra";
     }
+
+    @Override
+    public String getName() {return Options.strings.getString("powerUp.hobnailBoots.name");}
+
+    @Override
+    public String getDescription() {return Options.strings.getString("powerUp.hobnailBoots.desc");}
 }

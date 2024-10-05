@@ -30,7 +30,7 @@ final class HealthController {
             player.increaseCurrentHealth(health.getRecoverHealth());
             Sound.play(Sound.Effect.HEALTH_POTION);
             health.collect();
-            Data.increment("stats.collectable.total.count");
+            Data.increment("stats.collectable.totalCollected.count");
             Data.increment("stats.collectable.commons.healthPotions.count");
             hudController.changeHealth(player.getCurrentHealth());
             chamber.findAndRemoveEntity(health);

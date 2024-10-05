@@ -34,40 +34,7 @@ public final class Tutorial extends JPanel {
     private static final Icon HOME = Load.icon("Home", 48, 48);
     private static final int MARGIN = 32;
     private static final String GIFS_PATH = "sprites/tutorial/";
-    // @formatter:off
-    private static final String[] title = new String[] {
-            "Benvenutə in Chevy!\n",
-            "Ora, passiamo agli attacchi!\n",
-            "Oggetti da raccogliere\n",
-            "Pozioni di cura\n",
-            "Potenziamenti\n",
-            "Le chiavi\n",
-            "Pericoli e trappole\n",
-            "Pericoli e trappole\n",
-            "Pericoli e trappole\n",
-            "Pericoli e trappole\n",
-            "Pericoli e trappole\n",
-            "La via di uscita\n",
-            "Pausa\n",
-            "Fine del tutorial\n"
-    };
-    private static final String[] texts = new String[] {
-            "Usa i tasti “W”, “A”, “S”, “D” oppure le frecce direzionali per muoverti nel gioco.",
-            "Usa i tasti “I”, “J”, “K”, “L” per attaccare i nemici. Ricorda: l'attacco è la tua migliore difesa!",
-            "Durante la tua avventura, incontrerai diversi oggetti utili. Inizia raccogliendo le monete; accumulandone abbastanza, potrai sbloccare nuovi personaggi.",
-            "Le pozioni di cura sono fondamentali per ripristinare la tua vita durante le battaglie. A volte, puoi ottenerle dopo aver eliminato i nemici.",
-            "I potenziamenti sono oggetti speciali che ti conferiscono abilità straordinarie, rendendoti più potente nel corso del gioco.\nUsali saggiamente!",
-            "Le chiavi servono per aprire forzieri, che possono contenere monete, pozioni, potenziamenti o ulteriori chiavi.",
-            "Fai attenzione agli spuntoni, in quanto possono infliggere danni se li tocchi. Tieni gli occhi aperti!",
-            "Le superfici ghiacciate sono scivolose; se le calpesti, continuerai a scivolare per tutta la durata del ghiaccio.",
-            "Il pavimento vischioso blocca il tuo movimento e una volta che ti sei liberato scompare, quindi cerca di evitarlo.",
-            "La botola si apre una volta che ci sei passato sopra. Attento a non caderci dentro.",
-            "I totem lanciano frecce appuntite a intervalli regolari. Impara a schivarle per evitare danni. Sii veloce!",
-            "La scala è l'unica via d'uscita dalla stanza. Tuttavia, si aprirà solo dopo che avrai eliminato tutti i nemici.\nPreparati alla battaglia!",
-            "Il gioco può essere messo in pausa premendo il tasto “Esc”. Prenditi una pausa se hai bisogno di riflettere!",
-            "Hai completato il tutorial.\nOra sei prontə ad affrontare il resto del gioco.\n\nBuona fortuna!"
-    };
-    // @formatter:on
+    private String[] titles, texts;
     private final JTextPane textPane = new JTextPane();
     private final StyledDocument doc = textPane.getStyledDocument();
     private final Style titleStyle = doc.addStyle("TitleStyle", null);
@@ -87,7 +54,13 @@ public final class Tutorial extends JPanel {
         setConstraints();
     }
 
+    void setStrings() {
+        titles = Options.strings.getString("tutorial.titles").split(";");
+        texts = Options.strings.getString("tutorial.descriptions").split(";");
+    }
+
     private void initUI() {
+        setStrings();
         add(left);
         add(right);
         add(textPane);
@@ -201,8 +174,8 @@ public final class Tutorial extends JPanel {
         if (step < texts.length) {
             try {
                 doc.remove(0, doc.getLength());
-                doc.setParagraphAttributes(0, title[step].length(), titleStyle, false);
-                doc.insertString(0, title[step] + "\n", titleStyle);
+                doc.setParagraphAttributes(0, titles[step].length(), titleStyle, false);
+                doc.insertString(0, titles[step] + "\n\n", titleStyle);
 
                 doc.setParagraphAttributes(doc.getLength(), texts[step].length(), textStyle, false);
                 doc.insertString(doc.getLength(), texts[step], textStyle);
@@ -235,9 +208,11 @@ public final class Tutorial extends JPanel {
         switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_ESCAPE -> {
                 Sound.play(Sound.Effect.STOP);
-                final int ans = JOptionPane.showOptionDialog(window, "Abbandonare il tutorial?",
+                final String[] opts = Options.strings.getString("dialog.yesNo").split(",");
+                final int ans = JOptionPane.showOptionDialog(window, Options.strings.getString(
+                        "dialog.quitTutorial"),
                         null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, HOME,
-                        new String[]{"Si", "No"}, "No");
+                        opts, opts[opts.length - 1]);
                 if (ans == 0) {
                     Sound.play(Sound.Effect.BUTTON);
                     Sound.stopMusic();
