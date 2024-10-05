@@ -18,6 +18,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
 import chevy.service.Data;
+import chevy.service.Sound;
 
 final class PowerUpController {
     private static final String STATS_PREFIX = "stats.collectable.powerUp.specific.";
@@ -31,6 +32,7 @@ final class PowerUpController {
 
     void playerInInteraction(Player player, PowerUp powerUp) {
         if (powerUp.changeState(PowerUp.State.COLLECTED)) {
+            Sound.play(Sound.Effect.POWER_UP_EQUIPPED);
             powerUp.collect();
             chamber.findAndRemoveEntity(powerUp);
             hudController.hidePowerUpText();
@@ -38,6 +40,7 @@ final class PowerUpController {
                 hudController.addPowerUpIcon(powerUp);
                 Data.increment("stats.collectable.powerUp.totalPowerUps.count");
 
+                // FIXME: rimuovere switch
                 switch ((PowerUp.Type) powerUp.getType()) {
                     case HOLY_SHIELD -> Data.increment(STATS_PREFIX + "holyShield.count");
                     case VAMPIRE_FANGS -> Data.increment(STATS_PREFIX + "vampireFangs.count");
@@ -52,7 +55,7 @@ final class PowerUpController {
                     case AGILITY -> Data.increment(STATS_PREFIX + "agility.count");
                     case HEDGEHOG_SPINES -> Data.increment(STATS_PREFIX + "hedgehogSpines.count");
                     case SLIME_PIECE -> Data.increment(STATS_PREFIX + "slimePiece.count");
-                    case GOLD_ARROW -> Data.increment(STATS_PREFIX + "goldenArrows.count");
+                    case GOLD_ARROWS -> Data.increment(STATS_PREFIX + "goldArrows.count");
                     case HEALING_FLOOD -> Data.increment(STATS_PREFIX + "healingFlood.count");
                     case KEY_S_KEEPER -> Data.increment(STATS_PREFIX + "keySKeeper.count");
                 }
@@ -79,9 +82,9 @@ final class PowerUpController {
                                 player.getShield());
                     }
                 }
-                case PowerUp.Type.GOLD_ARROW -> {
+                case PowerUp.Type.GOLD_ARROWS -> {
                     GoldArrow goldArrow =
-                            (GoldArrow) player.getOwnedPowerUp(PowerUp.Type.GOLD_ARROW);
+                            (GoldArrow) player.getOwnedPowerUp(PowerUp.Type.GOLD_ARROWS);
                     if (goldArrow != null && goldArrow.canUse()) {
                         Arrow.setDamageBoost(GoldArrow.getDamageBoost());
                     }
