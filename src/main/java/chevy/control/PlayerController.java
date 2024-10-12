@@ -192,8 +192,7 @@ public final class PlayerController implements Updatable {
      * @param trap la trappola con cui il giocatore interagisce
      */
     private void trapInteraction(Trap trap) {
-        Trap.Type trapType = (Trap.Type) trap.getType();
-        switch (trapType) {
+        switch ((Trap.Type) trap.getType()) {
             case VOID, TRAPDOOR -> {
                 player.changeState(Player.State.FALL);
                 trap_damage = trap.getDamage();
