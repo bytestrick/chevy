@@ -132,12 +132,6 @@ public final class ChamberManager {
      * @param index della stanza
      */
     public static void enterChamber(final int index) {
-        // FIXME: qualcosa non viene resettato e si verificano comportamenti strani
-        //  quando si rigioca tante volte lo stesso livello. Es: il giocatore viene
-        //  ucciso anche se non ha nemici vicini. Anche quando si passa al livello successivo, la
-        //  stanza a volte viene generata senza Stair e il player si trova nella posizione in cui
-        //  queste dovrebbero essere.
-
         if (index < NUMBER_OF_CHAMBERS) {
             window.setTitle(String.format(Options.strings.getString("title.level"), index));
             currentChamberIndex = index;
