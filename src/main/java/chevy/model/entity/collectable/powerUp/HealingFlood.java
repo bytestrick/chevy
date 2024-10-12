@@ -20,7 +20,7 @@ public final class HealingFlood extends PowerUp {
     public static float getIncreasedDropProbability() {return INCREASED_DROP_PROBABILITY;}
 
     @Override
-    public String getName() {return Options.strings.getString("powerUp.HealingFlood.name");}
+    public String getName() {return Options.strings.getString("powerUp.healingFlood.name");}
 
     @Override
     public String getDescription() {

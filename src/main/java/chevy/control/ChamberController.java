@@ -70,9 +70,6 @@ public final class ChamberController {
                 chamber.getCollectables());
 
         playerController.setProjectileController(projectileController);
-        if (projectileUpdateController != null) {
-            projectileUpdateController.stopUpdate();
-        }
 
         final EnvironmentController environmentController =
                 new EnvironmentController(chamber, hudController, gamePanel);
