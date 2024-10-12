@@ -20,7 +20,7 @@ public final class VampireFangs extends PowerUp {
 
     @Override
     public String getDescription() {
-        return String.format(Options.strings.getString("powerUp.vampireFangs.name"),
+        return String.format(Options.strings.getString("powerUp.vampireFangs.desc"),
                 occurringPercentage, HEALTH_BOOST);
     }
 }
