@@ -11,6 +11,7 @@ import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.collectable.powerUp.SlimePiece;
 import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.Beetle;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
@@ -225,9 +226,10 @@ public final class Chamber {
     public synchronized Direction getDirectionToHitPlayer(Entity entity, int distanceCell) {
         for (int i = 1; i <= distanceCell; ++i) {
             for (Direction direction : Direction.values()) {
-                Point position = direction.advance(entity.getPosition());
-                position.x *= i;
-                position.y *= i;
+                Point position = entity.getPosition();
+                position.x += direction.x * i;
+                position.y += direction.y * i;
+
                 if (isValid(position) && getEntityOnTop(position) instanceof Player) {
                     if (entity instanceof DynamicEntity dynamicEntity) {
                         dynamicEntity.setDirection(direction);

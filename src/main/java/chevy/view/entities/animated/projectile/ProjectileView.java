@@ -7,6 +7,7 @@ import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolation;
 import chevy.view.entities.animated.AnimatedEntityView;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
@@ -54,6 +55,13 @@ abstract class ProjectileView extends AnimatedEntityView {
         final Direction direction = getAnimationDirection(state);
         final AnimatedSprite currentAnimatedSprite = getAnimatedSprite(state, direction);
         return currentAnimatedSprite.getScale();
+    }
+
+    public Point getOffset() {
+        final EntityState state = projectile.getState();
+        final Direction direction = getAnimationDirection(state);
+        final AnimatedSprite currentAnimatedSprite = getAnimatedSprite(state, direction);
+        return currentAnimatedSprite.getOffset();
     }
 
     private Direction getAnimationDirection(EntityState state) {
