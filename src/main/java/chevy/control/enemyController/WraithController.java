@@ -97,8 +97,6 @@ final class WraithController {
             Direction direction = chamber.getDirectionToHitPlayer(wraith);
             if (direction != null) {
                 Entity entity = chamber.getEntityNearOnTop(wraith, direction);
-                // TODO rimuovi
-                System.out.println(entity);
                 if (entity instanceof Player) {
                     Sound.play(Sound.Effect.WRAITH_ATTACK);
                     playerController.handleInteraction(Interaction.ENEMY, wraith);
