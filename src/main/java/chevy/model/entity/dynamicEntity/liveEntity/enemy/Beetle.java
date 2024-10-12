@@ -9,7 +9,6 @@ public final class Beetle extends Enemy {
         currentHealth = health;
         maxDamage = 5;
         minDamage = 3;
-        drawLayer = 3;
         stateMachine.setName("Beetle");
     }
 }
