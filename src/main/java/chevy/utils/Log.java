@@ -38,7 +38,7 @@ public final class Log {
      * @param message il messaggio diagnostico che descrive l'evento
      */
     public static void info(String message) {
-        if (Level.INFO.compareTo(logLevel) >= 0) {
+        if (Level.INFO.compareTo(logLevel) == 0) {
             System.out.println("\033[90;1m[i]\033[0m " + message);
         }
     }
@@ -49,5 +49,5 @@ public final class Log {
      * {@link #INFO} è il più verboso, {@link #ERROR} il più terso. {@link #OFF} lo disabilita
      * completamente.
      */
-    public enum Level {OFF, INFO, WARN, ERROR}
+    public enum Level {INFO, WARN, ERROR, OFF}
 }
