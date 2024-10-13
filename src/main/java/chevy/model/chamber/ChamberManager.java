@@ -13,7 +13,6 @@ import chevy.model.entity.staticEntity.environment.traps.Trap;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Log;
-import chevy.view.Options;
 import chevy.view.Window;
 import chevy.view.chamber.EntityToEntityView;
 
@@ -133,9 +132,9 @@ public final class ChamberManager {
      */
     public static void enterChamber(final int index) {
         if (index < NUMBER_OF_CHAMBERS) {
-            window.setTitle(String.format(Options.strings.getString("title.level"), index));
             currentChamberIndex = index;
             chambers[currentChamberIndex] = loadChamber(index);
+            window.getGamePanel().setWindowTitle();
             ChamberController.refresh();
             // Invalida la view del player corrente
             EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer());

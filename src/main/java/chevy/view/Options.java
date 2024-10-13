@@ -120,10 +120,13 @@ public final class Options {
                 Data.set("options.language", language);
                 strings = ResourceBundle.getBundle("i18n.strings", Locale.of(language));
                 setStrings();
+                window.setTitle(Options.strings.getString("title.options"));
                 window.getMenu().setStrings();
                 window.getGamePanel().getTutorial().setStrings();
                 window.revalidate();
                 window.repaint();
+                volumeChanged(new ChangeEvent(musicVolume));
+                volumeChanged(new ChangeEvent(effectsVolume));
             }
         }
     }
