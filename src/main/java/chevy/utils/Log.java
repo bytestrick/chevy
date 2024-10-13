@@ -5,7 +5,7 @@ package chevy.utils;
  */
 public final class Log {
     /** Valore globale per la granularità della diagnostica */
-    public static Log.Level logLevel = Level.INFO;
+    public static Log.Level logLevel = Level.OFF;
 
     /**
      * Registra un evento di errore. Un evento simile indica un punto in cui l'applicazione non
