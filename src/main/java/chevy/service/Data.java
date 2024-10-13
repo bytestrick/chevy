@@ -49,7 +49,8 @@ public final class Data {
 
     /**
      * Incrementa un valore
-     * @param path percorso al quale si trova il valore da incrementare
+     *
+     * @param path  percorso al quale si trova il valore da incrementare
      * @param value quantità da aggiungere
      */
     public synchronized static void increase(String path, Integer value) {
@@ -59,6 +60,7 @@ public final class Data {
 
     /**
      * Incrementa un valore di 1
+     *
      * @param path percorso al quale si trova il valore da incrementare
      */
     public synchronized static void increment(String path) {increase(path, 1);}
@@ -116,7 +118,7 @@ public final class Data {
     private static File findFile() {
         String prefix = AppDirsFactory.getInstance().getUserDataDir("chevy", null, null);
         String path = prefix + File.separator + "data.json";
-        Log.info("App data location: " + path);
+        System.out.println("App data location: " + path);
         return new File(path);
     }
 
