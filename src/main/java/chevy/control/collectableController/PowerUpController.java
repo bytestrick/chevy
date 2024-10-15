@@ -6,7 +6,7 @@ import chevy.control.projectileController.ProjectileUpdateController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.collectable.powerUp.CoinOfGreed;
 import chevy.model.entity.collectable.powerUp.ColdHeart;
-import chevy.model.entity.collectable.powerUp.GoldArrow;
+import chevy.model.entity.collectable.powerUp.GoldArrows;
 import chevy.model.entity.collectable.powerUp.HealingFlood;
 import chevy.model.entity.collectable.powerUp.HotHeart;
 import chevy.model.entity.collectable.powerUp.KeySKeeper;
@@ -68,10 +68,10 @@ final class PowerUpController {
                     }
                 }
                 case PowerUp.Type.GOLD_ARROWS -> {
-                    GoldArrow goldArrow =
-                            (GoldArrow) player.getOwnedPowerUp(PowerUp.Type.GOLD_ARROWS);
-                    if (goldArrow != null && goldArrow.canUse()) {
-                        Arrow.setDamageBoost(GoldArrow.getDamageBoost());
+                    GoldArrows goldArrows =
+                            (GoldArrows) player.getOwnedPowerUp(PowerUp.Type.GOLD_ARROWS);
+                    if (goldArrows != null && goldArrows.canUse()) {
+                        Arrow.setDamageBoost(GoldArrows.getDamageBoost());
                     }
                 }
                 case PowerUp.Type.HEALING_FLOOD -> {

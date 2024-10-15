@@ -9,7 +9,7 @@ import chevy.model.entity.collectable.powerUp.AngelRing;
 import chevy.model.entity.collectable.powerUp.BrokenArrows;
 import chevy.model.entity.collectable.powerUp.CoinOfGreed;
 import chevy.model.entity.collectable.powerUp.ColdHeart;
-import chevy.model.entity.collectable.powerUp.GoldArrow;
+import chevy.model.entity.collectable.powerUp.GoldArrows;
 import chevy.model.entity.collectable.powerUp.HealingFlood;
 import chevy.model.entity.collectable.powerUp.HedgehogSpines;
 import chevy.model.entity.collectable.powerUp.HobnailBoots;
@@ -120,7 +120,7 @@ final class EntityFromColor {
     private static final int COIN_OF_GREED = 16;
     private static final int COLD_HEART = 17;
     private static final int HOBNAIL_BOOTS = 18;
-    private static final int GOLD_ARROW = 19;
+    private static final int GOLD_ARROWS = 19;
     private static final int KEY_S_KEEPER = 20;
     private static final int HEDGEHOG_SPINES = 21;
     private static final int HOLY_SHIELD = 22;
@@ -215,7 +215,7 @@ final class EntityFromColor {
             case BROKEN_ARROWS -> new BrokenArrows(startPosition);
             case COLD_HEART -> new ColdHeart(startPosition);
             case HOT_HEARTH -> new HotHeart(startPosition);
-            case GOLD_ARROW -> new GoldArrow(startPosition);
+            case GOLD_ARROWS -> new GoldArrows(startPosition);
             case HOLY_SHIELD -> new HolyShield(startPosition);
             case VANPIRE_FNAGS -> new VampireFangs(startPosition);
             case LONG_SWORD -> new LongSword(startPosition);
