@@ -11,7 +11,6 @@ import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.model.entity.collectable.powerUp.SlimePiece;
 import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Beetle;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Slime;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
