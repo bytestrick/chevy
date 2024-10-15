@@ -31,7 +31,7 @@ public abstract class PowerUp extends Collectable {
             case BROKEN_ARROWS -> new BrokenArrows(position);
             case COIN_OF_GREED -> new CoinOfGreed(position);
             case COLD_HEART -> new ColdHeart(position);
-            case GOLD_ARROWS -> new GoldArrow(position);
+            case GOLD_ARROWS -> new GoldArrows(position);
             case HEALING_FLOOD -> new HealingFlood(position);
             case HEDGEHOG_SPINES -> new HedgehogSpines(position);
             case HOBNAIL_BOOTS -> new HobnailBoots(position);
