@@ -8,8 +8,8 @@ import java.awt.Point;
 public final class Skeleton extends Enemy {
     private boolean invincible = true;
 
-    public Skeleton(Point initPosition) {
-        super(initPosition, Type.SKELETON, 1.8f, 0.15f);
+    public Skeleton(Point position) {
+        super(position, Type.SKELETON, 1.8f, .15f);
         invincibility = new Vertex(State.INVINCIBILITY);
 
         health = 5;

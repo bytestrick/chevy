@@ -47,7 +47,7 @@ public final class GameLoop {
                 // narrowing conversion
                 final int value = Long.valueOf(System.currentTimeMillis() - timeStarted).intValue();
                 assert value > 0 : "Tempo di gioco negativo: " + value;
-                Data.increase("stats.time.played.count", value);
+                Data.increase("stats.time.totalPlayed.count", value);
             }
         }
     }
@@ -69,6 +69,10 @@ public final class GameLoop {
                         while (isPaused) {
                             Log.info("Game loop in pausa");
                             mutex.wait();
+
+                            // Dopo la durata indefinita della pausa il vecchio valore di
+                            // lastTime non ha significato
+                            lastTime = System.currentTimeMillis();
                         }
                     }
                 } catch (InterruptedException ignored) {}

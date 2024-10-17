@@ -100,8 +100,8 @@ final class BigSlimeController {
                 bigSlime.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(bigSlime);
-                Data.increment("stats.kills.total.count");
-                Data.increment("stats.kills.enemies.slime.count");
+                Data.increment("stats.kills.totalKills.count");
+                Data.increment("stats.kills.enemies.bigSlime.count");
                 return;
             }
         } else if (bigSlime.getCurrentHealth() <= 0 && bigSlime.checkAndChangeState(BigSlime.State.DEAD)) {
@@ -115,8 +115,8 @@ final class BigSlimeController {
             Direction direction = chamber.getDirectionToHitPlayer(bigSlime);
             if (direction == null) {
                 if (chamber.wanderChasePlus(bigSlime, 3)) {
-                    bigSlime.changeState(BigSlime.State.MOVE);
                     bigSlime.setCanAttack(false);
+                    bigSlime.changeState(BigSlime.State.MOVE);
                 }
             } else if (bigSlime.canChange(BigSlime.State.ATTACK)) {
                 Entity entity = chamber.getEntityNearOnTop(bigSlime, direction);

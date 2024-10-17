@@ -67,7 +67,7 @@ final class WraithController {
                 wraith.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(wraith);
-                Data.increment("stats.kills.total.count");
+                Data.increment("stats.kills.totalKills.count");
                 Data.increment("stats.kills.enemies.wraith.count");
                 return;
             }
@@ -81,8 +81,8 @@ final class WraithController {
             Direction direction = chamber.getDirectionToHitPlayer(wraith);
             if (direction == null) {
                 if (chamber.moveRandomPlus(wraith)) {
-                    wraith.changeState(Wraith.State.MOVE);
                     wraith.setCanAttack(false);
+                    wraith.changeState(Wraith.State.MOVE);
                 }
             } else if (wraith.canChange(Wraith.State.ATTACK)) {
                 Entity entity = chamber.getEntityNearOnTop(wraith, direction);

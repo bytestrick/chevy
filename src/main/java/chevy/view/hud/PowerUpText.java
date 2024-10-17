@@ -30,8 +30,8 @@ public final class PowerUpText extends JPanel {
     private final StyledDocument doc = textPane.getStyledDocument();
     private final Style titleStyle = doc.addStyle("TitleStyle", null);
     private final Style descriptionStyle = doc.addStyle("DescriptionStyle", null);
-    private String name = "Title\n";
-    private String description = "Description";
+    private String name = "Title missing\n";
+    private String description = "Description missing";
 
     PowerUpText() {
         initLayout();
@@ -101,9 +101,9 @@ public final class PowerUpText extends JPanel {
     }
 
     public void show(PowerUp powerUp) {
-        SwingUtilities.invokeLater(() -> {
-            Sound.play(Sound.Effect.POWER_UP_UI);
-            name = powerUp.getName();
+    SwingUtilities.invokeLater(() -> {
+            Sound.play(Sound.Effect.MAGIC);
+            name = powerUp.getName() + "\n";
             description = powerUp.getDescription();
             write();
             setVisible(true);

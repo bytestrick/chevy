@@ -7,18 +7,18 @@ import chevy.model.entity.stateMachine.Vertex;
 import java.awt.Point;
 
 public final class Arrow extends Projectile {
-    private static int addDamage;
+    private static int damageBoost;
     private final Vertex loop = new Vertex(State.LOOP, .2f, true);
-    private final Vertex end = new Vertex(State.END, 0.5f);
+    private final Vertex end = new Vertex(State.END, .5f);
 
-    public Arrow(Point initPosition, Direction direction) {
-        super(initPosition, Type.ARROW, direction);
-        maxDamage = 1 + addDamage;
-        minDamage = 1 + addDamage;
+    public Arrow(Point position, Direction direction) {
+        super(position, Type.ARROW, direction);
+        maxDamage = 1 + damageBoost;
+        minDamage = 1 + damageBoost;
         initStateMachine();
     }
 
-    public static void changeAddDamage(int value) {addDamage = value;}
+    public static void setDamageBoost(int damageBoost) {Arrow.damageBoost = damageBoost;}
 
     private void initStateMachine() {
         stateMachine.setName("Arrow");

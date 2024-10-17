@@ -9,9 +9,8 @@ public final class Key extends Collectable {
     private final Vertex idle = new Vertex(State.IDLE, 1.8f);
     private final Vertex collected = new Vertex(State.COLLECTED, .8f);
 
-    public Key(Point initPosition) {
-        super(initPosition, Type.KEY);
-
+    public Key(Point position) {
+        super(position, Type.KEY);
         initStateMachine();
     }
 

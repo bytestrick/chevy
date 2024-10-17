@@ -1,5 +1,7 @@
 package chevy.model.entity.collectable.powerUp;
 
+import chevy.view.Options;
+
 import java.awt.Point;
 
 public final class BrokenArrows extends PowerUp {
@@ -7,7 +9,11 @@ public final class BrokenArrows extends PowerUp {
         super(position, Type.BROKEN_ARROWS);
 
         occurringPercentage = 100;
-        name = "Spezza Frecce\n";
-        description = "Le frecce non ti infliggeranno danno";
     }
+
+    @Override
+    public String getName() {return Options.strings.getString("powerUp.brokenArrows.name");}
+
+    @Override
+    public String getDescription() {return Options.strings.getString("powerUp.brokenArrows.desc");}
 }

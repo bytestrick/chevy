@@ -192,8 +192,7 @@ public final class PlayerController implements Updatable {
      * @param trap la trappola con cui il giocatore interagisce
      */
     private void trapInteraction(Trap trap) {
-        Trap.Type trapType = (Trap.Type) trap.getType();
-        switch (trapType) {
+        switch ((Trap.Type) trap.getType()) {
             case VOID, TRAPDOOR -> {
                 player.changeState(Player.State.FALL);
                 trap_damage = trap.getDamage();
@@ -373,11 +372,11 @@ public final class PlayerController implements Updatable {
                 player.removeFromUpdate();
                 updateFinished = true;
 
-                Data.increment("stats.deaths.total.count");
+                Data.increment("stats.deaths.totalDeaths.count");
                 switch (player.getType()) {
-                    case KNIGHT -> Data.increment("stats.deaths.characters.knight.characters.count");
-                    case NINJA -> Data.increment("stats.deaths.characters.ninja.characters.count");
-                    case ARCHER -> Data.increment("stats.deaths.characters.archer.characters.count");
+                    case KNIGHT -> Data.increment("stats.deaths.characters.knight.count");
+                    case NINJA -> Data.increment("stats.deaths.characters.ninja.count");
+                    case ARCHER -> Data.increment("stats.deaths.characters.archer.count");
                 }
 
                 gamePanel.playerDeathDialog();
@@ -436,8 +435,10 @@ public final class PlayerController implements Updatable {
         if (player.getState() == Player.State.FALL
                 && player.getState(Player.State.FALL).isFinished()
                 && chamber.canCross(player, player.getDirection().getOpposite())) {
+            player.changeState(Player.State.IDLE);
             chamber.moveDynamicEntity(player, player.getDirection().getOpposite());
             hitPlayer(-trap_damage);
+            trap_damage = 0;
         } else if (player.getState() != Player.State.SLUDGE) {
             player.checkAndChangeState(Player.State.IDLE);
         }

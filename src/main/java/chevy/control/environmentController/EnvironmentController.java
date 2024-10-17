@@ -17,6 +17,7 @@ public final class EnvironmentController {
         chestController = new ChestController(chamber, hudController);
         StairController.setGamePanel(gamePanel);
         StairController.setHUDController(hudController);
+        StairController.onTrapDoor = false;
     }
 
     private static void playerInInteraction(Environment environment) {

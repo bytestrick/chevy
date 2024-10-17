@@ -27,14 +27,15 @@ public final class Load {
      * @return l'immagine caricata dalle risorse
      */
     public static BufferedImage image(final String path) {
-        BufferedImage image = null;
+        BufferedImage image;
         try {
             final URL input = Load.class.getResource(path);
-            assert input != null : "risorsa non trovata: " + path;
+            if (input == null) {
+                throw new RuntimeException("Risorsa non trovata: " + path);
+            }
             image = ImageIO.read(input);
         } catch (IOException e) {
-            Log.error("Immagine '" + path + "' non trovata (" + e.getMessage() + ")");
-            System.exit(1);
+            throw new RuntimeException("Immagine '" + path + "' non trovata (" + e.getMessage() + ")");
         }
         return image;
     }
@@ -54,17 +55,14 @@ public final class Load {
      * @param name il nome dell'icona senza estensione
      * @return l'icona caricata con dimensione 32x32
      */
-    public static Icon icon(String name) {
-        Image image = image("/icons/" + name + ".png");
-        return new ImageIcon(image.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_SMOOTH));
-    }
+    public static Icon icon(String name) {return Load.icon(name, ICON_SIZE, ICON_SIZE);}
 
     /**
      * @param name il path della gif senza estensione
      * @return la gif
      */
     public static Icon gif(String name) {
-        URL url =  Load.class.getResource("/" + name + ".gif");
+        URL url = Load.class.getResource("/" + name + ".gif");
         assert url != null;
         return new ImageIcon(url);
     }
@@ -99,17 +97,14 @@ public final class Load {
         }
         try {
             URL url = Load.class.getResource("/sounds/" + prefix + ".wav");
-            assert url != null : "risorsa non trovata";
+            assert url != null : "risorsa non trovata: " + prefix;
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
             clip.open(audioIn);
             return clip;
-        } catch (IOException | UnsupportedAudioFileException |
-                 SecurityException e) {
-            Log.error(prefix + ": " + e.getMessage());
+        } catch (IOException | UnsupportedAudioFileException | SecurityException e) {
+            throw new RuntimeException(prefix + ": " + e.getMessage());
         } catch (LineUnavailableException e) {
-            Log.error("Apertura clip fallita: " + e.getMessage());
-            System.exit(13);
+            throw new RuntimeException("Apertura clip fallita: " + e.getMessage());
         }
-        return null;
     }
 }

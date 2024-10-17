@@ -32,7 +32,6 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -40,22 +39,26 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static chevy.view.GamePanel.caution;
 
 public final class Options {
-    private static final Icon HOME = Load.icon("Home");
-    private static final Icon basket = Load.icon("Trashbin");
-    private static final Icon gamePad = Load.icon("GamePad");
-    private static final Icon speaker = Load.icon("SpeakerOn"), speakerMute = Load.icon(
-            "SpeakerMute"), notes = Load.icon("MusicNotes");
-    private static final MouseListener jComboBoxClickListener = new MouseAdapter() {
+    static final MouseListener SELECTOR_CLICK_LISTENER = new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
             Sound.play(Sound.Effect.BUTTON);
         }
     };
+    private static final Icon HOME = Load.icon("Home"), TRASH_BIN = Load.icon("TrashBin"),
+            GAME_PAD = Load.icon("GamePad"), SPEAKER = Load.icon("SpeakerOn"), SPEAKER_MUTE =
+            Load.icon("SpeakerMute"), NOTES = Load.icon("MusicNotes");
+    private static final String[] LANGUAGES = {"en", "it"};
+    public static ResourceBundle strings = ResourceBundle.getBundle("i18n.strings",
+            Locale.of(Data.get(
+            "options.language")));
     private final Window window;
     private final ChangeListener changeListener = this::volumeChanged;
     /**
@@ -71,15 +74,16 @@ public final class Options {
     private JList<Statistic> statistics;
     private JSlider effectsVolume, musicVolume;
     private JScrollPane scrollPane;
-    private JLabel audioLabel, advancedLabel, statsLabel, effectsLabel, musicLabel;
+    private JLabel audioLabel, advancedLabel, statsLabel, effectsLabel, musicLabel, generalLabel,
+            languageLabel, logLevelLabel, drawHitBoxesLabel, restoreAppLabel;
     private JCheckBox showHitBoxes;
     private JComboBox<String> logLevel, languageSelector;
-    private JLabel generalLabel;
     private Window.Scene sceneToReturnTo;
     private final ActionListener actionListener = this::actionPerformed;
 
     Options(Window window) {
         this.window = window;
+
         initUI();
         List.of(back, restoreApp, showHitBoxes).forEach(c -> c.addActionListener(actionListener));
         List.of(musicVolume, effectsVolume).forEach(c -> c.addChangeListener(changeListener));
@@ -93,11 +97,9 @@ public final class Options {
             };
             Data.set("options.drawHitBoxes", ChamberView.drawCollision);
         });
-        logLevel.addActionListener(actionListener);
         languageSelector.addActionListener(actionListener);
-        languageSelector.addMouseListener(jComboBoxClickListener);
-        logLevel.addMouseListener(jComboBoxClickListener);
-        effectsLabel.addComponentListener(new ComponentAdapter() {});
+        languageSelector.addMouseListener(SELECTOR_CLICK_LISTENER);
+        logLevel.addMouseListener(SELECTOR_CLICK_LISTENER);
     }
 
     private void actionPerformed(ActionEvent event) {
@@ -112,7 +114,20 @@ public final class Options {
                 Log.logLevel = Log.Level.values()[logLevel.getSelectedIndex()];
                 Data.set("options.logLevel", Log.logLevel);
             }
-            case "languageChanged" -> Sound.play(Sound.Effect.BUTTON);
+            case "languageChanged" -> {
+                Sound.play(Sound.Effect.BUTTON);
+                String language = LANGUAGES[languageSelector.getSelectedIndex()];
+                Data.set("options.language", language);
+                strings = ResourceBundle.getBundle("i18n.strings", Locale.of(language));
+                setStrings();
+                window.setTitle(Options.strings.getString("title.options"));
+                window.getMenu().setStrings();
+                window.getGamePanel().getTutorial().setStrings();
+                window.revalidate();
+                window.repaint();
+                volumeChanged(new ChangeEvent(musicVolume));
+                volumeChanged(new ChangeEvent(effectsVolume));
+            }
         }
     }
 
@@ -137,15 +152,15 @@ public final class Options {
     private void volumeChanged(ChangeEvent event) {
         final JSlider slider = (JSlider) event.getSource();
         final int value = slider.getValue();
-        final String info = value == 0 ? "MUTO" : value + "%";
+        final String info = value == 0 ? strings.getString("options.mute") : value + "%";
         slider.setToolTipText(info);
         if (slider == musicVolume) {
             Sound.setMusicVolume(value / 100d);
-            musicLabel.setIcon(value == 0 ? speakerMute : notes);
+            musicLabel.setIcon(value == 0 ? SPEAKER_MUTE : NOTES);
             musicLabel.setToolTipText(info);
         } else {
             Sound.setEffectsVolume(value / 100d);
-            effectsLabel.setIcon(value == 0 ? speakerMute : speaker);
+            effectsLabel.setIcon(value == 0 ? SPEAKER_MUTE : SPEAKER);
             effectsLabel.setToolTipText(info);
         }
     }
@@ -153,11 +168,11 @@ public final class Options {
     private void restoreAppAction() {
         Sound.play(Sound.Effect.BUTTON);
         Sound.play(Sound.Effect.STOP);
-        final String message = "Il progresso di gioco e le impostazioni andranno perse. " +
-                "Continuare?";
-        final int ans = JOptionPane.showOptionDialog(window, message, null,
+        final String[] opts = strings.getString("dialog.yesNo").split(",");
+        final int ans = JOptionPane.showOptionDialog(window, strings.getString("dialog.restoreApp"
+                ), null,
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE, caution, new String[]{"Si", "No"}, "No");
+                JOptionPane.WARNING_MESSAGE, caution, opts, opts[opts.length - 1]);
         if (ans == 0) {
             Sound.play(Sound.Effect.BUTTON);
             Data.createPristineFile();
@@ -170,16 +185,18 @@ public final class Options {
     }
 
     /**
-     * Effettua operazioni che non si può (o non conviene) fare tramite il file xml
+     * Effettua operazioni che non si possono (o non conviene) fare tramite il file xml
      * <code>Options.form</code> o il foglio di stile <code>FlatDarkLaf.properties</code>
      */
     private void initUI() {
+        setStrings();
         showHitBoxes.setIcon(new SizedCheckBoxIcon());
 
         scrollPane.getViewport().setOpaque(false);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(6);
 
         statistics.setCellRenderer(new ItemRenderer());
-        getStats(Data.get("stats"), null, -2);
+        getStats(Data.get("stats"), "", null, -2);
 
         final int effectsVolumeValue = (int) ((double) Data.get("options.effectsVolume") * 100);
         effectsVolume.setValue(effectsVolumeValue);
@@ -188,23 +205,8 @@ public final class Options {
         musicVolume.setValue(musicVolumeValue);
         volumeChanged(new ChangeEvent(musicVolume));
 
-        for (Log.Level level : Log.Level.values()) {
-            logLevel.addItem(switch (level) {
-                case OFF -> "Disabilitata";
-                case INFO -> "Tutto";
-                case WARN -> "Avvisi";
-                case ERROR -> "Errori";
-            });
-        }
-        final Log.Level lvl = Log.Level.valueOf(Data.get("options.logLevel"));
-        Log.logLevel = lvl;
-        logLevel.setSelectedIndex(lvl.ordinal());
         logLevel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        // TODO: aggiungere l'inglese
         languageSelector.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        languageSelector.addItem("Italiano");
-
         showHitBoxes.setSelected(Data.get("options.drawHitBoxes"));
 
         // https://www.formdev.com/flatlaf/client-properties/
@@ -220,7 +222,39 @@ public final class Options {
                 "focusColor", destructiveActionBg.brighter().brighter().brighter(),
                 "focusedBorderColor", destructiveActionBg.brighter().brighter().brighter()
         ));
-        restoreApp.setIcon(basket);
+        restoreApp.setIcon(TRASH_BIN);
+    }
+
+    private void setStrings() {
+        getStats(Data.get("stats"), "", null, -2);
+        setupReturnAction(sceneToReturnTo);
+        languageSelector.removeAllItems();
+        for (String lang : LANGUAGES) {
+            languageSelector.addItem(strings.getString("lang." + lang));
+        }
+        languageSelector.setSelectedIndex(List.of(LANGUAGES).indexOf((String) Data.get("options" +
+                ".language")));
+
+        logLevel.removeActionListener(actionListener);
+        logLevel.removeAllItems();
+        for (Log.Level level : Log.Level.values()) {
+            logLevel.addItem(strings.getString("options.logLevel." + level));
+        }
+        final Log.Level lvl = Log.Level.valueOf(Data.get("options.logLevel"));
+        Log.logLevel = lvl;
+        logLevel.setSelectedIndex(lvl.ordinal());
+        logLevel.addActionListener(actionListener);
+
+        audioLabel.setText(strings.getString("options.audio"));
+        generalLabel.setText(strings.getString("options.general"));
+        advancedLabel.setText(strings.getString("options.advanced"));
+        statsLabel.setText(strings.getString("options.stats"));
+        effectsLabel.setText(strings.getString("options.effects"));
+        musicLabel.setText(strings.getString("options.music"));
+        languageLabel.setText(strings.getString("options.language"));
+        logLevelLabel.setText(strings.getString("options.logLevel"));
+        drawHitBoxesLabel.setText(strings.getString("options.drawHitBoxes"));
+        restoreAppLabel.setText(strings.getString("options.restoreApp"));
     }
 
     /**
@@ -233,16 +267,14 @@ public final class Options {
      */
     void setupReturnAction(Window.Scene scene) {
         sceneToReturnTo = scene;
-        String message = "Torna al ";
+        String message = "";
         if (scene == Window.Scene.PLAYING) {
-            back.setIcon(gamePad);
-            getStats(Data.get("stats"), null, -2);
-            message += "gioco";
-        } else if (scene == Window.Scene.TUTORIAL) {
-            message += "tutorial";
-        } else {
+            back.setIcon(GAME_PAD);
+            getStats(Data.get("stats"), "", null, -2);
+            message = strings.getString("options.backToGame");
+        } else if (scene == Window.Scene.MENU){
             back.setIcon(HOME);
-            message += "menù";
+            message = strings.getString("options.backToHome");
         }
         back.setText(message);
     }
@@ -258,18 +290,19 @@ public final class Options {
      *                    man mano che si creano
      * @param indentLevel livello di indentazione fisico di ciascuna statistica
      */
-    private void getStats(LinkedHashMap<?, ?> node, DefaultListModel<Statistic> listModel,
-                          int indentLevel) {
+    private void getStats(LinkedHashMap<?, ?> node, String nodeName,
+                          DefaultListModel<Statistic> listModel, int indentLevel) {
         if (listModel == null) {
             listModel = new DefaultListModel<>();
             statistics.setModel(listModel);
         }
         if (node.containsKey("count")) {
-            listModel.addElement(new Statistic(node, indentLevel));
+            listModel.addElement(new Statistic(node, nodeName, indentLevel));
         } else {
             ++indentLevel;
             for (Map.Entry<?, ?> child : node.entrySet()) {
-                getStats((LinkedHashMap<?, ?>) child.getValue(), listModel, indentLevel);
+                getStats((LinkedHashMap<?, ?>) child.getValue(), child.getKey().toString(),
+                        listModel, indentLevel);
             }
             --indentLevel;
         }
@@ -280,7 +313,7 @@ public final class Options {
     /**
      * L'elemento di {@link #statistics}
      */
-    private record Statistic(Icon icon, String string, int count, int indent, int topMargin) {
+    private record Statistic(Icon icon, String string, int count, int indent, int topMargin, String nodeName) {
         private static final int SPACING = 48;
 
         /**
@@ -288,10 +321,10 @@ public final class Options {
          *
          * @param data il nodo contenente "icon", "string" e "count"
          */
-        private Statistic(LinkedHashMap<?, ?> data, int indentLevel) {
-            this(Load.icon((String) data.get("icon"), SPACING, SPACING), (String) data.get(
-                    "string"), (int) data.get("count"), indentLevel * SPACING, indentLevel == 0 ?
-                    SPACING : 4);
+        private Statistic(LinkedHashMap<?, ?> data, String nodeName, int indentLevel) {
+            this(Load.icon((String) data.get("icon"), SPACING, SPACING), strings.getString("stats" +
+                            "." + nodeName), (int) data.get("count"), indentLevel * SPACING,
+                    indentLevel == 0 ? SPACING : 4, nodeName);
         }
     }
 
@@ -305,7 +338,7 @@ public final class Options {
             JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index,
                     isSelected, cellHasFocus);
             Statistic item = (Statistic) value;
-            final boolean timePlayedItem = item.string.startsWith("Tempo");
+            final boolean timePlayedItem = item.nodeName.equals("totalPlayed");
             label.setText(item.string + ": " + (timePlayedItem ? Utils.msToString(item.count) :
                     item.count));
             label.setIcon(item.icon);

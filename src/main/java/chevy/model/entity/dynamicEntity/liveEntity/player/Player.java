@@ -18,10 +18,10 @@ public abstract class Player extends LiveEntity {
     private final float speed;
     private final Map<PowerUp.Type, PowerUp> ownedPowerUp = new EnumMap<>(PowerUp.Type.class);
 
-    Player(Point initPosition, Type type, float speed, int health, int shield,
+    Player(Point position, Type type, float speed, int health, int shield,
            int maxDamage, int minDamage, float attackDuration,
            float deadDuration) {
-        super(initPosition, LiveEntity.Type.PLAYER);
+        super(position, LiveEntity.Type.PLAYER);
         this.type = type;
 
         this.speed = speed;

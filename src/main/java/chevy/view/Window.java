@@ -128,9 +128,9 @@ public final class Window extends JFrame {
             Sound.stopMusic();
         }
         Sound.play(Sound.Effect.STOP);
-        final int ans = JOptionPane.showOptionDialog(this, "Uscire da Chevy?", null,
-                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, POWER, new String[]{"Si",
-                        "No"}, "No");
+        final String[] opts = Options.strings.getString("dialog.yesNo").split(",");
+        final int ans = JOptionPane.showOptionDialog(this, Options.strings.getString("dialog.confirmQuit"), null,
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, POWER, opts, opts[opts.length - 1]);
         if (ans == 0) {
             Sound.play(Sound.Effect.BUTTON);
             Log.info("Salvataggio dei dati ...");
@@ -179,20 +179,19 @@ public final class Window extends JFrame {
                 }
                 case PLAYING -> {
                     getRootPane().setBackground(gamePanel.getBackground());
-                    setTitle("Chevy");
                     gamePanel.addComponents(false);
                     yield gamePanel;
                 }
                 case OPTIONS -> {
                     getRootPane().setBackground(UIManager.getColor("Chevy.color.purpleDark"));
-                    setTitle("Chevy - Opzioni");
+                    setTitle(Options.strings.getString("title.options"));
                     yield options.getRoot();
                 }
                 case TUTORIAL -> {
                     if (this.scene != Scene.MENU) {
                         Sound.startMusic(Sound.Music.SAME_SONG);
                     }
-                    setTitle("Chevy - Tutorial");
+                    setTitle(Options.strings.getString("title.tutorial"));
                     gamePanel.addComponents(true);
                     getRootPane().setBackground(gamePanel.getBackground());
                     yield gamePanel;

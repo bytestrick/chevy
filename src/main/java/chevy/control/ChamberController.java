@@ -39,7 +39,7 @@ public final class ChamberController {
         final EnemyController enemyController = new EnemyController(chamber, playerController);
         playerController.setEnemyController(enemyController);
         if (enemyUpdateController != null) {
-            EnemyUpdateController.stopUpdate();
+            enemyUpdateController.stopUpdate();
         }
         enemyUpdateController = new EnemyUpdateController(enemyController, chamber.getEnemies());
 
@@ -54,8 +54,14 @@ public final class ChamberController {
         final HUDController hudController = new HUDController(new HUD(), gamePanel.getHudView());
         playerController.setHUDController(hudController);
 
+        final ProjectileController projectileController = new ProjectileController(chamber,
+                playerController,
+                enemyController);
+        projectileUpdateController = new ProjectileUpdateController(projectileController,
+                chamber.getProjectiles());
+
         CollectableController collectableController = new CollectableController(chamber,
-                hudController);
+                hudController, enemyUpdateController, projectileUpdateController);
         playerController.setCollectableController(collectableController);
         if (collectableUpdateController != null) {
             collectableUpdateController.stopUpdate();
@@ -63,15 +69,7 @@ public final class ChamberController {
         collectableUpdateController = new CollectableUpdateController(collectableController,
                 chamber.getCollectables());
 
-        final ProjectileController projectileController = new ProjectileController(chamber,
-                playerController,
-                enemyController);
         playerController.setProjectileController(projectileController);
-        if (projectileUpdateController != null) {
-            ProjectileUpdateController.stopUpdate();
-        }
-        projectileUpdateController = new ProjectileUpdateController(projectileController,
-                chamber.getProjectiles());
 
         final EnvironmentController environmentController =
                 new EnvironmentController(chamber, hudController, gamePanel);
