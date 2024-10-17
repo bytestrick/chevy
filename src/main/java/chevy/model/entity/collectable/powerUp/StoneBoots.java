@@ -1,5 +1,7 @@
 package chevy.model.entity.collectable.powerUp;
 
+import chevy.view.Options;
+
 import java.awt.Point;
 
 public final class StoneBoots extends PowerUp {
@@ -7,7 +9,11 @@ public final class StoneBoots extends PowerUp {
         super(position, Type.STONE_BOOTS);
 
         occurringPercentage = 100;
-        name = "Stivali di pietra\n";
-        description = "Le trappole chiodate non hanno effetto";
     }
+
+    @Override
+    public String getName() {return Options.strings.getString("powerUp.stoneBoots.name");}
+
+    @Override
+    public String getDescription() {return Options.strings.getString("powerUp.stoneBoots.desc");}
 }

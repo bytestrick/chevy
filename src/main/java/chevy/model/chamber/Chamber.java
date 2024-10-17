@@ -85,47 +85,46 @@ public final class Chamber {
      * Verifica se una posizione è valida all'interno della griglia.
      *
      * @param position la posizione da validare
-     * @return true se è valida, false altrimenti
+     * @return {@code true} se è valida, {@code false} altrimenti
      */
-    boolean validatePosition(Point position) {
-        return validatePosition(position.y, position.x);
-    }
+    boolean isValid(Point position) {return isValid(position.y, position.x);}
 
-    private boolean validatePosition(int i, int j) {
+    /**
+     * Verifica se una posizione è valida all'interno della griglia
+     *
+     * @param row    la riga della posizione
+     * @param column la colonna della posizione
+     * @return {@code true} se è valida, {@code false} altrimenti
+     */
+    private boolean isValid(int row, int column) {
         if (initialized) {
-            return i >= 0 && i < size.height && j >= 0 && j < size.width;
+            return row >= 0 && row < size.height && column >= 0 && column < size.width;
         }
         return false;
     }
 
     /**
-     * Verifica se una determinata cella in una determinata posizione può essere attraversata da
-     * un'entità dinamica.
+     * Verifica se una cella può essere attraversata da una {@link DynamicEntity}
      *
      * @param dynamicEntity entità dinamica da considerare.
      * @param direction     direzione in cui l'entità si deve spostare.
-     * @return true se si può passare, false altrimenti.
+     * @return {@code true} se si può passare, {@code false} altrimenti.
      */
     public synchronized boolean canCross(DynamicEntity dynamicEntity, Direction direction) {
         return canCross(direction.advance(dynamicEntity.getPosition()));
     }
 
     /**
-     * Verifica se una determinata cella in una determinata posizione può essere attraversata.
+     * Verifica se una determinata cella è attraversabile
      *
-     * @param position posizione in cui è presente la cella da controllare
-     * @return true se si può passare, false altrimenti
+     * @param position posizione della cella
+     * @return {@code true} se si può passare, {@code false} altrimenti
      */
     private synchronized boolean canCross(Point position) {
-        if (validatePosition(position)) {
-            List<Entity> entityList = chamber.get(position.y).get(position.x);
-            for (Entity entity : entityList) {
-                if (!entity.isCrossable()) {
-                    return false;
-                }
-            }
+        if (isValid(position)) {
+            return chamber.get(position.y).get(position.x).stream().allMatch(Entity::isCrossable);
         }
-        return true;
+        return false;
     }
 
     /**
@@ -135,7 +134,8 @@ public final class Chamber {
      *
      * @param dynamicEntity entità dinamica considerata
      * @param direction     direzione in cui si deve spostare
-     * @return true se lo spostamento non danneggerà l'entità dinamica, false altrimenti
+     * @return {@code true} se lo spostamento non danneggerà l'entità dinamica, {@code false}
+     * altrimenti
      */
     private boolean isSafeToCross(DynamicEntity dynamicEntity, Direction direction) {
         return isSafeToCross(direction.advance(dynamicEntity.getPosition()));
@@ -147,7 +147,8 @@ public final class Chamber {
      * prendere danno).
      *
      * @param position posizione della cella da controllare
-     * @return true se lo spostamento non danneggerà l'entità dinamica, false altrimenti
+     * @return {@code true} se lo spostamento non danneggerà l'entità dinamica, {@code false}
+     * altrimenti
      */
     boolean isSafeToCross(Point position) {
         Entity onTop = getEntityOnTop(position);
@@ -185,7 +186,7 @@ public final class Chamber {
 
         Point position = dynamicEntity.getPosition();
         position.translate(direction.x * distanceCell, direction.y * distanceCell);
-        if (validatePosition(position)) {
+        if (isValid(position)) {
             return getEntityOnTop(position);
         }
 
@@ -196,11 +197,11 @@ public final class Chamber {
      * Controlla se un'entità può essere creata in una determinata cella.
      *
      * @param position posizione della cella da verificare
-     * @return true se può essere creata, false altrimenti
+     * @return {@code true} se può essere creata, {@code false} altrimenti
      */
     private synchronized boolean canSpawn(Point position) {
         final Entity onTop = getEntityOnTop(position);
-        return validatePosition(position) && onTop != null && onTop.isCrossable() && !(onTop instanceof Void);
+        return isValid(position) && onTop != null && onTop.isCrossable() && !(onTop instanceof Void);
     }
 
     /**
@@ -224,10 +225,11 @@ public final class Chamber {
     public synchronized Direction getDirectionToHitPlayer(Entity entity, int distanceCell) {
         for (int i = 1; i <= distanceCell; ++i) {
             for (Direction direction : Direction.values()) {
-                Point position = direction.advance(entity.getPosition());
-                position.x *= i;
-                position.y *= i;
-                if (validatePosition(position) && getEntityOnTop(position) instanceof Player) {
+                Point position = entity.getPosition();
+                position.x += direction.x * i;
+                position.y += direction.y * i;
+
+                if (isValid(position) && getEntityOnTop(position) instanceof Player) {
                     if (entity instanceof DynamicEntity dynamicEntity) {
                         dynamicEntity.setDirection(direction);
                     }
@@ -252,7 +254,7 @@ public final class Chamber {
             dynamicEntity.setDirection(direction);
 
             if (findAndRemoveEntity(dynamicEntity)) {
-                dynamicEntity.changePosition(nextPosition);
+                dynamicEntity.setPosition(nextPosition);
                 addEntityOnTop(dynamicEntity);
             }
         }
@@ -278,7 +280,7 @@ public final class Chamber {
      * Trova e rimuove un'entità dalla griglia di gioco.
      *
      * @param entity entità da rimuovere
-     * @return true se è stata rimossa, false altrimenti
+     * @return {@code true} se è stata rimossa, {@code false} altrimenti
      */
     public synchronized boolean findAndRemoveEntity(Entity entity) {
         return findAndRemoveEntity(entity, true);
@@ -290,7 +292,7 @@ public final class Chamber {
      * @param entity    entità da rimuovere
      * @param setToDraw booleana che in base al valore permette all'entità di essere mostrata a
      *                  schermo
-     * @return true se è stata rimossa, false altrimenti
+     * @return {@code true} se è stata rimossa, {@code false} altrimenti
      */
     public synchronized boolean findAndRemoveEntity(Entity entity, boolean setToDraw) {
         List<Entity> entities = chamber.get(entity.getRow()).get(entity.getCol());
@@ -428,7 +430,7 @@ public final class Chamber {
 
         for (int i = startRow; i <= endRow; ++i) {
             for (int j = startCol; j <= endCol; ++j) {
-                if (validatePosition(i, j) && getEntityOnTop(i, j) instanceof Player p) {
+                if (isValid(i, j) && getEntityOnTop(i, j) instanceof Player p) {
                     return p;
                 }
             }
@@ -444,7 +446,7 @@ public final class Chamber {
      * viene scartato e il nemico non si sposterà.
      *
      * @param enemy nemico da spostare
-     * @return true se il nemico è stato spostato, false altrimenti
+     * @return {@code true} se il nemico è stato spostato, {@code false} altrimenti
      */
     public synchronized boolean moveRandom(Enemy enemy) {
         Direction directionMove = Direction.getRandom();
@@ -462,7 +464,7 @@ public final class Chamber {
      * movimento è valido.
      *
      * @param enemy nemico da spostare
-     * @return true se il nemico è stato spostato, false altrimenti
+     * @return {@code true} se il nemico è stato spostato, {@code false} altrimenti
      */
     public synchronized boolean moveRandomPlus(Enemy enemy) {
         Direction[] directions = Direction.values();
@@ -487,7 +489,7 @@ public final class Chamber {
      *
      * @param enemy       nemico da spostare
      * @param rangeWander lato dell'area del quadrato
-     * @return true se si sposta, false altrimenti
+     * @return {@code true} se si sposta, {@code false} altrimenti
      */
     public synchronized boolean wanderChase(Enemy enemy, int rangeWander) {
         // muoviti verso il player se si trova dentro il tuo campo visivo
@@ -499,15 +501,13 @@ public final class Chamber {
     }
 
     /**
-     * Funzione usata per spostare il nemico in modo casuale se il giocatore si trova fuori
-     * dall'area quadrata,
-     * altrimenti segue il percorso minore per raggiungere il giocatore. Usa
-     * {@link #moveRandomPlus(Enemy)} per il
-     * movimento random.
+     * Sposta il nemico in modo casuale se il giocatore si trova fuori dall'area quadrata,
+     * altrimenti segue il percorso minore per raggiungere il giocatore.
+     * Usa {@link #moveRandomPlus(Enemy)} per il * movimento random.
      *
      * @param enemy       nemico da spostare
      * @param rangeWander lato dell'area del quadrato
-     * @return true se si sposta, false altrimenti
+     * @return {@code true} se si sposta, {@code false} altrimenti
      */
     public synchronized boolean wanderChasePlus(Enemy enemy, int rangeWander) {
         // muoviti verso il player se si trova dentro il tuo campo visivo
@@ -520,10 +520,10 @@ public final class Chamber {
     }
 
     /**
-     * Funzione usata per spostare seguendo il percorso minore per raggiungere il giocatore.
+     * Sposta il nemico seguendo il percorso minore per raggiungere il giocatore
      *
-     * @param enemy nemico da spostare.
-     * @return true se si sposta, false altrimenti.
+     * @param enemy nemico da spostare
+     * @return {@code true} se si sposta, {@code false} altrimenti
      */
     public synchronized boolean chase(Enemy enemy) {
         AStar aStar = new AStar(this);

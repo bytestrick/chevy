@@ -9,8 +9,8 @@ public final class Health extends Collectable {
     private final Vertex idle = new Vertex(State.IDLE, 1.6f);
     private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
 
-    public Health(Point initPosition) {
-        super(initPosition, Type.HEALTH);
+    public Health(Point position) {
+        super(position, Type.HEALTH);
         initStateMachine();
     }
 

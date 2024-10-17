@@ -18,6 +18,7 @@ public final class SlimeShotView extends ProjectileView {
                 4), new Point(0, 2)};
         final float loopDuration = projectile.getState(State.LOOP).getDuration();
         final float endDuration = projectile.getState(State.END).getDuration();
+
         for (Direction direction : Direction.values()) {
             final String dir = direction.toString().toLowerCase();
             final int i = direction.ordinal();

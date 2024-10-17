@@ -274,7 +274,7 @@ public final class Interpolation implements Renderable {
     public void changeDuration(float duration) {this.duration = duration;}
 
     /**
-     * @return true se l'interpolazione è terminata, false altrimenti
+     * @return {@code true} se l'interpolazione è terminata, {@code false} altrimenti
      */
     @Override
     public boolean renderFinished() {return delete;}

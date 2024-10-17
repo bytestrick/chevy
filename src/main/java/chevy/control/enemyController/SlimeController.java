@@ -99,7 +99,7 @@ final class SlimeController {
                 slime.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(slime);
-                Data.increment("stats.kills.total.count");
+                Data.increment("stats.kills.totalKills.count");
                 Data.increment("stats.kills.enemies.slime.count");
                 return;
             }
@@ -112,8 +112,8 @@ final class SlimeController {
             Direction direction = chamber.getDirectionToHitPlayer(slime);
             if (direction == null) {
                 if (chamber.moveRandom(slime)) {
-                    slime.changeState(Slime.State.MOVE);
                     slime.setCanAttack(false);
+                    slime.changeState(Slime.State.MOVE);
                 }
             } else if (slime.canChange(Slime.State.ATTACK)) {
                 Entity entity = chamber.getEntityNearOnTop(slime, direction);

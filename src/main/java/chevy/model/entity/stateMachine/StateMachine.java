@@ -14,10 +14,10 @@ public class StateMachine {
     private String name; // solo per capire di chi è la stampa
 
     /**
-     * Cambia lo stato corrente della macchina a stati.
+     * Cambia lo stato corrente della macchina a stati
      *
-     * @param state L'enumerazione dello stato a cui passare.
-     * @return true se lo stato è cambiato con successo, false altrimenti.
+     * @param state l'enumerazione dello stato a cui passare
+     * @return {@code true} se lo stato è cambiato con successo, {@code false} altrimenti
      */
     public synchronized boolean changeState(EntityState state) {
         if (currentVertex == null) {
@@ -59,10 +59,10 @@ public class StateMachine {
     }
 
     /**
-     * Controlla se è possibile cambiare lo stato corrente della macchina a stati.
+     * Controlla se è possibile cambiare lo stato corrente della macchina a stati
      *
-     * @param state L'enumerazione dello stato a cui passare.
-     * @return true se è possibile cambiare lo stato, false altrimenti.
+     * @param state l'enumerazione dello stato a cui passare
+     * @return {@code true} se è possibile cambiare lo stato, {@code false} altrimenti
      */
     public synchronized boolean canChange(EntityState state) {
         if (currentVertex == null) {
@@ -79,10 +79,10 @@ public class StateMachine {
     }
 
     /**
-     * Controlla se è possibile cambiare lo stato corrente e, in caso affermativo, cambia lo stato.
+     * Controlla se è possibile cambiare lo stato corrente e, in caso affermativo, cambia lo stato
      *
-     * @param state L'enumerazione dello stato a cui passare.
-     * @return true se lo stato è cambiato con successo, false altrimenti.
+     * @param state l'enumerazione dello stato a cui passare
+     * @return {@code true} se lo stato è cambiato con successo, {@code false} altrimenti
      */
     public synchronized boolean checkAndChangeState(EntityState state) {
         if (canChange(state)) {

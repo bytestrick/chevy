@@ -114,9 +114,7 @@ public final class ChamberManager {
     /**
      * Sblocca e passa alla stanza successiva
      */
-    public static void nextChamber() {
-        enterChamber(currentChamberIndex + 1);
-    }
+    public static void nextChamber() {enterChamber(currentChamberIndex + 1);}
 
     public static boolean isLastChamber() {return currentChamberIndex == NUMBER_OF_CHAMBERS - 1;}
 
@@ -134,9 +132,9 @@ public final class ChamberManager {
      */
     public static void enterChamber(final int index) {
         if (index < NUMBER_OF_CHAMBERS) {
-            window.setTitle("Chevy - Livello " + index);
             currentChamberIndex = index;
             chambers[currentChamberIndex] = loadChamber(index);
+            window.getGamePanel().setWindowTitle();
             ChamberController.refresh();
             // Invalida la view del player corrente
             EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer());

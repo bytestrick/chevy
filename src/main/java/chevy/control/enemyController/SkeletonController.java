@@ -100,8 +100,8 @@ final class SkeletonController {
                 skeleton.removeFromUpdate();
                 chamber.decreaseEnemyCounter();
                 chamber.spawnCollectable(skeleton);
-                Data.increment("stats.kills.total.count");
-                Data.increment("stats.kills.enemies.slime.count");
+                Data.increment("stats.kills.totalKills.count");
+                Data.increment("stats.kills.enemies.skeleton.count");
                 return;
             }
         } else if (skeleton.getCurrentHealth() <= 0 && skeleton.checkAndChangeState(Skeleton.State.DEAD)) {
@@ -115,8 +115,8 @@ final class SkeletonController {
             Direction direction = chamber.getDirectionToHitPlayer(skeleton);
             if (direction == null) {
                 if (chamber.chase(skeleton)) {
-                    skeleton.changeState(Skeleton.State.MOVE);
                     skeleton.setCanAttack(false);
+                    skeleton.changeState(Skeleton.State.MOVE);
                 }
             } else if (skeleton.canChange(Skeleton.State.ATTACK)) {
                 Entity entity = chamber.getEntityNearOnTop(skeleton, direction);

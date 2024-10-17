@@ -12,8 +12,8 @@ public abstract class Projectile extends DynamicEntity {
     private final Direction direction;
     private boolean collision;
 
-    Projectile(Point initPosition, Type type, Direction direction) {
-        super(initPosition, DynamicEntity.Type.PROJECTILE);
+    Projectile(Point position, Type type, Direction direction) {
+        super(position, DynamicEntity.Type.PROJECTILE);
         this.type = type;
         this.direction = direction;
         crossable = true;

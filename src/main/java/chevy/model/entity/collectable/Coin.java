@@ -7,17 +7,16 @@ import chevy.utils.Utils;
 import java.awt.Point;
 
 public final class Coin extends Collectable {
-    private final Vertex idle = new Vertex(State.IDLE, 0.8f);
-    private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
+    private final Vertex idle = new Vertex(State.IDLE, .8f);
+    private final Vertex collected = new Vertex(State.COLLECTED, .8f);
 
-    public Coin(Point initPosition) {
-        super(initPosition, Type.COIN);
+    public Coin(Point position) {
+        super(position, Type.COIN);
         initStateMachine();
     }
 
     public static int getValue() {
-        int maxValue = 5;
-        int minValue = 2;
+        final int minValue = 2, maxValue = 5;
         return Utils.random.nextInt(minValue, maxValue);
     }
 

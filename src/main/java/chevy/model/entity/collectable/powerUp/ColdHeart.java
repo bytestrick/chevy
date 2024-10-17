@@ -1,5 +1,7 @@
 package chevy.model.entity.collectable.powerUp;
 
+import chevy.view.Options;
+
 import java.awt.Point;
 
 public final class ColdHeart extends PowerUp {
@@ -10,9 +12,15 @@ public final class ColdHeart extends PowerUp {
 
         inStock = 1;
         occurringPercentage = 100;
-        name = "Cuore di Ghiaccio\n";
-        description = "Lo scudo avrà un aumento di +" + SHIELD_BOOST + ".\nEffetto monouso";
     }
 
     public static int getShieldBoost() {return SHIELD_BOOST;}
+
+    @Override
+    public String getName() {return Options.strings.getString("powerUp.coldHeart.name");}
+
+    @Override
+    public String getDescription() {
+        return String.format(Options.strings.getString("powerUp.coldHeart.desc"), SHIELD_BOOST);
+    }
 }
