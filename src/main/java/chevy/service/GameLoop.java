@@ -69,6 +69,10 @@ public final class GameLoop {
                         while (isPaused) {
                             Log.info("Game loop in pausa");
                             mutex.wait();
+
+                            // Dopo la durata indefinita della pausa il vecchio valore di
+                            // lastTime non ha significato
+                            lastTime = System.currentTimeMillis();
                         }
                     }
                 } catch (InterruptedException ignored) {}
