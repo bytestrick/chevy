@@ -46,6 +46,7 @@ public final class ProjectileUpdateController implements Updatable {
         UpdateManager.register(this);
     }
 
+    // TODO: rimuovimi
     public void stopUpdate() {running = false;}
 
     public void setPaused(boolean paused) {this.paused = paused;}
