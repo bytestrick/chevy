@@ -26,7 +26,7 @@ public final class SlimeShotView extends ProjectileView {
                     res + "start/" + dir);
             animate(State.LOOP, direction, 4, true, 3, loopDuration, loopEndOffsets[i], 1, res +
                     "loop/" + dir);
-            animate(State.END, direction, 5, endDuration, loopEndOffsets[i], res + "end/");
+            animate(State.END, direction, 5, endDuration, loopEndOffsets[i], res + "end");
         }
     }
 }

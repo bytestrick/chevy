@@ -17,9 +17,9 @@ public final class TotemView extends TrapView {
         final float shotDuration = trap.getState(State.SHOT).getDuration();
         final float reloadDuration = trap.getState(State.RELOAD).getDuration();
         for (Direction direction : Direction.values()) {
-            final String dir = direction.toString().toLowerCase();
-            animate(State.SHOT, direction, 1, shotDuration, offset, res + dir);
-            animate(State.RELOAD, direction, 1, reloadDuration, offset, res + dir);
+            final String path = res + direction.toString().toLowerCase();
+            animate(State.SHOT, direction, 1, shotDuration, offset, path);
+            animate(State.RELOAD, direction, 1, reloadDuration, offset, path);
         }
     }
 
