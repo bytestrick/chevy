@@ -11,31 +11,9 @@ import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.utils.Utils;
 
-import javax.swing.DefaultListSelectionModel;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JRadioButton;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.LinearGradientPaint;
-import java.awt.Point;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -71,15 +49,13 @@ public final class Menu {
     private final Window window;
     private final JLabel[] statsLabels;
     private final JProgressBar[] bars;
-    private final ActionListener actionListener = this::actionPerformed;
     private JPanel root, characterAnimation;
     private JComboBox<String> levelSelector;
     private JButton play, playerCycleNext, playerCyclePrev, quit, options, unlock;
-    private JLabel coins, keys, characterName, health, shield, damage, speed, cost;
+    private JLabel coins, keys, characterName, health, shield, damage, speed, cost;    private final ActionListener actionListener = this::actionPerformed;
     private JRadioButton knightIndicator, archerIndicator, ninjaIndicator;
     private final JRadioButton[] indicators = {knightIndicator, archerIndicator, ninjaIndicator};
     private JProgressBar healthBar, damageBar, speedBar, shieldBar;
-
     Menu(Window window) {
         this.window = window;
         statsLabels = new JLabel[]{health, shield, damage, speed};
@@ -470,11 +446,15 @@ public final class Menu {
             }
 
             @Override
-            public Point getToolTipLocation(MouseEvent event) {return getMousePosition();}
+            public Point getToolTipLocation(MouseEvent event) {
+                return getMousePosition();
+            }
         };
     }
 
-    JPanel getRoot() {return root;}
+    JPanel getRoot() {
+        return root;
+    }
 
     /**
      * Rende possibile avere elementi non selezionabili in {@link JComboBox}
@@ -527,6 +507,4 @@ public final class Menu {
             return c;
         }
     }
-
-
 }
