@@ -66,7 +66,7 @@
         <dependency>
             <groupId>com.jetbrains.intellij.java</groupId>
             <artifactId>java-gui-forms-rt</artifactId>
-            <version>242.23726.125</version>
+            <version>243.21565.208</version>
         </dependency>
         <dependency>
             <groupId>org.apache.ant</groupId>
