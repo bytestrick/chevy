@@ -27,7 +27,7 @@ import java.awt.Toolkit;
  * Finestra principale
  */
 public final class Window extends JFrame {
-    private static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
+    static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
     private static final Dimension ASPECT_RATIO = new Dimension(4, 3);
     private static final Icon POWER = Load.icon("Power", 42, 42);
     public static float scale = .8f;
@@ -66,6 +66,7 @@ public final class Window extends JFrame {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setScene(Scene.MENU);
         setVisible(true);
+        setMinimumSize(new Dimension(550, 650));
         requestFocus();
         SwingUtilities.invokeLater(() -> { // esecuzione asincrona
             ChamberView.topBarHeight = getInsets().top;
