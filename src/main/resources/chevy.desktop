@@ -1,9 +1,10 @@
 [Desktop Entry]
 Name=Chevy
 Comment=2D Game
-Exec=sh -c 'java -jar "$HOME"/.local/opt/chevy.jar'
+Exec=sh -c 'java -jar "$HOME"/.local/share/chevy/chevy.jar'
 StartupWMClass=chevy-Main
 Icon=Chevy
+X-Icon-Type=PixelArt
 Terminal=false
 Type=Application
 Categories=Game;

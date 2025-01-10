@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.CDCBC</groupId>
+    <groupId>com.github.bytestrick</groupId>
     <artifactId>chevy</artifactId>
     <version>0.1</version>
 
@@ -25,7 +25,7 @@
         </developer>
         <developer>
             <name>Mario D'Andrea</name>
-            <email>mdandrea@disroot.org</email>
+            <email>goffredo2004@gmail.com</email>
             <url>https://ormai.dev</url>
         </developer>
     </developers>
@@ -137,6 +137,43 @@
                             <goal>run</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>install-desktop</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <target>
+                                <mkdir dir="${user.home}/.local/share/chevy"/>
+                                <copy file="${project.build.directory}/chevy-jar-with-dependencies.jar"
+                                      tofile="${user.home}/.local/share/chevy/chevy.jar"/>
+
+                                <mkdir dir="${user.home}/.local/share/icons/hicolor/256x256/apps"/>
+                                <copy file="src/main/resources/Chevy.png"
+                                      todir="${user.home}/.local/share/icons/hicolor/256x256/apps/"/>
+
+                                <mkdir dir="${user.home}/.local/share/applications"/>
+                                <copy file="src/main/resources/chevy.desktop"
+                                      todir="${user.home}/.local/share/applications"/>
+                                <chmod file="${user.home}/.local/share/applications/chevy.desktop"
+                                       perm="755"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>uninstall-desktop</id>
+                        <configuration>
+                            <target>
+                                <delete file="${user.home}/.local/share/applications/chevy.desktop"/>
+                                <delete file="${user.home}/.local/share/icons/hicolor/256x256/apps/Chevy.png"/>
+                                <delete file="${user.home}/.local/share/chevy/chevy.jar"/> <!-- lascia i salvataggi -->
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
                 </executions>
                 <dependencies>
                 </dependencies>
@@ -179,4 +216,25 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- Disinstalla l'app per il desktop Linux -->
+        <profile>
+            <id>uninstall</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>uninstall-desktop</id>
+                                <phase>clean</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
