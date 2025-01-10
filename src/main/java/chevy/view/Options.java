@@ -193,7 +193,7 @@ public final class Options {
         showHitBoxes.setIcon(new SizedCheckBoxIcon());
 
         scrollPane.getViewport().setOpaque(false);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(6);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
         statistics.setCellRenderer(new ItemRenderer());
         getStats(Data.get("stats"), "", null, -2);
