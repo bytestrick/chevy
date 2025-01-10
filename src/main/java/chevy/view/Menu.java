@@ -14,10 +14,7 @@ import chevy.utils.Utils;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.stream.Stream;
@@ -32,30 +29,41 @@ public final class Menu {
     private static final Color progressBarDimmedForeground = new Color(144, 144, 144);
     private static final int archerCost = 500, ninjaCost = 1000;
     private static final Icon coin = Load.icon("Coin");
-    private static final Icon[] statsIcons = {Load.icon("heart_2"),
-            Load.icon("shield_2", 36, 36), Load.icon("attack"), Load.icon("lightning", 28, 28)};
-    private static final Icon[] statsIconsGreyScale = {Load.icon(
-            "heart_2_greyscale"), Load.icon("shield_2_greyscale", 36, 36),
-            Load.icon("attack_greyscale"), Load.icon("lightning_greyscale", 28, 28)};
+    private static final Icon[] statsIcons = {
+            Load.icon("heart_2"),
+            Load.icon("shield_2", 36, 36),
+            Load.icon("attack"),
+            Load.icon("lightning", 28, 28)
+    };
+    private static final Icon[] statsIconsGreyScale = {
+            Load.icon("heart_2_greyscale"),
+            Load.icon("shield_2_greyscale", 36, 36),
+            Load.icon("attack_greyscale"),
+            Load.icon("lightning_greyscale", 28, 28)
+    };
     private static final String[] statsTooltipPrefixes = {"health", "shield", "damage", "speed"};
     public static Player.Type playerType = Player.Type.valueOf(Data.get("menu.playerType"));
     private static boolean currentPlayerLocked, animationPaused, alternateAnimation = true,
             animationRunning;
     private static Thread animationWorker;
-    private final int[][] playerStats = {new Knight(null).getStats(),
-            new Archer(null).getStats(), new Ninja(null).getStats()};
+    private final int[][] playerStats = {
+            new Knight(null).getStats(),
+            new Archer(null).getStats(),
+            new Ninja(null).getStats()
+    };
     private final Image[][] sprites = new Image[3][4];
     private final Object updateAnimation = new Object();
     private final Window window;
     private final JLabel[] statsLabels;
     private final JProgressBar[] bars;
-    private JPanel root, characterAnimation;
+    private JPanel root, container, characterAnimation;
     private JComboBox<String> levelSelector;
     private JButton play, playerCycleNext, playerCyclePrev, quit, options, unlock;
-    private JLabel coins, keys, characterName, health, shield, damage, speed, cost;    private final ActionListener actionListener = this::actionPerformed;
+    private JLabel coins, keys, characterName, health, shield, damage, speed, cost;
     private JRadioButton knightIndicator, archerIndicator, ninjaIndicator;
     private final JRadioButton[] indicators = {knightIndicator, archerIndicator, ninjaIndicator};
     private JProgressBar healthBar, damageBar, speedBar, shieldBar;
+
     Menu(Window window) {
         this.window = window;
         statsLabels = new JLabel[]{health, shield, damage, speed};
@@ -140,7 +148,7 @@ public final class Menu {
         keys.setText(Data.get("progress.keys").toString());
         levelSelector.setSelectedIndex(Data.get("menu.level"));
         if (levelSelector.getActionListeners().length == 0) {
-            levelSelector.addActionListener(actionListener);
+            levelSelector.addActionListener(this::actionPerformed);
         }
     }
 
@@ -150,7 +158,7 @@ public final class Menu {
     private void initUI() {
         setStrings();
         List.of(play, quit, options, playerCycleNext, playerCyclePrev, unlock)
-                .forEach(c -> c.addActionListener(actionListener));
+                .forEach(c -> c.addActionListener(this::actionPerformed));
         levelSelector.addMouseListener(SELECTOR_CLICK_LISTENER);
 
         root.setBackground(new Color(33, 6, 47));
@@ -169,6 +177,17 @@ public final class Menu {
         cost.setIcon(coin);
         characterName.setFont(UIManager.getFont("defaultFont").deriveFont(Font.BOLD, 50f));
         unlock.setIcon(Load.icon("Unlocked", 30, 30));
+
+        root.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                container.setPreferredSize(new Dimension(
+                        Math.min(1000, Math.max(500, (int) (root.getWidth() * Window.size.width * 1f / Window.SCREEN_SIZE.width))),
+                        Math.min(1200, Math.max(600, (int) (root.getHeight() * Window.size.height * 1f / Window.SCREEN_SIZE.height)))
+                ));
+                container.revalidate();
+            }
+        });
     }
 
     void setStrings() {
@@ -186,14 +205,14 @@ public final class Menu {
         coins.setToolTipText(Options.strings.getString("menu.coins"));
         levelSelector.setToolTipText(Options.strings.getString("menu.selectLevel"));
 
-        levelSelector.removeActionListener(actionListener);
+        levelSelector.removeActionListener(this::actionPerformed);
         levelSelector.removeAllItems();
         levelSelector.addItem(Options.strings.getString("menu.tutorial"));
         for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS; ++i) {
             levelSelector.addItem(String.format(Options.strings.getString("menu.level"), i));
         }
         levelSelector.setSelectedIndex(Data.get("menu.level"));
-        levelSelector.addActionListener(actionListener);
+        levelSelector.addActionListener(this::actionPerformed);
         setPlayerType(playerType);
     }
 
