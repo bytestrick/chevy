@@ -13,7 +13,8 @@ import java.util.List;
  * Gestisce l'aggiunta, la rimozione e l'aggiornamento dei proiettili
  */
 public final class ProjectileUpdateController implements Updatable {
-    private boolean running, paused;
+    private final boolean running;
+    private boolean paused;
     /**
      * Controller dei proiettili per gestire gli aggiornamenti specifici dei proiettili
      */
@@ -45,9 +46,6 @@ public final class ProjectileUpdateController implements Updatable {
         // Aggiungiamo questo controller agli aggiornamenti gestiti da UpdateManager
         UpdateManager.register(this);
     }
-
-    // TODO: rimuovimi
-    public void stopUpdate() {running = false;}
 
     public void setPaused(boolean paused) {this.paused = paused;}
 

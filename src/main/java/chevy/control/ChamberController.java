@@ -22,7 +22,6 @@ public final class ChamberController {
     private static GamePanel gamePanel;
     private static EnemyUpdateController enemyUpdateController;
     private static TrapsUpdateController trapsUpdateController;
-    private static ProjectileUpdateController projectileUpdateController;
     private static CollectableUpdateController collectableUpdateController;
     private static EnvironmentUpdateController environmentUpdateController;
 
@@ -43,8 +42,7 @@ public final class ChamberController {
         }
         enemyUpdateController = new EnemyUpdateController(enemyController, chamber.getEnemies());
 
-        final TrapsController trapsController = new TrapsController(chamber, playerController,
-                enemyController);
+        final TrapsController trapsController = new TrapsController(chamber, playerController, enemyController);
         playerController.setTrapController(trapsController);
         if (trapsUpdateController != null) {
             trapsUpdateController.stopUpdate();
@@ -54,35 +52,30 @@ public final class ChamberController {
         final HUDController hudController = new HUDController(new HUD(), gamePanel.getHudView());
         playerController.setHUDController(hudController);
 
-        final ProjectileController projectileController = new ProjectileController(chamber,
-                playerController,
-                enemyController);
-        projectileUpdateController = new ProjectileUpdateController(projectileController,
-                chamber.getProjectiles());
+        final ProjectileController projectileController = new ProjectileController(chamber, playerController, enemyController);
 
-        CollectableController collectableController = new CollectableController(chamber,
-                hudController, enemyUpdateController, projectileUpdateController);
+        ProjectileUpdateController projectileUpdateController = new ProjectileUpdateController(projectileController, chamber.getProjectiles());
+        CollectableController collectableController = new CollectableController(chamber, hudController, enemyUpdateController, projectileUpdateController);
         playerController.setCollectableController(collectableController);
         if (collectableUpdateController != null) {
             collectableUpdateController.stopUpdate();
         }
-        collectableUpdateController = new CollectableUpdateController(collectableController,
-                chamber.getCollectables());
+        collectableUpdateController = new CollectableUpdateController(collectableController, chamber.getCollectables());
 
         playerController.setProjectileController(projectileController);
 
-        final EnvironmentController environmentController =
-                new EnvironmentController(chamber, hudController, gamePanel);
+        final EnvironmentController environmentController = new EnvironmentController(chamber, hudController, gamePanel);
         playerController.setEnvironmentController(environmentController);
         if (environmentUpdateController != null) {
             environmentUpdateController.stopUpdate();
         }
-        environmentUpdateController = new EnvironmentUpdateController(environmentController,
-                chamber.getEnvironments());
+        environmentUpdateController = new EnvironmentUpdateController(environmentController, chamber.getEnvironments());
 
         // collega al chamberView la stanza (con le entità ordinate in base al layer) da disegnare
         GamePanel.getChamberView().setDrawOrder(chamber.getDrawOrderChamber());
     }
 
-    public static void setGamePanel(GamePanel gamePanel) {ChamberController.gamePanel = gamePanel;}
+    public static void setGamePanel(GamePanel gamePanel) {
+        ChamberController.gamePanel = gamePanel;
+    }
 }
