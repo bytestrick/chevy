@@ -219,6 +219,7 @@ public final class Menu {
     private void changeLevelAction() {
         final int level = levelSelector.getSelectedIndex();
         if (LevelSelectorRenderer.isInsideInterval(level)) {
+            Sound.play(Sound.Effect.BUTTON);
             Data.set("menu.level", level);
             Log.info("Cambiato livello: " + level);
         } else {
