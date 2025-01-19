@@ -10,6 +10,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.Environment;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
+import chevy.service.Data;
 import chevy.service.GameLoop;
 import chevy.service.Sound;
 import chevy.utils.Log;
@@ -133,6 +134,7 @@ public final class ChamberManager {
     public static void enterChamber(final int index) {
         if (index < NUMBER_OF_CHAMBERS) {
             currentChamberIndex = index;
+            Data.set("menu.level", currentChamberIndex);
             chambers[currentChamberIndex] = loadChamber(index);
             window.getGamePanel().setWindowTitle();
             ChamberController.refresh();
