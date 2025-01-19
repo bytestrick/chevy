@@ -146,10 +146,11 @@ public final class Menu {
     void updateComponents() {
         coins.setText(Data.get("progress.coins").toString());
         keys.setText(Data.get("progress.keys").toString());
-        levelSelector.setSelectedIndex(Data.get("menu.level"));
-        if (levelSelector.getActionListeners().length == 0) {
-            levelSelector.addActionListener(this::actionPerformed);
+        for (ActionListener actionListener : levelSelector.getActionListeners()) {
+            levelSelector.removeActionListener(actionListener);
         }
+        levelSelector.setSelectedIndex(Data.get("menu.level"));
+        levelSelector.addActionListener(this::actionPerformed);
     }
 
     /**
