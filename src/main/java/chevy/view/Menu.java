@@ -205,7 +205,9 @@ public final class Menu {
         coins.setToolTipText(Options.strings.getString("menu.coins"));
         levelSelector.setToolTipText(Options.strings.getString("menu.selectLevel"));
 
-        levelSelector.removeActionListener(this::actionPerformed);
+        for (ActionListener actionListener : levelSelector.getActionListeners()) {
+            levelSelector.removeActionListener(actionListener);
+        }
         levelSelector.removeAllItems();
         levelSelector.addItem(Options.strings.getString("menu.tutorial"));
         for (int i = 1; i < ChamberManager.NUMBER_OF_CHAMBERS; ++i) {
@@ -213,6 +215,7 @@ public final class Menu {
         }
         levelSelector.setSelectedIndex(Data.get("menu.level"));
         levelSelector.addActionListener(this::actionPerformed);
+
         setPlayerType(playerType);
     }
 
