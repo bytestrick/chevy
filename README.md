@@ -1,5 +1,7 @@
 ![banner](src/main/resources/banner-rounded.png)
 
+Chevy è un gioco 2D basato su Java Swing.
+
 ### Maven
 
 Fasi del ciclo di vita:
@@ -14,7 +16,7 @@ Le fasi si possono concatenare, esempio: `mvn clean compile` rimuove `target/` e
 > [!TIP]
 > Eseguire solo `mvn` compila ed esegue l'app in un colpo solo.
 
-L'app si può installare sul desktop Linux (testato con Gnome) con il comando `mvn install`. Questo copierà alcuni file sotto la directory
+L'app si può installare sul desktop Linux (testato in Gnome) con il comando `mvn install`. Questo copierà alcuni file sotto la directory
 `~/.local`. Per disinstallare l'app e rimuovere questi file usare il comando `mvn clean -P uninstall`. Non verranno rimossi i salvataggi di gioco.
 
 ### Colori
