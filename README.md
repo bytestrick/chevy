@@ -2,9 +2,12 @@
 
 Chevy is a 2D game based on Java Swing.
 
+
+You can download the latest release from this [link](https://github.com/bytestrick/chevy/releases/download/v1.0.0/chevy.jar). To run the game double-click on the jar file. You need to have Java 21 or later installed on your system.
+
 ### Using Maven
 
-Some useful lifecycle phases:
+Some useful life-cycle phases:
 
 - `mvn clean` removes `target/` after the build
 - `mvn compile` compiles the project
