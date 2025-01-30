@@ -22,7 +22,7 @@
   "options": {
     "musicVolume": 0.3,
     "effectsVolume": 0.5,
-    "language": "it",
+    "language": "en",
     "drawHitBoxes": false,
     "logLevel": "INFO"
   },

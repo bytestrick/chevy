@@ -62,13 +62,12 @@ public final class Options {
     private final Window window;
     private final ChangeListener changeListener = this::volumeChanged;
     /**
-     * Contenitore radice dell'interfaccia, contiene tutti gli altri componenti ed è contenuto
-     * in un {@link javax.swing.JScrollPane}
+     * Root container of the interface, contains all other components and is contained in a {@link javax.swing.JScrollPane}
      */
     private JPanel root;
     private JButton back, restoreApp;
     /**
-     * La lista che mostra le statistiche di gioco. È contenuta in un
+     * The list that shows the game statistics. It is contained in a
      * {@link javax.swing.JScrollPane}
      */
     private JList<Statistic> statistics;
@@ -92,8 +91,7 @@ public final class Options {
             ChamberView.drawCollision = switch (itemEvent.getStateChange()) {
                 case ItemEvent.SELECTED -> true;
                 case ItemEvent.DESELECTED -> false;
-                default -> throw new IllegalStateException("Unexpected value: "
-                        + itemEvent.getStateChange());
+                default -> throw new IllegalStateException("Unexpected value: " + itemEvent.getStateChange());
             };
             Data.set("options.drawHitBoxes", ChamberView.drawCollision);
         });
@@ -185,8 +183,8 @@ public final class Options {
     }
 
     /**
-     * Effettua operazioni che non si possono (o non conviene) fare tramite il file xml
-     * <code>Options.form</code> o il foglio di stile <code>FlatDarkLaf.properties</code>
+     * Does operations that can't (or shouldn't) be done through the xml file {@code Options.form}
+     * or the style sheet {@code FlatDarkLaf.properties}
      */
     private void initUI() {
         setStrings();
@@ -232,8 +230,7 @@ public final class Options {
         for (String lang : LANGUAGES) {
             languageSelector.addItem(strings.getString("lang." + lang));
         }
-        languageSelector.setSelectedIndex(List.of(LANGUAGES).indexOf((String) Data.get("options" +
-                ".language")));
+        languageSelector.setSelectedIndex(List.of(LANGUAGES).indexOf((String) Data.get("options.language")));
 
         logLevel.removeActionListener(actionListener);
         logLevel.removeAllItems();
@@ -258,12 +255,10 @@ public final class Options {
     }
 
     /**
-     * Gestisce il passaggio da e a {@link chevy.view.Window.Scene#OPTIONS}.
-     * È importante ricordare da quale scena si arriva, perché se si arriva da
-     * {@link chevy.view.Window.Scene#PLAYING} all'uscita si
-     * deve fare ripartire {@link chevy.service.GameLoop} e musica. Mentre se si arriva da
-     * {@link chevy.view.Window.Scene#MENU} si deve fare ripartire
-     * l'animazione del personaggio.
+     * Handle the transition to and from {@link chevy.view.Window.Scene#OPTIONS}.
+     * It is important to remember from which scene you are coming, because if you are coming from
+     * {@link chevy.view.Window.Scene#PLAYING} on exit you must restart {@link chevy.service.GameLoop}
+     * and music. While if you come from {@link chevy.view.Window.Scene#MENU} you must restart the character animation.
      */
     void setupReturnAction(Window.Scene scene) {
         sceneToReturnTo = scene;
@@ -280,15 +275,13 @@ public final class Options {
     }
 
     /**
-     * Visita ricorsivamente il sotto-ramo "stats" del file JSON.
-     * Ogni chiamata ricostruisce il model di {@link #statistics}. Quindi è usabile per
-     * inizializzare e aggiornare la visualizzazione delle statistiche.
+     * Visit recursively the "stats" subtree of the JSON file.
+     * Each call rebuilds the model of {@link #statistics}. So it is usable to initialize and update
+     * the display of statistics.
      *
-     * @param node        sotto nodo di cui fare il parsing
-     * @param listModel   il model di {@link javax.swing.JList} a cui aggiungere i record
-     *                    {@link chevy.view.Options.Statistic}
-     *                    man mano che si creano
-     * @param indentLevel livello di indentazione fisico di ciascuna statistica
+     * @param node        subtree to parse
+     * @param listModel   the model of {@link javax.swing.JList} to which add the {@link chevy.view.Options.Statistic} records as they are created
+     * @param indentLevel physical indentation level of each statistic
      */
     private void getStats(LinkedHashMap<?, ?> node, String nodeName,
                           DefaultListModel<Statistic> listModel, int indentLevel) {
@@ -311,25 +304,24 @@ public final class Options {
     JPanel getRoot() {return root;}
 
     /**
-     * L'elemento di {@link #statistics}
+     * Element of {@link #statistics}
      */
     private record Statistic(Icon icon, String string, int count, int indent, int topMargin, String nodeName) {
         private static final int SPACING = 48;
 
         /**
-         * Costruttore custom che scompone un nodo foglia dell'albero JSON
+         * Building a {@link Statistic} from a leaf node of the JSON tree
          *
-         * @param data il nodo contenente "icon", "string" e "count"
+         * @param data the node containing "icon", "string" and "count"
          */
         private Statistic(LinkedHashMap<?, ?> data, String nodeName, int indentLevel) {
-            this(Load.icon((String) data.get("icon"), SPACING, SPACING), strings.getString("stats" +
-                            "." + nodeName), (int) data.get("count"), indentLevel * SPACING,
+            this(Load.icon((String) data.get("icon"), SPACING, SPACING), strings.getString("stats." + nodeName), (int) data.get("count"), indentLevel * SPACING,
                     indentLevel == 0 ? SPACING : 4, nodeName);
         }
     }
 
     /**
-     * Renderer personalizzato per visualizzare testo e icona in {@link javax.swing.JList}
+     * Custom renderer to display text and icon in {@link javax.swing.JList}
      */
     private static class ItemRenderer extends DefaultListCellRenderer {
         @Override
@@ -351,16 +343,15 @@ public final class Options {
     }
 
     /**
-     * Espediente per avere {@link javax.swing.JCheckBox} di una dimensione personalizzata
+     * Trick to have {@link javax.swing.JCheckBox} of a custom size
      * <p>
-     * <a href="https://github.com/JFormDesigner/FlatLaf/issues/413#issuecomment-959545260">
-     * Fonte</a>
+     * <a href="https://github.com/JFormDesigner/FlatLaf/issues/413#issuecomment-959545260">Source</a>
      */
     private static class SizedCheckBoxIcon extends FlatCheckBoxIcon {
         private final float scaleFactor;
 
         SizedCheckBoxIcon() {
-            assert super.getIconHeight() == super.getIconWidth() : "assunzione errata";
+            assert super.getIconHeight() == super.getIconWidth() : "wrong assumption";
             scaleFactor = 1f * 50 / super.getIconHeight();
         }
 

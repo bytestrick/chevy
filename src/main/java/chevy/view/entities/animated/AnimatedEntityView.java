@@ -10,7 +10,7 @@ import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolation;
 import chevy.view.entities.EntityView;
 
-import java.awt.Point;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,9 @@ import java.util.Map;
 public abstract class AnimatedEntityView extends EntityView {
     private final Map<Pair<EntityState, Direction>, AnimatedSprite> animations = new HashMap<>();
     protected Interpolation horizontal, vertical;
-    /** Lo stato corrente nella macchina a stati */
+    /**
+     * The current state in the state machine
+     */
     protected Vertex vertex;
     protected boolean firstTimeInState;
 
@@ -38,16 +40,15 @@ public abstract class AnimatedEntityView extends EntityView {
     }
 
     /**
-     * @param state     stato a cui l'animazione deve essere associata
-     * @param direction direzione dell'animazione
-     * @param frames    numero di frame totali di cui è composta l'animazione
-     * @param loop      se l'animazione può andare in loop
-     * @param times     (solo se <code>loop</code> è <code>true</code>) ripetizioni per
-     *                  l'animazione
-     * @param duration  durata totale, in secondi, dell'animazione
-     * @param offset    offset per la posizione dei frame
-     * @param scale     scale per la grandezza dei frame
-     * @param path      percorso della cartella dove sono contenuti i frame
+     * @param state     state to which the animation is associated
+     * @param direction direction of the animation
+     * @param frames    number of frames of the animation
+     * @param loop      if the animation can loop
+     * @param times     only if loop is {@code true}, repetitions for the animation
+     * @param duration  total duration of the animation in seconds
+     * @param offset    offset for the frame position
+     * @param scale     scale of the frame
+     * @param path      resource path of the frames
      */
     protected void animate(EntityState state, Direction direction, int frames,
                            boolean loop, int times, float duration,
@@ -62,7 +63,7 @@ public abstract class AnimatedEntityView extends EntityView {
         final Pair<EntityState, Direction> animationType = animation.getType();
 
         if (animations.containsKey(animationType)) {
-            Log.warn("L'animazione " + animationType + " è già presente");
+            Log.warn("The animation " + animationType + " is already present");
         } else {
             animations.put(animationType, animation);
         }
@@ -90,7 +91,7 @@ public abstract class AnimatedEntityView extends EntityView {
     }
 
     /**
-     * @return il fotogramma corrente dell'animazione
+     * @return the current animation frame
      */
     public abstract BufferedImage getFrame();
 }

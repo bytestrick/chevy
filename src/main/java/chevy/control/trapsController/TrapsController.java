@@ -15,10 +15,7 @@ import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 
 /**
- * Gestisce il comportamento e le interazioni di vari tipi di trappole nel gioco. Coordina i
- * sotto controller
- * specifici per ogni tipo di trappola e
- * gestisce le interazioni con il giocatore.
+ * Handles the behavior and interactions of various types of traps in the game. Coordinates the specific controllers for each type of trap and manages interactions with the player.
  */
 public final class TrapsController {
     private final SludgeController sludgeController;
@@ -28,9 +25,8 @@ public final class TrapsController {
     private final TotemController totemController;
 
     /**
-     * @param chamber          la camera di gioco in cui si trovano le trappole
-     * @param playerController il controller del giocatore per gestire le interazioni con il
-     *                         giocatore
+     * @param chamber          the game room containing the traps
+     * @param playerController the player controller
      */
     public TrapsController(Chamber chamber, PlayerController playerController,
                            EnemyController enemyController) {
@@ -43,10 +39,10 @@ public final class TrapsController {
     }
 
     /**
-     * Delega l'interazione del giocatore che esce dalla trappola ai controller specifici.
+     * Delegates the interaction of the player exiting the trap to the specific controllers.
      *
-     * @param player giocatore che esce dalla trappola
-     * @param trap   la trappola con cui interagisce il giocatore
+     * @param player player exiting the trap
+     * @param trap   the trap interacting with the player
      */
     private static void playerOutInteraction(Player player, Trap trap) {
         switch (trap.getType()) {
@@ -57,11 +53,11 @@ public final class TrapsController {
     }
 
     /**
-     * Gestisce le interazioni con le trappole a seconda del tipo di interazione.
+     * Handle interactions with traps based on the type of interaction.
      *
-     * @param interaction il tipo di interazione
-     * @param subject     l'entità che avvia l'interazione
-     * @param trap        l'entità che riceve l'interazione
+     * @param interaction the type of interaction
+     * @param subject     the entity that starts the interaction
+     * @param trap        the entity that is hit by the interaction
      */
     public synchronized void handleInteraction(Interaction interaction, Entity subject,
                                                Trap trap) {
@@ -74,10 +70,10 @@ public final class TrapsController {
     }
 
     /**
-     * Delega l'interazione del giocatore che entra nella trappola ai controller specifici.
+     * Delegates the interaction of the player entering the trap to the specific controllers.
      *
-     * @param player giocatore che entra nella trappola
-     * @param trap   trappola con cui interagisce il giocatore
+     * @param player player entering the trap
+     * @param trap   trap interacting with the player
      */
     private void playerInInteraction(Player player, Trap trap) {
         switch (trap.getType()) {
@@ -92,10 +88,10 @@ public final class TrapsController {
     }
 
     /**
-     * Delega l'interazione del giocatore con la trappola ai controller specifici
+     * Delegates the interaction of the player with the trap to the specific controllers
      *
-     * @param player il giocatore che interagisce
-     * @param trap   la trappola con cui interagisce il giocatore
+     * @param player the player interacting with the trap
+     * @param trap   the trap interacting with the player
      */
     private void playerInteraction(Player player, Trap trap) {
         if (trap.getType().equals(Trap.Type.SLUDGE)) {
@@ -104,9 +100,9 @@ public final class TrapsController {
     }
 
     /**
-     * Delega l'aggiornamento della trappola ai controller specifici
+     * Delegates the update of the trap to the specific controllers
      *
-     * @param trap la trappola da aggiornare
+     * @param trap the trap to update
      */
     private void updateTraps(Trap trap) {
         switch (trap.getType()) {

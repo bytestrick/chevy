@@ -19,7 +19,9 @@ public final class GroundView extends EntityView {
     private final Ground ground;
     private final Point2D.Double position = new Point2D.Double(0, 0);
 
-    public GroundView(Ground ground) {this.ground = ground;}
+    public GroundView(Ground ground) {
+        this.ground = ground;
+    }
 
     @Override
     public BufferedImage getFrame() {

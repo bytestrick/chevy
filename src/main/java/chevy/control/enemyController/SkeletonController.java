@@ -14,26 +14,21 @@ import chevy.service.Sound;
 import chevy.utils.Log;
 
 /**
- * Gestisce il comportamento e le interazioni del nemico {@link Skeleton} all'interno del gioco.
- * Gestisce come lo Skeleton risponde agli attacchi del giocatore, ai colpi dei proiettili e
- * coordina il suo stato e
- * i suoi movimenti.
+ * Manages the behavior and interactions of the enemy {@link Skeleton} in the game. Manages how it responds to player attacks, to projectile hits, and coordinates its state with its movements.
  */
 final class SkeletonController {
     /**
-     * Riferimento alla stanza di gioco in cui si trova lo Skeleton. Utilizzato per verificare le
-     * posizioni, aggiungere/rimuovere entità e gestire le interazioni.
+     * Reference to the game room containing the {@link Skeleton}. Used to check positions, add/remove entities, and manage interactions.
      */
     private final Chamber chamber;
     /**
-     * Riferimento al controller del giocatore, utilizzato per gestire le interazioni tra lo
-     * Skeleton e il giocatore.
+     * Reference to the player controller, used to manage interactions between the {@link Skeleton} and the player.
      */
     private final PlayerController playerController;
 
     /**
-     * @param chamber          riferimento della stanza di gioco
-     * @param playerController riferimento al controller del giocatore
+     * @param chamber          reference to the game room
+     * @param playerController reference to the player controller
      */
     SkeletonController(Chamber chamber, PlayerController playerController) {
         this.chamber = chamber;
@@ -41,28 +36,27 @@ final class SkeletonController {
     }
 
     /**
-     * Gestisce le interazioni dello {@link Skeleton} con il giocatore
+     * Manages interactions between the {@link Skeleton} and the player
      *
-     * @param player   il giocatore che interagisce con lo Skeleton
-     * @param skeleton lo Skeleton che subisce l'interazione
+     * @param player   the player interacting with the Skeleton
+     * @param skeleton the Skeleton participating in the interaction
      */
     static void playerInInteraction(Player player, Skeleton skeleton) {
-        // Se il giocatore è in stato di attacco, lo Skeleton viene danneggiato in base al danno
-        // del giocatore.
+        // If the player has been attacker, the Skeleton gets damages in proportion to the player damage.
         if (player.getState().equals(Player.State.ATTACK)) {
             Sound.play(Sound.Effect.SKELETON_HIT);
             hitSkeleton(skeleton, -1 * player.getDamage());
             skeleton.setDirection(Direction.positionToDirection(player, skeleton));
         } else {
-            Log.warn("Lo SkeletonController non gestisce questa azione: " + player.getState());
+            Log.warn("SkeletonController doesn't handle this action: " + player.getState());
         }
     }
 
     /**
-     * Gestisce le interazioni dello {@link Skeleton} con i proiettili
+     * Manage interactions between the {@link Skeleton} and projectiles
      *
-     * @param projectile il proiettile che colpisce lo Skeleton
-     * @param skeleton   lo Skeleton che subisce l'interazione
+     * @param projectile the projectile hitting the {@link Skeleton}
+     * @param skeleton   the {@link Skeleton} getting hit
      */
     static void projectileInteraction(Projectile projectile, Skeleton skeleton) {
         skeleton.setDirection(Direction.positionToDirection(projectile, skeleton));
@@ -70,10 +64,10 @@ final class SkeletonController {
     }
 
     /**
-     * Applica danno allo {@link Skeleton} e aggiorna il suo stato
+     * Applies damage to the {@link Skeleton} and updates its state
      *
-     * @param skeleton lo Skeleton che subisce il danno
-     * @param damage   il danno da applicare
+     * @param skeleton the Skeleton being hit
+     * @param damage   the amount of damage to apply
      */
     private static void hitSkeleton(Skeleton skeleton, int damage) {
         if (skeleton.changeState(Skeleton.State.HIT)) {
@@ -88,12 +82,12 @@ final class SkeletonController {
     }
 
     /**
-     * Aggiorna lo stato dello {@link Skeleton} a ogni ciclo di gioco
+     * Update the state of the {@link Skeleton} at each game cycle
      *
-     * @param skeleton lo Skeleton da aggiornare
+     * @param skeleton the Skeleton to update
      */
     void update(Skeleton skeleton) {
-        // Gestione della morte
+        // death handling
         if (skeleton.isDead()) {
             if (skeleton.getState(Skeleton.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(skeleton);
@@ -110,7 +104,7 @@ final class SkeletonController {
             skeleton.kill();
         }
 
-        // Gestione del movimento/attacco
+        // movement and attack handling
         if (skeleton.canChange(Skeleton.State.MOVE)) {
             Direction direction = chamber.getDirectionToHitPlayer(skeleton);
             if (direction == null) {

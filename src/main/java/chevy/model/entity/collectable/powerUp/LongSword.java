@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.view.Options;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class LongSword extends PowerUp {
     private static final int DAMAGE_BOOST = 2;
@@ -14,10 +14,14 @@ public final class LongSword extends PowerUp {
         occurringPercentage = 100;
     }
 
-    public static int getDamageBoost() {return DAMAGE_BOOST;}
+    public static int getDamageBoost() {
+        return DAMAGE_BOOST;
+    }
 
     @Override
-    public String getName() {return Options.strings.getString("powerUp.longSword.name");}
+    public String getName() {
+        return Options.strings.getString("powerUp.longSword.name");
+    }
 
     @Override
     public String getDescription() {

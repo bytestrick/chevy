@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * Aggiorna i componenti di {@link chevy.view}
+ * Update the components of {@link chevy.view}
  */
 public final class RenderManager {
     private static final Collection<Renderable> renderables = new LinkedList<>();

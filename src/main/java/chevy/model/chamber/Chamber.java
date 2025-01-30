@@ -24,46 +24,59 @@ import chevy.utils.Log;
 import chevy.utils.Utils;
 import chevy.view.chamber.ChamberView;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
+import java.awt.*;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
- * L'area di gioco
+ * The game area
  */
 public final class Chamber {
-    /** Nemici nella stanza */
+    /**
+     * Enemies in the room
+     */
     private final List<Enemy> enemies = new LinkedList<>();
-    /** Trappole nella stanza */
+    /**
+     * Traps in the room
+     */
     private final List<Trap> traps = new LinkedList<>();
-    /** Proiettili nella stanza */
+    /**
+     * Projectiles in the room
+     */
     private final List<Projectile> projectiles = new LinkedList<>();
-    /** Collezionabili nella stanza */
+    /**
+     * Collectables in the room
+     */
     private final List<Collectable> collectables = new LinkedList<>();
-    /** Elementi dinamici dell'ambiente (casse, scale) */
+    /**
+     * Dynamic elements of the environment (chests, ladders)
+     */
     private final List<Environment> environments = new LinkedList<>();
-    /** Ordine delle in cui le entità vanno disegnate */
+    /**
+     * Order in which entities are drawn
+     */
     private final LayerManager drawOrderChamber = new LayerManager();
     /**
-     * Una struttura dati tridimensionale che rappresenta la griglia di gioco.
-     * Ogni cella della griglia può contenere una lista di entità.
+     * A three-dimensions data structure representing the game grid.
+     * Every cell in the grid can contain a list of entities.
      */
     private List<List<List<Entity>>> chamber;
-    /** Righe e colonne della griglia di gioco */
+    /**
+     * Rows and columns of the game grid
+     */
     private Dimension size;
-    /** Indica se il mondo è stato inizializzato */
+    /**
+     * Indicates if the world has been initialized
+     */
     private boolean initialized;
-    /** Il giocatore attuale */
+    /**
+     * The current player
+     */
     private Player player;
     private int enemyCounter;
 
     /**
-     * @param size numero di colonne e righe della griglia di gioco
+     * @param size number of columns and rows of the game grid
      */
     void initWorld(Dimension size) {
         this.size = size;
@@ -82,19 +95,21 @@ public final class Chamber {
     }
 
     /**
-     * Verifica se una posizione è valida all'interno della griglia.
+     * Check if a position is valid inside the grid.
      *
-     * @param position la posizione da validare
-     * @return {@code true} se è valida, {@code false} altrimenti
+     * @param position the position to check
+     * @return {@code true} if it's valid, {@code false} otherwise
      */
-    boolean isValid(Point position) {return isValid(position.y, position.x);}
+    boolean isValid(Point position) {
+        return isValid(position.y, position.x);
+    }
 
     /**
-     * Verifica se una posizione è valida all'interno della griglia
+     * Check if a position is valid inside the grid.
      *
-     * @param row    la riga della posizione
-     * @param column la colonna della posizione
-     * @return {@code true} se è valida, {@code false} altrimenti
+     * @param row    the row of the position
+     * @param column the column of the position
+     * @return {@code true} if it's valid, {@code false} otherwise
      */
     private boolean isValid(int row, int column) {
         if (initialized) {
@@ -104,21 +119,21 @@ public final class Chamber {
     }
 
     /**
-     * Verifica se una cella può essere attraversata da una {@link DynamicEntity}
+     * Check if a cell can be crossed by a {@link DynamicEntity}
      *
-     * @param dynamicEntity entità dinamica da considerare.
-     * @param direction     direzione in cui l'entità si deve spostare.
-     * @return {@code true} se si può passare, {@code false} altrimenti.
+     * @param dynamicEntity the entity that wants to cross the cell
+     * @param direction     direction in which the entity wants to move
+     * @return {@code true} if it can be crossed, {@code false} otherwise
      */
     public synchronized boolean canCross(DynamicEntity dynamicEntity, Direction direction) {
         return canCross(direction.advance(dynamicEntity.getPosition()));
     }
 
     /**
-     * Verifica se una determinata cella è attraversabile
+     * Check if a cell can be crossed
      *
-     * @param position posizione della cella
-     * @return {@code true} se si può passare, {@code false} altrimenti
+     * @param position the position of the cell to check
+     * @return {@code true} if it can be crossed, {@code false} otherwise
      */
     private synchronized boolean canCross(Point position) {
         if (isValid(position)) {
@@ -128,27 +143,21 @@ public final class Chamber {
     }
 
     /**
-     * Verifica se una posizione è sicura da attraversare
-     * (usata principalmente per far si che i nemici non si spostano su celle in cui potrebbero
-     * prendere danno).
+     * Check if a position is safe to cross (used mainly to prevent enemies from moving on cells where they could take damage).
      *
-     * @param dynamicEntity entità dinamica considerata
-     * @param direction     direzione in cui si deve spostare
-     * @return {@code true} se lo spostamento non danneggerà l'entità dinamica, {@code false}
-     * altrimenti
+     * @param dynamicEntity dynamic entity to consider
+     * @param direction     direction in which the entity wants to move
+     * @return {@code true} if the movement won't damage the dynamic entity, {@code false} otherwise
      */
     private boolean isSafeToCross(DynamicEntity dynamicEntity, Direction direction) {
         return isSafeToCross(direction.advance(dynamicEntity.getPosition()));
     }
 
     /**
-     * Verifica se una posizione è sicura da attraversare
-     * (usata principalmente per far si che i nemici non si spostano su celle in cui potrebbero
-     * prendere danno).
+     * Check if a position is safe to cross (used mainly to prevent enemies from moving on cells where they could take damage).
      *
-     * @param position posizione della cella da controllare
-     * @return {@code true} se lo spostamento non danneggerà l'entità dinamica, {@code false}
-     * altrimenti
+     * @param position position to consider
+     * @return {@code true} if the movement won't damage the dynamic entity, {@code false} otherwise
      */
     boolean isSafeToCross(Point position) {
         Entity onTop = getEntityOnTop(position);
@@ -156,12 +165,9 @@ public final class Chamber {
     }
 
     /**
-     * Ritorna l'entità in cima alla griglia, situata nella cella in cui si dovrà spostare il
-     * player.
-     *
-     * @param dynamicEntity entità dinamica da considerare
-     * @param direction     direzione in cui si deve spostare l'entità dinamica
-     * @return entità in cima alla griglia.
+     * @param dynamicEntity dynamic entity to consider
+     * @param direction     direction in which the dynamic entity wants to move
+     * @return entity on top of the grid in the cell where the player wants to move
      */
     public synchronized Entity getEntityNearOnTop(DynamicEntity dynamicEntity,
                                                   Direction direction) {
@@ -169,14 +175,10 @@ public final class Chamber {
     }
 
     /**
-     * Ritorna l'entità in cima alla griglia, situata nella cella in cui si dovrà spostare il
-     * player.
-     *
-     * @param dynamicEntity entità dinamica da considerare
-     * @param direction     direzione in cui si deve spostare l'entità dinamica
-     * @param distanceCell  offset che considera le celle più avanti rispetto alla direzione
-     *                      selezionata
-     * @return entità in cima alla griglia
+     * @param dynamicEntity dynamic entity to consider
+     * @param direction     direction in which the dynamic entity wants to move
+     * @param distanceCell  offset that considers the cells further ahead than the selected direction
+     * @return entity on top of the grid in the cell where the player wants to move
      */
     public synchronized Entity getEntityNearOnTop(DynamicEntity dynamicEntity,
                                                   Direction direction, int distanceCell) {
@@ -194,10 +196,10 @@ public final class Chamber {
     }
 
     /**
-     * Controlla se un'entità può essere creata in una determinata cella.
+     * Check if an entity can be spawned in a specific cell.
      *
-     * @param position posizione della cella da verificare
-     * @return {@code true} se può essere creata, {@code false} altrimenti
+     * @param position position to consider
+     * @return {@code true} if it can be created, {@code false} otherwise
      */
     private synchronized boolean canSpawn(Point position) {
         final Entity onTop = getEntityOnTop(position);
@@ -205,22 +207,21 @@ public final class Chamber {
     }
 
     /**
-     * Data un entità ritorna la direzione in cui bisogna avanzare per incontrare il player.
+     * Given an entity, it returns the direction in which it should move to hit the player.
      *
-     * @param entity entità da considerare per il calcolo della direzione
-     * @return direzione in cui si trova il player
+     * @param entity entity to consider for the direction calculation
+     * @return the direction in which the player is
      */
     public synchronized Direction getDirectionToHitPlayer(Entity entity) {
         return getDirectionToHitPlayer(entity, 1);
     }
 
     /**
-     * Data un entità ritorna la direzione in cui bisogna avanzare per incontrare il player.
+     * Given an entity, it returns the direction in which it should move to hit the player.
      *
-     * @param entity       entità da considerare per il calcolo della direzione
-     * @param distanceCell offset che considera le celle più avanti rispetto alla direzione
-     *                     selezionata
-     * @return direzione in cui si trova il player
+     * @param entity       entity to consider for the direction calculation
+     * @param distanceCell offset that considers the cells further ahead than the selected direction
+     * @return the direction in which the player is
      */
     public synchronized Direction getDirectionToHitPlayer(Entity entity, int distanceCell) {
         for (int i = 1; i <= distanceCell; ++i) {
@@ -241,11 +242,10 @@ public final class Chamber {
     }
 
     /**
-     * Sposta un entità dinamica nella cella successiva in corrispondenza della direzione
-     * selezionata.
+     * Move a dynamic entity to the next cell in the selected direction.
      *
-     * @param dynamicEntity entità dinamica da spostare
-     * @param direction     direzione in cui l'entità dinamica si deve spostare
+     * @param dynamicEntity dynamic entity to move
+     * @param direction     direction in which the entity wants to move
      */
     public synchronized void moveDynamicEntity(DynamicEntity dynamicEntity,
                                                Direction direction) {
@@ -261,10 +261,10 @@ public final class Chamber {
     }
 
     /**
-     * Sposta un entità dinamica alla cella presente nella posizione data.
+     * Move a dynamic entity to the next cell in the selected direction.
      *
-     * @param dynamicEntity entità dinamica da spostare
-     * @param nextPosition  posizione in cui è presente la cella
+     * @param dynamicEntity dynamic entity to move
+     * @param nextPosition  position where the entity wants to move
      */
     private synchronized void moveDynamicEntity(DynamicEntity dynamicEntity,
                                                 Point nextPosition) {
@@ -277,22 +277,21 @@ public final class Chamber {
     }
 
     /**
-     * Trova e rimuove un'entità dalla griglia di gioco.
+     * Find and remove an entity from the game grid.
      *
-     * @param entity entità da rimuovere
-     * @return {@code true} se è stata rimossa, {@code false} altrimenti
+     * @param entity entity to remove
+     * @return {@code true} if it was removed, {@code false} otherwise
      */
     public synchronized boolean findAndRemoveEntity(Entity entity) {
         return findAndRemoveEntity(entity, true);
     }
 
     /**
-     * Trova e rimuove un'entità dalla griglia di gioco.
+     * Find and remove an entity from the game grid.
      *
-     * @param entity    entità da rimuovere
-     * @param setToDraw booleana che in base al valore permette all'entità di essere mostrata a
-     *                  schermo
-     * @return {@code true} se è stata rimossa, {@code false} altrimenti
+     * @param entity    entity to remove
+     * @param setToDraw if {@code true}, the entity will be set to draw
+     * @return {@code true} if it was removed, {@code false} otherwise
      */
     public synchronized boolean findAndRemoveEntity(Entity entity, boolean setToDraw) {
         List<Entity> entities = chamber.get(entity.getRow()).get(entity.getCol());
@@ -310,13 +309,13 @@ public final class Chamber {
     }
 
     /**
-     * Genera un numero specificato di Slime attorno a un'entità.
+     * Spawn a specified number of {@link Slime} around an entity.
      *
-     * @param entity entità considerata
-     * @param nSlime numero di slime da generare
+     * @param entity considered entity
+     * @param nSlime number of slimes to spawn
      */
     public synchronized void spawnSlimeAroundEntity(Entity entity, int nSlime) {
-        int f = (int) System.currentTimeMillis(); // fattore che randomizza la posizione
+        int f = (int) System.currentTimeMillis(); // factor that randomizes the position
 
         for (int i = 0; i < 3 && nSlime > 0; ++i) {
             for (int j = 0; j < 3 && nSlime > 0; ++j) {
@@ -371,7 +370,7 @@ public final class Chamber {
     }
 
     public void spawnCollectableAroundChest(Chest chest, int nSpawn) {
-        int f = (int) System.currentTimeMillis(); // fattore che randomizza la posizione
+        int f = (int) System.currentTimeMillis(); // factor that randomizes the position
 
         for (int i = 0; i < 3 && nSpawn > 0; ++i) {
             for (int j = 0; j < 3 && nSpawn > 0; ++j) {
@@ -416,11 +415,11 @@ public final class Chamber {
     }
 
     /**
-     * Cerca il giocatore in un intervallo quadrato attorno a un'entità.
+     * Search for the player in a square range around an entity.
      *
-     * @param entity entità da considerare
-     * @param edge   lato del quadrato
-     * @return ritorna il giocatore se presente nell'area, null altrimenti
+     * @param entity entity to consider
+     * @param edge   side of the square
+     * @return the player if found, {@code null} otherwise
      */
     private synchronized Player findPlayerInSquareRange(Entity entity, int edge) {
         int startRow = entity.getRow() - edge;
@@ -439,14 +438,12 @@ public final class Chamber {
     }
 
     /**
-     * Muove in modo casuale il nemico. Il movimento non viene ricalcolato se il movimento
-     * precedente non è valido,
-     * as esempio: se la funzione calcola che il nemico si deve spostare a destra dove è presente
-     * un muro, il movimento
-     * viene scartato e il nemico non si sposterà.
+     * Move the enemy randomly. The movement is not recalculated if the previous movement is invalid, for example:
+     * if the function calculates that the enemy must move to the right where there is a wall, the movement is
+     * discarded and the enemy will not move.
      *
-     * @param enemy nemico da spostare
-     * @return {@code true} se il nemico è stato spostato, {@code false} altrimenti
+     * @param enemy enemy to move
+     * @return {@code true} if the enemy moved, {@code false} otherwise
      */
     public synchronized boolean moveRandom(Enemy enemy) {
         Direction directionMove = Direction.getRandom();
@@ -458,13 +455,11 @@ public final class Chamber {
     }
 
     /**
-     * Muove in modo casuale il nemico. Il movimento viene ricalcolato se quello precedente è
-     * invalido.
-     * L'operazione viene ripetuta finché non si esauriscono le direzioni disponibili o il nuovo
-     * movimento è valido.
+     * Move the enemy randomly. The movement is recalculated if the previous movement is invalid.
+     * The operation is repeated until there are no more available directions or the new movement is valid.
      *
-     * @param enemy nemico da spostare
-     * @return {@code true} se il nemico è stato spostato, {@code false} altrimenti
+     * @param enemy enemy to move
+     * @return {@code true} if the enemy moved, {@code false} otherwise
      */
     public synchronized boolean moveRandomPlus(Enemy enemy) {
         Direction[] directions = Direction.values();
@@ -481,18 +476,15 @@ public final class Chamber {
     }
 
     /**
-     * Funzione usata per spostare il nemico in modo casuale se il giocatore si trova fuori
-     * dall'area quadrata,
-     * altrimenti segue il percorso minore per raggiungere il giocatore. Usa
-     * {@link #moveRandom(Enemy)} per il
-     * movimento random.
+     * Move the enemy randomly if the player is outside the square area, otherwise follow the shortest path to reach the player.
+     * Uses {@link #moveRandom(Enemy)} for random movement.
      *
-     * @param enemy       nemico da spostare
-     * @param rangeWander lato dell'area del quadrato
-     * @return {@code true} se si sposta, {@code false} altrimenti
+     * @param enemy       enemy to move
+     * @param rangeWander side of the square area
+     * @return {@code true} if it moves, {@code false} otherwise
      */
     public synchronized boolean wanderChase(Enemy enemy, int rangeWander) {
-        // muoviti verso il player se si trova dentro il tuo campo visivo
+        // move towards the player if it is inside your field of view
         Player player = findPlayerInSquareRange(enemy, rangeWander);
         if (player != null) {
             return chase(enemy);
@@ -501,29 +493,28 @@ public final class Chamber {
     }
 
     /**
-     * Sposta il nemico in modo casuale se il giocatore si trova fuori dall'area quadrata,
-     * altrimenti segue il percorso minore per raggiungere il giocatore.
-     * Usa {@link #moveRandomPlus(Enemy)} per il * movimento random.
+     * Move the enemy randomly if the player is outside the square area, otherwise follow the shortest path to reach the player.
+     * Uses {@link #moveRandomPlus(Enemy)} for random movement.
      *
-     * @param enemy       nemico da spostare
-     * @param rangeWander lato dell'area del quadrato
-     * @return {@code true} se si sposta, {@code false} altrimenti
+     * @param enemy       enemy to move
+     * @param rangeWander side of the square area
+     * @return {@code true} if it moves, {@code false} otherwise
      */
     public synchronized boolean wanderChasePlus(Enemy enemy, int rangeWander) {
-        // muoviti verso il player se si trova dentro il tuo campo visivo
+        // move towards the player if it is inside your field of view
         Player player = findPlayerInSquareRange(enemy, rangeWander);
         if (player != null) {
             return chase(enemy);
         }
-        // muoviti in modo casuale
+        // move randomly
         return moveRandomPlus(enemy);
     }
 
     /**
-     * Sposta il nemico seguendo il percorso minore per raggiungere il giocatore
+     * Moves the enemy following the shortest path to reach the player
      *
-     * @param enemy nemico da spostare
-     * @return {@code true} se si sposta, {@code false} altrimenti
+     * @param enemy enemy to move
+     * @return {@code true} if it moves, {@code false} otherwise
      */
     public synchronized boolean chase(Enemy enemy) {
         AStar aStar = new AStar(this);
@@ -543,7 +534,7 @@ public final class Chamber {
         try {
             stack.removeLast();
         } catch (NoSuchElementException e) {
-            Log.warn("Chamber.removeEntityOnTop: la cella è vuota.");
+            Log.warn("Chamber.removeEntityOnTop: the cell is empty.");
         }
     }
 
@@ -555,14 +546,15 @@ public final class Chamber {
         }
     }
 
-    private synchronized Entity getEntityOnTop(int row, int col) {return chamber.get(row).get(col).getLast();}
+    private synchronized Entity getEntityOnTop(int row, int col) {
+        return chamber.get(row).get(col).getLast();
+    }
 
     public synchronized Entity getEntityOnTop(Point position) {
         try {
             return chamber.get(position.y).get(position.x).getLast();
         } catch (NoSuchElementException e) {
-            Log.warn("Tentativo di accedere alla cella (" + position.y + ", " + position.x + ") " +
-                    "fallito perché è vuota");
+            Log.warn("Attempt to access cell (" + position.y + ", " + position.x + ") failed because it is empty");
         }
         return null;
     }
@@ -584,33 +576,61 @@ public final class Chamber {
         }
     }
 
-    boolean isInitialized() {return initialized;}
+    boolean isInitialized() {
+        return initialized;
+    }
 
-    public Dimension getSize() {return size;}
+    public Dimension getSize() {
+        return size;
+    }
 
-    public Player getPlayer() {return player;}
+    public Player getPlayer() {
+        return player;
+    }
 
-    public void setPlayer(Player player) {this.player = player;}
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
-    public int getEnemyCounter() {return enemyCounter;}
+    public int getEnemyCounter() {
+        return enemyCounter;
+    }
 
-    public List<Enemy> getEnemies() {return enemies;}
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
 
-    void addTraps(Trap trap) {traps.add(trap);}
+    void addTraps(Trap trap) {
+        traps.add(trap);
+    }
 
-    public List<Trap> getTraps() {return traps;}
+    public List<Trap> getTraps() {
+        return traps;
+    }
 
-    public synchronized void addProjectile(Projectile projectile) {projectiles.add(projectile);}
+    public synchronized void addProjectile(Projectile projectile) {
+        projectiles.add(projectile);
+    }
 
-    public synchronized List<Projectile> getProjectiles() {return projectiles;}
+    public synchronized List<Projectile> getProjectiles() {
+        return projectiles;
+    }
 
-    synchronized void addCollectable(Collectable collectable) {collectables.add(collectable);}
+    synchronized void addCollectable(Collectable collectable) {
+        collectables.add(collectable);
+    }
 
-    public synchronized List<Collectable> getCollectables() {return collectables;}
+    public synchronized List<Collectable> getCollectables() {
+        return collectables;
+    }
 
-    void addEnvironment(Environment environment) {environments.add(environment);}
+    void addEnvironment(Environment environment) {
+        environments.add(environment);
+    }
 
-    public List<Environment> getEnvironments() {return environments;}
+    public List<Environment> getEnvironments() {
+        return environments;
+    }
 
     private void addEntityToDraw(Entity entity, int layer) {
         synchronized (drawOrderChamber) {

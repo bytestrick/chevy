@@ -103,9 +103,7 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
-                    <!-- Dopo la compilazione esegue il task Ant 'javac2'
-                         fornito da JetBrains.
-                         Fa un postprocessing alle classi collegate ai form. -->
+                    <!-- After compilation runs the Ant task 'javac2' from JetBrains, which does a postprocessing of the classes bound to the forms -->
                     <execution>
                         <phase>compile</phase>
                         <configuration>
@@ -122,13 +120,10 @@
                                 <javac2 includeantruntime="false"
                                         destdir="${project.basedir}/target/classes">
                                     <src refid="j2sp"/>
-                                    <!-- Se non gli si dà il classhpath della
-                                    compilazione fallisce perché non trova le
-                                    classi contenute nelle dipendenze -->
+                                    <!-- If you don't give it the classpath of the compilation fails because it can't find the classes contained in the dependencies -->
                                     <classpath>
                                         <!--suppress UnresolvedMavenProperty -->
-                                        <pathelement
-                                                location="${maven.compile.classpath}"/>
+                                        <pathelement location="${maven.compile.classpath}"/>
                                     </classpath>
                                 </javac2>
                             </target>
@@ -167,7 +162,7 @@
                             <target>
                                 <delete file="${user.home}/.local/share/applications/chevy.desktop"/>
                                 <delete file="${user.home}/.local/share/icons/hicolor/256x256/apps/Chevy.png"/>
-                                <delete file="${user.home}/.local/share/chevy/chevy.jar"/> <!-- lascia i salvataggi -->
+                                <delete file="${user.home}/.local/share/chevy/chevy.jar"/> <!-- leave the savings -->
                             </target>
                         </configuration>
                         <goals>
@@ -194,7 +189,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.7.1</version>
                 <executions>
-                    <!-- Include tutti gli artifact in chevy.jar -->
+                    <!-- Include all the artifacts in chevy.jar -->
                     <execution>
                         <phase>package</phase>
                         <goals>
@@ -218,7 +213,7 @@
     </build>
 
     <profiles>
-        <!-- Disinstalla l'app per il desktop Linux -->
+        <!-- Uninstalls the app for the Linux desktop -->
         <profile>
             <id>uninstall</id>
             <build>

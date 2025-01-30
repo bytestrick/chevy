@@ -14,26 +14,21 @@ import chevy.service.Sound;
 import chevy.utils.Log;
 
 /**
- * Gestisce il comportamento e le interazioni del nemico {@link Slime} all'interno del gioco.
- * Gestisce come lo Slime risponde agli attacchi del giocatore, ai colpi dei proiettili e
- * coordina il suo stato e i suoi movimenti.
+ * Manages the behavior and interactions of the enemy {@link Slime} in the game. Manages how it responds to player attacks, to projectile hits, and coordinates its state with its movements.
  */
 final class SlimeController {
     /**
-     * Riferimento alla stanza di gioco in cui si trova lo Slime. Utilizzato per verificare le
-     * posizioni,
-     * aggiungere/rimuovere entità.
+     * Reference to the game room containing the {@link Slime}. Used to check positions, add/remove entities, and manage interactions.
      */
     private final Chamber chamber;
     /**
-     * Riferimento al controller del giocatore, utilizzato per gestire le interazioni tra lo
-     * Slime e il giocatore.
+     * Reference to the player controller, used to manage interactions between the {@link Slime} and the player.
      */
     private final PlayerController playerController;
 
     /**
-     * @param chamber          riferimento della stanza di gioco
-     * @param playerController riferimento al controllo del giocatore
+     * @param chamber          reference to the game room
+     * @param playerController reference to the player controller
      */
     SlimeController(Chamber chamber, PlayerController playerController) {
         this.chamber = chamber;
@@ -41,28 +36,27 @@ final class SlimeController {
     }
 
     /**
-     * Gestisce le interazioni dello {@link Slime} con il giocatore
+     * Manages interactions between the {@link Slime} and the player
      *
-     * @param player il giocatore che interagisce con lo Slime
-     * @param slime  lo Slime che subisce l'interazione
+     * @param player the player interacting with the Slime
+     * @param slime  the Slim participating in the interaction
      */
     static void playerInInteraction(Player player, Slime slime) {
-        // Se il giocatore è in stato di attacco, lo Slime viene danneggiato in base al danno del
-        // giocatore.
+        // If the player is attacking, the Slime gets damaged in proportion to the player's damage.
         if (player.getState().equals(Player.State.ATTACK)) {
             Sound.play(Sound.Effect.SLIME_HIT);
             slime.setDirection(Direction.positionToDirection(player, slime));
             hitSlime(slime, -1 * player.getDamage());
         } else {
-            Log.warn("Lo slimeController non gestisce questa azione: " + player.getState());
+            Log.warn("SlimeController doesn't handle this action: " + player.getState());
         }
     }
 
     /**
-     * Gestisce le interazioni dello {@link Slime} con i proiettili.
+     * Manages the interactions between the {@link Slime} and the projectiles.
      *
-     * @param projectile il proiettile che colpisce lo Slime
-     * @param slime      lo Slime che subisce l'interazione
+     * @param projectile the projectile hitting the {@link Slime}
+     * @param slime      the Slime getting hit
      */
     static void projectileInteraction(Projectile projectile, Slime slime) {
         slime.setDirection(Direction.positionToDirection(projectile, slime));
@@ -70,10 +64,10 @@ final class SlimeController {
     }
 
     /**
-     * Applica danno allo {@link Slime} e aggiorna il suo stato
+     * Applies damage to the {@link Slime} and updates its state
      *
-     * @param slime  lo Slime che subisce il danno
-     * @param damage il danno da applicare
+     * @param slime  the Slime being hit
+     * @param damage the amount of damage to apply
      */
     private static void hitSlime(Slime slime, int damage) {
         if (slime.changeState(Slime.State.HIT)) {
@@ -88,9 +82,9 @@ final class SlimeController {
     }
 
     /**
-     * Aggiorna lo stato dello {@link Slime} a ogni ciclo di gioco
+     * Update the state of the {@link Slime} at each game cycle
      *
-     * @param slime lo Slime da aggiornare.
+     * @param slime the slime to update
      */
     void update(Slime slime) {
         if (slime.isDead()) {

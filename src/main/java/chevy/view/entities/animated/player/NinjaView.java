@@ -10,19 +10,19 @@ public final class NinjaView extends LiveEntityView {
     public NinjaView(Ninja ninja) {
         super(ninja);
 
-        final String res = "/sprites/player/ninja/";
-        final float idleDuration = 1f;
-        final float moveDuration = entity.getState(State.MOVE).getDuration();
-        final float attackDuration = entity.getState(State.ATTACK).getDuration();
-        final float hitDuration = entity.getState(State.HIT).getDuration();
-        final float deadDuration = entity.getState(State.DEAD).getDuration();
+        String res = "/sprites/player/ninja/";
+        float idleDuration = 1f;
+        float moveDuration = entity.getState(State.MOVE).getDuration();
+        float attackDuration = entity.getState(State.ATTACK).getDuration();
+        float hitDuration = entity.getState(State.HIT).getDuration();
+        float deadDuration = entity.getState(State.DEAD).getDuration();
         animate(State.DEAD, null, 1, deadDuration, res + "dead");
-        final float sludgeDuration = entity.getState(State.SLUDGE).getDuration();
+        float sludgeDuration = entity.getState(State.SLUDGE).getDuration();
         float fallDuration = entity.getState(State.FALL).getDuration();
         animate(State.FALL, null, 1, fallDuration, res + "dead");
         float glideDuration = entity.getState(State.GLIDE).getDuration();
         for (Direction direction : Direction.values()) {
-            final String dir = direction.toString().toLowerCase();
+            String dir = direction.toString().toLowerCase();
             animate(State.IDLE, direction, 2, 2, idleDuration, res + "idle/" + dir);
             animate(State.MOVE, direction, 3, moveDuration, res + "move/" + dir);
             animate(State.ATTACK, direction, direction == Direction.UP ? 2 : 3, attackDuration, res + "attack/" + dir);

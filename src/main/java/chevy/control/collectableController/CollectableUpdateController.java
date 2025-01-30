@@ -11,8 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Gestisce glie aggiornamenti degli oggetti collezionabili nel gioco.
- * Gestisce l'aggiornamento e la rimozione degli aggetti collezionabili dall'aggiornamento.
+ * Manages the update of the collectables in game and removes of collectables from updating.
  */
 public final class CollectableUpdateController implements Updatable {
     private final CollectableController collectableController;
@@ -21,10 +20,8 @@ public final class CollectableUpdateController implements Updatable {
     private boolean running;
 
     /**
-     * @param collectableController il controller degli oggetti collezionabili responsabile della
-     *                              gestione delle
-     *                              interazioni.
-     * @param collectables          la lista degli oggetti collezionabili da aggiungere.
+     * @param collectableController controller of the collectables responsible for managing the interaction
+     * @param collectables          collectables to add
      */
     public CollectableUpdateController(CollectableController collectableController,
                                        List<Collectable> collectables) {
@@ -32,13 +29,12 @@ public final class CollectableUpdateController implements Updatable {
         collectablesToAdd = collectables;
         running = true;
 
-        // Aggiunge questo controller al gestore degli aggiornamenti.
+        // Adds this controller to the update manager.
         UpdateManager.register(this);
     }
 
     /**
-     * Aggiunge i nuovi oggetti collezionabili alla lista degli aggiornamenti e svuota la lista
-     * temporanea
+     * Adds new collectables to the update list and empties the temporary list
      */
     private void addCollectables() {
         collectables.addAll(collectablesToAdd);
@@ -46,14 +42,13 @@ public final class CollectableUpdateController implements Updatable {
     }
 
     /**
-     * Aggiorna lo stato di tutti gli oggetti collezionabili a ogni ciclo di gioco
+     * Updates the state of all the collectables on every cycle of the game
      */
     @Override
     public void update(double delta) {
         addCollectables();
 
-        // Itera sulla lista dei collezionabili per aggiornarli e rimuove quelli che devono
-        // essere rimossi.
+        // Iter on the list of collectables to update them and remove the ones that must be removed
         Iterator<Collectable> it = collectables.iterator();
         while (it.hasNext()) {
             Collectable collectable = it.next();
@@ -64,8 +59,12 @@ public final class CollectableUpdateController implements Updatable {
         }
     }
 
-    public void stopUpdate() {running = false;}
+    public void stopUpdate() {
+        running = false;
+    }
 
     @Override
-    public boolean updateFinished() {return !running;}
+    public boolean updateFinished() {
+        return !running;
+    }
 }

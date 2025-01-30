@@ -14,25 +14,21 @@ import chevy.service.Sound;
 import chevy.utils.Log;
 
 /**
- * Gestisce il comportamento e le interazioni del nemico {@link BigSlime} all'interno del gioco.
- * Gestisce come il BigSlime risponde agli attacchi del giocatore, ai colpi dei proiettili e
- * coordina il suo stato e i suoi movimenti.
+ * Manages the behavior and the interactions of the enemy {@link BigSlime} in game. Manages how it answers to player attacks, to projectiles and coordinates its state with its movements.
  */
 final class BigSlimeController {
     /**
-     * Riferimento alla stanza di gioco in cui si trova il {@link BigSlime}. Utilizzato per
-     * verificare le posizioni, aggiungere/rimuovere entità e gestire le interazioni.
+     * Reference to the game room that contains the {@link BigSlime}. Used to check positions, add/remove entities and manage interactions.
      */
     private final Chamber chamber;
     /**
-     * Riferimento al controller del giocatore, utilizzato per gestire le interazioni tra il
-     * {@link BigSlime} e il giocatore.
+     * Reference to the player controller, used to manage interactions between {@link BigSlime} and the player.
      */
     private final PlayerController playerController;
 
     /**
-     * @param chamber          la stanza di gioco
-     * @param playerController il controller del giocatore
+     * @param chamber          the game room
+     * @param playerController the player controller
      */
     BigSlimeController(Chamber chamber, PlayerController playerController) {
         this.chamber = chamber;
@@ -40,27 +36,26 @@ final class BigSlimeController {
     }
 
     /**
-     * Gestisce le interazioni del {@link BigSlime} con il giocatore
+     * Manages interactions between {@link BigSlime} and player
      *
-     * @param player   il giocatore che interagisce con il BigSlime
-     * @param bigSlime il BigSlime che subisce l'interazione
+     * @param player   the player interacting with the BigSlime
+     * @param bigSlime the BigSlime participating in the interaction
      */
     static void playerInInteraction(Player player, BigSlime bigSlime) {
-        // Se il giocatore è in stato di attacco, il BigSlime viene danneggiato in base al danno
-        // del giocatore.
+        // If the player is attacking, the BigSlime gets damaged proportionally to the player attack damage
         if (player.getState() == Player.State.ATTACK) {
             bigSlime.setDirection(Direction.positionToDirection(player, bigSlime));
             hitBigSlime(bigSlime, -1 * player.getDamage());
         } else {
-            Log.warn("Il BigSlimeController non gestisce questa azione");
+            Log.warn("BigSlimeController doesn't handle this action");
         }
     }
 
     /**
-     * Gestisce le interazioni del {@link BigSlime} con i proiettili
+     * Manages the interactions between {@link BigSlime} and projectiles
      *
-     * @param projectile il proiettile che colpisce il BigSlime
-     * @param bigSlime   il BigSlime che subisce l'interazione
+     * @param projectile the projectile hitting the {@link BigSlime}
+     * @param bigSlime   the {@link BigSlime} getting hit
      */
     static void projectileInteraction(Projectile projectile, BigSlime bigSlime) {
         bigSlime.setDirection(Direction.positionToDirection(projectile, bigSlime));
@@ -68,10 +63,10 @@ final class BigSlimeController {
     }
 
     /**
-     * Applica danno al {@link BigSlime} e cambia il suo stato a "colpito" se possibile
+     * Applies damage to the {@link BigSlime} and updates its state to {@link BigSlime.State#HIT} if possible
      *
-     * @param bigSlime il BigSlime che subisce il danno
-     * @param damage   la quantità di danno da applicare
+     * @param bigSlime the {@link BigSlime} getting hit
+     * @param damage   amount of damage to apply
      */
     private static void hitBigSlime(BigSlime bigSlime, int damage) {
         if (bigSlime.changeState(BigSlime.State.HIT)) {
@@ -87,13 +82,12 @@ final class BigSlimeController {
     }
 
     /**
-     * Aggiorna lo stato del {@link BigSlime} a ogni ciclo di gioco. Gestisce il cambiamento di
-     * stato, il movimento e le azioni del BigSlime.
+     * Updates the {@link BigSlime}'s state on every cycle of the game. Manages the state change, movement and actions of the {@link BigSlime}.
      *
-     * @param bigSlime il BigSlime da aggiornare
+     * @param bigSlime the {@link BigSlime} to update
      */
     void update(BigSlime bigSlime) {
-        // Gestione della morte del BigSlime
+        // Handling the death of the BigSlime
         if (bigSlime.isDead()) {
             if (bigSlime.getState(BigSlime.State.DEAD).isFinished()) {
                 chamber.removeEntityOnTop(bigSlime);
@@ -110,7 +104,7 @@ final class BigSlimeController {
             bigSlime.kill();
         }
 
-        // Movimento e attacco
+        // Movement and attack
         if (bigSlime.canChange(BigSlime.State.MOVE)) {
             Direction direction = chamber.getDirectionToHitPlayer(bigSlime);
             if (direction == null) {

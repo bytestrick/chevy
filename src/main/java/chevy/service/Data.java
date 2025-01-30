@@ -14,20 +14,22 @@ import java.io.Writer;
 import java.nio.file.Files;
 
 /**
- * Dati dell'app in formato
- * <a href="https://ecma-international.org/publications-and-standards/standards/ecma-404/">JSON</a>
- * persistenti attraverso esecuzioni
+ * App data in <a href="https://ecma-international.org/publications-and-standards/standards/ecma-404/">JSON</a> format persistent through executions
  */
 public final class Data {
-    /** Posizione del file determinata alla creazione dell'app */
+    /**
+     * Position of the file determined at the creation of the app
+     */
     private static final File file = findFile();
-    /** La radice della struttura, è un <code>JSON Object</code> */
+    /**
+     * The root of the structure, it's a <code>JSON Object</code>
+     */
     private static String root;
 
     /**
-     * @param path per il dato desiderato
-     * @param <T>  può essere qualsiasi cosa
-     * @return il valore contenuto a quel percorso
+     * @param path for the value to get
+     * @param <T>  can be any type
+     * @return the value contained at that path
      */
     public synchronized static <T> T get(String path) {
         if (root == null) {
@@ -37,8 +39,8 @@ public final class Data {
     }
 
     /**
-     * @param path  per il dato che si vuole modificare
-     * @param value il valore da impostare
+     * @param path  for the data to set
+     * @param value the value to set
      */
     public synchronized static void set(String path, Object value) {
         if (root == null) {
@@ -48,10 +50,10 @@ public final class Data {
     }
 
     /**
-     * Incrementa un valore
+     * Increment a value
      *
-     * @param path  percorso al quale si trova il valore da incrementare
-     * @param value quantità da aggiungere
+     * @param path  path to the value to increment
+     * @param value quantity to increment
      */
     public synchronized static void increase(String path, Integer value) {
         Integer oldValue = get(path);
@@ -59,14 +61,16 @@ public final class Data {
     }
 
     /**
-     * Incrementa un valore di 1
+     * Increment a value by 1
      *
-     * @param path percorso al quale si trova il valore da incrementare
+     * @param path path to the value to increment
      */
-    public synchronized static void increment(String path) {increase(path, 1);}
+    public synchronized static void increment(String path) {
+        increase(path, 1);
+    }
 
     /**
-     * Assicura che il file JSON esista e sia utilizzabile
+     * Check if the JSON file exists and is usable
      */
     private static void checkFile() {
         if (file.exists()) {
@@ -86,12 +90,12 @@ public final class Data {
     }
 
     /**
-     * Crea il file JSON con i dati predefiniti
+     * Create the JSON file with the default data
      */
     public static void createPristineFile() {
         try {
             if (file.getParentFile().mkdirs()) {
-                Log.info("Directory create");
+                Log.info("The app data directory has been created");
             }
             try (InputStream in = Data.class.getResourceAsStream("/defaultChevyData.json")) {
                 try (BufferedOutputStream out =
@@ -101,18 +105,16 @@ public final class Data {
                 }
             }
             root = null;
-            Log.info(file + " è stato creato");
+            Log.info(file + " was created");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * Il file JSON è salvato nella cartella dei dati dell'utente. Per esempio, su un sistema
-     * POSIX aderente a
+     * The file JSON is saved in the user data folder. For example, on a POSIX system compliant with
      * <a href="https://specifications.freedesktop.org/basedir-spec/0.6/">XDG Base Directory Specification</a>
-     * la posizione sarà <code>$XDG_DATA_HOME/chevy/data.json</code>. Mentre su MS Windows la
-     * posizione sarà
+     * the position will be <code>$XDG_DATA_HOME/chevy/data.json</code>. While on MS Windows the location will be
      * <code>%LocalAppData%\chevy\data.json</code>.
      */
     private static File findFile() {
@@ -123,7 +125,7 @@ public final class Data {
     }
 
     /**
-     * Carica il contenuto del file JSON in {@link #root}
+     * Load the JSON file content into {@link #root}
      */
     public static void read() {
         checkFile();
@@ -135,8 +137,7 @@ public final class Data {
     }
 
     /**
-     * Salva {@link #root} nel file JSON e lo invalida, cosicché al prossimo utilizzo andrà
-     * ricaricato
+     * Save {@link #root} into the JSON file and invalidate it, so that at the next use it will be reloaded
      */
     public static void write() {
         if (root != null) {

@@ -4,9 +4,8 @@ import chevy.model.entity.collectable.powerUp.PowerUp;
 import chevy.view.Window;
 import chevy.view.component.ImageVisualizer;
 
-import javax.swing.JComponent;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import javax.swing.*;
+import java.awt.*;
 
 public final class PowerUpEquippedView extends JComponent {
     private static final int spacing = 2;

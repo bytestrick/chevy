@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.view.Options;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class VampireFangs extends PowerUp {
     private static final int HEALTH_BOOST = 1;
@@ -13,10 +13,14 @@ public final class VampireFangs extends PowerUp {
         occurringPercentage = 5;
     }
 
-    public static int getHealthBoost() {return HEALTH_BOOST;}
+    public static int getHealthBoost() {
+        return HEALTH_BOOST;
+    }
 
     @Override
-    public String getName() {return Options.strings.getString("powerUp.vampireFangs.name");}
+    public String getName() {
+        return Options.strings.getString("powerUp.vampireFangs.name");
+    }
 
     @Override
     public String getDescription() {

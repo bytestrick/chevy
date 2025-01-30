@@ -4,7 +4,7 @@ import chevy.model.entity.EntityType;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
 import chevy.utils.Log;
 
-import java.awt.Point;
+import java.awt.*;
 
 public abstract class LiveEntity extends DynamicEntity {
     private final Type type;
@@ -17,8 +17,8 @@ public abstract class LiveEntity extends DynamicEntity {
     }
 
     public synchronized void decreaseHealthShield(int value) {
-        String logMessage = "Vita " + this + ": " + currentHealth;
-        String logMessage2 = "Scudo " + this + ": " + currentShield;
+        String logMessage = "Health " + this + ": " + currentHealth;
+        String logMessage2 = "Shield " + this + ": " + currentShield;
 
         value = -Math.abs(value);
 
@@ -57,28 +57,48 @@ public abstract class LiveEntity extends DynamicEntity {
         }
     }
 
-    public synchronized int getCurrentHealth() {return currentHealth;}
+    public synchronized int getCurrentHealth() {
+        return currentHealth;
+    }
 
-    public int getCurrentShield() {return currentShield;}
+    public int getCurrentShield() {
+        return currentShield;
+    }
 
-    public synchronized void setShield(int value) {shield = value;}
+    public synchronized int getHealth() {
+        return health;
+    }
 
-    public synchronized void setHealth(int value) {health = value;}
+    public synchronized void setHealth(int value) {
+        health = value;
+    }
 
-    public synchronized int getHealth() {return health;}
+    public synchronized int getShield() {
+        return shield;
+    }
 
-    public synchronized int getShield() {return shield;}
+    public synchronized void setShield(int value) {
+        shield = value;
+    }
 
-    public synchronized boolean isDead() {return !alive;}
+    public synchronized boolean isDead() {
+        return !alive;
+    }
 
     @Override
-    public EntityType getType() {return type;}
+    public EntityType getType() {
+        return type;
+    }
 
     @Override
-    public EntityType getGenericType() {return super.getType();}
+    public EntityType getGenericType() {
+        return super.getType();
+    }
 
     @Override
-    public String toString() {return type.toString();}
+    public String toString() {
+        return type.toString();
+    }
 
     public enum Type implements EntityType {PLAYER, ENEMY}
 }

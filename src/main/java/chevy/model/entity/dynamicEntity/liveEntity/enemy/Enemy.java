@@ -7,18 +7,19 @@ import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
 
-import java.awt.Point;
+import java.awt.*;
 
 public abstract class Enemy extends LiveEntity {
     /**
-     * Oggetti collezionabili che i nemici possono rilasciare
+     * Collectable objects that enemies can drop
      */
     private static final Collectable.Type[] DROPPABLE_COLLECTABLE = {
             Collectable.Type.COIN,
             Collectable.Type.KEY,
-            Collectable.Type.HEALTH};
+            Collectable.Type.HEALTH
+    };
     /**
-     * Probabilità di rilascio degli oggetti collezionabili
+     * Probability of dropping collectable objects
      */
     private static final int[] DROPPABLE_COLLECTABLE_PROB = {40, 10, 15};
     private static final int DROP_PROBABILITY = 100;
@@ -46,9 +47,13 @@ public abstract class Enemy extends LiveEntity {
         DROPPABLE_COLLECTABLE_PROB[i] = Math.clamp(newDropPercentage, 0, 100);
     }
 
-    public static int getDropPercentage(int i) {return DROPPABLE_COLLECTABLE_PROB[i];}
+    public static int getDropPercentage(int i) {
+        return DROPPABLE_COLLECTABLE_PROB[i];
+    }
 
-    public static boolean canDrop() {return Utils.isOccurring(DROP_PROBABILITY);}
+    public static boolean canDrop() {
+        return Utils.isOccurring(DROP_PROBABILITY);
+    }
 
     public static Collectable.Type getDrop() {
         int index = Utils.isOccurring(DROPPABLE_COLLECTABLE_PROB);
@@ -59,20 +64,30 @@ public abstract class Enemy extends LiveEntity {
     }
 
     /**
-     * @return {@code true} se il player è in grado di attaccare, {@code false} altrimenti
+     * @return {@code true} if the player can attack, {@code false} otherwise
      */
-    public boolean canAttack() {return canAttack;}
+    public boolean canAttack() {
+        return canAttack;
+    }
 
-    public void setCanAttack(boolean canAttack) {this.canAttack = canAttack;}
-
-    @Override
-    public EntityType getType() {return type;}
-
-    @Override
-    public EntityType getGenericType() {return super.getType();}
+    public void setCanAttack(boolean canAttack) {
+        this.canAttack = canAttack;
+    }
 
     @Override
-    public String toString() {return type.toString();}
+    public EntityType getType() {
+        return type;
+    }
+
+    @Override
+    public EntityType getGenericType() {
+        return super.getType();
+    }
+
+    @Override
+    public String toString() {
+        return type.toString();
+    }
 
     private void initStateMachine() {
         stateMachine.setInitialState(idle);

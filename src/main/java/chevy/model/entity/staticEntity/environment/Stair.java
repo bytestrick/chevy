@@ -3,12 +3,12 @@ package chevy.model.entity.staticEntity.environment;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 
-import java.awt.Point;
+import java.awt.*;
 
 /**
- * Punto in cui il player si deve recare per poter passare alla stanza successiva.
- * La scala rimane bloccata finché non si eliminano tutti i nemici presenti nella stanza. Dopo
- * averli eliminati tutti si apre e permette il passaggio a un altra stanza.
+ * Point where the player has to go to pass to the next room.
+ * The stair remains blocked until all the enemies in the room are eliminated. After eliminating
+ * all of them it opens and allows passage to another room.
  */
 public class Stair extends Environment {
     private final Vertex idle = new Vertex(State.IDLE);

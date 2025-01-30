@@ -3,30 +3,27 @@ package chevy.model.entity.stateMachine;
 import chevy.utils.Log;
 
 /**
- * La StateMachine è una macchina a stati finiti (FSM - Finite State Machine) che gestisce le
- * transizioni tra i
- * diversi stati.
+ * A finite state machine (FSM) that manages transitions between different states.
  */
 public class StateMachine {
     private Vertex currentVertex;
     private Vertex nextVertex;
     private boolean usedWithCanChange;
-    private String name; // solo per capire di chi è la stampa
+    private String name; // only for logging
 
     /**
-     * Cambia lo stato corrente della macchina a stati
+     * Change the current state of the state machine
      *
-     * @param state l'enumerazione dello stato a cui passare
-     * @return {@code true} se lo stato è cambiato con successo, {@code false} altrimenti
+     * @param state the state to change to
+     * @return {@code true} if the change was successful, {@code false} otherwise
      */
     public synchronized boolean changeState(EntityState state) {
         if (currentVertex == null) {
-            Log.error("Non è presente uno stato iniziale");
+            Log.error("There is no initial state");
             return false;
         }
 
-        // solo per la stampa
-        String logMessage = "";
+        String logMessage = ""; // for logging
         if (name != null) {
             logMessage += name + ": " + currentVertex;
         }
@@ -39,7 +36,7 @@ public class StateMachine {
             final Vertex previousVertex = currentVertex;
             currentVertex = nextVertex;
 
-            // solo per la stampa
+            // logging
             if (name != null) {
                 Log.info(logMessage + " -> " + nextVertex);
             }
@@ -50,7 +47,7 @@ public class StateMachine {
             return true;
         }
 
-        // solo per la stampa
+        // logging
         if (name != null) {
             Log.info(logMessage);
         }
@@ -59,14 +56,14 @@ public class StateMachine {
     }
 
     /**
-     * Controlla se è possibile cambiare lo stato corrente della macchina a stati
+     * Check if it is possible to change the current state of the state machine
      *
-     * @param state l'enumerazione dello stato a cui passare
-     * @return {@code true} se è possibile cambiare lo stato, {@code false} altrimenti
+     * @param state the state to change to
+     * @return {@code true} if the state change can happen, {@code false} otherwise
      */
     public synchronized boolean canChange(EntityState state) {
         if (currentVertex == null) {
-            Log.error("Non è presente uno stato iniziale");
+            Log.error("There is no initial state");
             return false;
         }
 
@@ -79,10 +76,10 @@ public class StateMachine {
     }
 
     /**
-     * Controlla se è possibile cambiare lo stato corrente e, in caso affermativo, cambia lo stato
+     * Check if it is possible to change the current state of the state machine and, if so, change the state
      *
-     * @param state l'enumerazione dello stato a cui passare
-     * @return {@code true} se lo stato è cambiato con successo, {@code false} altrimenti
+     * @param state the state to change to
+     * @return {@code true} if the change of state happened, {@code false} otherwise
      */
     public synchronized boolean checkAndChangeState(EntityState state) {
         if (canChange(state)) {
@@ -96,7 +93,7 @@ public class StateMachine {
 
     public synchronized Vertex getCurrentState() {
         if (currentVertex == null) {
-            Log.error("Non è presente uno stato iniziale");
+            Log.error("There is no initial state");
         }
         return currentVertex;
     }
@@ -107,9 +104,9 @@ public class StateMachine {
     }
 
     /**
-     * Usato nella stanza
-     *
-     * @param name nome dell'entità a cui è associata la StateMachine
+     * @param name name of the entity that uses the state machine
      */
-    public void setName(String name) {this.name = name;}
+    public void setName(String name) {
+        this.name = name;
+    }
 }

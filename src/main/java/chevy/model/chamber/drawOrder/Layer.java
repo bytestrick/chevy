@@ -6,30 +6,27 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Priorità con cui un entità deve essere ridisegnata.
- * Un entità con {@code layer = 5} verrà disegnata sopra un entità con {@code layer = 3} (o un
- * qualsiasi numero inferiore al 5), se il layer è lo stesso avrà la priorità l'entità inserita
- * dopo nella
- * lista.
+ * Priority with which an entity must be redrawn. An entity with {@code layer = 5} will be drawn on top of an entity with {@code layer = 3} (or any number less than 5),
+ * if the layer is the same it will have the same priority as the added entity.
  */
 public final class Layer implements Comparable<Layer> {
     /**
-     * priorità
+     * Priority
      */
     private final int nLayer;
     /**
-     * La lista contenente le entità con lo stesso livello di priorità.
+     * The list containing the entities with the same priority level.
      */
     private final List<Entity> layer;
     /**
-     * La lista di entità da aggiungere al livello.
+     * The list of entities to add to the level.
      */
     private final List<Entity> entitiesToAdd;
 
     /**
-     * Inizializza il Layer con il livello di priorità specificato.
+     * Initialize the Layer with the specified priority level.
      *
-     * @param n il numero del livello
+     * @param n the number of the level
      */
     Layer(int n) {
         nLayer = n;
@@ -38,10 +35,9 @@ public final class Layer implements Comparable<Layer> {
     }
 
     /**
-     * Applica i cambiamenti al livello, aggiungendo tutte le entità da aggiungere al livello.
-     * Poi svuota la lista di entità da aggiungere.
+     * Apply the changes to the level, adding all the entities to add to the level.
      *
-     * @return la lista di entità nel livello
+     * @return the list of entities in the level
      */
     public synchronized List<Entity> getLayer() {
         layer.addAll(entitiesToAdd);
@@ -50,9 +46,9 @@ public final class Layer implements Comparable<Layer> {
     }
 
     /**
-     * Aggiunge un'entità all Layer.
+     * Add an entity to the Layer.
      *
-     * @param entity l'entità da aggiungere
+     * @param entity entity to add
      */
     public synchronized void add(Entity entity) {entitiesToAdd.addLast(entity);}
 

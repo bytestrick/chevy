@@ -15,19 +15,19 @@ public final class PowerUpView extends CollectableView {
     public PowerUpView(PowerUp powerUp) {
         super(powerUp);
 
-        final String res = "/sprites/collectable/powerUp/";
-        final Point offset = new Point(0, -6);
+        String res = "/sprites/collectable/powerUp/";
+        Point offset = new Point(0, -6);
 
-        final float idleDuration = collectable.getState(PowerUp.State.IDLE).getDuration();
+        float idleDuration = collectable.getState(PowerUp.State.IDLE).getDuration();
         animate(IDLE, null, 3, idleDuration, offset, res + "idle");
 
-        final float selectedDuration = collectable.getState(SELECTED).getDuration();
+        float selectedDuration = collectable.getState(SELECTED).getDuration();
         animate(SELECTED, null, 4, selectedDuration, offset, res + "selected");
 
-        final float deselectedDuration = collectable.getState(DESELECTED).getDuration();
+        float deselectedDuration = collectable.getState(DESELECTED).getDuration();
         animate(DESELECTED, null, 4, deselectedDuration, offset, res + "deselected");
 
-        final float collectedDuration = collectable.getState(PowerUp.State.COLLECTED).getDuration();
+        float collectedDuration = collectable.getState(PowerUp.State.COLLECTED).getDuration();
         animate(COLLECTED, null, 7, collectedDuration, offset, res + "collected");
     }
 

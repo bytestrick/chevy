@@ -6,43 +6,65 @@ import chevy.service.RenderManager;
 import chevy.service.Renderable;
 import chevy.utils.Pair;
 
-import java.awt.Point;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
- * Gestisce le animazioni sprite nel gioco.
+ * Animates sprites in game
  */
 public final class AnimatedSprite implements Renderable {
-    /** Tipi di animazione in base alla direzione */
+    /**
+     * Types of animation based on direction
+     */
     private final Pair<EntityState, Direction> type;
-    /** // Array di frame per l'animazione */
+    /**
+     * Frames for the animation
+     */
     private final BufferedImage[] frames;
-    /** Numero totale di frame nell'animazione. */
+    /**
+     * Total number of frames in the animation
+     */
     private final int nFrame;
-    /** Durata in secondi di ciascun frame */
+    /**
+     * Duration in seconds of each frame
+     */
     private final float frameDuration;
-    /** Se l'animazione deve ripetersi o meno */
+    /**
+     * If the animation should loop or not
+     */
     private final boolean loop;
-    /** Scala dell'animazione */
+    /**
+     * Scale of the animation
+     */
     private final float scale;
-    /** Offset dell'animazione */
+    /**
+     * Offset of the animation
+     */
     private final Point offset;
-    /** Indice del frame corrente nell'animazione */
+    /**
+     * Current frame index in the animation
+     */
     private int currentIndexFrame;
-    /** Se l'animazione è attualmente in esecuzione */
+    /**
+     * If the animation is currently running
+     */
     private boolean running;
-    /** Se l'animazione deve essere eliminata */
+    /**
+     * If the animation should be deleted on the next cycle
+     */
     private boolean delete = true;
-    /** Tempo trascorso dall'inizio */
+    /**
+     * Time elapsed since the start
+     */
     private double time;
 
     /**
-     * @param type          tipi di animazione in base alla direzione
-     * @param nFrames       numero di frame
-     * @param frameDuration durata di ciascun frame in secondi
-     * @param loop          se l'animazione deve ripetersi
-     * @param offset        offset dell'animazione
-     * @param scale         scala che la sequenza deve avere durante la rappresentazione
+     * @param type          types of animation based on direction
+     * @param nFrames       number of frames
+     * @param frameDuration duration of each frame
+     * @param loop          if the animation should loop
+     * @param offset        offset of the animation
+     * @param scale         scale of the animation
      */
     public AnimatedSprite(Pair<EntityState, Direction> type, int nFrames, float frameDuration,
                           boolean loop, Point offset, float scale) {
@@ -57,7 +79,7 @@ public final class AnimatedSprite implements Renderable {
     }
 
     /**
-     * Aggiunge un frame all'animazione all'indice specificato.
+     * Add a frame to the animation at the specified index.
      */
     public void addFrame(int index, BufferedImage frame) {
         if (index < nFrame) {
@@ -66,7 +88,7 @@ public final class AnimatedSprite implements Renderable {
     }
 
     /**
-     * @return il frame corrente dell'animazione
+     * @return the current frame of the animation
      */
     public BufferedImage getFrame() {
         if (currentIndexFrame >= nFrame) {
@@ -76,17 +98,21 @@ public final class AnimatedSprite implements Renderable {
     }
 
     /**
-     * @return l'offset dell'animazione
+     * @return the offset of the animation
      */
-    public Point getOffset() {return new Point(offset);}
+    public Point getOffset() {
+        return new Point(offset);
+    }
 
     /**
-     * @return la scala dell'animazione
+     * @return the scale of the animation
      */
-    public float getScale() {return scale;}
+    public float getScale() {
+        return scale;
+    }
 
     /**
-     * Avvia l'animazione.
+     * Start the animation
      */
     private void start() {
         running = true;
@@ -97,7 +123,7 @@ public final class AnimatedSprite implements Renderable {
     }
 
     /**
-     * Riavvia l'animazione dall'inizio.
+     * Restart the animation from the beginning
      */
     public void restart() {
         currentIndexFrame = 0;
@@ -110,24 +136,32 @@ public final class AnimatedSprite implements Renderable {
     }
 
     /**
-     * Ferma l'animazione.
+     * Stop the animation
      */
-    private void stop() {running = false;}
+    private void stop() {
+        running = false;
+    }
 
     /**
-     * @return il numero totale di frame nell'animazione
+     * @return the number of frames in the animation
      */
-    public int getNFrame() {return nFrame;}
+    public int getNFrame() {
+        return nFrame;
+    }
 
-    public boolean isNotRunning() {return !running;}
+    public boolean isNotRunning() {
+        return !running;
+    }
 
     /**
-     * @return il tipo di animazione per lo sprite
+     * @return the type of animation for the sprite
      */
-    public Pair<EntityState, Direction> getType() {return type;}
+    public Pair<EntityState, Direction> getType() {
+        return type;
+    }
 
     /**
-     * Elimina l'animazione
+     * Delete the animation
      */
     public void delete() {
         stop();
@@ -135,13 +169,13 @@ public final class AnimatedSprite implements Renderable {
     }
 
     /**
-     * Aggiorna l'animazione in base al tempo trascorso.
+     * Update the animation based on the elapsed time.
      */
     @Override
     public void render(double delta) {
         if (running) {
             if (time >= frameDuration) {
-                // non time = 0d perché se time è 1.5 quando viene impostato a 0 si perdono 0.5s
+                // we don't use time = 0d because if time is 1.5 when it is set to 0 we lose 0.5s
                 time -= frameDuration;
                 ++currentIndexFrame;
                 if (loop) {
@@ -156,5 +190,7 @@ public final class AnimatedSprite implements Renderable {
     }
 
     @Override
-    public boolean renderFinished() {return delete;}
+    public boolean renderFinished() {
+        return delete;
+    }
 }

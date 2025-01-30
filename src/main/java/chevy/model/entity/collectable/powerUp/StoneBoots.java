@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.view.Options;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class StoneBoots extends PowerUp {
     public StoneBoots(Point position) {
@@ -12,8 +12,12 @@ public final class StoneBoots extends PowerUp {
     }
 
     @Override
-    public String getName() {return Options.strings.getString("powerUp.stoneBoots.name");}
+    public String getName() {
+        return Options.strings.getString("powerUp.stoneBoots.name");
+    }
 
     @Override
-    public String getDescription() {return Options.strings.getString("powerUp.stoneBoots.desc");}
+    public String getDescription() {
+        return Options.strings.getString("powerUp.stoneBoots.desc");
+    }
 }

@@ -7,7 +7,7 @@ import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Log;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -35,7 +35,7 @@ public abstract class Player extends LiveEntity {
         idle = new Vertex(State.IDLE);
         move = new Vertex(State.MOVE, speed, true);
         attack = new Vertex(State.ATTACK, attackDuration, true);
-        hit = new Vertex(State.HIT,.2f);
+        hit = new Vertex(State.HIT, .2f);
         dead = new Vertex(State.DEAD, deadDuration);
         sludge = new Vertex(State.SLUDGE, 0.3f);
         glide = new Vertex(State.GLIDE, speed, true);
@@ -58,16 +58,24 @@ public abstract class Player extends LiveEntity {
         return new int[]{health * 10, shield * 10, maxDamage * 10, 100 - (int) (speed * 100)};
     }
 
-    public PowerUp getOwnedPowerUp(PowerUp.Type powerUpType) {return ownedPowerUp.get(powerUpType);}
+    public PowerUp getOwnedPowerUp(PowerUp.Type powerUpType) {
+        return ownedPowerUp.get(powerUpType);
+    }
 
     @Override
-    public Type getType() {return type;}
+    public Type getType() {
+        return type;
+    }
 
     @Override
-    public EntityType getGenericType() {return super.getType();}
+    public EntityType getGenericType() {
+        return super.getType();
+    }
 
     @Override
-    public String toString() {return type.toString();}
+    public String toString() {
+        return type.toString();
+    }
 
     private void initStateMachine() {
         idle.linkVertex(move);

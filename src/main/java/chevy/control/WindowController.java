@@ -14,7 +14,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 /**
- * Cattura gli eventi di Window
+ * Captures {@link Window} events
  */
 public final class WindowController extends KeyAdapter implements WindowListener, ComponentListener,
                                                                   MouseListener {

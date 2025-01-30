@@ -26,7 +26,7 @@ public final class Skeleton extends Enemy {
     public synchronized void decreaseHealthShield(int value) {
         if (invincible) {
             invincible = false;
-            Log.info("Skeleton ha perso la sua invincibilità");
+            Log.info("Skeleton lost its invincibility");
             return;
         }
         super.decreaseHealthShield(value);

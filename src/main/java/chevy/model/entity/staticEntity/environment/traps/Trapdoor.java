@@ -3,7 +3,7 @@ package chevy.model.entity.staticEntity.environment.traps;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 
-import java.awt.Point;
+import java.awt.*;
 
 public class Trapdoor extends Trap {
     private final Vertex idle = new Vertex(State.IDLE);

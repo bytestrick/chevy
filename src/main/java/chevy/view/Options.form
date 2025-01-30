@@ -114,7 +114,6 @@
                 </constraints>
                 <properties>
                   <labelFor value="2ba00"/>
-                  <text value="&amp;Statistiche" noi18n="true"/>
                 </properties>
               </component>
               <vspacer id="6d798">

@@ -5,7 +5,7 @@ import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.dynamicEntity.DynamicEntity;
 import chevy.model.entity.stateMachine.EntityState;
 
-import java.awt.Point;
+import java.awt.*;
 
 public abstract class Projectile extends DynamicEntity {
     private final Type type;
@@ -21,20 +21,32 @@ public abstract class Projectile extends DynamicEntity {
         drawLayer = 4;
     }
 
-    public boolean isCollision() {return collision;}
+    public boolean isCollision() {
+        return collision;
+    }
 
-    public void setCollision(boolean collision) {this.collision = collision;}
+    public void setCollision(boolean collision) {
+        this.collision = collision;
+    }
 
-    public Direction getDirection() {return direction;}
+    public Direction getDirection() {
+        return direction;
+    }
 
     @Override
-    public EntityType getType() {return type;}
+    public EntityType getType() {
+        return type;
+    }
 
     @Override
-    public EntityType getGenericType() {return super.getType();}
+    public EntityType getGenericType() {
+        return super.getType();
+    }
 
     @Override
-    public String toString() {return "PROJECTILE";}
+    public String toString() {
+        return "PROJECTILE";
+    }
 
     public enum Type implements EntityType {ARROW, SLIME_SHOT}
 

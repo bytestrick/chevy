@@ -2,10 +2,10 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.view.Options;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class HolyShield extends PowerUp {
-    private static final float DAMAGE_REDUCTION_MULTIPLIER = 0.5f; // valore tra 0 e 1
+    private static final float DAMAGE_REDUCTION_MULTIPLIER = 0.5f; // value between 0 and 1
 
     public HolyShield(Point position) {
         super(position, Type.HOLY_SHIELD);
@@ -13,10 +13,14 @@ public final class HolyShield extends PowerUp {
         occurringPercentage = 100;
     }
 
-    public static float getDamageReductionMultiplier() {return DAMAGE_REDUCTION_MULTIPLIER;}
+    public static float getDamageReductionMultiplier() {
+        return DAMAGE_REDUCTION_MULTIPLIER;
+    }
 
     @Override
-    public String getName() {return Options.strings.getString("powerUp.holyShield.name");}
+    public String getName() {
+        return Options.strings.getString("powerUp.holyShield.name");
+    }
 
     @Override
     public String getDescription() {

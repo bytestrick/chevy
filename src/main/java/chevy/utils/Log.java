@@ -1,17 +1,19 @@
 package chevy.utils;
 
 /**
- * Messaggi diagnostici
+ * Logging
  */
 public final class Log {
-    /** Valore globale per la granularità della diagnostica */
+    /**
+     * Global value for diagnostic granularity
+     */
     public static Log.Level logLevel = Level.OFF;
 
     /**
-     * Registra un evento di errore. Un evento simile indica un punto in cui l'applicazione non
-     * può continuare. Quindi la chiamata è spesso seguita da <code>System.exit(1)</code>.
+     * Logs an error event. Such an event indicates a point where the application cannot continue.
+     * Therefore, the call is often followed by {@code System.exit(1)}.
      *
-     * @param message il messaggio diagnostico che descrive l'evento
+     * @param message the diagnostic message that describes the event
      */
     public static void error(String message) {
         if (Level.ERROR.compareTo(logLevel) >= 0) {
@@ -20,10 +22,9 @@ public final class Log {
     }
 
     /**
-     * Registra un evento grave ma non fatale. Un evento simile causa malfunzionamenti ma non
-     * termina l'applicazione.
+     * Logs a severe but non-fatal event. Such an event causes malfunctions but does not terminate the application.
      *
-     * @param message il messaggio diagnostico che descrive l'evento
+     * @param message the diagnostic message that describes the event
      */
     public static void warn(String message) {
         if (Level.WARN.compareTo(logLevel) >= 0) {
@@ -32,10 +33,9 @@ public final class Log {
     }
 
     /**
-     * Registra un evento normale. È il tipo di evento più comune in un'applicazione, come il
-     * cambiamento di uno stato, di una scena, la terminazione di un thread, ...
+     * Logs a normal event. It is the most common type of event in an application, such as changing a state, a scene, terminating a thread, ...
      *
-     * @param message il messaggio diagnostico che descrive l'evento
+     * @param message the diagnostic message that describes the event
      */
     public static void info(String message) {
         if (Level.INFO.compareTo(logLevel) == 0) {
@@ -44,10 +44,9 @@ public final class Log {
     }
 
     /**
-     * Granularità della diagnostica
+     * Diagnostic granularity
      * <p>
-     * {@link #INFO} è il più verboso, {@link #ERROR} il più terso. {@link #OFF} lo disabilita
-     * completamente.
+     * {@link #INFO} is the most verbose, {@link #ERROR} is the most terse. {@link #OFF} disables it completely
      */
     public enum Level {INFO, WARN, ERROR, OFF}
 }

@@ -3,15 +3,8 @@ package chevy.view.component;
 import chevy.utils.Load;
 import chevy.view.Window;
 
-import javax.swing.Box;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 
 public class CounterBar extends JPanel {
     private static final int counter = 0;
@@ -59,14 +52,18 @@ public class CounterBar extends JPanel {
         resizeFont();
     }
 
-    protected void setColor() {text.setForeground(Color.BLACK);}
+    protected void setColor() {
+        text.setForeground(Color.BLACK);
+    }
 
     private void resizeFont() {
         font = font.deriveFont(fontSize * Window.scale);
         text.setFont(font);
     }
 
-    protected void setText(String text) {this.text.setText(text);}
+    protected void setText(String text) {
+        this.text.setText(text);
+    }
 
     private void setDimension(float scale) {
         Dimension dimensionScaled = new Dimension((int) (dimension.getWidth() * scale),
@@ -86,7 +83,9 @@ public class CounterBar extends JPanel {
                 SpringLayout.VERTICAL_CENTER, this);
     }
 
-    protected void setOffsetY(int offsetY) {this.offsetY = offsetY;}
+    protected void setOffsetY(int offsetY) {
+        this.offsetY = offsetY;
+    }
 
     public void windowResized(float scale) {
         scale = scale * this.scale;

@@ -3,7 +3,7 @@ package chevy.model.entity.staticEntity.environment.traps;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 
-import java.awt.Point;
+import java.awt.*;
 
 public class IcyFloor extends Trap {
     private final Vertex icyFloor = new Vertex(State.ICY_FLOOR, 2f);

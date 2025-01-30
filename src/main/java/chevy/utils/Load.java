@@ -1,50 +1,41 @@
 package chevy.utils;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Image;
+import javax.sound.sampled.*;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
 /**
- * Raccolta di metodi per caricare risorse
+ * Collection of methods to load resources
  */
 public final class Load {
     private static final int ICON_SIZE = 32;
 
     /**
-     * @param path il percorso, come "/sprites/img.png"
-     * @return l'immagine caricata dalle risorse
+     * @param path the path, such as: "/sprites/img.png"
+     * @return the loaded image
      */
-    public static BufferedImage image(final String path) {
+    public static BufferedImage image(String path) {
         BufferedImage image;
         try {
             final URL input = Load.class.getResource(path);
-            if (input == null) {
-                throw new RuntimeException("Risorsa non trovata: " + path);
-            }
+            assert input != null : "Resource not found: " + path;
             image = ImageIO.read(input);
         } catch (IOException e) {
-            throw new RuntimeException("Immagine '" + path + "' non trovata (" + e.getMessage() + ")");
+            throw new RuntimeException("Image not found: " + path + ": " + e.getMessage() + ")");
         }
         return image;
     }
 
     /**
-     * @param name   il nome dell'icona senza estensione
-     * @param width  larghezza dell'icona desiderata
-     * @param height altezza dell'icona desiderata
-     * @return l'icona caricata e scalata
+     * @param name   name of the icon without extension
+     * @param width  desired width of the icon
+     * @param height desired height of the icon
+     * @return the loaded icon with the specified dimensions
      */
     public static Icon icon(String name, int width, int height) {
         Image image = image("/icons/" + name + ".png");
@@ -52,13 +43,15 @@ public final class Load {
     }
 
     /**
-     * @param name il nome dell'icona senza estensione
-     * @return l'icona caricata con dimensione 32x32
+     * @param name name of the icon without extension
+     * @return the loaded icon with size 32x32 px
      */
-    public static Icon icon(String name) {return Load.icon(name, ICON_SIZE, ICON_SIZE);}
+    public static Icon icon(String name) {
+        return Load.icon(name, ICON_SIZE, ICON_SIZE);
+    }
 
     /**
-     * @param name il path della gif senza estensione
+     * @param name path of the gif without extension
      * @return la gif
      */
     public static Icon gif(String name) {
@@ -68,27 +61,27 @@ public final class Load {
     }
 
     /**
-     * @param name il percorso della risorsa
-     * @return il font caricato
+     * @param name resource name
+     * @return the loaded font
      */
-    public static Font font(final String name) {
+    public static Font font(String name) {
         Font font = null;
         try {
             try (InputStream is = Load.class.getResourceAsStream("/fonts/" + name + ".ttf")) {
-                assert is != null : "risorsa non trovata";
+                assert is != null : "font not found";
                 font = Font.createFont(Font.TRUETYPE_FONT, is);
             }
         } catch (IOException | FontFormatException e) {
-            Log.warn("Font '" + name + "' non caricato: (" + e.getMessage() + ")");
+            Log.warn("Font not loaded: " + name + ": " + e.getMessage());
         }
         return font;
     }
 
     /**
-     * @param prefix è il nome della clip senza l'estensione, esempio: {@code coin.wav -> coin}
-     * @return la {@link javax.sound.sampled.Clip} caricata, aperta e pronta all'uso
+     * @param prefix name of the clip without extension
+     * @return the loaded {@link javax.sound.sampled.Clip}, opened and ready to play
      */
-    public static Clip clip(final String prefix) {
+    public static Clip clip(String prefix) {
         Clip clip;
         try {
             clip = AudioSystem.getClip();
@@ -97,14 +90,14 @@ public final class Load {
         }
         try {
             URL url = Load.class.getResource("/sounds/" + prefix + ".wav");
-            assert url != null : "risorsa non trovata: " + prefix;
+            assert url != null : "Clip not found: " + prefix;
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
             clip.open(audioIn);
             return clip;
         } catch (IOException | UnsupportedAudioFileException | SecurityException e) {
             throw new RuntimeException(prefix + ": " + e.getMessage());
         } catch (LineUnavailableException e) {
-            throw new RuntimeException("Apertura clip fallita: " + e.getMessage());
+            throw new RuntimeException("Failed to open clip: " + e.getMessage());
         }
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /**
- * Algoritmo euristico per la ricerca del cammino minimo
+ * Heuristic algorithm for finding the shortest path
  */
 final class AStar {
     private final Chamber chamber;
@@ -21,12 +21,12 @@ final class AStar {
     }
 
     /**
-     * Ricostruisce il percorso minimo
+     * Returns the shortest path
      */
     private static List<Point> tracePath(Cell[][] cellDetails, Point dst) {
         List<Point> path = new LinkedList<>();
 
-        // scorre a ritroso finché non arriva al nodo iniziale
+        // iterates backwards until it reaches the initial node
         int row = dst.y;
         int col = dst.x;
         Point nextNode;
@@ -42,27 +42,25 @@ final class AStar {
 
     List<Point> find(Point src, Point dst) {
         if (!chamber.isValid(src)) {
-            Log.error("Il punto di partenza non è valido");
+            Log.error("The starting point is not valid");
             return null;
         }
         if (!chamber.isValid(dst)) {
-            Log.error("Il punto d'arrivo non è valido");
+            Log.error("The destination point is not valid");
             return null;
         }
         if (src.equals(dst)) {
-            Log.info("Il punto d'arrivo coincide con il punto di partenza");
+            Log.info("The starting point is the same as the destination point");
             return null;
         }
 
-        boolean[][] closedList = new boolean[size.height][size.width]; // Celle già esplorate
+        boolean[][] closedList = new boolean[size.height][size.width]; // already visited cells
         Cell[][] cells = new Cell[size.height][size.width];
-        PriorityQueue<Details> openList = new PriorityQueue<>(); // Celle da visitare
+        PriorityQueue<Details> openList = new PriorityQueue<>(); // cells to visit
 
-        // Inizializzazione della cella di partenza
-        final Point currentCell = new Point(src);
+        final Point currentCell = new Point(src); // initializes the starting cell
         cells[currentCell.y][currentCell.x] = new Cell(new Point(currentCell));
-        // Aggiunge la prima cella nella coda dei nodi da esplorare con valore della funzione
-        // euristica pari a 0
+        // Adds the first cell in the queue of nodes to explore with a heuristic function value equal
         openList.add(new Details(.0d, currentCell));
 
         while (!openList.isEmpty()) {
@@ -71,63 +69,60 @@ final class AStar {
             openList.poll();
             closedList[currentCell.y][currentCell.x] = true;
 
-            // Crea e inizializza le celle adiacenti alla cella corrente
+            // Create and initialize the cells adjacent to the current cell
             for (int i = -1; i < 2; ++i) {
                 for (int j = -1; j < 2; ++j) {
 
                     if (Math.abs(i + j) != 1) {
-                        continue; // non spostarti in diagonale
+                        continue; // don't move in diagonal
                     }
 
                     final Point neighbor = new Point(currentCell.x + j, currentCell.y + i);
                     if (chamber.isValid(neighbor)) {
-                        // crea una riga della matrice se non esiste
+                        // create a row of the matrix if it does not exist
                         if (cells[neighbor.y] == null) {
                             cells[neighbor.y] = new Cell[size.width];
                         }
-                        // crea la cella se non esiste
+                        // create the cell if it does not exist
                         if (cells[neighbor.y][neighbor.x] == null) {
                             cells[neighbor.y][neighbor.x] = new Cell();
                         }
 
                         if (neighbor.equals(dst)) {
                             cells[neighbor.y][neighbor.x].parent = new Point(currentCell);
-                            Log.info("Punto d'arrivo trovato");
+                            Log.info("Path found");
                             return tracePath(cells, dst);
                         } else if (!closedList[neighbor.y][neighbor.x] && chamber.isSafeToCross(neighbor)) {
-                            // se la cella del vicinato non è stata esplorata e ci si può passare
-                            // sopra
-
+                            // if the cell is not in the open list, or, if it is, it has a better
                             double gNew = cells[currentCell.y][currentCell.x].g + 1.0d;
-                            // costo del cammino fino al nodo corrente + 1
+                            // cost of the path up to the current node + 1
                             double hNew = neighbor.distance(dst);
                             double fNew = gNew + hNew;
-                            // se la cella del vicinato non ha valore f, oppure, ha un valore
-                            // migliore
-                            if (cells[neighbor.y][neighbor.x].f == -1.0d
-                                    || cells[neighbor.y][neighbor.x].f > fNew) {
-                                // aggiungi la cella del vicinato come visitabile aggiorna i
-                                // valori della cella, del vicinato considerata
+                            // if the cell of the neighborhood does not have a value f, or, has a
+                            if (cells[neighbor.y][neighbor.x].f == -1.0d || cells[neighbor.y][neighbor.x].f > fNew) {
+                                // add a cell of the neighborhood as visitable
+                                // update the values of the cell, of the neighborhood considered
                                 openList.add(new Details(fNew, neighbor));
-                                cells[neighbor.y][neighbor.x].set(new Point(currentCell), fNew,
-                                        gNew);
+                                cells[neighbor.y][neighbor.x].set(new Point(currentCell), fNew, gNew);
                             }
                         }
                     }
                 }
             }
         }
-        Log.warn("Percorso non trovato");
+        Log.warn("Path not found");
         return null;
     }
 
     /**
-     * Contiene le informazioni necessarie per ricostruire il cammino minimo
+     * Contains the necessary information to reconstruct the shortest path
      */
     private static class Cell {
         Point parent = new Point(-1, -1);
         double f = -1;
-        /** Costo esatto del cammino fino al nodo corrente */
+        /**
+         * Cost of the exact path to the current node
+         */
         double g = -1;
 
         Cell(Point parent) {set(parent, 0.0, 0.0);}
@@ -142,7 +137,7 @@ final class AStar {
     }
 
     /**
-     * Contiene informazioni sul nodo (row, col) {@link #f} è il valore della funzione euristica
+     * Contains information about the node (row, col) {@link #f} is the value of the heuristic function
      */
     private record Details(double f, Point position) implements Comparable<Details> {
 

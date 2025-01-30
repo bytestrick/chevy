@@ -9,13 +9,13 @@ public final class WraithView extends LiveEntityView {
     public WraithView(Wraith wraith) {
         super(wraith);
 
-        final String res = "/sprites/enemy/wraith/";
+        String res = "/sprites/enemy/wraith/";
         float idleDuration = entity.getState(State.IDLE).getDuration();
         float moveDuration = entity.getState(State.MOVE).getDuration();
         float attackDuration = entity.getState(State.ATTACK).getDuration();
         float hitDuration = entity.getState(State.HIT).getDuration();
         for (Direction direction : Direction.values()) {
-            final String dir = direction.toString().toLowerCase();
+            String dir = direction.toString().toLowerCase();
             animate(State.IDLE, direction, 4, 3, idleDuration, res + "idle/" + dir);
             animate(State.MOVE, direction, 4, moveDuration, res + "move/" + dir);
             animate(State.ATTACK, direction, 4, attackDuration, res + "attack/" + dir);

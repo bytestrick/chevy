@@ -7,7 +7,7 @@ import chevy.model.entity.stateMachine.EntityState;
 import chevy.view.animation.AnimatedSprite;
 import chevy.view.animation.Interpolation;
 
-import java.awt.Point;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
@@ -76,8 +76,7 @@ public abstract class LiveEntityView extends AnimatedEntityView {
     protected Direction getAnimationDirection(EntityState state) {
         final Direction direction = entity.getDirection();
         return switch (state) {
-            case Enemy.State.ATTACK, Enemy.State.IDLE, Enemy.State.MOVE, Enemy.State.HIT ->
-                    direction;
+            case Enemy.State.ATTACK, Enemy.State.IDLE, Enemy.State.MOVE, Enemy.State.HIT -> direction;
             case Enemy.State.DEAD -> direction == Direction.LEFT ? direction : Direction.RIGHT;
             default -> null;
         };

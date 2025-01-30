@@ -1,9 +1,7 @@
 package chevy.view.hud;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 
 public final class PlayerInfo extends JPanel {
     private final HealthBar healthBar;
@@ -20,7 +18,7 @@ public final class PlayerInfo extends JPanel {
         barContainer.setOpaque(false);
         frameAndBarContainer.setOpaque(false);
 
-        // Creazione, sistemazione e aggiunta dei componenti nel barContainer
+        // Creation, arrangement and addition of components in the barContainer
         healthBar = new HealthBar(scale);
         shieldBar = new ShieldBar(scale);
         attackBar = new AttackBar(scale);
@@ -36,7 +34,7 @@ public final class PlayerInfo extends JPanel {
         barContainer.add(attackBar);
         barContainer.setAlignmentY(CENTER_ALIGNMENT);
 
-        // Creazione, sistemazione e aggiunta dei componenti nel frameAndBarContainer
+        // Creation, arrangement and addition of components in the frameAndBarContainer
         powerUpEquippedView = new PowerUpEquippedView(scale / 1.4f);
 
         frameAndBarContainer.setLayout(new BoxLayout(frameAndBarContainer, BoxLayout.X_AXIS));
@@ -45,7 +43,7 @@ public final class PlayerInfo extends JPanel {
         frameAndBarContainer.add(barContainer);
         frameAndBarContainer.setAlignmentX(LEFT_ALIGNMENT);
 
-        // Sistemazione e aggiunta dei componenti nel container principale
+        // Arrangement and addition of components in the main container
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         powerUpEquippedView.setAlignmentX(LEFT_ALIGNMENT);
 
@@ -62,13 +60,23 @@ public final class PlayerInfo extends JPanel {
         powerUpEquippedView.windowResized(scale);
     }
 
-    public HealthBar getHealthBar() {return healthBar;}
+    public HealthBar getHealthBar() {
+        return healthBar;
+    }
 
-    public ShieldBar getShieldBar() {return shieldBar;}
+    public ShieldBar getShieldBar() {
+        return shieldBar;
+    }
 
-    public AttackBar getAttackBar() {return attackBar;}
+    public AttackBar getAttackBar() {
+        return attackBar;
+    }
 
-    public PowerUpEquippedView getPowerUpEquippedView() {return powerUpEquippedView;}
+    public PowerUpEquippedView getPowerUpEquippedView() {
+        return powerUpEquippedView;
+    }
 
-    public PlayerFrame getPlayerFrame() {return playerFrame;}
+    public PlayerFrame getPlayerFrame() {
+        return playerFrame;
+    }
 }

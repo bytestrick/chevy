@@ -10,29 +10,26 @@ import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
 
 /**
- * Gestisce le frecce (Projectile) nel gioco, inclusa la gestione delle collisioni e degli
- * aggiornamenti delle loro posizioni.
+ * Manages the arrows (Projectile) in the game, including handling collisions and updating their positions.
  */
 final class ArrowController {
     /**
-     * Riferimento alla stanza di gioco in cui si trova la freccia.
+     * Reference to the game room containing the arrow.
      */
     private final Chamber chamber;
     /**
-     * Riferimento al controller del giocatore, utilizzato per gestire le interazioni tra la
-     * freccia e il giocatore
+     * Reference to the player controller, used to manage interactions between the arrow and the player.
      */
     private final PlayerController playerController;
     /**
-     * Riferimento al controller del nemico, utilizzato per gestire le interazioni tra la freccia
-     * e i nemici
+     * Reference to the enemy controller, used to manage interactions between the arrow and the enemies.
      */
     private final EnemyController enemyController;
 
     /**
-     * @param chamber          la stanza di gioco
-     * @param playerController il controller del giocatore
-     * @param enemyController  il controller dei nemici
+     * @param chamber          the game room
+     * @param playerController the player controller
+     * @param enemyController  the enemy controller
      */
     ArrowController(Chamber chamber, PlayerController playerController,
                     EnemyController enemyController) {
@@ -42,9 +39,9 @@ final class ArrowController {
     }
 
     /**
-     * Gestisce le interazioni della freccia con il giocatore.
+     * Manage the interactions of the arrow with the player.
      *
-     * @param arrow il proiettile (freccia) che interagisce con il giocatore
+     * @param arrow the projectile (arrow) interacting with the player
      */
     void playerInInteraction(Arrow arrow) {
         if (arrow.changeState(Arrow.State.END)) {
@@ -55,10 +52,9 @@ final class ArrowController {
     }
 
     /**
-     * Aggiorna lo stato della freccia a ogni ciclo di gioco, gestendo la sua posizione e le sue
-     * collisioni.
+     * Update the arrow's state at each game cycle, managing its position and collisions.
      *
-     * @param arrow il proiettile (freccia) da aggiornare
+     * @param arrow the projectile (arrow) to update
      */
     void update(Arrow arrow) {
         if (arrow.checkAndChangeState(Arrow.State.LOOP)) {

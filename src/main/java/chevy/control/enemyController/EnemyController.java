@@ -4,24 +4,14 @@ import chevy.control.Interaction;
 import chevy.control.PlayerController;
 import chevy.model.chamber.Chamber;
 import chevy.model.entity.Entity;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Beetle;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.BigSlime;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.*;
 import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy.Type;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Skeleton;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Slime;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Wraith;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Zombie;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.staticEntity.environment.traps.Trap;
 
 /**
- * Gestisce il comportamento e le interazioni di vari tipi di nemici nel gioco.
- * Coordina i sotto controller specifici per ogni tipo di nemico
- * ({@link Wraith}, {@link Zombie}, {@link Slime}, {@link BigSlime}, {@link Skeleton},
- * {@link Beetle})
- * e gestisce le interazioni tra giocatore, proiettili e nemici.
+ * Manages the behavior and interactions of various types of enemies in the game. Coordinates the specific controllers for each type of enemy ({@link Wraith}, {@link Zombie}, {@link Slime}, {@link BigSlime}, {@link Skeleton}, {@link Beetle}) and manages interactions between player, projectiles, and enemies.
  */
 public final class EnemyController {
     private final WraithController wraithController;
@@ -32,8 +22,8 @@ public final class EnemyController {
     private final BeetleController beetleController;
 
     /**
-     * @param chamber          la stanza di gioco contenente i nemici
-     * @param playerController il controller del giocatore
+     * @param chamber          the game room containing the enemies
+     * @param playerController the player controller
      */
     public EnemyController(Chamber chamber, PlayerController playerController) {
         wraithController = new WraithController(chamber, playerController);
@@ -45,10 +35,10 @@ public final class EnemyController {
     }
 
     /**
-     * Gestisce l'interazione di una trappola con un nemico
+     * Manages the interaction of a trap with an enemy
      *
-     * @param trap  la trappola che interagisce con il nemico
-     * @param enemy il nemico colpito dal proiettile
+     * @param trap  the trap that interacts with the enemy
+     * @param enemy the enemy that participates in the interaction
      */
     private static void trapInteraction(Trap trap, Enemy enemy) {
         switch (enemy.getType()) {
@@ -58,35 +48,35 @@ public final class EnemyController {
             case Type.ZOMBIE -> ZombieController.trapInteraction(trap, (Zombie) enemy);
             case Type.SKELETON -> SkeletonController.trapInteraction(trap, (Skeleton) enemy);
             case Type.BEETLE -> BeetleController.trapInteraction(trap, (Beetle) enemy);
-            default -> {}
+            default -> {
+            }
         }
     }
 
     /**
-     * Gestisce l'interazione di un proiettile con un nemico
+     * Manages the interaction of a projectile with an enemy
      *
-     * @param projectile il proiettile che colpisce il nemico
-     * @param enemy      il nemico colpito dal proiettile
+     * @param projectile the projectile hitting the enemy
+     * @param enemy      the enemy getting hit
      */
     private static void projectileInteraction(Projectile projectile, Enemy enemy) {
         switch (enemy.getType()) {
             case Type.WRAITH -> WraithController.projectileInteraction(projectile, (Wraith) enemy);
             case Type.SLIME -> SlimeController.projectileInteraction(projectile, (Slime) enemy);
-            case Type.BIG_SLIME ->
-                    BigSlimeController.projectileInteraction(projectile, (BigSlime) enemy);
+            case Type.BIG_SLIME -> BigSlimeController.projectileInteraction(projectile, (BigSlime) enemy);
             case Type.ZOMBIE -> ZombieController.projectileInteraction(projectile, (Zombie) enemy);
-            case Type.SKELETON ->
-                    SkeletonController.projectileInteraction(projectile, (Skeleton) enemy);
+            case Type.SKELETON -> SkeletonController.projectileInteraction(projectile, (Skeleton) enemy);
             case Type.BEETLE -> BeetleController.projectileInteraction(projectile, (Beetle) enemy);
-            default -> {}
+            default -> {
+            }
         }
     }
 
     /**
-     * Gestisce l'interazione di un giocatore con un nemico
+     * Manages the interaction of a player with an enemy
      *
-     * @param player il giocatore che interagisce con il nemico
-     * @param enemy  il nemico che subisce l'interazione
+     * @param player the player interacting with the enemy
+     * @param enemy  the enemy that participates in the interaction
      */
     private static void playerInInteraction(Player player, Enemy enemy) {
         switch (enemy.getType()) {
@@ -96,16 +86,17 @@ public final class EnemyController {
             case Type.ZOMBIE -> ZombieController.playerInInteraction(player, (Zombie) enemy);
             case Type.SKELETON -> SkeletonController.playerInInteraction(player, (Skeleton) enemy);
             case Type.BEETLE -> BeetleController.playerInInteraction(player, (Beetle) enemy);
-            default -> {}
+            default -> {
+            }
         }
     }
 
     /**
-     * Gestisce l'interazione tra entità dinamiche
+     * Manages the interaction between dynamic entities
      *
-     * @param interaction il tipo di interazione da gestire
-     * @param subject     l'entità che avvia l'interazione
-     * @param object      l'entità che subisce l'interazione
+     * @param interaction the type of interaction to manage
+     * @param subject     the entity that starts the interaction
+     * @param object      the entity that participates in the interaction
      */
     public synchronized void handleInteraction(Interaction interaction, Entity subject,
                                                Enemy object) {
@@ -114,14 +105,15 @@ public final class EnemyController {
             case UPDATE -> updateEnemy((Enemy) subject);
             case PROJECTILE -> projectileInteraction((Projectile) subject, object);
             case TRAP -> trapInteraction((Trap) subject, object);
-            default -> {}
+            default -> {
+            }
         }
     }
 
     /**
-     * Aggiorna lo stato di un nemico a ogni ciclo di gioco
+     * Update the state of an enemy at each game cycle
      *
-     * @param enemy il nemico da aggiornare
+     * @param enemy the enemy to update
      */
     private void updateEnemy(Enemy enemy) {
         switch (enemy.getType()) {
@@ -131,7 +123,8 @@ public final class EnemyController {
             case Type.BIG_SLIME -> bigSlimeController.update((BigSlime) enemy);
             case Type.SKELETON -> skeletonController.update((Skeleton) enemy);
             case Type.BEETLE -> beetleController.update((Beetle) enemy);
-            default -> {}
+            default -> {
+            }
         }
     }
 }

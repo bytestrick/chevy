@@ -6,7 +6,6 @@ public final class SludgeView extends TrapView {
     public SludgeView(Sludge sludge) {
         super(sludge);
 
-        animate(Sludge.State.SLUDGE_BUBBLES, null, 4,
-                trap.getState(Sludge.State.SLUDGE_BUBBLES).getDuration(), "/sprites/traps/sludge");
+        animate(Sludge.State.SLUDGE_BUBBLES, null, 4, trap.getState(Sludge.State.SLUDGE_BUBBLES).getDuration(), "/sprites/traps/sludge");
     }
 }

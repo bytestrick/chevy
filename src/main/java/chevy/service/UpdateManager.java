@@ -5,14 +5,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * Aggiorna tutti gli oggetti di {@link chevy.model}
+ * Update the components of {@link chevy.model}
  */
 public final class UpdateManager {
     private static final Collection<Updatable> updatables = new LinkedList<>();
     private static final Collection<Updatable> queued = new LinkedList<>();
 
     /**
-     * Registra un oggetto per l'aggiornamento
+     * Register an object for updating
      */
     public static void register(Updatable updatable) {
         synchronized (queued) {
@@ -21,9 +21,9 @@ public final class UpdateManager {
     }
 
     /**
-     * Aggiorna tutti gli oggetti registrati
+     * Update all registered objects
      *
-     * @param delta tempo trascorso dall'ultimo aggiornamento
+     * @param delta time since last update
      */
     static void update(double delta) {
         synchronized (queued) {
