@@ -4,7 +4,7 @@ import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class Coin extends Collectable {
     private final Vertex idle = new Vertex(State.IDLE, .8f);

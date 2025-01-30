@@ -10,7 +10,7 @@ public final class SlimeView extends LiveEntityView {
     public SlimeView(Slime slime) {
         super(slime);
 
-        final String res = "/sprites/enemy/slime/";
+        String res = "/sprites/enemy/slime/";
         float idleDuration = entity.getState(State.IDLE).getDuration();
         animate(State.IDLE, null, 4, 3, idleDuration, res + "idle");
 
@@ -19,7 +19,7 @@ public final class SlimeView extends LiveEntityView {
 
         float attackDuration = entity.getState(State.ATTACK).getDuration();
         for (Direction direction : Direction.values()) {
-            final String dir = direction.toString().toLowerCase();
+            String dir = direction.toString().toLowerCase();
             animate(State.ATTACK, direction, 4, attackDuration, res + "attack/" + dir);
         }
 

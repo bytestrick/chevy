@@ -20,11 +20,9 @@ abstract class ProjectileView extends AnimatedEntityView {
         vertex = projectile.getState(projectile.getState());
 
         assert vertex != null;
-        final float duration = vertex.getDuration();
-        horizontal = new Interpolation(viewPosition.x, viewPosition.x, duration,
-                Interpolation.Type.LINEAR);
-        vertical = new Interpolation(viewPosition.y, viewPosition.y, duration,
-                Interpolation.Type.LINEAR);
+        float duration = vertex.getDuration();
+        horizontal = new Interpolation(viewPosition.x, viewPosition.x, duration, Interpolation.Type.LINEAR);
+        vertical = new Interpolation(viewPosition.y, viewPosition.y, duration, Interpolation.Type.LINEAR);
     }
 
     @Override
@@ -51,32 +49,31 @@ abstract class ProjectileView extends AnimatedEntityView {
     }
 
     public float getScale() {
-        final EntityState state = projectile.getState();
-        final Direction direction = getAnimationDirection(state);
-        final AnimatedSprite currentAnimatedSprite = getAnimatedSprite(state, direction);
+        EntityState state = projectile.getState();
+        Direction direction = getAnimationDirection(state);
+        AnimatedSprite currentAnimatedSprite = getAnimatedSprite(state, direction);
         return currentAnimatedSprite.getScale();
     }
 
     public Point getOffset() {
-        final EntityState state = projectile.getState();
-        final Direction direction = getAnimationDirection(state);
-        final AnimatedSprite currentAnimatedSprite = getAnimatedSprite(state, direction);
+        EntityState state = projectile.getState();
+        Direction direction = getAnimationDirection(state);
+        AnimatedSprite currentAnimatedSprite = getAnimatedSprite(state, direction);
         return currentAnimatedSprite.getOffset();
     }
 
     private Direction getAnimationDirection(EntityState state) {
         return switch (state) {
-            case Projectile.State.START, Projectile.State.LOOP, Projectile.State.END ->
-                    projectile.getDirection();
+            case Projectile.State.START, Projectile.State.LOOP, Projectile.State.END -> projectile.getDirection();
             default -> null;
         };
     }
 
     @Override
     public BufferedImage getFrame() {
-        final EntityState state = projectile.getState();
-        final Direction direction = projectile.getDirection();
-        final AnimatedSprite animatedSprite = getAnimatedSprite(state, direction);
+        EntityState state = projectile.getState();
+        Direction direction = projectile.getDirection();
+        AnimatedSprite animatedSprite = getAnimatedSprite(state, direction);
         if (animatedSprite != null) {
             if (animatedSprite.isNotRunning()) {
                 animatedSprite.restart();

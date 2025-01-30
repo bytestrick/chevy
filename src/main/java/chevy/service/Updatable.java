@@ -1,12 +1,12 @@
 package chevy.service;
 
 /**
- * Un'entità aggiornabile
+ * An updatable entity
  */
 public interface Updatable {
     /**
      * <em>Tick</em>
-     * @param delta tempo trascorso dall'ultimo tick
+     * @param delta time since last update
      */
     void update(double delta);
 

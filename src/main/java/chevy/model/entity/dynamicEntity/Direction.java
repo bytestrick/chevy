@@ -5,9 +5,6 @@ import chevy.utils.Utils;
 
 import java.awt.Point;
 
-/**
- * Punti cardinali
- */
 public enum Direction {
     UP(0, -1),
     RIGHT(1, 0),
@@ -47,10 +44,10 @@ public enum Direction {
     }
 
     /**
-     * Avanza una posizione di una cella nella direzione corrente
+     * Advance a position by one cell in the current direction
      *
-     * @param position posizione corrente
-     * @return la posizione successiva
+     * @param position current position
+     * @return next position
      */
     public Point advance(Point position) {
         position.translate(x, y);

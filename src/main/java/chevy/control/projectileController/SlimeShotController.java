@@ -10,8 +10,7 @@ import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
 import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
 
 /**
- * Gestisce le interazioni e gli aggiornamenti specifici dei proiettili di tipo {@link SlimeShot} nel
- * gioco.
+ * Handles the interactions and specific updates of the {@link SlimeShot} projectiles in the game.
  */
 final class SlimeShotController {
     private final Chamber chamber;
@@ -19,9 +18,9 @@ final class SlimeShotController {
     private final EnemyController enemyController;
 
     /**
-     * @param chamber          stanza in cui si trova lo slime shot
-     * @param playerController il controller del giocatore
-     * @param enemyController  il controller dei nemici
+     * @param chamber          game room containing the {@link SlimeShot}
+     * @param playerController player controller
+     * @param enemyController  enemy controller
      */
     SlimeShotController(Chamber chamber, PlayerController playerController,
                         EnemyController enemyController) {
@@ -31,9 +30,9 @@ final class SlimeShotController {
     }
 
     /**
-     * Gestisce l'interazione del giocatore con lo {@link SlimeShot}
+     * Handles the player interaction with the {@link SlimeShot}
      *
-     * @param projectile il proiettile che viene colpito dal giocatore
+     * @param projectile Slime Shot interacting with the player
      */
     void playerInInteraction(SlimeShot projectile) {
         if (projectile.changeState(SlimeShot.State.END)) {
@@ -44,9 +43,9 @@ final class SlimeShotController {
     }
 
     /**
-     * Gestisce l'aggiornamento dello {@link SlimeShot}
+     * Handles the update of the {@link SlimeShot}
      *
-     * @param projectile Slime Shot da aggiornare
+     * @param projectile SlimeShot to update
      */
     void update(SlimeShot projectile) {
         if (projectile.checkAndChangeState(SlimeShot.State.LOOP)) {

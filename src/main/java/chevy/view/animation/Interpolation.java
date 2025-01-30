@@ -5,22 +5,36 @@ import chevy.service.Renderable;
 import chevy.utils.Log;
 
 /**
- * Interpolazione di valori
+ * Value interpolation
  */
 public final class Interpolation implements Renderable {
-    /** Tipo di interpolazione da utilizzare */
+    /**
+     * Type of interpolation to use
+     */
     private final Type type;
-    /** Tempo trascorso dall'inizio dell'interpolazione */
+    /**
+     * Time elapsed since the start of the interpolation
+     */
     private double time;
-    /** Se l'interpolazione è attualmente in esecuzione */
+    /**
+     * If the interpolation is currently running
+     */
     private boolean isRunning;
-    /** Valore iniziale dell'interpolazione */
+    /**
+     * Start value of the interpolation
+     */
     private double start;
-    /** Valore finale dell'interpolazione */
+    /**
+     * End value of the interpolation
+     */
     private double end;
-    /** Durata totale dell'interpolazione */
+    /**
+     * Total duration of the interpolation
+     */
     private float duration;
-    /** Se l'interpolazione deve essere eliminata */
+    /**
+     * If the interpolation should be deleted
+     */
     private boolean delete = true;
 
     public Interpolation(double start, double end, float duration, Type type) {
@@ -194,12 +208,12 @@ public final class Interpolation implements Renderable {
     }
 
     /**
-     * Avvia l'interpolazione dal punto in cui si è fermata.
-     * Se è la prima volta che viene utilizzata, l'interpolazione partirà dall'inizio.
+     * Starts the interpolation from where it stopped.
+     * If it is used for the first time the interpolation will start from the beginning.
      */
     public void start() {
         if (duration <= 0d) {
-            Log.warn("L'interpolazione non è stata creata perché la sua durata è: " + duration);
+            Log.warn("The interpolation wasn't created because the duration is invalid: " + duration);
             return;
         }
 
@@ -212,7 +226,7 @@ public final class Interpolation implements Renderable {
     }
 
     /**
-     * Riavvia sempre l'interpolazione dall'inizio.
+     * Restart the interpolation from the beginning
      */
     public void restart() {
         time = 0d;
@@ -224,7 +238,7 @@ public final class Interpolation implements Renderable {
     }
 
     /**
-     * Elimina l'interpolazione, questo significa che non verrà più aggiornata.
+     * Delete the interpolation, this means that it will no longer be updated.
      */
     public void delete() {
         stop();
@@ -232,14 +246,15 @@ public final class Interpolation implements Renderable {
     }
 
     /**
-     * Interrompe l'aggiornamento dell'interpolazione, ma non in modo permanente.
-     * L'interpolazione può essere ripresa in seguito usando {@link #start()}, oppure, può
-     * essere fatta ripartire da capo usando {@link #restart()}
+     * Stop the interpolation, but not permanently. The interpolation can be resumed later using {@link #start()},
+     * or start it from the beginning using {@link #restart()}.
      */
-    private void stop() {isRunning = false;}
+    private void stop() {
+        isRunning = false;
+    }
 
     /**
-     * Aggiorna l'interpolazione in base al tempo trascorso.
+     * Update the interpolation based on the elapsed time.
      */
     @Override
     public void render(double delta) {
@@ -254,39 +269,46 @@ public final class Interpolation implements Renderable {
     }
 
     /**
-     * @return il valore corrente dell'interpolazione
+     * @return the current value of the interpolation
      */
-    public double getValue() {return interpolate(type, end, time, start);}
+    public double getValue() {
+        return interpolate(type, end, time, start);
+    }
 
     /**
-     * @param start imposta il valore di inizio dell'interpolazione
+     * @param start set the start value of the interpolation
      */
-    public void changeStart(double start) {this.start = start;}
+    public void changeStart(double start) {
+        this.start = start;
+    }
 
     /**
-     * @param end imposta il valore finale dell'interpolazione
+     * @param end set the end value of the interpolation
      */
-    public void changeEnd(double end) {this.end = end;}
+    public void changeEnd(double end) {
+        this.end = end;
+    }
 
     /**
-     * @param duration imposta la durata dell'interpolazione
+     * @param duration set the duration of the interpolation
      */
-    public void changeDuration(float duration) {this.duration = duration;}
+    public void changeDuration(float duration) {
+        this.duration = duration;
+    }
 
     /**
-     * @return {@code true} se l'interpolazione è terminata, {@code false} altrimenti
+     * @return {@code true} if the interpolation ended, {@code false} otherwise
      */
     @Override
-    public boolean renderFinished() {return delete;}
+    public boolean renderFinished() {
+        return delete;
+    }
 
     public enum Type {
-        LINEAR, EASE_IN_SINE, EASE_OUT_SINE, EASE_IN_OUT_SINE, EASE_IN_QUAD, EASE_OUT_QUAD,
-        EASE_IN_OUT_QUAD,
-        EASE_IN_CUBIC, EASE_OUT_CUBIC, EASE_IN_OUT_CUBIC, EASE_IN_QUART, EASE_OUT_QUART,
-        EASE_IN_OUT_QUART,
-        EASE_IN_QUINT, EASE_OUT_QUINT, EASE_IN_OUT_QUINT, EASE_IN_EXPO, EASE_OUT_EXPO,
-        EASE_IN_OUT_EXPO, EASE_IN_CIRC, EASE_OUT_CIRC, EASE_IN_OUT_CIRC, EASE_IN_BACK,
-        EASE_OUT_BACK, EASE_IN_OUT_BACK, EASE_IN_ELASTIC,
+        LINEAR, EASE_IN_SINE, EASE_OUT_SINE, EASE_IN_OUT_SINE, EASE_IN_QUAD, EASE_OUT_QUAD, EASE_IN_OUT_QUAD,
+        EASE_IN_CUBIC, EASE_OUT_CUBIC, EASE_IN_OUT_CUBIC, EASE_IN_QUART, EASE_OUT_QUART, EASE_IN_OUT_QUART,
+        EASE_IN_QUINT, EASE_OUT_QUINT, EASE_IN_OUT_QUINT, EASE_IN_EXPO, EASE_OUT_EXPO, EASE_IN_OUT_EXPO,
+        EASE_IN_CIRC, EASE_OUT_CIRC, EASE_IN_OUT_CIRC, EASE_IN_BACK, EASE_OUT_BACK, EASE_IN_OUT_BACK, EASE_IN_ELASTIC,
         EASE_OUT_ELASTIC, EASE_IN_OUT_ELASTIC, EASE_IN_BOUNCE, EASE_OUT_BOUNCE, EASE_IN_OUT_BOUNCE
     }
 }

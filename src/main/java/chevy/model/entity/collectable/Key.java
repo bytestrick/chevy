@@ -3,7 +3,7 @@ package chevy.model.entity.collectable;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class Key extends Collectable {
     private final Vertex idle = new Vertex(State.IDLE, 1.8f);

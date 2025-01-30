@@ -6,13 +6,7 @@ import chevy.model.entity.collectable.Collectable;
 import chevy.model.entity.collectable.Health;
 import chevy.model.entity.collectable.Key;
 import chevy.model.entity.collectable.powerUp.PowerUp;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Beetle;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.BigSlime;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Enemy;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Skeleton;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Slime;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Wraith;
-import chevy.model.entity.dynamicEntity.liveEntity.enemy.Zombie;
+import chevy.model.entity.dynamicEntity.liveEntity.enemy.*;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Archer;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Knight;
 import chevy.model.entity.dynamicEntity.liveEntity.player.Ninja;
@@ -20,36 +14,18 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Player;
 import chevy.model.entity.dynamicEntity.projectile.Arrow;
 import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
-import chevy.model.entity.staticEntity.environment.Chest;
-import chevy.model.entity.staticEntity.environment.Environment;
-import chevy.model.entity.staticEntity.environment.Ground;
-import chevy.model.entity.staticEntity.environment.Stair;
-import chevy.model.entity.staticEntity.environment.Wall;
-import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
-import chevy.model.entity.staticEntity.environment.traps.Sludge;
-import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
-import chevy.model.entity.staticEntity.environment.traps.Totem;
-import chevy.model.entity.staticEntity.environment.traps.Trap;
-import chevy.model.entity.staticEntity.environment.traps.Trapdoor;
+import chevy.model.entity.staticEntity.environment.*;
 import chevy.model.entity.staticEntity.environment.traps.Void;
+import chevy.model.entity.staticEntity.environment.traps.*;
 import chevy.view.entities.EntityView;
 import chevy.view.entities.animated.collectable.CoinView;
 import chevy.view.entities.animated.collectable.HealthView;
 import chevy.view.entities.animated.collectable.KeyView;
 import chevy.view.entities.animated.collectable.PowerUpView;
-import chevy.view.entities.animated.enemy.BeetleView;
-import chevy.view.entities.animated.enemy.BigSlimeView;
-import chevy.view.entities.animated.enemy.SkeletonView;
-import chevy.view.entities.animated.enemy.SlimeView;
-import chevy.view.entities.animated.enemy.WraithView;
-import chevy.view.entities.animated.enemy.ZombieView;
+import chevy.view.entities.animated.enemy.*;
 import chevy.view.entities.animated.environmet.ChestView;
 import chevy.view.entities.animated.environmet.StairView;
-import chevy.view.entities.animated.environmet.trap.IcyFloorView;
-import chevy.view.entities.animated.environmet.trap.SludgeView;
-import chevy.view.entities.animated.environmet.trap.SpikedFloorView;
-import chevy.view.entities.animated.environmet.trap.TotemView;
-import chevy.view.entities.animated.environmet.trap.TrapdoorView;
+import chevy.view.entities.animated.environmet.trap.*;
 import chevy.view.entities.animated.player.ArcherView;
 import chevy.view.entities.animated.player.KnightView;
 import chevy.view.entities.animated.player.NinjaView;
@@ -63,13 +39,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Mappa model e view delle entità
+ * Maps entities models and their views
  */
 public final class EntityToEntityView {
     public static final Map<Entity, EntityView> entityView = new HashMap<>();
 
     /**
-     * Ottieni la rappresentazione specifica di un entità
+     * Obtain the specific representation of an entity
      */
     static EntityView getSpecific(Entity entity) {
         return switch (entity.getType()) {
@@ -303,13 +279,11 @@ public final class EntityToEntityView {
                 yield stairView;
             }
             default -> null;
-
-            // Environment
         };
     }
 
     /**
-     * Ottieni la rappresentazione generica di un entità.
+     * Obtain the generic representation of an entity.
      */
     static EntityView getGeneric(Entity entity) {
         return switch (entity.getGenericType()) {

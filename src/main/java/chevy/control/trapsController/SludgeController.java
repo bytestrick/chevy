@@ -6,20 +6,22 @@ import chevy.model.entity.staticEntity.environment.traps.Sludge;
 import chevy.service.Sound;
 
 /**
- * Gestisce le interazioni del giocatore con la melma nel gioco
+ * Manages the player interactions with the sludge in game.
  */
 final class SludgeController {
     private final Chamber chamber;
 
     /**
-     * @param chamber la camera di gioco in cui si trova la melma
+     * @param chamber the game room containing the sludge
      */
-    SludgeController(Chamber chamber) {this.chamber = chamber;}
+    SludgeController(Chamber chamber) {
+        this.chamber = chamber;
+    }
 
     /**
-     * Gestisce l'interazione iniziale (appena entra nella melma) del giocatore con la melma.
+     * Manages the initial interaction (as soon as it enters the sludge) of the player with the sludge.
      *
-     * @param player il giocatore che interagisce con la melma
+     * @param player the player interacting with the sludge
      */
     static void playerInInteraction(Player player) {
         player.changeState(Player.State.SLUDGE);
@@ -27,10 +29,10 @@ final class SludgeController {
     }
 
     /**
-     * Gestisce l'interazione continua (quando e dentro la melma) del giocatore con la melma.
+     * Handles the continuous interaction (when inside the sludge) of the player with the sludge.
      *
-     * @param player il giocatore che interagisce con la melma
-     * @param sludge la melma in cui il giocatore è intrappolato
+     * @param player the player interacting with the sludge
+     * @param sludge the sludge that the player is interacting with
      */
     void playerInteraction(Player player, Sludge sludge) {
         if (sludge.getNMoveToUnlock() <= 0) {

@@ -7,20 +7,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Ordine di disegno delle entità nel gioco.
- * Usa una lista di Layer, ognuno dei quali contiene un insieme di entità da disegnare.
+ * Draw order of the entities in the game.
+ * Uses a list of Layers, each of which contains a set of entities to draw.
  */
 public final class LayerManager {
     private final List<Layer> drawOrder;
 
-    public LayerManager() {drawOrder = new LinkedList<>();}
+    public LayerManager() {
+        drawOrder = new LinkedList<>();
+    }
 
     /**
-     * Trova un Layer specifico nella lista. Se il Layer non esiste, lo crea e lo aggiunge alla
-     * lista.
+     * Find a specific Layer in the list. If the Layer does not exist, it creates it and adds it to the
      *
-     * @param nLayer priorità di ridisegno del livello da trovare.
-     * @return ll Layer trovato o creato.
+     * @param nLayer priority of the level to find.
+     * @return the level found or created.
      */
     private Layer findLayer(int nLayer) {
         Layer newLayer = new Layer(nLayer);
@@ -35,15 +36,17 @@ public final class LayerManager {
     }
 
     /**
-     * Aggiunge un'entità a un Layer specifico
+     * Adds an entity to a specific Layer
      *
-     * @param entity L'entità da aggiungere
-     * @param nLayer Il numero del Layer a cui aggiungere l'entità
+     * @param entity the entity to add
+     * @param nLayer the number of the level to add the entity to
      */
     public synchronized void add(Entity entity, int nLayer) {
         Layer layer = findLayer(nLayer);
         layer.add(entity);
     }
 
-    public synchronized List<Layer> getDrawOrder() {return drawOrder;}
+    public synchronized List<Layer> getDrawOrder() {
+        return drawOrder;
+    }
 }

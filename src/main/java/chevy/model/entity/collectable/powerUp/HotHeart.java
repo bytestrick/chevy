@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.view.Options;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class HotHeart extends PowerUp {
     private static final int HEALTH_BOOST = 3;
@@ -14,10 +14,14 @@ public final class HotHeart extends PowerUp {
         occurringPercentage = 100;
     }
 
-    public static int getHealthBoost() {return HEALTH_BOOST;}
+    public static int getHealthBoost() {
+        return HEALTH_BOOST;
+    }
 
     @Override
-    public String getName() {return Options.strings.getString("powerUp.hotHeart.name");}
+    public String getName() {
+        return Options.strings.getString("powerUp.hotHeart.name");
+    }
 
     @Override
     public String getDescription() {

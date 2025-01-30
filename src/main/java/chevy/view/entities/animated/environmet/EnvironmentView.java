@@ -31,8 +31,8 @@ abstract class EnvironmentView extends AnimatedEntityView {
 
     @Override
     public BufferedImage getFrame() {
-        final EntityState state = environment.getState();
-        final AnimatedSprite animatedSprite = getAnimatedSprite(state, null);
+        EntityState state = environment.getState();
+        AnimatedSprite animatedSprite = getAnimatedSprite(state, null);
 
         if (animatedSprite != null) {
             EntityState open = environment.getType() == Environment.Type.CHEST ?

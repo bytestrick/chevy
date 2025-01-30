@@ -11,14 +11,14 @@ public final class BeetleView extends LiveEntityView {
     public BeetleView(Beetle beetle) {
         super(beetle);
 
-        final String res = "/sprites/enemy/beetle/";
-        final float idleDuration = entity.getState(State.IDLE).getDuration();
-        final float moveDuration = entity.getState(State.MOVE).getDuration();
-        final float attackDuration = entity.getState(State.ATTACK).getDuration();
-        final float hitDuration = entity.getState(State.HIT).getDuration();
-        final Point offsetAttack = new Point(-1, -3);
+        String res = "/sprites/enemy/beetle/";
+        float idleDuration = entity.getState(State.IDLE).getDuration();
+        float moveDuration = entity.getState(State.MOVE).getDuration();
+        float attackDuration = entity.getState(State.ATTACK).getDuration();
+        float hitDuration = entity.getState(State.HIT).getDuration();
+        Point offsetAttack = new Point(-1, -3);
         for (Direction direction : Direction.values()) {
-            final String dir = direction.toString().toLowerCase();
+            String dir = direction.toString().toLowerCase();
             animate(State.IDLE, direction, 4, 4, idleDuration, res + "idle/" + dir);
             animate(State.MOVE, direction, 4, moveDuration, res + "move/" + dir);
             animate(State.ATTACK, direction, 4, attackDuration, offsetAttack, res + "attack/" + dir);

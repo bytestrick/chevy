@@ -4,7 +4,7 @@ import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class SlimeShot extends Projectile {
     private final Vertex start = new Vertex(SlimeShot.State.START, .5f);

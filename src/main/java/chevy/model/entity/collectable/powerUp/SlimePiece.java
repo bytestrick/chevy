@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.view.Options;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class SlimePiece extends PowerUp {
     private static final int NUMBER_OF_SLIMES = 1;
@@ -14,9 +14,13 @@ public final class SlimePiece extends PowerUp {
         occurringPercentage = 100;
     }
 
-    public static int getNumberOfSlimes() {return NUMBER_OF_SLIMES;}
+    public static int getNumberOfSlimes() {
+        return NUMBER_OF_SLIMES;
+    }
 
-    public static int getDamageBoost() {return DAMAGE_BOOST;}
+    public static int getDamageBoost() {
+        return DAMAGE_BOOST;
+    }
 
     @Override
     public String getName() {

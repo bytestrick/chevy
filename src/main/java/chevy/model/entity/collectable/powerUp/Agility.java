@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.view.Options;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class Agility extends PowerUp {
     public Agility(Point position) {
@@ -11,7 +11,9 @@ public final class Agility extends PowerUp {
     }
 
     @Override
-    public String getName() {return Options.strings.getString("powerUp.agility.name");}
+    public String getName() {
+        return Options.strings.getString("powerUp.agility.name");
+    }
 
     @Override
     public String getDescription() {

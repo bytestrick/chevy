@@ -5,14 +5,18 @@ import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class Chest extends Environment {
-    /** Oggetti collezionabili che i nemici possono rilasciare */
+    /**
+     * Collectable objects that enemies can drop
+     */
     private static final Collectable.Type[] DROPPABLE_COLLECTABLE = {
             Collectable.Type.COIN, Collectable.Type.KEY, Collectable.Type.HEALTH,
             Collectable.Type.POWER_UP};
-    /** Probabilità di rilascio degli oggetti collezionabili */
+    /**
+     * Probability of dropping collectable objects
+     */
     private static final int[] DROPPABLE_COLLECTABLE_PROB = {100, 15, 15, 35};
     private final Vertex idleLocked = new Vertex(State.IDLE_LOCKED);
     private final Vertex idleUnlocked = new Vertex(State.IDLE_UNLOCKED);

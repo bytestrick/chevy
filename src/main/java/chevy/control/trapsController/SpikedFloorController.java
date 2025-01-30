@@ -13,7 +13,7 @@ import chevy.model.entity.staticEntity.environment.traps.SpikedFloor;
 import chevy.service.Sound;
 
 /**
- * Controller per gestire le interazioni del giocatore e delle entità con il pavimento spinato nel gioco.
+ * Controller to manage the interactions of the player and entities with the spiked floor in game.
  */
 final class SpikedFloorController {
     private final Chamber chamber;
@@ -21,7 +21,7 @@ final class SpikedFloorController {
     private final EnemyController enemyController;
 
     /**
-     * @param chamber la camera di gioco si trova il pavimento spinato
+     * @param chamber the game room containing the spiked floor
      */
     SpikedFloorController(Chamber chamber, PlayerController playerController, EnemyController enemyController) {
         this.chamber = chamber;
@@ -38,9 +38,9 @@ final class SpikedFloorController {
     }
 
     /**
-     * Aggiorna lo stato del pavimento spinato.
+     * Updates the state of the spiked floor.
      *
-     * @param spikedFloor il pavimento spinato da aggiornare
+     * @param spikedFloor the spiked floor to update
      */
     void update(SpikedFloor spikedFloor) {
         if (spikedFloor.checkAndChangeState(SpikedFloor.State.ACTIVATED)) {

@@ -7,13 +7,13 @@ import chevy.model.entity.staticEntity.environment.traps.IcyFloor;
 import chevy.service.Sound;
 
 /**
- * Gestisce le interazioni del giocatore con il pavimento ghiacciato nel gioco.
+ * Manage the player interactions with the icy floor in game.
  */
 final class IcyFloorController {
     /**
-     * Gestisce l'interazione del giocatore con il pavimento ghiacciato.
+     * Manages the interaction of the player with the icy floor.
      *
-     * @param player   il giocatore che interagisce con il pavimento ghiacciato
+     * @param player the player interacting with the icy floor
      */
     static void playerInInteraction(Player player) {
         if (canChangeInGlide(player)) {

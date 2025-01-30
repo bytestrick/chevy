@@ -11,20 +11,17 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Gestisce gli aggiornamenti dei nemici nel gioco.
- * Implementa l'interfaccia Updatable per integrarsi con il ciclo di aggiornamento del gioco.
- * Gestisce l'aggiunta, l'aggiornamento e la rimozione dei nemici dall'aggiornamento.
+ * Manages the updates of the enemies in the game. Interacts with the updates cycle of the game. Manages the addition, update and removal of enemies from the updates.
  */
 public final class EnemyUpdateController implements Updatable {
-    private boolean running, paused;
     private final EnemyController enemyController;
     private final Collection<Enemy> enemies = new ArrayList<>();
     private final List<Enemy> enemiesToAdd;
+    private boolean running, paused;
 
     /**
-     * @param enemyController il controller dei nemici responsabile della gestione delle
-     *                        interazioni.
-     * @param enemies         la lista dei nemici da aggiungere.
+     * @param enemyController the controller of the enemy responsible for managing the interactions
+     * @param enemies         enemies to add
      */
     public EnemyUpdateController(EnemyController enemyController, List<Enemy> enemies) {
         this.enemyController = enemyController;
@@ -32,16 +29,20 @@ public final class EnemyUpdateController implements Updatable {
         running = true;
         paused = false;
 
-        // Aggiunge questo controller al gestore degli aggiornamenti.
+        // Adds this controller to the update manager.
         UpdateManager.register(this);
     }
 
-    public void stopUpdate() { running = false; }
+    public void stopUpdate() {
+        running = false;
+    }
 
-    public void setPaused(boolean paused) { this.paused = paused; }
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
 
     /**
-     * Aggiunge i nuovi nemici alla lista degli aggiornamenti e svuota la lista temporanea.
+     * Adds new enemies to the update list and empties the temporary list.
      */
     private void addEnemies() {
         enemies.addAll(enemiesToAdd);
@@ -49,7 +50,7 @@ public final class EnemyUpdateController implements Updatable {
     }
 
     /**
-     * Aggiorna lo stato di tutti i nemici a ogni ciclo di gioco.
+     * Updates the state of all the enemies on every cycle of the game.
      */
     @Override
     public void update(double delta) {
@@ -58,8 +59,7 @@ public final class EnemyUpdateController implements Updatable {
         }
         addEnemies();
 
-        // Itera attraverso la lista dei nemici per aggiornarli e rimuove quelli che devono
-        // essere rimossi.
+        // Iterates through the list of enemies to update them and remove the ones that must be removed.
         Iterator<Enemy> it = enemies.iterator();
         while (it.hasNext()) {
             Enemy enemy = it.next();
@@ -71,10 +71,12 @@ public final class EnemyUpdateController implements Updatable {
     }
 
     /**
-     * Verifica se l'aggiornamento è terminato, ovvero se non ci sono più nemici da aggiornare.
+     * Checks if the update is finished, that is, if there are no more enemies to update.
      *
-     * @return {@code true} se la lista dei nemici è vuota, {@code false} altrimenti.
+     * @return {@code true} if the enemies list is empty or the update is not running
      */
     @Override
-    public boolean updateFinished() {return enemies.isEmpty() || !running;}
+    public boolean updateFinished() {
+        return enemies.isEmpty() || !running;
+    }
 }

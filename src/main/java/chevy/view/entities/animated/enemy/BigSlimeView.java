@@ -10,7 +10,7 @@ public final class BigSlimeView extends LiveEntityView {
     public BigSlimeView(BigSlime bigSlime) {
         super(bigSlime);
 
-        final String res = "/sprites/enemy/bigSlime/";
+        String res = "/sprites/enemy/bigSlime/";
         float idleDuration = entity.getState(State.IDLE).getDuration();
         animate(State.IDLE, null, 4, 2, idleDuration, res + "idle");
 
@@ -19,7 +19,7 @@ public final class BigSlimeView extends LiveEntityView {
 
         float attackDuration = entity.getState(State.ATTACK).getDuration();
         for (Direction direction : Direction.values()) {
-            final String path = res + "attack/" + direction.toString().toLowerCase();
+            String path = res + "attack/" + direction.toString().toLowerCase();
             animate(State.ATTACK, direction, 4, attackDuration, path);
         }
 

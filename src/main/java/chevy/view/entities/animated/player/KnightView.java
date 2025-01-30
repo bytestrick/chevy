@@ -6,26 +6,25 @@ import chevy.model.entity.dynamicEntity.liveEntity.player.Player.State;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.view.entities.animated.LiveEntityView;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class KnightView extends LiveEntityView {
     public KnightView(Knight knight) {
         super(knight);
 
-        final String res = "/sprites/player/knight/";
-        final Point offset = new Point(-8, -8);
-        final float idleDuration = 1f;
-        final float moveDuration = entity.getState(State.MOVE).getDuration();
-        final float attackDuration = entity.getState(State.ATTACK).getDuration();
-        final float hitDuration = entity.getState(State.HIT).getDuration();
-        final float deadDuration = entity.getState(State.DEAD).getDuration();
-        final float sludgeDuration = entity.getState(State.SLUDGE).getDuration();
+        String res = "/sprites/player/knight/";
+        Point offset = new Point(-8, -8);
+        float idleDuration = 1f;
+        float moveDuration = entity.getState(State.MOVE).getDuration();
+        float attackDuration = entity.getState(State.ATTACK).getDuration();
+        float hitDuration = entity.getState(State.HIT).getDuration();
+        float deadDuration = entity.getState(State.DEAD).getDuration();
+        float sludgeDuration = entity.getState(State.SLUDGE).getDuration();
         float fallDuration = entity.getState(State.FALL).getDuration();
         float glideDuration = entity.getState(State.GLIDE).getDuration();
         for (Direction direction : Direction.values()) {
-            final String dir = direction.toString().toLowerCase();
-            animate(State.IDLE, direction, 2, true, 2, idleDuration, offset, 1,
-                    res + "idle/" + dir);
+            String dir = direction.toString().toLowerCase();
+            animate(State.IDLE, direction, 2, true, 2, idleDuration, offset, 1, res + "idle/" + dir);
             animate(State.MOVE, direction, 8, moveDuration, offset, res + "move/" + dir);
             animate(State.ATTACK, direction, 6, attackDuration, offset, res + "attack/" + dir);
             animate(State.HIT, direction, 1, hitDuration, offset, res + "hit/" + dir);

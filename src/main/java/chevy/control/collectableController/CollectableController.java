@@ -27,32 +27,33 @@ public final class CollectableController {
     }
 
     /**
-     * Gestisce il tipo di interazione ricevuta
+     * Manages the received interaction
      *
-     * @param interaction il tipo di interazione da gestire.
-     * @param subject     l'entità che avvia l'interazione.
-     * @param object      l'entità che subisce l'interazione.
+     * @param interaction kind of interaction to manage
+     * @param subject     entity author of the interaction (subject)
+     * @param object      entity receiver of the interaction (object)
      */
     public void handleInteraction(Interaction interaction, Entity subject, Collectable object) {
         switch (interaction) {
             case PLAYER_IN -> playerInInteraction((Player) subject, object);
             case UPDATE -> update(subject);
-            default -> {}
+            default -> {
+            }
         }
     }
 
     /**
-     * Gestisce l'interazione di un giocatore con un oggetto collezionabile
+     * Manages the interaction of the {@link Player} with a collectable item
      *
-     * @param collectable l'oggetto da collezionare.
+     * @param collectable item to collect
      */
     private void playerInInteraction(Player player, Collectable collectable) {
         switch (collectable.getType()) {
-            case Collectable.Type.HEALTH ->
-                    healthController.playerInInteraction(player, (Health) collectable);
+            case Collectable.Type.HEALTH -> healthController.playerInInteraction(player, (Health) collectable);
             case Collectable.Type.COIN -> coinController.playerInInteraction((Coin) collectable);
             case Collectable.Type.KEY -> keyController.playerInInteraction((Key) collectable);
-            default -> {}
+            default -> {
+            }
         }
         if (collectable.getGenericType() == Collectable.Type.POWER_UP) {
             powerUpController.playerInInteraction(player, (PowerUp) collectable);
@@ -64,7 +65,8 @@ public final class CollectableController {
             case Collectable.Type.HEALTH -> HealthController.update((Health) subject);
             case Collectable.Type.COIN -> CoinController.update((Coin) subject);
             case Collectable.Type.KEY -> KeyController.update((Key) subject);
-            default -> {}
+            default -> {
+            }
         }
         if (subject.getGenericType() == Collectable.Type.POWER_UP) {
             assert subject instanceof PowerUp;

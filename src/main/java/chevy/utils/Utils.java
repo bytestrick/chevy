@@ -6,30 +6,28 @@ import java.util.Random;
 import java.util.random.RandomGenerator;
 
 public final class Utils {
-    /** Generatore di numeri casuali unico */
+    /**
+     * Global unique random number generator
+     */
     public static final RandomGenerator random = new Random();
 
     /**
-     * Questa funzione prende un valore e un intervallo definito da min e max, e restituisce un
-     * valore equivalente
-     * all’interno di quell’intervallo. Se il valore fornito è al di fuori dell’intervallo, la
-     * funzione lo “avvolge”
-     * per riportarlo all’interno dell’intervallo.
+     * This function takes a value and a range defined by min and max, and returns an equivalent
+     * value within that range. If the provided value is outside the range, the function wraps it to
+     * bring it back within the range.
      *
-     * @param value valore da "avvolgere"
-     * @param min   valore minimo di ritorno
-     * @param max   valore massimo di ritorno
+     * @param value value to wrap
+     * @param min   minimum value of the range
+     * @param max   maximum value of the range
      */
     public static int wrap(int value, int min, int max) {
-        int range = max - min + 1; // numero di valori nel range
-        if (value < min) { // se il valore è più piccolo del minimo riporta il valore
-            // nell'intervallo
+        int range = max - min + 1; // number of values in the range
+        if (value < min) { // if the value is smaller than the minimum bring it back in the range
             return max - ((min - value - 1) % range);
-        } else if (value > max) { // se il valore è più grande del massimo riporta il valore
-            // nell'intervallo
+        } else if (value > max) { // if the value is bigger than the maximum bring it back in the range
             return min + ((value - max - 1) % range);
         }
-        return value; // il valore è già nell'intervallo
+        return value; // the value may already be in the range
     }
 
     public static boolean isOccurring(int occurringPercentage) {
@@ -37,16 +35,15 @@ public final class Utils {
     }
 
     /**
-     * Dato un array di valori da 0 a 100 la funzione estrae, con le probabilità inserite, un
-     * indice dell'array.
-     * Se sono presenti più indici ne sceglie uno a caso.
+     * Given an array of values from 0 to 100, the function extracts an index of the array with the
+     * inserted probabilities. If there are more indices, it chooses one at random.
      * <p>
      * <br/>
-     * ESEMPIO:
-     * Se si usa l'array [10, 50] si avrà che:
+     * EXAMPLE:
+     * If you use the array [10, 50] you will have that:
      *     <ul>
-     *         <li> l'indice 0 ha il 10% di possibilità di essere estratto </li>
-     *         <li> l'indice 1 ha il 50% di possibilità di essere estratto </li>
+     *         <li>the index 0 has 10% probability to get extracted</li>
+     *         <li>the index 1 has 50% probability to get extracted</li>
      *     </ul>
      * <p/>
      */
@@ -66,8 +63,8 @@ public final class Utils {
     }
 
     /**
-     * @param ms tempo in millisecondi
-     * @return stringa formattata con questo formato: {@code "%d h, %d min, %d s"}
+     * @param ms time in milliseconds
+     * @return formatted string with this format: {@code "%d h, %d min, %d s"}
      */
     public static String msToString(final int ms) {
         int s = ms / 1000 % 60;

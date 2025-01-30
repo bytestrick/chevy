@@ -21,6 +21,9 @@ import java.util.stream.Stream;
 
 import static chevy.view.Options.SELECTOR_CLICK_LISTENER;
 
+/**
+ * Main menu
+ */
 public final class Menu {
     private static final Icon ex = Load.icon("x", 48, 48);
     private static final Dimension spriteSize = new Dimension(200, 200);
@@ -78,7 +81,7 @@ public final class Menu {
     }
 
     /**
-     * Aggiorna il livello corrente nel menù quando si passa a un nuovo livello nel gioco
+     * Update the current level in the menu when passing to a new level in the game
      */
     public static void incrementLevel() {
         if (!ChamberManager.isLastChamber()) {
@@ -140,8 +143,8 @@ public final class Menu {
     }
 
     /**
-     * Aggiorna i componenti dopo il cambio scena.
-     * Impostare l'elemento attivo per {@link JComboBox} richiede che il componente sia visibile.
+     * Update the components after changing scene.
+     * Setting the active item for a {@link JComboBox} requires the component to be visible.
      */
     void updateComponents() {
         coins.setText(Data.get("progress.coins").toString());
@@ -153,9 +156,6 @@ public final class Menu {
         levelSelector.addActionListener(this::actionPerformed);
     }
 
-    /**
-     * Procedura del costruttore: costruzione dell'interfaccia
-     */
     private void initUI() {
         setStrings();
         List.of(play, quit, options, playerCycleNext, playerCyclePrev, unlock)
@@ -225,13 +225,12 @@ public final class Menu {
         if (LevelSelectorRenderer.isInsideInterval(level)) {
             Sound.play(Sound.Effect.BUTTON);
             Data.set("menu.level", level);
-            Log.info("Cambiato livello: " + level);
+            Log.info("Changed level: " + level);
         } else {
             levelSelector.hidePopup();
             levelSelector.setSelectedIndex(level);
             Sound.play(Sound.Effect.STOP);
-            JOptionPane.showMessageDialog(window, String.format(Options.strings.getString("dialog" +
-                            ".levelLocked"), level), null,
+            JOptionPane.showMessageDialog(window, String.format(Options.strings.getString("dialog.levelLocked"), level), null,
                     JOptionPane.WARNING_MESSAGE, ex);
             SwingUtilities.invokeLater(levelSelector::showPopup);
         }
@@ -264,10 +263,8 @@ public final class Menu {
     }
 
     /**
-     * L'azione di passare a {@link Window.Scene#PLAYING} e avviare il gioco. È innescata dal
-     * JButton play e
-     * dal tasto 'invio'
-     * sulla tastiera.
+     * The action of switching to {@link Window.Scene#PLAYING} and starting the game. It is triggered
+     * by the JButton play and the 'enter' key on the keyboard.
      */
     private void playAction() {
         Sound.play(Sound.Effect.PLAY_BUTTON);
@@ -285,9 +282,8 @@ public final class Menu {
     }
 
     /**
-     * L'azione di passaggio al personaggio successivo, innescata dall'apposito JButton e dalla
-     * freccia a destra
-     * sulla tastiera.
+     * The action of switching to the next character, triggered by the appropriate JButton and the
+     * right arrow key on the keyboard.
      */
     private void playerCycleNextAction() {
         Sound.play(Sound.Effect.BUTTON);
@@ -296,9 +292,8 @@ public final class Menu {
     }
 
     /**
-     * L'azione di passaggio al personaggio precedente, innescata dall'apposito JButton e dalla
-     * freccia a sinistra
-     * sulla tastiera.
+     * The action of switching to the previous character, triggered by the appropriate JButton and
+     * the left arrow key on the keyboard.
      */
     private void playerCyclePrevAction() {
         Sound.play(Sound.Effect.BUTTON);
@@ -307,9 +302,9 @@ public final class Menu {
     }
 
     /**
-     * Controlla il selettore del personaggio
+     * Handles the character selector
      *
-     * @param type il tipo di giocatore in {@link Player.Type}
+     * @param type the type of player in {@link Player.Type}
      */
     private void setPlayerType(final Player.Type type) {
         indicators[playerType.ordinal()].setSelected(false);
@@ -360,7 +355,7 @@ public final class Menu {
     }
 
     /**
-     * Carica le sprite usate per mostrare il personaggio
+     * Loads the sprites used to show the character
      */
     private void loadCharactersSprites() {
         for (Player.Type t : Player.Type.values()) {
@@ -372,35 +367,32 @@ public final class Menu {
                 nSprites = 4;
             }
             for (int f = 0; f < nSprites; ++f) { // 2 frame
-                final String path = "/sprites/player/" + t.toString().toLowerCase() + "/idle/down"
-                        + "/" + f + substring + ".png";
-                final BufferedImage img = Load.image(path);
-                sprites[t.ordinal()][f] = img.getScaledInstance(spriteSize.width,
-                        spriteSize.height, Image.SCALE_SMOOTH);
+                String path = "/sprites/player/" + t.toString().toLowerCase() + "/idle/down/" + f + substring + ".png";
+                BufferedImage img = Load.image(path);
+                sprites[t.ordinal()][f] = img.getScaledInstance(spriteSize.width, spriteSize.height, Image.SCALE_SMOOTH);
             }
         }
     }
 
     /**
-     * Crea un thread the anima il personaggio nel menu
-     * Da usare quando si entra nella scena MENU.
+     * Create a thread that animates the character in the menu.
      */
     void startCharacterAnimation() {
         if (animationWorker == null) {
             animationWorker = Thread.ofPlatform().start(() -> {
-                Log.info("Thread per l'animazione del personaggio creato");
+                Log.info("Thread for the character animation created");
                 animationRunning = true;
                 while (animationRunning) {
                     characterAnimation.repaint();
                     alternateAnimation = !alternateAnimation;
 
-                    // Ridisegna dopo un certo intervallo, tranne quando riceve updateAnimation
-                    // .notify(), in quel caso  ridisegna subito e questo evento è innescato dal
-                    // cambiamento del personaggio da parte dell'utente.
+                    // Renders after a certain interval, except when it receives updateAnimation
+                    // .notify(), in that case it renders immediately and this event is triggered by
+                    // the user changing the character.
                     synchronized (updateAnimation) {
                         try {
                             while (animationPaused) {
-                                Log.info("Animazione personaggio in pausa");
+                                Log.info("Character animation paused");
                                 updateAnimation.wait();
                             }
                             updateAnimation.wait(386);
@@ -409,7 +401,7 @@ public final class Menu {
                         }
                     }
                 }
-                Log.warn("Thread per l'animazione del personaggio terminato");
+                Log.warn("Thread for the character animation terminated");
             });
         } else if (animationPaused) {
             synchronized (updateAnimation) {
@@ -420,20 +412,19 @@ public final class Menu {
     }
 
     /**
-     * Fa attendere il thread che si occupa dell'animazione del personaggio
-     * Da usare quando si lascia la scena MENU.
+     * Makes the thread that handles the character animation wait
      */
     private void stopCharacterAnimation() {
         if (!animationPaused) {
             synchronized (updateAnimation) {
                 animationPaused = true;
-                updateAnimation.notify(); // termina subito l'attesa
+                updateAnimation.notify(); // wakes up the thread
             }
         }
     }
 
     /**
-     * Chiamato dal form dell'interfaccia per la creazione personalizzata dei componenti
+     * Called by the interface form for custom component creation
      */
     private void createUIComponents() {
         final Color purple = UIManager.getColor("Chevy.color.purpleDark");
@@ -446,10 +437,8 @@ public final class Menu {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-                g2d.setPaint(new LinearGradientPaint(0, 0, getWidth() * .1f, getHeight(),
-                        fractions, colors));
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setPaint(new LinearGradientPaint(0, 0, getWidth() * .1f, getHeight(), fractions, colors));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
@@ -481,21 +470,20 @@ public final class Menu {
     }
 
     /**
-     * Rende possibile avere elementi non selezionabili in {@link JComboBox}
+     * Makes it possible to have non-selectable items in a {@link JComboBox}
      * <p>
-     * <a href="https://stackoverflow.com/a/23724201">Fonte</a>
-     * <p>
-     * Funziona in combinazione con l'{@link java.awt.event.ActionListener} di
-     * {@link #levelSelector}
+     * <a href="https://stackoverflow.com/a/23724201">Source</a>
+     * </p>
+     * Works in combination with the {@link java.awt.event.ActionListener} of {@link #levelSelector}
      */
     private static class LevelSelectorRenderer extends BasicComboBoxRenderer {
         private static final ListSelectionModel model = new DefaultListSelectionModel();
         private static int enabledLast;
 
         /**
-         * Imposta l'intervallo di opzioni selezionabile in {@link JComboBox}
+         * Sets the range of selectable options in a {@link JComboBox}
          *
-         * @param last fine dell'intervallo
+         * @param last end of the range
          */
         static void setLastEnabledItemIndex(final int last) {
             enabledLast = last;
@@ -503,10 +491,8 @@ public final class Menu {
         }
 
         /**
-         * @param x indice di un elemento del {@link JComboBox}
-         * @return {@code true} se l'indice è compreso nell'intervallo degli elementi attivi,
-         * {@code false}
-         * altrimenti
+         * @param x index of an element of the {@link JComboBox}
+         * @return {@code true} if the index is within the range set by {@link #setLastEnabledItemIndex(int)}, {@code false} otherwise
          */
         private static boolean isInsideInterval(final int x) {
             return x >= 0 && x <= enabledLast;

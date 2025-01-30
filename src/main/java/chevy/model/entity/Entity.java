@@ -7,7 +7,7 @@ import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Log;
 import chevy.utils.Utils;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.UUID;
 
 public abstract class Entity {
@@ -36,54 +36,91 @@ public abstract class Entity {
         return currentVertex.getState();
     }
 
-    public int getDrawLayer() {return Math.abs(drawLayer);}
+    public int getDrawLayer() {
+        return Math.abs(drawLayer);
+    }
 
     public Vertex getState(EntityState state) {
-        Log.warn("La funzione getState() deve essere ridefinita opportunamente nelle classi " +
-                "figlie");
+        Log.warn("getState() must be overridden in child classes");
         return null;
     }
 
-    public boolean changeState(EntityState state) {return stateMachine.changeState(state);}
+    public boolean changeState(EntityState state) {
+        return stateMachine.changeState(state);
+    }
 
-    public boolean canChange(EntityState state) {return stateMachine.canChange(state);}
+    public boolean canChange(EntityState state) {
+        return stateMachine.canChange(state);
+    }
 
-    public boolean checkAndChangeState(EntityState state) {return stateMachine.checkAndChangeState(state);}
+    public boolean checkAndChangeState(EntityState state) {
+        return stateMachine.checkAndChangeState(state);
+    }
 
-    public Direction getDirection() {return direction;}
+    public Direction getDirection() {
+        return direction;
+    }
 
-    public void setDirection(Direction direction) {this.direction = direction;}
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
 
-    public boolean shouldNotDraw() {return !shouldDraw;}
+    public boolean shouldNotDraw() {
+        return !shouldDraw;
+    }
 
-    public void setShouldDraw(boolean shouldDraw) {this.shouldDraw = shouldDraw;}
+    public void setShouldDraw(boolean shouldDraw) {
+        this.shouldDraw = shouldDraw;
+    }
 
-    public synchronized int getDamage() {return Utils.random.nextInt(minDamage, maxDamage + 1);}
+    public synchronized int getDamage() {
+        return Utils.random.nextInt(minDamage, maxDamage + 1);
+    }
 
     public void setDamage(int minDamage, int maxDamage) {
         this.minDamage = minDamage;
         this.maxDamage = maxDamage;
     }
 
-    public int getMaxDamage() {return maxDamage;}
+    public int getMaxDamage() {
+        return maxDamage;
+    }
 
-    public int getMinDamage() {return minDamage;}
+    public int getMinDamage() {
+        return minDamage;
+    }
 
-    public EntityType getType() {return type;}
+    public EntityType getType() {
+        return type;
+    }
 
-    public EntityType getGenericType() {return null;}
+    public EntityType getGenericType() {
+        return null;
+    }
 
-    public final int getRow() {return position.y;}
+    public final int getRow() {
+        return position.y;
+    }
 
-    public final int getCol() {return position.x;}
+    public final int getCol() {
+        return position.x;
+    }
 
-    public final Point getPosition() {return new Point(position);}
+    public final Point getPosition() {
+        return new Point(position);
+    }
 
-    public boolean isCrossable() {return crossable;}
+    public boolean isCrossable() {
+        return crossable;
+    }
 
-    public boolean shouldNotUpdate() {return !shouldUpdate;}
+    public boolean shouldNotUpdate() {
+        return !shouldUpdate;
+    }
 
-    public void removeFromUpdate() {shouldUpdate = false;}
+    public void removeFromUpdate() {
+        shouldUpdate = false;
+    }
 
     public boolean isSafeToCross() {
         if (crossable) {
@@ -92,13 +129,19 @@ public abstract class Entity {
         return false;
     }
 
-    public void setSafeToCross(boolean safeToCross) {this.safeToCross = safeToCross;}
+    public void setSafeToCross(boolean safeToCross) {
+        this.safeToCross = safeToCross;
+    }
 
     @Override
-    public int hashCode() {return uuid.hashCode();}
+    public int hashCode() {
+        return uuid.hashCode();
+    }
 
     @Override
-    public String toString() {return "ENTITY";}
+    public String toString() {
+        return "ENTITY";
+    }
 
     @Override
     public boolean equals(Object o) {

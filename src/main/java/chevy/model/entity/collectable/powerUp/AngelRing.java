@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.view.Options;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class AngelRing extends PowerUp {
     public AngelRing(Point position) {
@@ -13,8 +13,12 @@ public final class AngelRing extends PowerUp {
     }
 
     @Override
-    public String getName() {return Options.strings.getString("powerUp.angelRing.name");}
+    public String getName() {
+        return Options.strings.getString("powerUp.angelRing.name");
+    }
 
     @Override
-    public String getDescription() {return Options.strings.getString("powerUp.angelRing.desc");}
+    public String getDescription() {
+        return Options.strings.getString("powerUp.angelRing.desc");
+    }
 }

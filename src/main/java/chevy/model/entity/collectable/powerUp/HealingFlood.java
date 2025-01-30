@@ -2,10 +2,10 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.view.Options;
 
-import java.awt.Point;
+import java.awt.*;
 
 /**
- * I nemici aumentano la probabilità di rilasciare pozioni di cura del 30%
+ * The enemies increase the probability of releasing healing potions by 30%
  */
 public final class HealingFlood extends PowerUp {
     private static final float INCREASED_DROP_PROBABILITY = .3f;
@@ -17,10 +17,14 @@ public final class HealingFlood extends PowerUp {
         occurringPercentage = 100;
     }
 
-    public static float getIncreasedDropProbability() {return INCREASED_DROP_PROBABILITY;}
+    public static float getIncreasedDropProbability() {
+        return INCREASED_DROP_PROBABILITY;
+    }
 
     @Override
-    public String getName() {return Options.strings.getString("powerUp.healingFlood.name");}
+    public String getName() {
+        return Options.strings.getString("powerUp.healingFlood.name");
+    }
 
     @Override
     public String getDescription() {

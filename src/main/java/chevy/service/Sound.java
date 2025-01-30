@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * Effetti sonori e musica
+ * Sound effects and music
  */
 public final class Sound {
     private static final Clip[] effects = new Clip[Effect.values().length];
@@ -41,10 +41,10 @@ public final class Sound {
     }
 
     /**
-     * Mappa l'intervallo decimale tra 0 e 1 al dominio del gain della {@link Clip} specificata
+     * Maps the decimal interval between 0 and 1 to the gain domain of the specified {@link Clip}
      *
-     * @param clip       a cui applicare il gain
-     * @param percentage valore decimale compreso tra 0 e 1, rappresenta il volume
+     * @param clip       clip to apply the gain to
+     * @param percentage decimal value between 0 and 1, represents the volume
      */
     private static void applyGain(Clip clip, final double percentage) {
         if (clip != null) {
@@ -55,9 +55,9 @@ public final class Sound {
     }
 
     /**
-     * Riproduce un effetto
+     * Plays a sound effect
      *
-     * @param effect da riprodurre
+     * @param effect effect to play
      */
     public static void play(final Effect effect) {
         final int i = effect.ordinal();
@@ -68,9 +68,9 @@ public final class Sound {
     }
 
     /**
-     * Imposta il volume della musica
+     * Sets the volume of the music
      *
-     * @param percentage valore decimale compreso tra 0 e 1, rappresenta il volume
+     * @param percentage decimal value between 0 and 1, represents the volume
      */
     public static void setMusicVolume(final double percentage) {
         if (percentage >= 0 && percentage <= 1) {
@@ -78,30 +78,28 @@ public final class Sound {
             Arrays.stream(loops).forEach(loop -> applyGain(loop, percentage));
             Arrays.stream(songs).forEach(song -> applyGain(song, percentage));
         } else {
-            Log.warn("Il volume non può essere impostato al " + (percentage * 100) + "%");
+            Log.warn("The volume cannot be " + (percentage * 100) + "%");
         }
     }
 
     /**
-     * Imposta il volume degli effetti
+     * Sets the volume of the effects
      *
-     * @param percentage valore decimale compreso tra 0 e 1, rappresenta il volume
+     * @param percentage decimal value between 0 and 1, represents the volume
      */
     public static void setEffectsVolume(final double percentage) {
         if (percentage >= 0 && percentage <= 1) {
             Data.set("options.effectsVolume", percentage);
             Arrays.stream(effects).forEach(effect -> applyGain(effect, percentage));
         } else {
-            Log.warn("Il volume non può essere impostato al " + (percentage * 100) + "%");
+            Log.warn("The volume cannot be" + (percentage * 100) + "%");
         }
     }
 
     /**
-     * Avvia la musica di gioco
+     * Starts the game music
      *
-     * @param option se {@link Music#NEW_SONG} fa in modo che parta una nuova canzone diversa dalla
-     *               precedente, altrimenti fa partire la canzone precedente dal punto in cui è
-     *               stata interrotta
+     * @param option if {@link Music#NEW_SONG} starts a new song different from the previous one, otherwise starts the previous song from where it was interrupted
      */
     public static void startMusic(Music option) {
         if (Stream.of(songs).allMatch(Objects::nonNull)
@@ -110,7 +108,7 @@ public final class Sound {
                     Stream.of(songs).filter(clip -> !clip.equals(currentSong)).toList();
             currentSong = choices.get(Utils.random.nextInt(choices.size()));
             currentSong.setFramePosition(0);
-            Log.info("Nuova canzone scelta");
+            Log.info("New song selected");
         }
         musicPaused = false;
         currentSongLineListener = Sound::handleSongFinished;
@@ -119,33 +117,33 @@ public final class Sound {
     }
 
     /**
-     * Quando la clip corrente riceve un segnale di STOP, e si determina che sia dovuto alla fine
-     * della riproduzione, fa partire un'altra canzone
+     * When the current clip receives a STOP signal, and it is determined that it is due to the end
+     * of the playback, it starts another song
      */
     private static void handleSongFinished(LineEvent event) {
         if (!musicPaused && event.getType() == LineEvent.Type.STOP
                 && Window.isQuitDialogNotActive() && GamePanel.isPauseDialogNotActive()) {
-            Log.info("La canzone è finita");
+            Log.info("Song finished");
             currentSong.removeLineListener(currentSongLineListener);
             startMusic(Music.NEW_SONG);
         }
     }
 
     /**
-     * Mette in pausa la musica di gioco
+     * Pause the game music
      */
     public static void stopMusic() {
         if (currentSong != null) {
             musicPaused = true;
             currentSong.stop();
-            Log.info("Musica di gioco stoppata");
+            Log.info("Music paused");
         }
     }
 
     /**
-     * Avvia la musica del menù
+     * Start the menu music
      *
-     * @param option se cambiare canzone o meno
+     * @param option if {@link Music#NEW_SONG} starts a new song different from the previous one, otherwise starts the previous song from where it was interrupted
      */
     public static void startLoop(Music option) {
         if (currentLoop == null || option == Music.NEW_SONG) {
@@ -153,23 +151,22 @@ public final class Sound {
         }
         if (currentLoop != null) {
             currentLoop.loop(Clip.LOOP_CONTINUOUSLY);
-            Log.info("Musica del menù avvivata");
+            Log.info("New loop selected");
         }
     }
 
     /**
-     * Mette in pausa la musica del menù
+     * Pause the menu music
      */
     public static void stopLoop() {
         if (currentLoop != null) {
             currentLoop.stop();
-            Log.info("Musica del menù stoppata");
+            Log.info("Loop stopped");
         }
     }
 
     /**
-     * Una flag per gestire il comportamento di {@link #startMusic} e {@link #startLoop} senza usare un argomento
-     * boolean
+     * A flag to manage the behavior of {@link #startMusic} and {@link #startLoop} without using a boolean argument
      */
     public enum Music {NEW_SONG, SAME_SONG}
 

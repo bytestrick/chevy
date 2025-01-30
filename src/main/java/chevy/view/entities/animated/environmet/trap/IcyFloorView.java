@@ -7,11 +7,11 @@ public final class IcyFloorView extends TrapView {
     public IcyFloorView(IcyFloor icyFloor) {
         super(icyFloor);
 
-        final String res = "/sprites/traps/icyFloor/";
-        final float icyFloorDuration = trap.getState(State.ICY_FLOOR).getDuration();
+        String res = "/sprites/traps/icyFloor/";
+        float icyFloorDuration = trap.getState(State.ICY_FLOOR).getDuration();
         animate(State.ICY_FLOOR, null, 1, icyFloorDuration, res + "base");
 
-        final float sparklingDuration = trap.getState(State.ICY_FLOOR_SPARKLING).getDuration();
+        float sparklingDuration = trap.getState(State.ICY_FLOOR_SPARKLING).getDuration();
         animate(State.ICY_FLOOR_SPARKLING, null, 8, sparklingDuration, res + "sparkling");
     }
 }

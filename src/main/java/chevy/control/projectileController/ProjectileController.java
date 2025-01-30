@@ -10,24 +10,22 @@ import chevy.model.entity.dynamicEntity.projectile.Projectile;
 import chevy.model.entity.dynamicEntity.projectile.SlimeShot;
 
 /**
- * Gestisce le interazioni e gli aggiornamenti dei proiettili nel gioco, delegando la gestione
- * specifica a controller
- * più specifici come ArrowController e SlimeShotController.
+ * Manages the interactions and updates of the projectiles in the game, delegating the specific management to more specific controllers like ArrowController and SlimeShotController.
  */
 public final class ProjectileController {
     /**
-     * Controller per la gestione delle frecce
+     * Controller for managing arrows
      */
     private final ArrowController arrowController;
     /**
-     * Controller per la gestione degli slime shot
+     * Controller for managing slime shots
      */
     private final SlimeShotController slimeShotController;
 
     /**
-     * @param chamber          la stanza di gioco
-     * @param playerController il controller del giocatore
-     * @param enemyController  il controller dei nemici
+     * @param chamber          the game room
+     * @param playerController the player controller
+     * @param enemyController  the enemy controller
      */
     public ProjectileController(Chamber chamber, PlayerController playerController,
                                 EnemyController enemyController) {
@@ -36,12 +34,11 @@ public final class ProjectileController {
     }
 
     /**
-     * Gestisce le interazioni dei proiettili in base al tipo di interazione e ai soggetti
-     * coinvolti.
+     * Manages the interactions of the projectiles based on the type of interaction and the subjects involved.
      *
-     * @param interaction il tipo di interazione da gestire
-     * @param subject     l'entità che avvia l'interazione
-     * @param projectile  l'entità che subisce l'interazione
+     * @param interaction the type of interaction to manage
+     * @param subject     entity that starts the interaction
+     * @param projectile  entity that is hit by the interaction
      */
     public void handleInteraction(Interaction interaction, DynamicEntity subject,
                                   Projectile projectile) {
@@ -52,11 +49,9 @@ public final class ProjectileController {
     }
 
     /**
-     * Gestisce l'interazione tra un giocatore e un proiettile, delegando il controllo al
-     * controller appropriato in
-     * base al tipo di proiettile.
+     * Manages the interaction between a player and a projectile, delegating the control to the appropriate controller based on the type of projectile.
      *
-     * @param projectile proiettile coinvolto nell'interazione
+     * @param projectile projectile interacting with the player
      */
     private void playerInInteraction(Projectile projectile) {
         switch (projectile.getType()) {
@@ -68,11 +63,9 @@ public final class ProjectileController {
     }
 
     /**
-     * Aggiorna lo stato di un proiettile, delegando il controllo al controller appropriato in
-     * base al tipo di
-     * proiettile.
+     * Updates the state of a projectile, delegating the control to the appropriate controller based on the type of projectile.
      *
-     * @param projectile proiettile da aggiornare
+     * @param projectile projectile to update
      */
     private synchronized void updateProjectile(Projectile projectile) {
         switch (projectile.getType()) {

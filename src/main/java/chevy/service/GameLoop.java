@@ -2,25 +2,28 @@ package chevy.service;
 
 import chevy.utils.Log;
 
-import java.awt.Toolkit;
+import java.awt.*;
 
 /**
- * Il thread che aggiorna il gioco
+ * The thread that updates the game
  */
 public final class GameLoop {
-    /** FPS ottimali del gioco */
+    /**
+     * The optimal FPS of the game
+     */
     private static final int TARGET_FRAME_RATE = 60;
     private static final Thread.Builder.OfPlatform worker =
             Thread.ofPlatform().priority(Thread.MAX_PRIORITY);
     private static final Object mutex = new Object();
     private static final Toolkit toolkit = Toolkit.getDefaultToolkit();
     private static boolean isRunning, isPaused;
-    /** Serve a tenere traccia del tempo di gioco */
+    /**
+     * It's used to keep track of the time played
+     */
     private static long timeStarted;
 
     /**
-     * La prima volta crea il {@link #worker} e lo avvia. Tutte le successiva chiamate
-     * interrompono la pausa.
+     * The first time creates the {@link #worker} and starts it. All the subsequent calls stop the pause.
      */
     public static void start() {
         synchronized (mutex) {
@@ -37,7 +40,7 @@ public final class GameLoop {
     }
 
     /**
-     * Mette il {@link #worker} stato di attesa
+     * Puts the {@link #worker} in waiting state
      */
     public static void stop() {
         synchronized (mutex) {
@@ -46,18 +49,17 @@ public final class GameLoop {
                 mutex.notify();
                 // narrowing conversion
                 final int value = Long.valueOf(System.currentTimeMillis() - timeStarted).intValue();
-                assert value > 0 : "Tempo di gioco negativo: " + value;
+                assert value > 0 : "negative played time: " + value;
                 Data.increase("stats.time.totalPlayed.count", value);
             }
         }
     }
 
     /**
-     * A intervalli calcolati aggiorna {@link chevy.model} tramite {@link UpdateManager} e
-     * {@link chevy.view} tramite {@link RenderManager}
+     * At regular intervals updates {@link chevy.model} through {@link UpdateManager} and {@link chevy.view} through {@link RenderManager}
      */
     private static void run() {
-        Log.info("Game loop avviato");
+        Log.info("Game loop started");
         final int frameDuration = 1000 / TARGET_FRAME_RATE;
         long lastTime = System.currentTimeMillis();
         while (isRunning) {
@@ -67,23 +69,23 @@ public final class GameLoop {
                     synchronized (mutex) {
                         mutex.wait(timeToWait);
                         while (isPaused) {
-                            Log.info("Game loop in pausa");
+                            Log.info("Game loop paused");
                             mutex.wait();
 
-                            // Dopo la durata indefinita della pausa il vecchio valore di
-                            // lastTime non ha significato
+                            // After the duration of the indefinite pause, the old value of lastTime has no meaning
                             lastTime = System.currentTimeMillis();
                         }
                     }
-                } catch (InterruptedException ignored) {}
+                } catch (InterruptedException ignored) {
+                }
             }
-            final double delta = (System.currentTimeMillis() - lastTime) / 1000d; // secondi
+            final double delta = (System.currentTimeMillis() - lastTime) / 1000d; // seconds
             lastTime = System.currentTimeMillis();
 
             UpdateManager.update(delta);
             RenderManager.render(delta);
             toolkit.sync();
         }
-        Log.error("Game loop terminato");
+        Log.error("Game loop stopped");
     }
 }

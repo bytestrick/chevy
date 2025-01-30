@@ -3,13 +3,8 @@ package chevy.view.component;
 import chevy.utils.Load;
 import chevy.view.Window;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 
 public class ProgressBarLabel extends JPanel {
     private final ProgressBar progressBar;
@@ -37,7 +32,9 @@ public class ProgressBarLabel extends JPanel {
         resizeFont();
     }
 
-    protected void setTexture(int i, String path) {progressBar.setTexture(i, path);}
+    protected void setTexture(int i, String path) {
+        progressBar.setTexture(i, path);
+    }
 
     protected void setFontSize(int value) {
         fontSize = value;
@@ -58,9 +55,15 @@ public class ProgressBarLabel extends JPanel {
         progressBar.setStepTexture("/sprites/component/progressBar/attackBar/step.png");
     }
 
-    public int getMaxValue() {return progressBar.getMaxValue();}
+    public int getMaxValue() {
+        return progressBar.getMaxValue();
+    }
 
-    public void setMaxValue(int maxValue) {progressBar.setMaxValue(maxValue);}
+    public void setMaxValue(int maxValue) {
+        progressBar.setMaxValue(maxValue);
+    }
 
-    public void setText(String text) {label.setText(text);}
+    public void setText(String text) {
+        label.setText(text);
+    }
 }

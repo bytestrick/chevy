@@ -12,19 +12,11 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.util.SystemInfo;
 
-import javax.swing.Icon;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.UIManager;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 
 /**
- * Finestra principale
+ * Main window
  */
 public final class Window extends JFrame {
     static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
@@ -35,8 +27,7 @@ public final class Window extends JFrame {
     private static boolean quitDialogActive;
 
     static {
-        final int maxSideLength =
-                Math.round(Math.min(SCREEN_SIZE.width, SCREEN_SIZE.height) * scale);
+        int maxSideLength = Math.round(Math.min(SCREEN_SIZE.width, SCREEN_SIZE.height) * scale);
         if (SCREEN_SIZE.width < SCREEN_SIZE.height) {
             size.height =
                     Math.round(1.f * maxSideLength * ASPECT_RATIO.height / ASPECT_RATIO.width);
@@ -58,7 +49,7 @@ public final class Window extends JFrame {
     private Scene scene;
 
     private Window() {
-        // Colore dello sfondo della finestra durante il caricamento
+        // Background color of the window during loading
         setBackground(UIManager.getColor("Chevy.color.purpleDark"));
         windowController = new WindowController(this);
         setSize(size);
@@ -68,16 +59,15 @@ public final class Window extends JFrame {
         setVisible(true);
         setMinimumSize(new Dimension(550, 650));
         requestFocus();
-        SwingUtilities.invokeLater(() -> { // esecuzione asincrona
+        SwingUtilities.invokeLater(() -> {
             ChamberView.topBarHeight = getInsets().top;
             setResizable(true);
-            // visto che componentResized() non viene chiamata sempre all'avvio questo
-            // assicura il corretto scale dei componenti
+            // componentResized() is not always called at startup, this ensures that all components are scaled correctly
             updateSize(getSize());
             gamePanel.windowResized(scale);
         });
         ChamberManager.setWindow(this);
-        Log.info("Window: creazione terminata [w: " + size.width + ", h: " + size.height + "]");
+        Log.info("Window size: " + size.width + "x" + size.height);
     }
 
     public static void updateSize(Dimension size) {
@@ -89,38 +79,40 @@ public final class Window extends JFrame {
     }
 
     /**
-     * Inizializza la FlatLaf e imposta personalizzazioni.
-     * <a href="https://www.formdev.com/flatlaf/customizing/">Documentazione</a>.
-     * Le modifica relative al LookAndFell vanno fatte prima di creare istanze di qualsiasi
-     * componente.
+     * Initialises FlatLaf and sets customisations.
+     * <a href="https://www.formdev.com/flatlaf/customizing/">Documentation</a>.
+     * Changes related to the LookAndFell must be done before creating instances of any component.
      */
     public static void create() {
-        FlatLaf.registerCustomDefaultsSource("style"); // collega il foglio di stile
+        FlatLaf.registerCustomDefaultsSource("style"); // load the style sheet
         FlatDarkLaf.setup();
-        // Le decorazioni della finestra personalizzate sono già abilitate su Windows e non sono
-        // supportate su Mac.
+        // Window decorations are already enabled on Windows and are not supported on Mac.
         if (SystemInfo.isLinux) {
             JFrame.setDefaultLookAndFeelDecorated(true);
             JDialog.setDefaultLookAndFeelDecorated(true);
         }
         UIManager.put("defaultFont", Load.font("VT323"));
 
-        // L'attesa iniziale affinché il tooltip si attivi è più breve
+        // The initial delay before the tooltip appears is shorter
         ToolTipManager.sharedInstance().setInitialDelay(50);
-        // Il tooltip persiste per un'ora se il cursore vi giace sopra per tanto
+        // The tooltip persists for an hour if the cursor lies over it for that long
         ToolTipManager.sharedInstance().setDismissDelay(3_600_000);
 
         new Window();
     }
 
-    public static boolean isQuitDialogNotActive() {return !quitDialogActive;}
+    public static boolean isQuitDialogNotActive() {
+        return !quitDialogActive;
+    }
 
-    static boolean isQuitDialogActive() {return quitDialogActive;}
+    static boolean isQuitDialogActive() {
+        return quitDialogActive;
+    }
 
     /**
-     * Unico punto di uscita (corretto) dall'app.
-     * Il {@link WindowController} collega l'evento di chiusura del {@code JFrame} a questo
-     * metodo, perciò premere la 'X' della cornice della finestra passa il controllo qui.
+     * Only correct way to exit the app.
+     * The {@link WindowController} links the closing event of the {@code JFrame} to this
+     * method, so pressing the 'X' of the window frame passes control here.
      */
     public void quitAction() {
         quitDialogActive = true;
@@ -134,7 +126,7 @@ public final class Window extends JFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, POWER, opts, opts[opts.length - 1]);
         if (ans == 0) {
             Sound.play(Sound.Effect.BUTTON);
-            Log.info("Salvataggio dei dati ...");
+            Log.info("Saving data ...");
             Data.write();
             Log.info("Ciao");
             System.exit(0);
@@ -148,7 +140,7 @@ public final class Window extends JFrame {
     }
 
     /**
-     * Utile per portare l'app allo stato predefinito
+     * Bring the app to the default state
      */
     void refresh() {
         menu = new Menu(this);
@@ -157,16 +149,18 @@ public final class Window extends JFrame {
         gamePanel.windowResized(Window.scale);
     }
 
-    public Scene getScene() {return scene;}
+    public Scene getScene() {
+        return scene;
+    }
 
     /**
-     * Cambia la scena
+     * Change the scene
      *
-     * @param scene a cui si vuole passare
+     * @param scene the new scene
      */
     void setScene(Scene scene) {
         if (this.scene != scene) {
-            Log.info("Cambio scena da " + this.scene + " a " + scene);
+            Log.info("Changing scene from " + this.scene + " to " + scene);
             final JPanel panel = switch (scene) {
                 case MENU -> {
                     if (this.scene != Scene.OPTIONS) {
@@ -201,18 +195,26 @@ public final class Window extends JFrame {
             options.setupReturnAction(this.scene);
             this.scene = scene;
             setContentPane(panel);
-            requestFocus(); // mantieni il focus su Window
+            requestFocus(); // maintain focus on the window
             validate();
         }
     }
 
-    public GamePanel getGamePanel() {return gamePanel;}
+    public GamePanel getGamePanel() {
+        return gamePanel;
+    }
 
-    public Menu getMenu() {return menu;}
+    public Menu getMenu() {
+        return menu;
+    }
 
-    public Options getOptions() {return options;}
+    public Options getOptions() {
+        return options;
+    }
 
-    public WindowController getWindowController() {return windowController;}
+    public WindowController getWindowController() {
+        return windowController;
+    }
 
     public enum Scene {MENU, PLAYING, OPTIONS, TUTORIAL}
 }

@@ -16,5 +16,7 @@ public final class VoidView extends EntityView {
     }
 
     @Override
-    public BufferedImage getFrame() {return frame;}
+    public BufferedImage getFrame() {
+        return frame;
+    }
 }

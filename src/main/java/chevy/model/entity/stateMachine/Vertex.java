@@ -5,22 +5,31 @@ import java.util.Hashtable;
 import java.util.Objects;
 
 /**
- * Uno stato nella {@link StateMachine}
+ * Used in the {@link StateMachine}
  */
 public class Vertex {
-    private final EntityState state; // L'enumerazione associata a questo stato.
-    /** Indica se questo stato ha un auto-arco */
+    /**
+     * The enumeration associated with this state
+     */
+    private final EntityState state;
+    /**
+     * Whether this state has a self-edge
+     */
     private final boolean selfEdge;
-    /** La durata di questo stato */
+    /**
+     * The duration of this state
+     */
     private final float duration;
-    /** Gli stati collegati a questo stato */
+    /**
+     * The states linked to this state
+     */
     private final Dictionary<EntityState, Vertex> linkedVertices = new Hashtable<>();
     private final Timer timer;
 
     /**
-     * Crea uno stato senza auto-arco e senza durata
+     * Create a state without a self-edge and without a duration
      *
-     * @param state l'enumerazione associata a questo stato
+     * @param state the enumeration associated with this state
      */
     public Vertex(EntityState state) {
         this.state = state;
@@ -30,10 +39,10 @@ public class Vertex {
     }
 
     /**
-     * Crea uno stato senza auto-arco ma con una durata specificata
+     * Create a state without a self-edge but with a specified duration
      *
-     * @param state       l'enumerazione associata a questo stato
-     * @param secDuration la durata di questo stato in secondi
+     * @param state       the enumeration associated with this state
+     * @param secDuration the duration of this state in seconds
      */
     public Vertex(EntityState state, float secDuration) {
         this.state = state;
@@ -43,11 +52,11 @@ public class Vertex {
     }
 
     /**
-     * Crea uno stato con un auto-arco e una durata specificata
+     * Create a state with a self-edge and a specified duration
      *
-     * @param state    l'enumerazione associata a questo stato
-     * @param duration la durata di questo stato in secondi
-     * @param selfEdge indica se questo stato ha un auto-arco
+     * @param state    enumeration associated with this state
+     * @param duration the duration of this state
+     * @param selfEdge whether this state has a self-edge
      */
     public Vertex(EntityState state, float duration, boolean selfEdge) {
         this.state = state;
@@ -57,24 +66,26 @@ public class Vertex {
     }
 
     /**
-     * Restituisce l'enumerazione associata a questo stato
-     *
-     * @return L'enumerazione associata a questo stato
+     * @return the enumeration associated with this state
      */
-    public EntityState getState() {return state;}
+    public EntityState getState() {
+        return state;
+    }
 
     /**
-     * Collega un altro stato a questo stato
+     * Links another state to this state
      *
-     * @param vertex lo stato da collegare a questo stato
+     * @param vertex the state to link
      */
-    public void linkVertex(Vertex vertex) {linkedVertices.put(vertex.getState(), vertex);}
+    public void linkVertex(Vertex vertex) {
+        linkedVertices.put(vertex.getState(), vertex);
+    }
 
     /**
-     * Trova uno stato collegato allo stato corrente
+     * Find a state linked to the current state
      *
-     * @param state l'enumerazione dello stato da trovare
-     * @return lo stato collegato a questo stato, o {@code null} se non esiste
+     * @param state the state to find
+     * @return the state linked to this state, o {@code null} if it doesn't exist
      */
     Vertex findLinkedVertex(EntityState state) {
         if (selfEdge && Objects.equals(this.state, state)) {
@@ -84,12 +95,14 @@ public class Vertex {
     }
 
     /**
-     * @return la durata dello stato corrente
+     * @return the duration of this state
      */
-    public float getDuration() {return duration;}
+    public float getDuration() {
+        return duration;
+    }
 
     /**
-     * @return {@code true} se lo stato è terminato, {@code false} altrimenti
+     * @return {@code true} if the state has ended, {@code false} otherwise
      */
     public boolean isFinished() {
         if (timer == null) {
@@ -99,7 +112,7 @@ public class Vertex {
     }
 
     /**
-     * Avvia il timer dello stato corrente
+     * Start the timer of the current state
      */
     void startStateTimer() {
         if (timer != null && !timer.isRunning()) {
@@ -126,8 +139,12 @@ public class Vertex {
     }
 
     @Override
-    public int hashCode() {return state.hashCode();}
+    public int hashCode() {
+        return state.hashCode();
+    }
 
     @Override
-    public String toString() {return state.toString();}
+    public String toString() {
+        return state.toString();
+    }
 }

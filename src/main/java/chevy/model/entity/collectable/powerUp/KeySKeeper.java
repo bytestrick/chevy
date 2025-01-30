@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.view.Options;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class KeySKeeper extends PowerUp {
     private static final float INCREASED_DROP_PROBABILITY = .3f;
@@ -14,10 +14,14 @@ public final class KeySKeeper extends PowerUp {
         occurringPercentage = 100;
     }
 
-    public static float getIncreasedDropProbability() {return INCREASED_DROP_PROBABILITY;}
+    public static float getIncreasedDropProbability() {
+        return INCREASED_DROP_PROBABILITY;
+    }
 
     @Override
-    public String getName() {return Options.strings.getString("powerUp.keySKeeper.name");}
+    public String getName() {
+        return Options.strings.getString("powerUp.keySKeeper.name");
+    }
 
     @Override
     public String getDescription() {

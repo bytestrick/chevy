@@ -14,26 +14,21 @@ import chevy.service.Sound;
 import chevy.utils.Log;
 
 /**
- * Gestisce il comportamento e le interazioni del nemico {@link Zombie} all'interno del gioco.
- * Gestisce come lo Zombie risponde agli attacchi del giocatore,
- * ai colpi dei proiettili e coordina il suo stato e i suoi movimenti.
+ * Manages the behavior and interactions of the enemy {@link Zombie} in the game. Manages how it responds to player attacks, to projectile hits, and coordinates its state with its movements.
  */
 final class ZombieController {
     /**
-     * Riferimento alla stanza di gioco in cui si trova lo Zombie. Utilizzato per verificare le
-     * posizioni,
-     * aggiungere/rimuovere entità.
+     * Reference to the game room containing the {@link Zombie}. Used to check positions, add/remove entities, and manage interactions.
      */
     private final Chamber chamber;
     /**
-     * Riferimento al controller del giocatore, utilizzato per gestire le interazioni tra lo
-     * Zombie e il giocatore.
+     * Reference to the player controller, used to manage interactions between the {@link Zombie} and the player.
      */
     private final PlayerController playerController;
 
     /**
-     * @param chamber          riferimento della stanza di gioco
-     * @param playerController riferimento al controllo del giocatore
+     * @param chamber          reference to the game room
+     * @param playerController reference to the player controller
      */
     ZombieController(Chamber chamber, PlayerController playerController) {
         this.chamber = chamber;
@@ -41,28 +36,27 @@ final class ZombieController {
     }
 
     /**
-     * Gestisce le interazioni dello Zombie con il giocatore.
+     * Manages interactions between the {@link Zombie} and the player
      *
-     * @param player il giocatore che interagisce con lo Zombie
-     * @param zombie lo Zombie che subisce l'interazione
+     * @param player the player interacting with the Zombie
+     * @param zombie the Zombie participating in the interaction
      */
     static void playerInInteraction(Player player, Zombie zombie) {
-        // Se il giocatore è in stato di attacco, lo Zombie viene danneggiato in base al danno
-        // del giocatore.
+        // If the player is attacking, the Zombie gets damaged proportionally to the player attack damage
         if (player.getState().equals(Player.State.ATTACK)) {
             Sound.play(Sound.Effect.ZOMBIE_HIT);
             zombie.setDirection(Direction.positionToDirection(player, zombie));
             hitZombie(zombie, -1 * player.getDamage());
         } else {
-            Log.warn("Lo ZombieController non gestisce questa azione: " + player.getState());
+            Log.warn("ZombieController doesn't handle this action: " + player.getState());
         }
     }
 
     /**
-     * Gestisce le interazioni dello {@link Zombie} con i proiettili
+     * Manages the interactions of the {@link Zombie} with the projectiles
      *
-     * @param projectile il proiettile che colpisce lo Zombie
-     * @param zombie     lo Zombie che subisce l'interazione
+     * @param projectile the projectile hitting the Zombie
+     * @param zombie     the Zombie getting hit
      */
     static void projectileInteraction(Projectile projectile, Zombie zombie) {
         zombie.setDirection(Direction.positionToDirection(projectile, zombie));
@@ -70,10 +64,10 @@ final class ZombieController {
     }
 
     /**
-     * Applica danno allo {@link Zombie} e aggiorna il suo stato se possibile
+     * Applies damage to the {@link Zombie} and updates its state
      *
-     * @param zombie lo Zombie che subisce il danno
-     * @param damage il danno da applicare
+     * @param zombie the Zombie being hit
+     * @param damage the damage to apply
      */
     private static void hitZombie(Zombie zombie, int damage) {
         if (zombie.changeState(Zombie.State.HIT)) {
@@ -88,9 +82,9 @@ final class ZombieController {
     }
 
     /**
-     * Aggiorna lo stato dello Zombie a ogni ciclo di gioco
+     * Updates the state of the {@link Zombie} at each game cycle
      *
-     * @param zombie lo Zombie da aggiornare
+     * @param zombie the Zombie to update
      */
     void update(Zombie zombie) {
         if (zombie.isDead()) {
@@ -111,7 +105,7 @@ final class ZombieController {
 
         if (zombie.canChange(Zombie.State.MOVE)) {
             Direction direction = chamber.getDirectionToHitPlayer(zombie);
-            // Se non c'è un giocatore nelle vicinanze, lo Zombie vaga casualmente.
+            // If there is no player nearby, the Zombie wanders randomly.
             if (direction == null) { 
                 if (chamber.wanderChase(zombie, 4)) {
                     zombie.setCanAttack(false);

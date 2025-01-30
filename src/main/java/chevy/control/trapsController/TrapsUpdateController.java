@@ -10,9 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Gestisce gli aggiornamenti delle trappole del gioco. Implementa l'interfaccia Updatable per
- * integrarsi con il ciclo di
- * aggiornamento del gioco. Gestisce l'aggiunta, l'aggiornamento delle trappole.
+ * Manages the updates of the traps in the game. Interacts with the updates cycle of the game. Manages the addition, update and removal of traps from the updates.
  */
 public final class TrapsUpdateController implements Updatable {
     private final TrapsController trapsController;
@@ -21,9 +19,8 @@ public final class TrapsUpdateController implements Updatable {
     private boolean running;
 
     /**
-     * @param trapsController il controller delle trappole per gestire gli aggiornamenti delle
-     *                        trappole
-     * @param traps           la lista delle trappole da aggiornare
+     * @param trapsController the controller of the traps responsible for managing the interactions with the traps
+     * @param traps           list of traps to add
      */
     public TrapsUpdateController(TrapsController trapsController, List<Trap> traps) {
         this.trapsController = trapsController;
@@ -33,8 +30,7 @@ public final class TrapsUpdateController implements Updatable {
     }
 
     /**
-     * Aggiunge le trappole alla lista degli aggiornamenti se devono essere aggiornate
-     * e svuota la lista temporanea.
+     * Adds new traps to the update list and empties the temporary list.
      */
     private void addTraps() {
         for (Trap trap : trapsToAdd) {
@@ -46,7 +42,7 @@ public final class TrapsUpdateController implements Updatable {
     }
 
     /**
-     * Esegue l'aggiornamento delle trappole.
+     * Updates the state of all the traps on every cycle of the game.
      */
     @Override
     public void update(double delta) {
@@ -59,9 +55,9 @@ public final class TrapsUpdateController implements Updatable {
     public void stopUpdate() {running = false;}
 
     /**
-     * Verifica se gli aggiornamenti delle trappole sono terminati.
+     * Checks if the updates of the traps are finished.
      *
-     * @return {@code true} se non ci sono più trappole da aggiornare, altrimenti {@code false}
+     * @return {@code true} if there are no traps left to update or the game is not running, {@code false} otherwise
      */
     @Override
     public boolean updateFinished() {return traps.isEmpty() || !running;}

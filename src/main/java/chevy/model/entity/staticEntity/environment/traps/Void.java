@@ -1,6 +1,6 @@
 package chevy.model.entity.staticEntity.environment.traps;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class Void extends Trap {
     public Void(Point initialVelocity) {

@@ -9,12 +9,8 @@ import chevy.utils.Utils;
 import chevy.view.chamber.ChamberView;
 import chevy.view.hud.HUDView;
 
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SpringLayout;
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,9 +37,13 @@ public final class GamePanel extends JPanel {
         setBackground(new Color(24, 20, 37));
     }
 
-    public static boolean isPauseDialogNotActive() {return !pauseDialogActive;}
+    public static boolean isPauseDialogNotActive() {
+        return !pauseDialogActive;
+    }
 
-    public static ChamberView getChamberView() {return chamberView;}
+    public static ChamberView getChamberView() {
+        return chamberView;
+    }
 
     void addComponents(boolean tutorialBool) {
         if (tutorialBool) {
@@ -65,19 +65,17 @@ public final class GamePanel extends JPanel {
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
         for (JComponent component : List.of(chamberView, hudView, tutorial)) {
-            for (String dir : List.of(SpringLayout.NORTH, SpringLayout.EAST, SpringLayout.WEST,
-                    SpringLayout.SOUTH)) {
+            for (String dir : List.of(SpringLayout.NORTH, SpringLayout.EAST, SpringLayout.WEST, SpringLayout.SOUTH)) {
                 springLayout.putConstraint(dir, component, 0, dir, this);
             }
         }
     }
 
     /**
-     * Dialogo di pausa del gioco. È innescato dalla pressione di ESC.
+     * Game paused dialog. It is triggered by pressing ESC.
      */
     public void pauseDialog() {
-        if (!(pauseDialogActive || playerDeathDialogActive || winDialogActive
-                || Window.isQuitDialogActive())) {
+        if (!(pauseDialogActive || playerDeathDialogActive || winDialogActive || Window.isQuitDialogActive())) {
             pauseDialogActive = true;
             window.setTitle(Options.strings.getString("title.pause"));
             GameLoop.stop();
@@ -138,11 +136,11 @@ public final class GamePanel extends JPanel {
                         pauseDialog();
                     }
                 }
-                default -> { // e case 3
+                default -> {
                     if (ans == 4) {
                         Sound.play(Sound.Effect.BUTTON);
                     }
-                    // Considera anche il caso in cui l'utente chiude la finestra di dialogo.
+                    // Consider also the case where the user closes the dialog window.
                     GameLoop.start();
                     Sound.startMusic(Sound.Music.SAME_SONG);
                     setWindowTitle();
@@ -158,7 +156,7 @@ public final class GamePanel extends JPanel {
     }
 
     /**
-     * Dialogo innescato dalla morte del giocatore
+     * Dialog triggered by player death
      */
     public void playerDeathDialog() {
         playerDeathDialogActive = true;
@@ -185,14 +183,13 @@ public final class GamePanel extends JPanel {
                 Sound.play(Sound.Effect.BUTTON);
                 ChamberManager.enterChamber(ChamberManager.getCurrentChamberIndex());
             }
-            default -> playerDeathDialog(); // Questo dialogo non può essere ignorato
+            default -> playerDeathDialog(); // this dialog cannot be ignored
         }
-        //window.setTitle("Chevy - Morte");
         playerDeathDialogActive = false;
     }
 
     /**
-     * Dialogo innescato quando l'utente fa entrare il Player nella botola
+     * Dialog triggered when the user makes the Player enter the trapdoor
      */
     public void winDialog() {
         winDialogActive = true;
@@ -228,16 +225,24 @@ public final class GamePanel extends JPanel {
                 Sound.play(Sound.Effect.BUTTON);
                 ChamberManager.nextChamber();
             }
-            default -> winDialog(); // Questo dialogo non può essere ignorato
+            default -> winDialog(); // this dialog cannot be ignored
         }
         winDialogActive = false;
     }
 
-    public void windowResized(float scale) {hudView.windowResized(scale);}
+    public void windowResized(float scale) {
+        hudView.windowResized(scale);
+    }
 
-    public HUDView getHudView() {return hudView;}
+    public HUDView getHudView() {
+        return hudView;
+    }
 
-    public Window getWindow() {return window;}
+    public Window getWindow() {
+        return window;
+    }
 
-    public Tutorial getTutorial() {return tutorial;}
+    public Tutorial getTutorial() {
+        return tutorial;
+    }
 }

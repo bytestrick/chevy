@@ -18,29 +18,30 @@ import chevy.view.Window;
 import chevy.view.chamber.EntityToEntityView;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
 /**
- * Gestisce l'insieme di {@link Chamber} nel gioco
+ * Manages the set of {@link Chamber} in the game
  */
 public final class ChamberManager {
     public static final int NUMBER_OF_CHAMBERS = 10;
     private static final Chamber[] chambers = new Chamber[NUMBER_OF_CHAMBERS];
     private static Window window;
 
-    /** Indice della stanza corrente nel gioco. */
+    /**
+     * Index of the current room in the game.
+     */
     private static int currentChamberIndex;
 
     /**
-     * Carica un layer che comporrà la stanza.
+     * Loads a layer that will compose the room.
      *
-     * @param chamber l'indice della stanza da caricare
-     * @param layer   strato dell'immagine da caricare
-     * @return l'immagine della stanza, o null se l'immagine non può essere caricata
+     * @param chamber index of the room to load
+     * @param layer   layer of the room to load
+     * @return the image of the room, or null if the image cannot be loaded
      */
     private static BufferedImage loadLayer(int chamber, int layer) {
         final String path = "/chambers/chamber" + chamber + "/layer" + layer + ".png";
@@ -51,22 +52,22 @@ public final class ChamberManager {
             }
             return ImageIO.read(input);
         } catch (NullPointerException ignored) {
-            Log.info("La stanza " + chamber + " ha " + layer + " strati");
+            Log.info("Room " + chamber + " has " + layer + " layers");
         } catch (IOException e) {
-            Log.warn("Caricamento della stanza " + chamber + " fallito: " + e.getMessage());
+            Log.warn("Loading of room " + chamber + " failed: " + e.getMessage());
             System.exit(96);
         }
         return null;
     }
 
     /**
-     * Carica una stanza
+     * Load a room
      *
-     * @param index il numero della stanza da caricare (livello). Parte da 0.
-     * @return Chamber caricata
+     * @param index the number of the room to load, starting from 0
+     * @return the room loaded
      */
     private static Chamber loadChamber(int index) {
-        Log.info("Caricamento della stanza " + index);
+        Log.info("Loading room " + index);
         Chamber chamber = new Chamber();
         int layer = 0;
         BufferedImage chamberImage = loadLayer(index, layer);
@@ -86,8 +87,7 @@ public final class ChamberManager {
                         if (entity != null) {
                             switch (entity.getGenericType()) {
                                 case Environment.Type.TRAP -> chamber.addTraps((Trap) entity);
-                                case DynamicEntity.Type.PROJECTILE ->
-                                        chamber.addProjectile((Projectile) entity);
+                                case DynamicEntity.Type.PROJECTILE -> chamber.addProjectile((Projectile) entity);
                                 case LiveEntity.Type.ENEMY -> chamber.addEnemy((Enemy) entity);
                                 case LiveEntity.Type.PLAYER -> {
                                     entity.setShouldDraw(false);
@@ -95,9 +95,9 @@ public final class ChamberManager {
                                 }
                                 case Entity.Type.COLLECTABLE, Collectable.Type.POWER_UP ->
                                         chamber.addCollectable((Collectable) entity);
-                                case Entity.Type.ENVIRONMENT ->
-                                        chamber.addEnvironment((Environment) entity);
-                                default -> {}
+                                case Entity.Type.ENVIRONMENT -> chamber.addEnvironment((Environment) entity);
+                                default -> {
+                                }
                             }
                             chamber.addEntityOnTop(entity);
                         }
@@ -109,25 +109,26 @@ public final class ChamberManager {
         if (layer > 0) {
             return chamber;
         }
-        throw new RuntimeException("Tentativo di caricare la stanza " + index + " fallito");
+        throw new RuntimeException("Attempt to load room " + index + " failed");
     }
 
     /**
-     * Sblocca e passa alla stanza successiva
+     * Unlock and go to the next room
      */
-    public static void nextChamber() {enterChamber(currentChamberIndex + 1);}
+    public static void nextChamber() {
+        enterChamber(currentChamberIndex + 1);
+    }
 
-    public static boolean isLastChamber() {return currentChamberIndex == NUMBER_OF_CHAMBERS - 1;}
+    public static boolean isLastChamber() {
+        return currentChamberIndex == NUMBER_OF_CHAMBERS - 1;
+    }
+
+    public static Chamber getCurrentChamber() {
+        return chambers[currentChamberIndex];
+    }
 
     /**
-     * @return la stanza corrente
-     */
-    public static Chamber getCurrentChamber() {return chambers[currentChamberIndex];}
-
-    /**
-     * Imposta la stanza corrente a index. Se la stanza è già caricata la invalida e ne forza il
-     * caricamento.
-     * Predispone il gioco.
+     * Check if the current room is already loaded, if not, load it.
      *
      * @param index della stanza
      */
@@ -138,14 +139,18 @@ public final class ChamberManager {
             chambers[currentChamberIndex] = loadChamber(index);
             window.getGamePanel().setWindowTitle();
             ChamberController.refresh();
-            // Invalida la view del player corrente
+            // invalidate the view of the current player to force a reset
             EntityToEntityView.entityView.remove(getCurrentChamber().getPlayer());
             GameLoop.start();
             Sound.startMusic(Sound.Music.NEW_SONG); // 🎵
         }
     }
 
-    public static int getCurrentChamberIndex() {return currentChamberIndex;}
+    public static int getCurrentChamberIndex() {
+        return currentChamberIndex;
+    }
 
-    public static void setWindow(Window window) {ChamberManager.window = window;}
+    public static void setWindow(Window window) {
+        ChamberManager.window = window;
+    }
 }

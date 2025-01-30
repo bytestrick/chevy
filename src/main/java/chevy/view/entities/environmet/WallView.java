@@ -17,7 +17,9 @@ public final class WallView extends EntityView {
     private final Wall wall;
     private final Point2D.Double position = new Point2D.Double(0, 0);
 
-    public WallView(Wall wall) {this.wall = wall;}
+    public WallView(Wall wall) {
+        this.wall = wall;
+    }
 
     @Override
     public BufferedImage getFrame() {

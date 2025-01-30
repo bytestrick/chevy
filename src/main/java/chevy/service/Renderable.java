@@ -1,12 +1,12 @@
 package chevy.service;
 
 /**
- * Un oggetto da visualizzare
+ * A renderable object
  */
 public interface Renderable {
     /**
-     * Disegna
-     * @param delta tempo trascorso dall'ultimo ridisegno
+     * Render the object
+     * @param delta time since last render
      */
     void render(double delta);
 

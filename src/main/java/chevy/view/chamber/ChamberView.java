@@ -11,32 +11,39 @@ import chevy.utils.Log;
 import chevy.view.Window;
 import chevy.view.entities.EntityView;
 
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
 
 /**
- * Disegna la stanza
+ * Renders the chamber
  */
 public final class ChamberView extends JPanel implements Renderable {
-    /** Offset per centrare il contenuto in {@link Window} */
+    /**
+     * Offset to center the content in {@link Window}
+     */
     public static final Dimension windowOffset = new Dimension();
-    /** La cella ha dimensione 16x16 pixel */
+    /**
+     * The cell is 16x16 pixels
+     */
     private static final int TILE_SIZE = 16;
     private static final BufferedImage NULL_IMAGE = Load.image("/sprites/null.png");
     private static final Color collisionBG = new Color(31, 205, 242, 80);
     public static boolean drawCollision = Data.get("options.drawHitBoxes");
-    /** Il valore viene impostato non appena la finestra di gioco si apre */
+    /**
+     * The value is set as soon as the game window opens
+     */
     public static int topBarHeight;
-    /** Lunghezza ottimale del lato di una cella, scalata rispetto all'altezza della finestra */
+    /**
+     * Optimal length of the side of a tile, scaled relative to the height of the window
+     */
     public static int tileSide;
-    /** Numero minimo di tile da visualizzare in larghezza e altezza in ogni momento */
+    /**
+     * Least number of tiles to display in width and height at any time
+     */
     private static Dimension tiles = new Dimension();
     private final Object mutex = new Object();
     private List<Layer> drawOrder;
@@ -47,7 +54,7 @@ public final class ChamberView extends JPanel implements Renderable {
     }
 
     /**
-     * Ricalcola le dimensioni cambiando il numero di celle
+     * Recompute the size changing the number of tiles
      */
     public static void updateSize(Dimension tiles) {
         ChamberView.tiles = tiles;
@@ -55,7 +62,7 @@ public final class ChamberView extends JPanel implements Renderable {
     }
 
     /**
-     * Ricalcola le dimensioni mantenendo il numero di celle invariato
+     * Recompute the size keeping the number of tiles constant
      */
     public static void updateSize() {
         if (tiles.width > 0 && tiles.height > 0) {
@@ -81,7 +88,7 @@ public final class ChamberView extends JPanel implements Renderable {
                     Entity entity = it.next();
                     if (entity != null) {
                         if (drawCollision && entity instanceof DynamicEntity) {
-                            // disegna lo sfondo della collisione
+                            // draw the collision background
                             g.setColor(collisionBG);
                             int x = entity.getCol() * tileSide + windowOffset.width;
                             int y = entity.getRow() * tileSide + windowOffset.height;
@@ -115,7 +122,7 @@ public final class ChamberView extends JPanel implements Renderable {
 
                             if (entity.shouldNotDraw()) {
                                 it.remove();
-                                Log.info("Entity rimossa dal ridisegno: " + entity.getType());
+                                Log.info("Entity removed from rendering: " + entity.getType());
                                 entityView.remove();
                             }
                         }
@@ -125,8 +132,12 @@ public final class ChamberView extends JPanel implements Renderable {
         }
     }
 
-    public void setDrawOrder(List<Layer> drawOrder) {this.drawOrder = drawOrder;}
+    public void setDrawOrder(List<Layer> drawOrder) {
+        this.drawOrder = drawOrder;
+    }
 
     @Override
-    public synchronized void render(double delta) {repaint();}
+    public synchronized void render(double delta) {
+        repaint();
+    }
 }

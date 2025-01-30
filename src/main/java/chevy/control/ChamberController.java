@@ -16,7 +16,7 @@ import chevy.model.chamber.ChamberManager;
 import chevy.view.GamePanel;
 
 /**
- * Gestisce le interazione tra le diverse entità, nella stanza di gioco
+ * Handles the interaction between the different entities in the game room.
  */
 public final class ChamberController {
     private static GamePanel gamePanel;
@@ -26,9 +26,8 @@ public final class ChamberController {
     private static EnvironmentUpdateController environmentUpdateController;
 
     /**
-     * Inizializza (o reimposta) i controller per il giocatore, i nemici, le trappole e i
-     * proiettili.
-     * Da usare ogni volta che si cambia stanza.
+     * Initializes (or resets) the controllers for the player, enemies, traps, and projectiles.
+     * To be used every time the room changes.
      */
     public static void refresh() {
         final Chamber chamber = ChamberManager.getCurrentChamber();
@@ -71,7 +70,7 @@ public final class ChamberController {
         }
         environmentUpdateController = new EnvironmentUpdateController(environmentController, chamber.getEnvironments());
 
-        // collega al chamberView la stanza (con le entità ordinate in base al layer) da disegnare
+        // link the chamberView to the room (with the entities ordered by layer) to draw
         GamePanel.getChamberView().setDrawOrder(chamber.getDrawOrderChamber());
     }
 

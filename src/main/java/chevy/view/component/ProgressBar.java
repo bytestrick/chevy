@@ -4,11 +4,8 @@ import chevy.utils.Load;
 import chevy.utils.Log;
 import chevy.view.Window;
 
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ProgressBar extends JPanel {
@@ -50,18 +47,14 @@ public class ProgressBar extends JPanel {
     }
 
     private void setConstraints() {
-        springLayout.putConstraint(SpringLayout.NORTH, containerImage,
-                ui.getHeight(MyPanelUI.BAR_T), SpringLayout.NORTH, this);
-        springLayout.putConstraint(SpringLayout.SOUTH, containerImage,
-                ui.getHeight(MyPanelUI.BAR_B), SpringLayout.SOUTH, this);
-        springLayout.putConstraint(SpringLayout.WEST, containerImage,
-                ui.getWidth(MyPanelUI.BAR_L), SpringLayout.WEST, this);
+        springLayout.putConstraint(SpringLayout.NORTH, containerImage, ui.getHeight(MyPanelUI.BAR_T), SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.SOUTH, containerImage, ui.getHeight(MyPanelUI.BAR_B), SpringLayout.SOUTH, this);
+        springLayout.putConstraint(SpringLayout.WEST, containerImage, ui.getWidth(MyPanelUI.BAR_L), SpringLayout.WEST, this);
     }
 
     private void setDimension(float scale) {
         int width;
-        int height =
-                ui.getHeight(MyPanelUI.BAR_T) + ui.getHeight(MyPanelUI.BAR_B) + ui.getHeight(MyPanelUI.CENTER);
+        int height = ui.getHeight(MyPanelUI.BAR_T) + ui.getHeight(MyPanelUI.BAR_B) + ui.getHeight(MyPanelUI.CENTER);
 
         if (stepTexture == null) {
             width = ui.getWidth(MyPanelUI.BAR_L) + ui.getWidth(MyPanelUI.BAR_R);
@@ -84,11 +77,13 @@ public class ProgressBar extends JPanel {
         setDimension(scale * Window.scale);
     }
 
-    protected void setStepTexture(String path) {stepTexture = Load.image(path);}
+    protected void setStepTexture(String path) {
+        stepTexture = Load.image(path);
+    }
 
     private void addStep() {
         if (stepTexture == null) {
-            Log.error("Non è presente nessuna texture per lo step");
+            Log.error("There is no texture for the step");
             return;
         }
 
@@ -106,7 +101,9 @@ public class ProgressBar extends JPanel {
         setDimension(scale * Window.scale);
     }
 
-    public int getValue() {return value;}
+    public int getValue() {
+        return value;
+    }
 
     public void setValue(int value) {
         int increment = value - this.value;
@@ -128,9 +125,13 @@ public class ProgressBar extends JPanel {
         });
     }
 
-    public int getMaxValue() {return maxValue;}
+    public int getMaxValue() {
+        return maxValue;
+    }
 
-    void setMaxValue(int maxValue) {setMaxValue(maxValue, maxValue);}
+    void setMaxValue(int maxValue) {
+        setMaxValue(maxValue, maxValue);
+    }
 
     public void windowResized(float scale) {
         scale *= this.scale;

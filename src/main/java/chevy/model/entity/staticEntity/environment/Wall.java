@@ -2,7 +2,7 @@ package chevy.model.entity.staticEntity.environment;
 
 import chevy.model.entity.EntityType;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class Wall extends Environment {
     private final WallTypes type;
@@ -13,14 +13,18 @@ public final class Wall extends Environment {
     }
 
     @Override
-    public WallTypes getType() {return type;}
+    public WallTypes getType() {
+        return type;
+    }
 
     @Override
-    public EntityType getGenericType() {return super.getType();}
+    public EntityType getGenericType() {
+        return super.getType();
+    }
 
     public enum WallTypes implements EntityType {
         TOP, CORNER_INTERIOR_TOP_LEFT, CORNER_INTERIOR_TOP_RIGHT, CORNER_INTERIOR_BOTTOM_LEFT,
-        CORNER_INTERIOR_BOTTOM_RIGHT, BOTTOM, LEFT,TOP_HOLE, TOP_HOLE_2, TOP_BROKEN,
+        CORNER_INTERIOR_BOTTOM_RIGHT, BOTTOM, LEFT, TOP_HOLE, TOP_HOLE_2, TOP_BROKEN,
         RIGHT, EXTERNAL_CORNER_BOTTOM_LEFT, EXTERNAL_CORNER_BOTTOM_RIGHT, EXTERNAL_CORNER_TOP_LEFT,
         EXTERNAL_CORNER_TOP_RIGHT
     }

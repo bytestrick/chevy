@@ -2,7 +2,7 @@ package chevy.model.entity.collectable.powerUp;
 
 import chevy.view.Options;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class ColdHeart extends PowerUp {
     private static final int SHIELD_BOOST = 3;
@@ -14,10 +14,14 @@ public final class ColdHeart extends PowerUp {
         occurringPercentage = 100;
     }
 
-    public static int getShieldBoost() {return SHIELD_BOOST;}
+    public static int getShieldBoost() {
+        return SHIELD_BOOST;
+    }
 
     @Override
-    public String getName() {return Options.strings.getString("powerUp.coldHeart.name");}
+    public String getName() {
+        return Options.strings.getString("powerUp.coldHeart.name");
+    }
 
     @Override
     public String getDescription() {

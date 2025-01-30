@@ -5,7 +5,7 @@ import chevy.service.UpdateManager;
 import chevy.utils.Log;
 
 /**
- * Tiene traccia del tempo trascorso
+ * Tracks the elapsed time
  */
 public class Timer implements Updatable {
     private final double duration;
@@ -13,17 +13,20 @@ public class Timer implements Updatable {
     private boolean running;
     private boolean delete = true;
 
-    Timer(double secDuration) {duration = secDuration;}
+    Timer(double secDuration) {
+        duration = secDuration;
+    }
 
-    public boolean isRunning() {return running && !delete;}
+    boolean isRunning() {
+        return running && !delete;
+    }
 
     /**
-     * Fa iniziare l'interpolazione dal punto in cui si è fermata. Se la si usa
-     * per la prima volta l'interpolazione partirà dall'inizio.
+     * Starts the interpolation from where it stopped. If it is used for the first time the interpolation will start from the beginning.
      */
     private void start() {
         if (duration <= 0d) {
-            Log.warn("Il timer non è stato creato perché la sua durata è: " + duration);
+            Log.warn("The timer was not created because the duration is invalid: " + duration);
             return;
         }
 
@@ -36,7 +39,7 @@ public class Timer implements Updatable {
     }
 
     /**
-     * Fa iniziare sempre e comunque il timer dall'inizio
+     * Start the interpolation always from the beginning
      */
     public void restart() {
         time = 0d;
@@ -48,14 +51,15 @@ public class Timer implements Updatable {
     }
 
     /**
-     * Interrompe l'aggiornamento del timer, ma non in modo permanente. L'interpolazione
-     * può essere ripresa in seguito usando la {@link #start()}, oppure, farla iniziare da capo
-     * usando {@link #restart()}.
+     * Stop the timer, but not permanently. The interpolation can be resumed later using {@link #start()},
+     * or start it from the beginning using {@link #restart()}.
      */
-    public void stop() {running = false;}
+    public void stop() {
+        running = false;
+    }
 
     /**
-     * Elimina il timer, questo vuol dire che non verrà più aggiornata.
+     * Delete the timer, this means that it will no longer be updated.
      */
     private void delete() {
         stop();
@@ -76,5 +80,7 @@ public class Timer implements Updatable {
     }
 
     @Override
-    public boolean updateFinished() {return delete;}
+    public boolean updateFinished() {
+        return delete;
+    }
 }

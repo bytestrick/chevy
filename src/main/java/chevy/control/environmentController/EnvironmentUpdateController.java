@@ -17,8 +17,8 @@ public final class EnvironmentUpdateController implements Updatable {
     private boolean running;
 
     /**
-     * @param environmentController il controller delle casse
-     * @param environments          la lista delle casse da aggiornare
+     * @param environmentController the chests controller
+     * @param environments          the chests to add
      */
     public EnvironmentUpdateController(EnvironmentController environmentController, List<Environment> environments) {
         this.environmentController = environmentController;
@@ -28,7 +28,7 @@ public final class EnvironmentUpdateController implements Updatable {
     }
 
     /**
-     * Aggiunge le casse alla lista degli aggiornamenti e svuota la lista temporanea
+     * Adds new chests to the update list and empties the temporary list
      */
     private void addEnvironment() {
         for (Environment environment : environmentsToAdd) {
@@ -40,7 +40,7 @@ public final class EnvironmentUpdateController implements Updatable {
     }
 
     /**
-     * Esegue l'aggiornamento delle casse
+     * Updates the state of all the chests on every cycle of the game
      */
     @Override
     public void update(double delta) {
@@ -59,9 +59,9 @@ public final class EnvironmentUpdateController implements Updatable {
     public void stopUpdate() {running = false;}
 
     /**
-     * Verifica se gli aggiornamenti delle casse sono terminati
+     * Checks if the chests updates are finished
      *
-     * @return {@code true} se non ci sono più trappole da aggiornare, altrimenti {@code false}
+     * @return {@code true} if the chests updates are finished, {@code false} otherwise
      */
     @Override
     public boolean updateFinished() {return environments.isEmpty() || !running;}

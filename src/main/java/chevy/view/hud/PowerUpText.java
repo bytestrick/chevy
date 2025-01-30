@@ -94,7 +94,7 @@ public final class PowerUpText extends JPanel {
                     description.length(), descriptionStyle
                     , false);
         } catch (BadLocationException e) {
-            Log.warn("Tentativo di scrittura in una posizione invalida: " + e.getMessage());
+            Log.warn("Attempt to write at an invalid position: " + e.getMessage());
         }
         revalidate();
         repaint();

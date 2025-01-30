@@ -45,7 +45,7 @@ import chevy.view.Menu;
 import java.awt.Point;
 
 /**
- * Mappa i valori di Rosso dei pixel dell'immagine di un livello a entità del gioco
+ * Maps the Red values of the pixels of a level image to game entities
  */
 final class EntityFromColor {
     // Wall
@@ -129,7 +129,7 @@ final class EntityFromColor {
     private static final int SLIME_PIECE = 25;
     private static final int STONE_BOOTS = 26;
     private static final int HEALING_FLOOD = 27;
-    private static final int VANPIRE_FNAGS = 28;
+    private static final int VAMPIRE_FANGS = 28;
 
     // Environment
     private static final int CHEST = 50;
@@ -217,7 +217,7 @@ final class EntityFromColor {
             case HOT_HEARTH -> new HotHeart(startPosition);
             case GOLD_ARROWS -> new GoldArrows(startPosition);
             case HOLY_SHIELD -> new HolyShield(startPosition);
-            case VANPIRE_FNAGS -> new VampireFangs(startPosition);
+            case VAMPIRE_FANGS -> new VampireFangs(startPosition);
             case LONG_SWORD -> new LongSword(startPosition);
             case STONE_BOOTS -> new StoneBoots(startPosition);
             case COIN_OF_GREED -> new CoinOfGreed(startPosition);

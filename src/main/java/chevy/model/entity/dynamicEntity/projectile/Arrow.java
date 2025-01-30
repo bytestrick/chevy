@@ -4,7 +4,7 @@ import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class Arrow extends Projectile {
     private static int damageBoost;
@@ -18,7 +18,9 @@ public final class Arrow extends Projectile {
         initStateMachine();
     }
 
-    public static void setDamageBoost(int damageBoost) {Arrow.damageBoost = damageBoost;}
+    public static void setDamageBoost(int damageBoost) {
+        Arrow.damageBoost = damageBoost;
+    }
 
     private void initStateMachine() {
         stateMachine.setName("Arrow");

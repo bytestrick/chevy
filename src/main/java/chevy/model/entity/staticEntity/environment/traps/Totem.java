@@ -4,7 +4,7 @@ import chevy.model.entity.dynamicEntity.Direction;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 
-import java.awt.Point;
+import java.awt.*;
 
 public class Totem extends Trap {
     private final Direction shotDirection;
@@ -29,7 +29,9 @@ public class Totem extends Trap {
     }
 
     @Override
-    public Direction getShotDirection() {return shotDirection;}
+    public Direction getShotDirection() {
+        return shotDirection;
+    }
 
     @Override
     public Vertex getState(EntityState state) {

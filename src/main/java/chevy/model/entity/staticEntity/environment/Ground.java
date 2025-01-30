@@ -2,7 +2,7 @@ package chevy.model.entity.staticEntity.environment;
 
 import chevy.model.entity.EntityType;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class Ground extends Environment {
     private final GroundTypes type;
@@ -15,10 +15,14 @@ public final class Ground extends Environment {
     }
 
     @Override
-    public GroundTypes getType() {return type;}
+    public GroundTypes getType() {
+        return type;
+    }
 
     @Override
-    public EntityType getGenericType() {return super.getType();}
+    public EntityType getGenericType() {
+        return super.getType();
+    }
 
     public enum GroundTypes implements EntityType {
         TOP, INTERIOR_CORNER_TOP_LEFT, INTERIOR_CORNER_TOP_RIGHT, LEFT, CENTRAL, CENTRAL_PATTERNED,

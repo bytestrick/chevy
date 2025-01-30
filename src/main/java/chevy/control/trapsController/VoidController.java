@@ -5,20 +5,20 @@ import chevy.control.PlayerController;
 import chevy.model.entity.staticEntity.environment.traps.Void;
 
 /**
- * Controller per gestire l'interazione del giocatore con la trappola Void.
+ * Controller to manage the player interactions with the Void trap in game.
  */
 final class VoidController {
     /**
-     * Controller del giocatore per gestire l'interazioni con il giocatore
+     * Controller of the player to manage interactions with the player
      */
     private final PlayerController playerController;
 
     VoidController(PlayerController playerController) {this.playerController = playerController;}
 
     /**
-     * Gestisce l'interazione del giocatore con la trappola Void.
+     * Manages the player interaction with the Void trap.
      *
-     * @param v      la trappola Void con cui il giocatore interagisce
+     * @param v the Void trap the player is interacting with
      */
     void playerInInteraction(Void v) {
         playerController.handleInteraction(Interaction.TRAP, v);

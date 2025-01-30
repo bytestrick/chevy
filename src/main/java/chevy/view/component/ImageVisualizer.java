@@ -2,9 +2,8 @@ package chevy.view.component;
 
 import chevy.utils.Load;
 
-import javax.swing.JComponent;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public final class ImageVisualizer extends JComponent {
@@ -46,7 +45,9 @@ public final class ImageVisualizer extends JComponent {
         setDimension();
     }
 
-    private void setImage(String path, float scale) {setImage(Load.image(path), scale);}
+    private void setImage(String path, float scale) {
+        setImage(Load.image(path), scale);
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -58,8 +59,12 @@ public final class ImageVisualizer extends JComponent {
     }
 
     @Override
-    public int getWidth() {return width;}
+    public int getWidth() {
+        return width;
+    }
 
     @Override
-    public int getHeight() {return height;}
+    public int getHeight() {
+        return height;
+    }
 }

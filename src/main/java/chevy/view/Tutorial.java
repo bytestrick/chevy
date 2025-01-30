@@ -4,22 +4,13 @@ import chevy.service.Sound;
 import chevy.utils.Load;
 import chevy.view.component.NoCaret;
 
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextPane;
-import javax.swing.SpringLayout;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -34,7 +25,6 @@ public final class Tutorial extends JPanel {
     private static final Icon HOME = Load.icon("Home", 48, 48);
     private static final int MARGIN = 32;
     private static final String GIFS_PATH = "sprites/tutorial/";
-    private String[] titles, texts;
     private final JTextPane textPane = new JTextPane();
     private final StyledDocument doc = textPane.getStyledDocument();
     private final Style titleStyle = doc.addStyle("TitleStyle", null);
@@ -43,8 +33,9 @@ public final class Tutorial extends JPanel {
     private final JLabel gif = new JLabel();
     private final JButton left = new JButton(Load.icon("left-chevron", 48, 48));
     private final JButton right = new JButton(Load.icon("right-chevron", 48, 48));
-    private final JButton menu = new JButton("Torna al menù", HOME);
+    private final JButton menu = new JButton("menu", HOME);
     private final Window window;
+    private String[] titles, texts;
     private int step;
     private final ActionListener actionListener = this::actionPerformed;
 
@@ -57,6 +48,7 @@ public final class Tutorial extends JPanel {
     void setStrings() {
         titles = Options.strings.getString("tutorial.titles").split(";");
         texts = Options.strings.getString("tutorial.descriptions").split(";");
+        menu.setText(Options.strings.getString("options.backToHome"));
     }
 
     private void initUI() {
@@ -94,29 +86,20 @@ public final class Tutorial extends JPanel {
         springLayout.putConstraint(SpringLayout.EAST, textPane, 0, SpringLayout.EAST, this);
         springLayout.putConstraint(SpringLayout.WEST, textPane, 0, SpringLayout.WEST, this);
 
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, gif, 0,
-                SpringLayout.HORIZONTAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, gif, 0,
-                SpringLayout.VERTICAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, gif, 0, SpringLayout.HORIZONTAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, gif, 0, SpringLayout.VERTICAL_CENTER, this);
 
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, left, 0,
-                SpringLayout.VERTICAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.WEST, left, MARGIN * 2, SpringLayout.WEST,
-                this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, left, 0, SpringLayout.VERTICAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.WEST, left, MARGIN * 2, SpringLayout.WEST, this);
 
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, right, 0,
-                SpringLayout.VERTICAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.EAST, right, -MARGIN * 2, SpringLayout.EAST
-                , this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, right, 0, SpringLayout.VERTICAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.EAST, right, -MARGIN * 2, SpringLayout.EAST, this);
 
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, progress, 0,
-                SpringLayout.HORIZONTAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, progress, 0, SpringLayout.HORIZONTAL_CENTER, this);
         springLayout.putConstraint(SpringLayout.SOUTH, progress, 0, SpringLayout.SOUTH, this);
 
-        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, menu, 0,
-                SpringLayout.HORIZONTAL_CENTER, this);
-        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, menu, 0,
-                SpringLayout.VERTICAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, menu, 0, SpringLayout.HORIZONTAL_CENTER, this);
+        springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, menu, 0, SpringLayout.VERTICAL_CENTER, this);
     }
 
     private void actionPerformed(ActionEvent event) {
@@ -129,7 +112,7 @@ public final class Tutorial extends JPanel {
                 window.setScene(Window.Scene.MENU);
             }
         }
-        // Altrimenti il focus rimane sui pulsanti e non si può più premere ESC
+        // Without this the focus remains on the buttons and ESC can no longer be pressed
         window.requestFocus();
     }
 
@@ -147,7 +130,9 @@ public final class Tutorial extends JPanel {
         }
     }
 
-    private void advanceProgress(int step) {progress.setText(step + 1 + "/" + texts.length);}
+    private void advanceProgress(int step) {
+        progress.setText(step + 1 + "/" + texts.length);
+    }
 
     private void setGif(int step) {
         if (step < texts.length - 1) {
@@ -195,11 +180,11 @@ public final class Tutorial extends JPanel {
         boolean isLastStep = step == texts.length - 1;
         boolean isFirstStep = step == 0;
 
-        // Gestione visibilità del menu e della gif
+        // Handling of the visibility of the menu and gif
         menu.setVisible(isLastStep);
         gif.setVisible(!isLastStep);
 
-        // Gestione visibilità dei pulsanti
+        // Handling of the visibility of the buttons
         right.setVisible(!isLastStep);
         left.setVisible(!isFirstStep);
     }
@@ -210,7 +195,7 @@ public final class Tutorial extends JPanel {
                 Sound.play(Sound.Effect.STOP);
                 final String[] opts = Options.strings.getString("dialog.yesNo").split(",");
                 final int ans = JOptionPane.showOptionDialog(window, Options.strings.getString(
-                        "dialog.quitTutorial"),
+                                "dialog.quitTutorial"),
                         null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, HOME,
                         opts, opts[opts.length - 1]);
                 if (ans == 0) {

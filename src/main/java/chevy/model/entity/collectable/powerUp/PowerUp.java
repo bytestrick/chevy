@@ -6,7 +6,7 @@ import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 import chevy.utils.Utils;
 
-import java.awt.Point;
+import java.awt.*;
 
 public abstract class PowerUp extends Collectable {
     private final Type type;
@@ -15,7 +15,7 @@ public abstract class PowerUp extends Collectable {
     private final Vertex deselected = new Vertex(State.DESELECTED, 0.2f);
     private final Vertex collected = new Vertex(State.COLLECTED, 0.8f);
     int occurringPercentage;
-    int inStock = -1; // quantità infinita
+    int inStock = -1; // infinite
 
     PowerUp(Point position, Type type) {
         super(position, Collectable.Type.POWER_UP);
@@ -81,13 +81,19 @@ public abstract class PowerUp extends Collectable {
     }
 
     @Override
-    public EntityType getType() {return type;}
+    public EntityType getType() {
+        return type;
+    }
 
     @Override
-    public EntityType getGenericType() {return super.getType();}
+    public EntityType getGenericType() {
+        return super.getType();
+    }
 
     @Override
-    public String toString() {return type.toString();}
+    public String toString() {
+        return type.toString();
+    }
 
     public enum Type implements EntityType {
         HOLY_SHIELD, VAMPIRE_FANGS, ANGEL_RING, LONG_SWORD, HOBNAIL_BOOTS, COIN_OF_GREED,

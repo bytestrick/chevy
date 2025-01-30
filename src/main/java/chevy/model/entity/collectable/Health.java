@@ -3,7 +3,7 @@ package chevy.model.entity.collectable;
 import chevy.model.entity.stateMachine.EntityState;
 import chevy.model.entity.stateMachine.Vertex;
 
-import java.awt.Point;
+import java.awt.*;
 
 public final class Health extends Collectable {
     private final Vertex idle = new Vertex(State.IDLE, 1.6f);
@@ -21,7 +21,9 @@ public final class Health extends Collectable {
         idle.linkVertex(collected);
     }
 
-    public int getRecoverHealth() {return isCollected() ? 0 : 2;}
+    public int getRecoverHealth() {
+        return isCollected() ? 0 : 2;
+    }
 
     public synchronized Vertex getState(EntityState state) {
         return switch ((State) state) {

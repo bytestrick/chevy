@@ -12,12 +12,12 @@ public final class TotemView extends TrapView {
     public TotemView(Totem totem) {
         super(totem);
 
-        final String res = "/sprites/traps/totem/";
-        final Point offset = new Point(0, -6);
-        final float shotDuration = trap.getState(State.SHOT).getDuration();
-        final float reloadDuration = trap.getState(State.RELOAD).getDuration();
+        String res = "/sprites/traps/totem/";
+        Point offset = new Point(0, -6);
+        float shotDuration = trap.getState(State.SHOT).getDuration();
+        float reloadDuration = trap.getState(State.RELOAD).getDuration();
         for (Direction direction : Direction.values()) {
-            final String path = res + direction.toString().toLowerCase();
+            String path = res + direction.toString().toLowerCase();
             animate(State.SHOT, direction, 1, shotDuration, offset, path);
             animate(State.RELOAD, direction, 1, reloadDuration, offset, path);
         }
@@ -32,13 +32,13 @@ public final class TotemView extends TrapView {
 
     @Override
     public BufferedImage getFrame() {
-        final EntityState state = trap.getState();
+        EntityState state = trap.getState();
         return getAnimatedSprite(state, getAnimationDirection(state)).getFrame();
     }
 
     @Override
     public Point getOffset() {
-        final EntityState state = trap.getState();
+        EntityState state = trap.getState();
         return getAnimatedSprite(state, getAnimationDirection(state)).getOffset();
     }
 }
